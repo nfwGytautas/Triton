@@ -1,22 +1,22 @@
 #pragma once
 
 #include "..\..\..\TRMacros.h"
-#include "..\..\Renderer2D.h"
+#include "..\..\Renderer.h"
 
 namespace Triton {
 
 	namespace Systems {
 
-		class TRITON_API TridentRenderer : public Renderer2D
+		class TRITON_API TridentRenderer : public Renderer
 		{
 		public:
 			TridentRenderer();
 			~TridentRenderer();
 
-			//2D Mandatory methods
+			//Mandatory methods
 			virtual void Render(/*Arguments 1:RenderBatch*/) {}
 			virtual void RenderUI(/*Arguments 1:UILayer*/) {}
-			//2D Optional methods
+			//Optional methods
 			const char* RendererInformation() override;
 
 		};

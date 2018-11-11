@@ -1,7 +1,5 @@
 #include "Application.h"
 
-#include <stdio.h>
-
 namespace Triton {
 
 	Application::Application()
@@ -16,16 +14,18 @@ namespace Triton {
 
 	void Application::Run()
 	{
-		while(true) 
-			printf("Running!\n");
+		while (true)
+		{
+
+		}
 	}
 
 	void Application::PrintInformation()
 	{
-		printf("%s \n", Renderer->RendererInformation());
+		TR_CORE_INFO("{0}",Renderer->RendererInformation());
 	}
 
-	Systems::Renderer2D* Application::CreateRenderer()
+	Systems::Renderer* Application::CreateRenderer()
 	{
 		return new Systems::TridentRenderer();
 	}

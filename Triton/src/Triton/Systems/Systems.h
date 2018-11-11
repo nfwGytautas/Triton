@@ -1,7 +1,7 @@
 #pragma once
 
 //Rendering system
-#include "Renderer2D.h"
+#include "Renderer.h"
 
 //~----------Prebuilt-------------~
 

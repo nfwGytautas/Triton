@@ -7,16 +7,16 @@ namespace Triton {
 	namespace Systems {
 
 		//A renderer class that allows for creation of custom 2D renderers
-		class TRITON_API Renderer2D
+		class TRITON_API Renderer
 		{
 		public:
-			Renderer2D();
-			virtual ~Renderer2D();
+			Renderer() {}
+			virtual ~Renderer() {}
 
-			//2D Mandatory methods
+			//Mandatory methods
 			virtual void Render(/*Arguments 1:RenderBatch*/) = 0;
 			virtual void RenderUI(/*Arguments 1:UILayer*/) = 0;
-			//2D Optional methods
+			//Optional methods
 			virtual const char* RendererInformation() { return "Information not given"; };
 		};
 

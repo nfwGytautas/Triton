@@ -21,7 +21,7 @@
     <ClCompile Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Systems\Renderer2D.cpp">
+    <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,13 @@
     <ClInclude Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Systems\Renderer2D.h">
+    <ClInclude Include="src\Triton\Systems\AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Systems\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

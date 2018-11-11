@@ -4,6 +4,8 @@ extern Triton::Application* Triton::CreateApplication();
 
 int main(int argc, char** argv)
 {
+	//Initialize logger
+	Triton::Log::Init();
 	//Create triton application by user defined procedure
 	auto app = Triton::CreateApplication();
 	//Output app information

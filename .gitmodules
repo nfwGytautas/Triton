@@ -1,0 +1,3 @@
+[submodule "Triton/vendor/spdlog"]
+	path = Triton/vendor/spdlog
+	url = https://github.com/gabime/spdlog

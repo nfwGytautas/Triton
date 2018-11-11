@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SandBox", "SandBox\SandBox.vcxproj", "{3AF15195-0E4A-4638-BD0B-6D6ABA4CDEAF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triton2D", "Triton2D\Triton2D.vcxproj", "{F98F5EEF-AEF1-4975-9872-3619CC542429}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Triton", "Triton\Triton.vcxproj", "{F98F5EEF-AEF1-4975-9872-3619CC542429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Debug|x64.ActiveCfg = Debug|x64
-		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Debug|x64.Build.0 = Debug|x64
-		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Release|x64.ActiveCfg = Release|x64
-		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Release|x64.Build.0 = Release|x64
 		{3AF15195-0E4A-4638-BD0B-6D6ABA4CDEAF}.Debug|x64.ActiveCfg = Debug|x64
 		{3AF15195-0E4A-4638-BD0B-6D6ABA4CDEAF}.Debug|x64.Build.0 = Debug|x64
 		{3AF15195-0E4A-4638-BD0B-6D6ABA4CDEAF}.Release|x64.ActiveCfg = Release|x64
 		{3AF15195-0E4A-4638-BD0B-6D6ABA4CDEAF}.Release|x64.Build.0 = Release|x64
+		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Debug|x64.ActiveCfg = Debug|x64
+		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Debug|x64.Build.0 = Debug|x64
+		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Release|x64.ActiveCfg = Release|x64
+		{F98F5EEF-AEF1-4975-9872-3619CC542429}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TRMacros.h"
-
 #include "Systems\Systems.h"
+#include "Logger\Log.h"
 
 namespace Triton {
 
@@ -16,9 +16,9 @@ namespace Triton {
 
 		virtual void PrintInformation();
 	protected:
-		Systems::Renderer2D* Renderer;
+		Systems::Renderer* Renderer;
 
-		virtual Systems::Renderer2D* CreateRenderer();
+		virtual Systems::Renderer* CreateRenderer();
 	};
 
 	Application* CreateApplication();
