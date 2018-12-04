@@ -1,57 +1,91 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Triton">
+      <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Triton\Core">
+      <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Triton\Event manager">
+      <UniqueIdentifier>{31D5933A-1D64-1D04-C682-31FFB2F02DAA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Logger">
+      <UniqueIdentifier>{34B1E4AD-A071-60E4-69AC-A961D52BA5C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Systems">
+      <UniqueIdentifier>{0C5E869D-F82B-7AA3-E1BF-EAC9CD2C5608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Systems\PreBuilt">
+      <UniqueIdentifier>{228D6EB5-8EC4-B64C-97CE-1A700385DD45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Systems\PreBuilt\Renderers">
+      <UniqueIdentifier>{7B9806E5-E706-5C64-30F0-16649C9D5100}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton\Application.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Display.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\EntryPoint.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Event manager\ApplicationEvent.h">
+      <Filter>Triton\Event manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Event manager\EventManager.h">
+      <Filter>Triton\Event manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Event manager\Events.h">
+      <Filter>Triton\Event manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Event manager\KeyEvent.h">
+      <Filter>Triton\Event manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Event manager\MouseEvent.h">
+      <Filter>Triton\Event manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Logger\Log.h">
+      <Filter>Triton\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Systems\AssetManager.h">
+      <Filter>Triton\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.h">
+      <Filter>Triton\Systems\PreBuilt\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Systems\Renderer.h">
+      <Filter>Triton\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Systems\Systems.h">
+      <Filter>Triton\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\TRMacros.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Triton\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Triton</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Triton\Core\Display.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Event manager\EventManager.cpp">
+      <Filter>Triton\Event manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Event manager\Events.cpp">
+      <Filter>Triton\Event manager</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Logger\Log.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Triton\Logger</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Triton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\EntryPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\TRMacros.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Systems\Systems.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Systems\AssetManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Systems\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Logger\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.cpp">
+      <Filter>Triton\Systems\PreBuilt\Renderers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

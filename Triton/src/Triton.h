@@ -8,6 +8,10 @@
 #include "Triton\Application.h"
 //!----------Application----------!
 
+//~----------Event system---------~
+#include "Triton\Event manager\Events.h"
+//!----------Event system---------!
+
 //~----------Other----------------~
 #include "Triton\Logger\Log.h"
 //!----------Other----------------!

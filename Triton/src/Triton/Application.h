@@ -3,6 +3,8 @@
 #include "TRMacros.h"
 #include "Systems\Systems.h"
 #include "Logger\Log.h"
+#include "Event manager\Events.h"
+#include "Event manager\EventManager.h"
 
 namespace Triton {
 
