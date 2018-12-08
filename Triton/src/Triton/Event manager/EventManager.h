@@ -8,9 +8,10 @@ namespace Triton
 		class TRITON_API EventManager
 		{
 		public:
-			static void Post(Event& event);
+			static void Post(Event* event);
 			static void Dispatch();
 			static void AddListener(EventListener* listener);
+			static void ClearBuffer();
 		private:
 			static std::vector<Event*> m_EventBuffer;
 			static std::vector<EventListener*> m_Listeners;

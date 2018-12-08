@@ -5,6 +5,7 @@
 #include "Logger\Log.h"
 #include "Event manager\Events.h"
 #include "Event manager\EventManager.h"
+#include "Core\Display.h"
 
 namespace Triton {
 
@@ -18,6 +19,8 @@ namespace Triton {
 
 		virtual void PrintInformation();
 	protected:
+		Core::Display* Display;
+
 		Systems::Renderer* Renderer;
 
 		virtual Systems::Renderer* CreateRenderer();

@@ -31,6 +31,9 @@
     <ClInclude Include="src\Triton\Core\Display.h">
       <Filter>Triton\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\GraphicsAPI.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\EntryPoint.h">
       <Filter>Triton</Filter>
     </ClInclude>
@@ -73,6 +76,9 @@
       <Filter>Triton</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Display.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\GraphicsAPI.cpp">
       <Filter>Triton\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Event manager\EventManager.cpp">

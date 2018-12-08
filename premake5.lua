@@ -27,7 +27,22 @@ project "Triton"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"		
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/glfw/include",
+		"%{prj.name}/vendor/glew/include",
+	}
+	
+	libdirs 
+	{ 
+		"%{prj.name}/vendor/glew/",
+		"%{prj.name}/vendor/glfw/"
+	}
+	
+	links 
+	{ 
+		"glew32",
+		"glfw3" ,
+		"opengl32"
 	}
 
 	filter "system:windows"
@@ -44,7 +59,9 @@ project "Triton"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox")
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
+			("{COPY} vendor/glew/glew32.dll ../bin/" .. outputdir .. "/SandBox"),
+			("{COPY} vendor/glfw/glfw3.dll ../bin/" .. outputdir .. "/SandBox")
 		}
 
 	filter "configurations:Debug"
@@ -79,6 +96,8 @@ project "SandBox"
 	includedirs
 	{
 		"Triton/vendor/spdlog/include",
+		"Triton/vendor/glfw/include",
+		"Triton/vendor/glew/include",
 		"Triton/src"
 	}
 

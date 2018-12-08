@@ -8,3 +8,5 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#define TRITON_WINDOW_CONTEXT GLFWwindow*

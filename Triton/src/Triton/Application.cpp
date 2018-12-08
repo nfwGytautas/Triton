@@ -3,29 +3,28 @@
 #include "Event manager\EventManager.h"
 #include "Event manager\ApplicationEvent.h"
 #include "Event manager\KeyEvent.h"
+#include "Core\GraphicsAPI.h"
 
 namespace Triton {
 
 	Application::Application()
 	{
 		Renderer = CreateRenderer();
+		Display = new Core::Display();
 	}
 
 	Application::~Application()
 	{
 		delete Renderer;
+		delete Display;
 	}
 
 	void Application::Run()
 	{
-		WindowResizeEvent wre(100,100);
-		Core::EventManager::Post(wre);
-		KeyPressedEvent kpe(15, 2);
-		Core::EventManager::Post(kpe);
-		Core::EventManager::Dispatch();
-		while (true)
+		while (!Display->Closed())
 		{
-
+			Display->Update();
+			glfwPollEvents();
 		}
 	}
 

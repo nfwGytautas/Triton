@@ -1,4 +1,7 @@
 #pragma once
+
+#include "Core\GraphicsAPI.h"
+
 #include "Event manager\Events.h"
 #include "Event manager\EventManager.h"
 
@@ -8,15 +11,20 @@ int main(int argc, char** argv)
 {
 	//Initialize logger
 	Triton::Log::Init();
-	//Create triton application by user defined procedure
-	auto app = Triton::CreateApplication();
 
-	//Output app information
-	app->PrintInformation();
+	//Initialize graphics api
+	if (Triton::Core::GraphicsAPI::Initialize())
+	{		
+		//Create triton application by user defined procedure
+		auto app = Triton::CreateApplication();
 
-	//Run the created application
-	app->Run();
+		//Output app information
+		app->PrintInformation();
 
-	//Delete the created triton application
-	delete app;
+		//Run the created application
+		app->Run();
+
+		//Delete the created triton application
+		delete app;
+	}
 }
