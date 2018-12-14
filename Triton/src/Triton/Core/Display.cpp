@@ -1,7 +1,11 @@
+#include "TRpch.h"
 #include "Display.h"
 
 #include "Triton\Logger\Log.h"
 #include "Triton\Core\GraphicsAPI.h"
+
+#include <GL\glew.h>
+#include <GLFW\glfw3.h>
 
 namespace Triton {
 	namespace Core {

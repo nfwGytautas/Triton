@@ -76,10 +76,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;HZ_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -100,10 +101,11 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;HZ_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -128,10 +130,11 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;HZ_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,10 +158,14 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\File\File.h" />
+    <ClInclude Include="src\Triton\Core\Math\Math.h" />
+    <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Display.h" />
     <ClInclude Include="src\Triton\Core\GraphicsAPI.h" />
+    <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
     <ClInclude Include="src\Triton\EntryPoint.h" />
     <ClInclude Include="src\Triton\Event manager\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Event manager\EventManager.h" />
@@ -166,20 +173,21 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
     <ClInclude Include="src\Triton\Event manager\KeyEvent.h" />
     <ClInclude Include="src\Triton\Event manager\MouseEvent.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
-    <ClInclude Include="src\Triton\Systems\AssetManager.h" />
-    <ClInclude Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.h" />
-    <ClInclude Include="src\Triton\Systems\Renderer.h" />
-    <ClInclude Include="src\Triton\Systems\Systems.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
+    <ClCompile Include="src\Triton\File\File.cpp" />
+    <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
+    <ClCompile Include="src\TRpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Display.cpp" />
     <ClCompile Include="src\Triton\Core\GraphicsAPI.cpp" />
     <ClCompile Include="src\Triton\Event manager\EventManager.cpp" />
     <ClCompile Include="src\Triton\Event manager\Events.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
-    <ClCompile Include="src\Triton\Systems\PreBuilt\Renderers\TridentRenderer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

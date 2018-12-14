@@ -1,3 +1,4 @@
+#include "TRpch.h"
 #include "EventManager.h"
 
 std::vector<Triton::Event*> Triton::Core::EventManager::m_EventBuffer;

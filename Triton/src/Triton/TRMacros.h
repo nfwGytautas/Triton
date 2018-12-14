@@ -9,4 +9,5 @@
 
 #define BIT(x) (1 << x)
 
+struct GLFWwindow;
 #define TRITON_WINDOW_CONTEXT GLFWwindow*

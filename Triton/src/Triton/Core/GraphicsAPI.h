@@ -1,7 +1,5 @@
 #pragma once
-
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
+#include "TRpch.h"
 
 #include "Triton\TRMacros.h"
 
@@ -11,6 +9,12 @@ namespace Triton
 	{
 		namespace GraphicsAPI
 		{
+			enum class ShaderType
+			{
+				Vertex,
+				Fragment,
+			};
+
 			class ContextManager
 			{
 			public:
@@ -22,8 +26,15 @@ namespace Triton
 
 			TRITON_API bool Initialize();
 			TRITON_API bool CreateContext();
+			TRITON_API void ContextLink(void* aLink);
 
-			TRITON_API void ChangeViewport(double Width, double Height);
+			TRITON_API void ChangeViewport(double aWidth, double aHeight);
+
+			TRITON_API void PollCallbacks();
+			TRITON_API void SetupContextCallbacks();
+
+			TRITON_API unsigned int CreateShader(ShaderType aShaderType, std::string& aShaderSource);
+			TRITON_API unsigned int CreateProgram(std::initializer_list<unsigned int> aShaders);
 		}
 	}
 }

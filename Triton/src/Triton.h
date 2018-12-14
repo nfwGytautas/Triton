@@ -1,20 +1,16 @@
 #pragma once
 
-//~----------Systems--------------~
-#include "Triton\Systems\Systems.h"
-//!----------Systems--------------!
+//~----------GraphicsAPI----------~
+#include "Triton\Core\GraphicsAPI.h"
+//!----------GraphicsAPI----------!
 
 //~----------Application----------~
 #include "Triton\Application.h"
 //!----------Application----------!
 
-//~----------Event system---------~
-#include "Triton\Event manager\Events.h"
-//!----------Event system---------!
-
-//~----------Other----------------~
+//~----------Logger---------------~
 #include "Triton\Logger\Log.h"
-//!----------Other----------------!
+//!----------Logger---------------!
 
 //~----------Entry point----------~
 #include "Triton\EntryPoint.h"

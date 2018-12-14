@@ -2,8 +2,6 @@
 
 #include "Events.h"
 
-#include <sstream>
-
 namespace Triton {
 
 	class TRITON_API KeyEvent : public Event
@@ -14,16 +12,23 @@ namespace Triton {
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
 		KeyEvent(int keycode)
-			: m_KeyCode(keycode) {}
+			: m_KeyCode(keycode), m_Mods(0) {}
+
+		KeyEvent(int keycode, int mods)
+			: m_KeyCode(keycode), m_Mods(mods) {}
 
 		int m_KeyCode;
+		int m_Mods;
 	};
 
 	class TRITON_API KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
-			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
+			: KeyEvent(keycode, 0), m_RepeatCount(repeatCount) {}
+
+		KeyPressedEvent(int keycode, int repeatCount, int scancode, int mods)
+			: KeyEvent(keycode, mods), m_RepeatCount(repeatCount) {}
 
 		inline int GetRepeatCount() const { return m_RepeatCount; }
 
@@ -43,7 +48,10 @@ namespace Triton {
 	{
 	public:
 		KeyReleasedEvent(int keycode)
-			: KeyEvent(keycode) {}
+			: KeyEvent(keycode, 0) {}
+
+		KeyReleasedEvent(int keycode, int scancode, int mods)
+			: KeyEvent(keycode, mods) {}
 
 		std::string ToString() const override
 		{

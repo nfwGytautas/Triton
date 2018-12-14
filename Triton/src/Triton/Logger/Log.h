@@ -1,7 +1,6 @@
 #pragma once
 
-#include <memory>
-#include "..\TRMacros.h"
+#include "Triton/TRMacros.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 

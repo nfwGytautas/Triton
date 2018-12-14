@@ -2,8 +2,6 @@
 
 #include "Events.h"
 
-#include <sstream>
-
 namespace Triton {
 
 	class TRITON_API WindowResizeEvent : public Event

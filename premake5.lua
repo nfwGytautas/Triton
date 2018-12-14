@@ -17,6 +17,9 @@ project "Triton"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	pchheader "TRpch.h"
+	pchsource "Triton/src/TRpch.cpp"
 
 	files
 	{
@@ -30,6 +33,7 @@ project "Triton"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/vendor/glfw/include",
 		"%{prj.name}/vendor/glew/include",
+		"%{prj.name}/vendor/glm/glm",
 	}
 	
 	libdirs 
@@ -65,17 +69,17 @@ project "Triton"
 		}
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "TR_DEBUG"
 		symbols "On"
 		staticruntime "off"
 	
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
+		defines "TR_RELEASE"
 		optimize "On"
 		staticruntime "off"
 
 	filter "configurations:Dist"
-		defines "HZ_DIST"
+		defines "TR_DIST"
 		optimize "On"
 		staticruntime "off"
 
@@ -98,6 +102,7 @@ project "SandBox"
 		"Triton/vendor/spdlog/include",
 		"Triton/vendor/glfw/include",
 		"Triton/vendor/glew/include",
+		"%{prj.name}/vendor/glm/glm",
 		"Triton/src"
 	}
 
@@ -117,16 +122,16 @@ project "SandBox"
 		}
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "TR_DEBUG"
 		symbols "On"
 		staticruntime "off"
 	
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
+		defines "TR_RELEASE"
 		optimize "On"
 		staticruntime "off"
 
 	filter "configurations:Dist"
-		defines "HZ_DIST"
+		defines "TR_DIST"
 		optimize "On"
 		staticruntime "off"

@@ -1,11 +1,5 @@
 #pragma once
-#include <functional>
-#include <vector>
-#include <memory>
-#include <bitset>
-#include <array>
-#include <assert.h>
-#include <type_traits>
+#include "TRpch.h"
 #include "../TRMacros.h"
 
 namespace Triton

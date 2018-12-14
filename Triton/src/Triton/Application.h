@@ -1,11 +1,10 @@
 #pragma once
 
 #include "TRMacros.h"
-#include "Systems\Systems.h"
-#include "Logger\Log.h"
 #include "Event manager\Events.h"
 #include "Event manager\EventManager.h"
 #include "Core\Display.h"
+#include "Core\Shader\Shader.h"
 
 namespace Triton {
 
@@ -15,15 +14,10 @@ namespace Triton {
 	public:
 		Application();
 		virtual ~Application();
-		void Run();
 
-		virtual void PrintInformation();
+		void Run();
 	protected:
 		Core::Display* Display;
-
-		Systems::Renderer* Renderer;
-
-		virtual Systems::Renderer* CreateRenderer();
 	};
 
 	Application* CreateApplication();

@@ -1,5 +1,7 @@
+#include "TRpch.h"
 #include "Application.h"
 
+#include "Triton\Logger\Log.h"
 #include "Event manager\EventManager.h"
 #include "Event manager\ApplicationEvent.h"
 #include "Event manager\KeyEvent.h"
@@ -9,13 +11,12 @@ namespace Triton {
 
 	Application::Application()
 	{
-		Renderer = CreateRenderer();
 		Display = new Core::Display();
+		Core::GraphicsAPI::SetupContextCallbacks();
 	}
 
 	Application::~Application()
 	{
-		delete Renderer;
 		delete Display;
 	}
 
@@ -23,19 +24,11 @@ namespace Triton {
 	{
 		while (!Display->Closed())
 		{
-			Display->Update();
-			glfwPollEvents();
+			Display->Update();			
+
+			Core::GraphicsAPI::PollCallbacks();
+			Core::EventManager::Dispatch();
 		}
-	}
-
-	void Application::PrintInformation()
-	{
-		TR_CORE_INFO("{0}",Renderer->RendererInformation());
-	}
-
-	Systems::Renderer* Application::CreateRenderer()
-	{
-		return new Systems::TridentRenderer();
 	}
 
 }
