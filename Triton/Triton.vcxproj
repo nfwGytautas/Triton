@@ -79,8 +79,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -89,14 +89,13 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\glew;vendor\glfw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\Triton\Triton.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Triton\Triton.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Triton\Triton.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glfw\glfw3.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,7 +104,7 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -118,14 +117,13 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\glew;vendor\glfw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\Triton\Triton.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Triton\Triton.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Triton\Triton.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glfw\glfw3.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -134,7 +132,7 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glew\include;vendor\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -147,47 +145,57 @@ IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\glew;vendor\glfw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Dist-windows-x86_64\Triton\Triton.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Dist-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Triton\Triton.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Triton\Triton.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glfw\glfw3.dll\ (xcopy /Q /E /Y /I vendor\glfw\glfw3.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glfw\glfw3.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\File\File.h" />
-    <ClInclude Include="src\Triton\Core\Math\Math.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Display.h" />
     <ClInclude Include="src\Triton\Core\GraphicsAPI.h" />
+    <ClInclude Include="src\Triton\Core\Math\Math.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
     <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
+    <ClInclude Include="src\Triton\Entity\Registry.h" />
     <ClInclude Include="src\Triton\EntryPoint.h" />
-    <ClInclude Include="src\Triton\Event manager\ApplicationEvent.h" />
-    <ClInclude Include="src\Triton\Event manager\EventManager.h" />
-    <ClInclude Include="src\Triton\Event manager\Events.h" />
-    <ClInclude Include="src\Triton\Event manager\KeyEvent.h" />
-    <ClInclude Include="src\Triton\Event manager\MouseEvent.h" />
+    <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Triton\Events\EventManager.h" />
+    <ClInclude Include="src\Triton\Events\Events.h" />
+    <ClInclude Include="src\Triton\Events\KeyEvent.h" />
+    <ClInclude Include="src\Triton\Events\MouseEvent.h" />
+    <ClInclude Include="src\Triton\File\File.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
-    <ClCompile Include="src\Triton\File\File.cpp" />
-    <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Display.cpp" />
     <ClCompile Include="src\Triton\Core\GraphicsAPI.cpp" />
-    <ClCompile Include="src\Triton\Event manager\EventManager.cpp" />
-    <ClCompile Include="src\Triton\Event manager\Events.cpp" />
+    <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
+    <ClCompile Include="src\Triton\Entity\Registry.cpp" />
+    <ClCompile Include="src\Triton\Events\EventManager.cpp" />
+    <ClCompile Include="src\Triton\Events\Events.cpp" />
+    <ClCompile Include="src\Triton\File\File.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

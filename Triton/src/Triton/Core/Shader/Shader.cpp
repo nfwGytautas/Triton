@@ -47,3 +47,8 @@ Triton::Core::Shader::Shader(const char* vertexFilepath, const char* fragmentFil
 Triton::Core::Shader::~Shader()
 {
 }
+
+unsigned int Triton::Core::Shader::GetAttribLocation(const std::string& aAttribName)
+{
+	return GraphicsAPI::GetShaderAttributeLocation(this->m_programID, aAttribName);
+}

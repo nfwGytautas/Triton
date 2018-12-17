@@ -14,13 +14,8 @@ namespace Triton
 			Shader(const char* vertexFilepath, const char* fragmentFilepath);
 			~Shader();
 
+			unsigned int GetAttribLocation(const std::string& aAttribName);
 		public:
-			void setBooleanUniform(const std::string& name, bool v0);
-			void setIntUniform(const std::string& name, int v0);
-			void setFloatUniform(const std::string& name, float v0);
-			void setVec2Uniform(const std::string& name, const Math::Vector3f& vec0);
-			void setVec3Uniform(const std::string& name, const Math::Vector3f& vec0);
-			void setMatrix4fUniform(const std::string& name, const Math::Vector3f& m0);
 		private:
 			std::unordered_map<std::string, int> m_UniformLocationCache;
 		private:

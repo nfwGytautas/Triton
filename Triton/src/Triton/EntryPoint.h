@@ -1,6 +1,5 @@
 #pragma once
 
-
 extern Triton::Application* Triton::CreateApplication();
 
 int main(int argc, char** argv)
@@ -8,16 +7,13 @@ int main(int argc, char** argv)
 	//Initialize logger
 	Triton::Log::Init();
 
-	//Initialize graphics api
-	if (Triton::Core::GraphicsAPI::Initialize())
-	{		
-		//Create triton application by user defined procedure
-		auto app = Triton::CreateApplication();
+	//Create triton application by user defined procedure
+	Triton::Application* app = Triton::CreateApplication();
+	Triton::Core::GraphicsAPI::Initialize();
 
-		//Run the created application
-		app->Run();
+	//Run the created application
+	app->Run();
 
-		//Delete the created triton application
-		delete app;
-	}
+	//Delete the created triton application
+	delete app;
 }

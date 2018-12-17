@@ -10,6 +10,11 @@ workspace "Triton"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Triton/vendor/GLFW/include"
+
+include "Triton/vendor/GLFW"
+
 project "Triton"
 	location "Triton"
 	kind "SharedLib"
@@ -31,22 +36,20 @@ project "Triton"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/glfw/include",
-		"%{prj.name}/vendor/glew/include",
-		"%{prj.name}/vendor/glm/glm",
+		"%{IncludeDir.GLFW}",
+		"%{prj.name}/vendor/glew/include",	
 	}
 	
 	libdirs 
 	{ 
 		"%{prj.name}/vendor/glew/",
-		"%{prj.name}/vendor/glfw/"
 	}
 	
 	links 
 	{ 
 		"glew32",
-		"glfw3" ,
-		"opengl32"
+		"GLFW" ,
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -65,11 +68,14 @@ project "Triton"
 		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
 			("{COPY} vendor/glew/glew32.dll ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} vendor/glfw/glfw3.dll ../bin/" .. outputdir .. "/SandBox")
 		}
 
 	filter "configurations:Debug"
-		defines "TR_DEBUG"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS",
+		}
 		symbols "On"
 		staticruntime "off"
 	
@@ -100,9 +106,7 @@ project "SandBox"
 	includedirs
 	{
 		"Triton/vendor/spdlog/include",
-		"Triton/vendor/glfw/include",
 		"Triton/vendor/glew/include",
-		"%{prj.name}/vendor/glm/glm",
 		"Triton/src"
 	}
 
@@ -122,7 +126,11 @@ project "SandBox"
 		}
 
 	filter "configurations:Debug"
-		defines "TR_DEBUG"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS",
+		}
 		symbols "On"
 		staticruntime "off"
 	

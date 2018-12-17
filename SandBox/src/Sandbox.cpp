@@ -1,10 +1,6 @@
 #include <Triton.h>
 #include <string>
 
-#include "Triton\Event manager\KeyEvent.h"
-
-#include "Triton\Core\Shader\Shader.h"
-
 bool keyPressed(const Triton::Event& event)
 {
 	const Triton::KeyPressedEvent& kpe = static_cast<const Triton::KeyPressedEvent&>(event);
@@ -24,15 +20,18 @@ class Sandbox : public Triton::Application , private Triton::EventListener
 public:
 	Sandbox()
 	{
-		this->Listen(Triton::EventType::KeyPressed, Triton::EventBehavior(keyPressed));
-		this->Listen(Triton::EventType::KeyReleased, Triton::EventBehavior(keyReleased));
-
-		Triton::Core::Shader shader("D:/Programming/Test files/nfw/shaders/vertex.shader", "D:/Programming/Test files/nfw/shaders/fragment.shader");
+		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(keyPressed));
+		this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(keyReleased));
 	}
 
 	~Sandbox()
 	{
 
+	}
+
+	Triton::Core::Shader* CreateShader() override
+	{
+		return new Triton::Core::Shader("D:/Programming/Test files/nfw/shaders/v0.shader", "D:/Programming/Test files/nfw/shaders/f0.shader");
 	}
 };
 

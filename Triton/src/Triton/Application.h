@@ -1,10 +1,12 @@
 #pragma once
 
 #include "TRMacros.h"
-#include "Event manager\Events.h"
-#include "Event manager\EventManager.h"
+#include "Events\Events.h"
+#include "Events\EventManager.h"
+#include "Events\KeyEvent.h"
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
+#include "Entity\Registry.h"
 
 namespace Triton {
 
@@ -17,7 +19,13 @@ namespace Triton {
 
 		void Run();
 	protected:
-		Core::Display* Display;
+		virtual Core::Shader* CreateShader() = 0;
+	protected:
+		std::unique_ptr<Core::Display> prtc_Display;
+		Core::Shader* prtc_Shader;
+		std::unique_ptr<ECS::Registry> prtc_EntityRegistry;
+	private:
+
 	};
 
 	Application* CreateApplication();
