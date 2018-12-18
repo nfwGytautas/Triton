@@ -17,7 +17,7 @@ namespace Triton
 			template<typename T>
 			ComponentID GetComponentTypeID() noexcept
 			{
-				TR_CORE_ASSERT(std::is_base_of<Component, T>::value, "T must inherit from Component");
+				TR_STATIC_ASSERT(std::is_base_of<Component, T>::value, "T must inherit from Component");
 				static ComponentID typeID{ GetUniqueComponentID() };
 				return typeID;
 			}
@@ -27,7 +27,7 @@ namespace Triton
 			template<typename T>
 			SystemID GetSystemTypeID() noexcept
 			{
-				TR_CORE_ASSERT(std::is_base_of<System, T>::value, "T must inherit from System");
+				TR_STATIC_ASSERT(std::is_base_of<System, T>::value, "T must inherit from System");
 				static SystemID typeID{ GetUniqueSystemID() };
 				return typeID;
 			}

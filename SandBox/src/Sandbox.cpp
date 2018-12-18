@@ -1,16 +1,17 @@
 #include <Triton.h>
+
 #include <string>
 
 bool keyPressed(const Triton::Event& event)
 {
-	const Triton::KeyPressedEvent& kpe = static_cast<const Triton::KeyPressedEvent&>(event);
+	const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
 	TR_TRACE("INSIDE KEY PRESS {0}", kpe.ToString());
 	return true;
 }
 
 bool keyReleased(const Triton::Event& event)
 {
-	const Triton::KeyReleasedEvent& kpe = static_cast<const Triton::KeyReleasedEvent&>(event);
+	const Triton::KeyReleasedEvent& kpe = dynamic_cast<const Triton::KeyReleasedEvent&>(event);
 	TR_TRACE("INSIDE KEY RELEASE {0}", kpe.ToString());
 	return true;
 }

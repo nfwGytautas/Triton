@@ -4,12 +4,17 @@
 
 Triton::EventListener::EventListener()
 { 
-	Core::EventManager::AddListener(this);
+	m_ID = Core::EventManager::AddListener(*this);
+}
+
+Triton::EventListener::~EventListener()
+{
+	Core::EventManager::RemoveListener(*this);
 }
 
 void Triton::EventListener::React(Event& event)
 {
-	if (m_ListeningTo[(size_t)event.GetEventType()])
+	if (m_ListeningTo[static_cast<std::size_t>(event.GetEventType())])
 	{
 		event.m_Handled = m_RegisteredEvents[(size_t)event.GetEventType()](event);
 	}

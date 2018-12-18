@@ -5,11 +5,6 @@
 
 #include "Triton\Logger\Log.h"
 
-#include "Triton\Events\EventManager.h"
-#include "Triton\Events\KeyEvent.h"
-#include "Triton\Events\MouseEvent.h"
-#include "Triton\Events\ApplicationEvent.h"
-
 bool Triton::Core::GraphicsAPI::Initialize()
 {
 	GLenum err = glewInit();

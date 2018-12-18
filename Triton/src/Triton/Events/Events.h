@@ -41,18 +41,18 @@ namespace Triton
 		virtual int GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return GetName(); }
 
-		virtual ~Event() { }
+		virtual ~Event() {}
 
-		inline bool IsInCategory(EventCategory category)
+		bool IsInCategory(EventCategory category)
 		{
 			return GetCategoryFlags() & category;
 		}
 
-		inline bool IsHandled() const
+		bool IsHandled() const
 		{
 			return m_Handled;
 		}
-	protected:
+	private:
 		bool m_Handled = false;
 	};
 
@@ -61,23 +61,34 @@ namespace Triton
 	{		
 	public:
 		EventListener();
+		~EventListener();
 
-		template<class T>
+		template<typename T>
 		void Listen(EventBehavior& behavior)
 		{
-			TR_CORE_ASSERT(std::is_base_of<Event, T>, "Can't listen to non Event!");
+			TR_STATIC_ASSERT(std::is_base_of<Event, T>::value, "Can't listen to non Event!");
 			m_ListeningTo[(size_t)T::GetStaticType()] = true;
 			m_RegisteredEvents[(size_t)T::GetStaticType()] = behavior;
 		}
-		template<class T>
+		template<typename T>
 		void StopListening()
 		{
-			TR_CORE_ASSERT(std::is_base_of<Event, T>, "Can't stop listening to non Event!");
+			TR_STATIC_ASSERT(std::is_base_of<Event, T>::value, "Can't stop listening to non Event!");
 			m_ListeningTo[(size_t)T::GetStaticType()] = false;
+		}
+
+		bool operator==(const EventListener& rhs) const
+		{
+			return m_ID == rhs.m_ID;
+		}
+		bool operator!=(const EventListener& rhs) const
+		{
+			return !(*this == rhs);
 		}
 
 		void React(Event& event);
 	private:
+		size_t m_ID;
 		std::bitset<MaxEvents> m_ListeningTo;
 		std::array<EventBehavior, MaxEvents> m_RegisteredEvents;
 	};
