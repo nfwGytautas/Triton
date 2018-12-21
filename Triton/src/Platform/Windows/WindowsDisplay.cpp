@@ -31,6 +31,13 @@ bool Triton::Core::WindowsDisplay::Closed()
 
 void Triton::Core::WindowsDisplay::OnUpdate()
 {
+	//Check errors
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+	{
+		TR_CORE_WARN("OpenGL error: {0}", error);
+	}
+
 	glfwPollEvents();
 	glfwSwapBuffers(m_Window);
 }

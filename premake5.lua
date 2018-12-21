@@ -12,6 +12,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Triton/vendor/GLFW/include"
+IncludeDir["GLM"] = "Triton/vendor/glm"
 
 include "Triton/vendor/GLFW"
 
@@ -37,6 +38,7 @@ project "Triton"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLM}",		
 		"%{prj.name}/vendor/glew/include",	
 	}
 	
@@ -107,6 +109,7 @@ project "SandBox"
 	{
 		"Triton/vendor/spdlog/include",
 		"Triton/vendor/glew/include",
+		"%{IncludeDir.GLM}",
 		"Triton/src"
 	}
 

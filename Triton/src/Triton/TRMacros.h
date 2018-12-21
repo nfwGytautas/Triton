@@ -19,3 +19,18 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#ifdef TR_PLATFORM_WINDOWS
+	#define TR_GLEW_INIT GLenum err = glewInit(); \
+						 if (err != GLEW_OK)\
+						 {\
+						 	 TR_CORE_ERROR("GLEW Initialization error '{0}'", glewGetErrorString(err));\
+						 	 throw "GLEW INITIALIZATION FAILURE";\
+						 }\
+						 else\
+						 {\
+						 	 TR_CORE_INFO("GLEW version: {0} initialization successful", glewGetString(GLEW_VERSION));\
+						 }
+#else
+	#define TR_GLEW_INIT 
+#endif

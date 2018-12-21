@@ -9,7 +9,6 @@ int main(int argc, char** argv)
 
 	//Create triton application by user defined procedure
 	Triton::Application* app = Triton::CreateApplication();
-	Triton::Core::GraphicsAPI::Initialize();
 
 	//Run the created application
 	app->Run();

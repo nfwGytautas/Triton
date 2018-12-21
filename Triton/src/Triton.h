@@ -1,9 +1,5 @@
 #pragma once
 
-//~----------GraphicsAPI----------~
-#include "Triton\Core\GraphicsAPI.h"
-//!----------GraphicsAPI----------!
-
 //~----------Application----------~
 #include "Triton\Application.h"
 //!----------Application----------!

@@ -1,9 +1,10 @@
 [submodule "Triton/vendor/spdlog"]
  path = Triton/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "Triton/vendor/glm"]
-	path = Triton/vendor/glm
-	url = https://github.com/g-truc/glm.git
 [submodule "Triton/vendor/GLFW"]
 	path = Triton/vendor/GLFW
 	url = https://github.com/nfwGytautas/glfw
+[submodule "Triton/vendor/GLM"]
+	path = Triton/vendor/GLM
+	url = https://github.com/nfwGytautas/glm
+	branch = stable

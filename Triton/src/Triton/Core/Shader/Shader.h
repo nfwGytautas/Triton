@@ -2,25 +2,33 @@
 #include "TRpch.h"
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
-#include "Triton\File\File.h"
-
 namespace Triton
 {
 	namespace Core
 	{
+		struct ShaderSettings
+		{
+			std::string VertexFilepath;
+			std::string FragmentFilepath;
+
+			ShaderSettings(std::string aVertexPath, std::string aFragmentPath)
+				:VertexFilepath(aVertexPath), FragmentFilepath(aFragmentPath)
+			{ }
+		};
+
 		class TRITON_API Shader
 		{
 		public:
-			Shader(const char* vertexFilepath, const char* fragmentFilepath);
-			~Shader();
+			virtual ~Shader() { }
 
-			unsigned int GetAttribLocation(const std::string& aAttribName);
-		public:
-		private:
-			std::unordered_map<std::string, int> m_UniformLocationCache;
-		private:
-			unsigned int m_programID;
-			int getUniformLocation(const std::string& name);
+			virtual void SetUniform(const std::string& aUniformName, const  Vector3& aParameter) = 0;
+			virtual void SetUniform(const std::string& aUniformName, const  Vector4& aParameter) = 0;
+			virtual void SetUniform(const std::string& aUniformName, const Matrix44& aParameter) = 0;
+
+			virtual void Enable() = 0;
+			virtual void Disable() = 0;
+
+			static Shader* Create(const ShaderSettings& settings);
 		};
 	}
 }
