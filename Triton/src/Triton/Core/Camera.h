@@ -8,12 +8,12 @@ namespace Triton
 	class TRITON_API Camera
 	{
 	public:
-		Camera(Vector3 aPosition, Vector3 aTarget, float aMoveSpeed = 3.0f, float aLookSpeed = 0.005f);
+		Camera(Vector3 aPosition, float aMoveSpeed = 3.0f, float aLookSpeed = 0.005f);
 		~Camera();
 
 		Vector3 Position;
-		Vector3 Target;
-		Vector3 ViewDirection;
+
+		Vector3 GetViewDirection() const;
 
 		float Pitch = 0.0f;
 		float Yaw = 0.0f;
@@ -23,6 +23,7 @@ namespace Triton
 	private:
 		Matrix44 m_ViewMatrix;
 
+		Vector3 m_ViewDirection;
 		Vector3 viewPoint;
 		Vector3 right;
 		

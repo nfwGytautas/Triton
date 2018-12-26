@@ -11,7 +11,7 @@ namespace Triton
 		class TRITON_API WindowsMesh : public Mesh
 		{
 		public:
-			WindowsMesh(std::vector<float>& aVertices, bool a3D);
+			WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D);
 			~WindowsMesh();
 
 			// Inherited via Model

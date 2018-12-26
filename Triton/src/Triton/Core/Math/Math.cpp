@@ -26,14 +26,21 @@ Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float 
 
 Triton::Matrix44 Triton::Core::CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale)
 {
+	//Matrix44 translationMatrix = glm::translate(glm::mat4(1.0f), translation);
+	//Matrix44 scaleMatrix = glm::scale(glm::vec3(scale.x, scale.y, scale.z));
+	//Matrix44 Rotation = glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1, 0, 0));
+	//Rotation = glm::rotate(Rotation, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+	//Rotation = glm::rotate(Rotation, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+	//
+	//Matrix44 returnMatrix = translationMatrix * Rotation * scaleMatrix;
+	//
+	//return returnMatrix;
+
 	Matrix44 translationMatrix = glm::translate(glm::mat4(1.0f), translation);
-	Matrix44 scaleMatrix = glm::scale(glm::vec3(scale.x, scale.y, scale.z));
-	Matrix44 xRotation = glm::rotate(glm::radians(rotation.x), glm::vec3(1, 0, 0));
-	Matrix44 yRotation = glm::rotate(glm::radians(rotation.y), glm::vec3(0, 1, 0));
-	Matrix44 zRotation = glm::rotate(glm::radians(rotation.z), glm::vec3(0, 0, 1));
-	Matrix44 rotationMatrix = xRotation * yRotation * zRotation;
-
-	Matrix44 returnMatrix = translationMatrix * rotationMatrix * scaleMatrix;
-
-	return returnMatrix;
+	translationMatrix = glm::scale(translationMatrix, glm::vec3(scale.x, scale.y, scale.z));
+	translationMatrix = glm::rotate(translationMatrix, glm::radians(rotation.x), glm::vec3(1, 0, 0));
+	translationMatrix = glm::rotate(translationMatrix, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+	translationMatrix = glm::rotate(translationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+	
+	return translationMatrix;
 }

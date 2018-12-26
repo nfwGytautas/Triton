@@ -5,6 +5,7 @@
 #include "Events\Events.h"
 #include "Events\EventManager.h"
 #include "Events\KeyEvent.h"
+#include "Events\MouseEvent.h"
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
 #include "Entity\Registry.h"
@@ -28,8 +29,10 @@ namespace Triton {
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<ECS::Registry> prtc_EntityRegistry;
+	protected:
+		float m_Delta = 0.0f;
 	private:
-
+		float m_LastFrame = 0.0f;
 	};
 
 	Application* CreateApplication();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Triton\TRMacros.h"
+#include "Triton\Core\Math\Math.h"
 
 namespace Triton {
 	namespace Core {
@@ -12,7 +13,7 @@ namespace Triton {
 
 			virtual void Render() = 0;
 
-			static Mesh* Create(std::vector<float>& aVertices, bool a3D = true);
+			static Mesh* Create(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D = true);
 		private:
 		};
 
@@ -27,6 +28,10 @@ namespace Triton {
 
 			virtual unsigned int GetWidth() const;
 			virtual unsigned int GetHeight() const;
+		public:
+			Vector3 Position = Triton::Vector3(0.0f, 0.0f, 0.0f);
+			Vector3 Rotation = Triton::Vector3(0.0f, 0.0f, 0.0f);
+			Vector3 Scale = Triton::Vector3(1.0f, 1.0f, 1.0f);
 		private:
 			std::vector<Mesh*> m_Meshes;
 

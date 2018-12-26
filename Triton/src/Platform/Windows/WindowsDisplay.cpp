@@ -5,6 +5,7 @@
 
 #include "Triton\Events\EventManager.h"
 #include "Triton\Events\KeyEvent.h"
+#include "Triton\Events\MouseEvent.h"
 #include "Triton\Events\ApplicationEvent.h"
 
 static bool s_GLFWInitialized = false;
@@ -120,6 +121,13 @@ void Triton::Core::WindowsDisplay::ShutDown()
 
 void Triton::Core::WindowsDisplay::SetUpCallbacks()
 {
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	auto errorCallback = [](int aCode, const char* aDescription)
+	{
+		TR_CORE_ERROR("GLFW Error: {0} '{1}'", aCode, aDescription);
+	};
+
 	auto keyCallback = [](GLFWwindow* w, int key, int scancode, int action, int mods)
 	{
 		static int prevKey = 0;
@@ -147,11 +155,18 @@ void Triton::Core::WindowsDisplay::SetUpCallbacks()
 		}
 	};
 
+	auto mouseMoveCallback = [](GLFWwindow* w, double x, double y)
+	{
+		Triton::Core::EventManager::Post(new MouseMovedEvent(x, y));
+	};
+
 	auto windowResizeCallback = [](GLFWwindow* w, int width, int height)
 	{
 		Triton::Core::EventManager::Post(new WindowResizeEvent(width, height));
 	};
 
+	glfwSetErrorCallback(errorCallback);
 	glfwSetKeyCallback(m_Window, keyCallback);
+	glfwSetCursorPosCallback(m_Window, mouseMoveCallback);
 	glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
 }

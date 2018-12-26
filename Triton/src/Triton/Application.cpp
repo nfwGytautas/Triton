@@ -18,8 +18,8 @@ namespace Triton {
 
 		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
-				"D:/Programming/Test files/nfw/shaders/triton/v1.shader", 
-				"D:/Programming/Test files/nfw/shaders/triton/f1.shader")));
+				"D:/Programming/Test files/nfw/shaders/triton/v2.shader", 
+				"D:/Programming/Test files/nfw/shaders/triton/f2.shader")));
 
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 
@@ -32,6 +32,10 @@ namespace Triton {
 
 	void Application::Run()
 	{	
+		float currentFrame = glfwGetTime();
+		m_Delta = currentFrame - m_LastFrame;
+		m_LastFrame = currentFrame;
+
 		glEnable(GL_DEPTH_TEST);
 
 		prtc_Shader->Enable();
