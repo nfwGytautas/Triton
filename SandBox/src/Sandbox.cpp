@@ -1,26 +1,10 @@
 #include <Triton.h>
 #include <string>
 
-Triton::Core::Model* Cubes[3][3][3];
+Triton::ECS::Entity Cubes[3][3][3];
 Triton::Vector3 Rotations[3][3][3];
 
-void Draw(std::unique_ptr<Triton::Core::Shader>& aShader)
-{
-	for (int z = 0; z < 3; z++)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				Triton::Matrix44 transformation = Triton::Core::CreateTransformationMatrix(Cubes[z][i][j]->Position, Cubes[z][i][j]->Rotation, Cubes[z][i][j]->Scale);
-				aShader->SetUniform("transformationMatrix", transformation);
-				Cubes[z][i][j]->Render();
-			}
-		}
-	}
-}
-
-void HorizontalRotation(unsigned int camera, float value)
+void HorizontalRotation(std::unique_ptr<Triton::ECS::Registry>& aRegistry, unsigned int camera, float value)
 {
 	Triton::Vector3 singleLineRotations[8];
 
@@ -30,7 +14,7 @@ void HorizontalRotation(unsigned int camera, float value)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				Rotations[z][i][j] = Cubes[z][i][j]->Rotation;
+				Rotations[z][i][j] = aRegistry->get<Triton::Components::Transform>(Cubes[z][i][j]).Rotation;
 			}
 		}
 	}
@@ -193,7 +177,7 @@ void HorizontalRotation(unsigned int camera, float value)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				Cubes[z][i][j]->Rotation = Rotations[z][i][j];
+				aRegistry->get<Triton::Components::Transform>(Cubes[z][i][j]).Rotation = Rotations[z][i][j];
 			}
 		}
 	}
@@ -220,7 +204,7 @@ public:
 		m_Camera->Yaw = -35;
 		m_Camera->Pitch = -30;
 
-		CubeMesh = Triton::Core::Mesh::Create(CubeVertices, CubeColors);
+		CubeMesh = Triton::Data::Mesh::Create(*prtc_MainMeshStorage.get(), CubeVertices, CubeColors);
 		createCubes();
 	}
 
@@ -228,7 +212,6 @@ public:
 	{
 		m_Camera->OnUpdate();
 		prtc_Shader->SetUniform("viewMatrix", m_Camera->ViewMatrix());
-		Draw(prtc_Shader);
 	}
 
 private:
@@ -240,9 +223,9 @@ private:
 			{
 				for (int j = 0; j < 3; j++)
 				{
-					Cubes[z][i][j] = new Triton::Core::Model();
-					Cubes[z][i][j]->Position = Triton::Vector3(1.0f * z, 1.0f * i, 1.0f * j);
-					Cubes[z][i][j]->AddMesh(CubeMesh);
+					Cubes[z][i][j] = prtc_EntityRegistry->create();
+					prtc_EntityRegistry->assign<Triton::Components::Transform>(Cubes[z][i][j]).Position = Triton::Vector3(1.0f * z, 1.0f * i, 1.0f * j);
+					prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Cubes[z][i][j]).Meshes.push_back(CubeMesh);
 				}
 			}
 		}
@@ -265,32 +248,32 @@ private:
 		{
 			if (keycode == (int)'O')
 			{
-				HorizontalRotation(1, -90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 1, -90.0f);
 			}
 
 			if (keycode == (int)'B')
 			{
-				HorizontalRotation(2, 90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 2, 90.0f);
 			}
 
 			if (keycode == (int)'W')
 			{
-				HorizontalRotation(3, -90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 3, -90.0f);
 			}
 
 			if (keycode == (int)'Y')
 			{
-				HorizontalRotation(4, -90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 4, -90.0f);
 			}
 
 			if (keycode == (int)'R')
 			{
-				HorizontalRotation(5, 90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 5, 90.0f);
 			}
 
 			if (keycode == (int)'G')
 			{
-				HorizontalRotation(6, 90.0f);
+				HorizontalRotation(prtc_EntityRegistry, 6, 90.0f);
 			}
 		}
 		else
@@ -442,7 +425,7 @@ private:
 		1.0f, 1.0f, 1.0f //TOP
 	};
 
-	Triton::Core::Mesh* CubeMesh;
+	std::shared_ptr<Triton::Data::Mesh> CubeMesh;
 
 	bool m_AlternateAction = false;
 

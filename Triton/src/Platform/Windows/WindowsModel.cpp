@@ -2,22 +2,23 @@
 #include "WindowsModel.h"
 
 #include <GL\glew.h>
+#include "Triton\Core\Data\Storage\MeshStorage.h"
 
 namespace Triton
 {
-	namespace Core
+	std::shared_ptr<Data::Mesh> Data::Mesh::Create(Storage::MeshStorage& aStorage, std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D)
 	{
-		Mesh* Mesh::Create(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D)
-		{
-			return new WindowsMesh(aVertices, aColorData, a3D);
-		}
+		return aStorage.Store(new Core::WindowsMesh(aVertices, aColorData, a3D));
+	}
 
+	namespace Core
+	{		
 		WindowsMesh::WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D)
 		{
 			unsigned int vao;
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
-			m_VAOS.push_back(vao);
+			m_VAO = vao;
 
 			unsigned int vbo;
 			glGenBuffers(1, &vbo);
@@ -41,20 +42,28 @@ namespace Triton
 
 			glEnableVertexAttribArray(1);
 
-			m_Indices.push_back(aVertices.size() / (a3D ? 3 : 2));
+			m_IndiceCount = aVertices.size() / (a3D ? 3 : 2);
 		}
 
 		WindowsMesh::~WindowsMesh()
 		{
+			glDeleteVertexArrays(1, &m_VAO);
+			glDeleteBuffers(m_VBOS.size(), &m_VBOS[0]);
 		}
 
-		void WindowsMesh::Render()
+		void WindowsMesh::Bind()
 		{
-			for (unsigned int i = 0; i < m_VAOS.size(); i++)
-			{
-				glBindVertexArray(m_VAOS[i]);
-				glDrawArrays(GL_TRIANGLES, 0, m_Indices[i]);
-			}
+			glBindVertexArray(m_VAO);
+		}
+
+		void WindowsMesh::Unbind()
+		{
+			glBindVertexArray(0);
+		}
+
+		unsigned int WindowsMesh::GetIndiceCount() const
+		{
+			return m_IndiceCount;
 		}
 	}
 }

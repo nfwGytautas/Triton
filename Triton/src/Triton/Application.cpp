@@ -23,6 +23,10 @@ namespace Triton {
 
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 
+		prtc_MainMeshStorage = std::unique_ptr<Storage::MeshStorage>(new Storage::MeshStorage());
+
+		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
+
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 	}
 	
@@ -49,8 +53,8 @@ namespace Triton {
 
 			OnUpdate();
 
-			Core::EventManager::Dispatch();
-			prtc_EntityRegistry->UpdateSystems();
+			Core::EventManager::Dispatch();			
+			prtc_Renderer->Render(*prtc_EntityRegistry.get());
 			prtc_Display->OnUpdate();
 		}
 	}

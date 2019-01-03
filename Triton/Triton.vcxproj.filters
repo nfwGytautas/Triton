@@ -13,8 +13,14 @@
     <Filter Include="Triton\Core">
       <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\Core\Data structures">
-      <UniqueIdentifier>{8A288446-F635-B22C-7F1C-AE17EB287EE3}</UniqueIdentifier>
+    <Filter Include="Triton\Core\Data">
+      <UniqueIdentifier>{062E5D22-F226-7C74-1B59-61F907B15B80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Data\Storage">
+      <UniqueIdentifier>{4AD27CB2-36F7-CB32-5F42-B1C24BC6CA50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Data\Structures">
+      <UniqueIdentifier>{39A3A095-A5B0-CE7B-2E97-CA669AA39A32}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Core\Math">
       <UniqueIdentifier>{761D6222-6216-8174-8B48-66F977A06080}</UniqueIdentifier>
@@ -27,6 +33,12 @@
     </Filter>
     <Filter Include="Triton\Entity">
       <UniqueIdentifier>{B1A7859D-1D68-01D4-E6A2-4A51522246B0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Entity\Components">
+      <UniqueIdentifier>{26BCBFF7-12E1-0E78-3B2C-F40727B00D96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Entity\Systems">
+      <UniqueIdentifier>{B81E2182-248B-DC7C-ED7E-74DA59AAFEE4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Events">
       <UniqueIdentifier>{49470E9E-B507-8AD4-7E42-D351EAC1CEB0}</UniqueIdentifier>
@@ -45,6 +57,12 @@
     <ClInclude Include="src\Platform\Windows\WindowsModel.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsShader.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h">
@@ -53,8 +71,11 @@
     <ClInclude Include="src\Triton\Core\Camera.h">
       <Filter>Triton\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Data structures\Model.h">
-      <Filter>Triton\Core\Data structures</Filter>
+    <ClInclude Include="src\Triton\Core\Data\Storage\MeshStorage.h">
+      <Filter>Triton\Core\Data\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Display.h">
       <Filter>Triton\Core</Filter>
@@ -68,8 +89,14 @@
     <ClInclude Include="src\Triton\Core\Shader\Shader.h">
       <Filter>Triton\Core\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h">
+      <Filter>Triton\Entity\Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Entity\Registry.h">
       <Filter>Triton\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Systems\TritonSystems.h">
+      <Filter>Triton\Entity\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\EntryPoint.h">
       <Filter>Triton</Filter>
@@ -98,15 +125,18 @@
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsShader.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsShader.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\TRpch.cpp" />
@@ -116,8 +146,8 @@
     <ClCompile Include="src\Triton\Core\Camera.cpp">
       <Filter>Triton\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Core\Data structures\Model.cpp">
-      <Filter>Triton\Core\Data structures</Filter>
+    <ClCompile Include="src\Triton\Core\Data\Storage\MeshStorage.cpp">
+      <Filter>Triton\Core\Data\Storage</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Math\Math.cpp">
       <Filter>Triton\Core\Math</Filter>
@@ -128,8 +158,8 @@
     <ClCompile Include="src\Triton\Core\Shader\Shader.cpp">
       <Filter>Triton\Core\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Entity\Registry.cpp">
-      <Filter>Triton\Entity</Filter>
+    <ClCompile Include="src\Triton\Entity\Systems\TritonSystems.cpp">
+      <Filter>Triton\Entity\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Events\EventManager.cpp">
       <Filter>Triton\Events</Filter>
@@ -142,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsShader.cpp">
-      <Filter>Platform\Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,5 +19,6 @@
 #include <initializer_list>
 
 #ifdef TR_PLATFORM_WINDOWS
+	#define NOMINMAX
 	#include <Windows.h>
 #endif

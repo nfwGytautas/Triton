@@ -6,25 +6,32 @@ namespace Triton
 {
 	namespace Data
 	{
-		typedef unsigned char FileSourceFlag;
-
-		enum class FileSourceFlags
+		struct ModelData
 		{
-			Append = BIT(0),
-			Seperate = BIT(1),
+			std::string testdata;
 		};
 
+
+		//Class for reading all types of external data
 		class File
 		{
 		public:
 			File();
 			~File();
 
-			bool AddSource(const char* Path, FileSourceFlag Flags);
-			bool AddSource(std::string& Path, FileSourceFlag Flags);
+			bool ReadAllSources();
+
+			template<class T>
+			T& ExtractData()
+			{
+
+			}
+
+			void AddSource(const char* Path);
+			void AddSource(std::string& Path);
 		private:
-			std::vector<std::string>& m_Source;
-			std::string m_Extension;
+			std::vector<std::string>& m_FilePaths;
+			std::string& m_Data;
 		};
 	}
 }

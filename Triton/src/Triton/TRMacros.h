@@ -34,3 +34,14 @@
 #else
 	#define TR_GLEW_INIT 
 #endif
+
+//Project typedefs
+namespace Triton
+{
+	namespace Data
+	{
+		class Mesh;
+	}
+	TRITON_API typedef unsigned int MeshID;
+	TRITON_API typedef std::vector<std::shared_ptr<Data::Mesh>> MeshList;
+}

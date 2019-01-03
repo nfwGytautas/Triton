@@ -1,25 +1,26 @@
 #pragma once
 
 #include "Triton\TRMacros.h"
-#include "Triton\Core\Data structures\Model.h"
+#include "Triton\Core\Data\Structures\Mesh.h"
 
 namespace Triton
 {
 	namespace Core
 	{
 
-		class TRITON_API WindowsMesh : public Mesh
+		class TRITON_API WindowsMesh : public Data::Mesh
 		{
 		public:
 			WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D);
 			~WindowsMesh();
 
-			// Inherited via Model
-			void Render() override;
+			void Bind();
+			void Unbind();
+			unsigned int GetIndiceCount() const;
 		private:
-			std::vector<unsigned int> m_VAOS;
-			std::vector<unsigned int> m_Indices;
+			unsigned int m_VAO;
 			std::vector<unsigned int> m_VBOS;
+			unsigned int m_IndiceCount;
 		};
 
 	}
