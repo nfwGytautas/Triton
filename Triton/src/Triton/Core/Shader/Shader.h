@@ -21,9 +21,12 @@ namespace Triton
 		public:
 			virtual ~Shader() { }
 
+			virtual void SetUniform(const std::string& aUniformName, const      int& aParameter) = 0;
+			virtual void SetUniform(const std::string& aUniformName, const    float& aParameter) = 0;
+			virtual void SetUniform(const std::string& aUniformName, const  Vector2& aParameter) = 0;
 			virtual void SetUniform(const std::string& aUniformName, const  Vector3& aParameter) = 0;
 			virtual void SetUniform(const std::string& aUniformName, const  Vector4& aParameter) = 0;
-			virtual void SetUniform(const std::string& aUniformName, const Matrix44& aParameter) = 0;
+			virtual void SetUniform(const std::string& aUniformName, const Matrix44& aParameter) = 0;		
 
 			virtual void Enable() = 0;
 			virtual void Disable() = 0;

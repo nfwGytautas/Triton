@@ -1,0 +1,24 @@
+#include "TRpch.h"
+#include "Texture.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+bool checkPath(std::string mFilePath)
+{
+	struct stat buffer;
+	return (stat(mFilePath.c_str(), &buffer) == 0);
+}
+
+void Triton::Data::TextureData::operator<<(std::string& aPathToImage)
+{
+	#ifdef TR_PLATFORM_WINDOWS
+	stbi_set_flip_vertically_on_load(1);
+	#endif
+
+	TR_CORE_ASSERT(checkPath(aPathToImage), "path to image does not exist or is in inccorrect format.");
+
+	Buffer = std::unique_ptr<unsigned char>(stbi_load(aPathToImage.c_str(), &Width, &Height, &BPP, 4));
+
+	TR_CORE_ASSERT(Buffer.get(), stbi_failure_reason());
+}

@@ -79,6 +79,21 @@ void Triton::Core::WindowsShader::Disable()
 	glUseProgram(0);
 }
 
+void Triton::Core::WindowsShader::SetUniform(const std::string & aUniformName, const int & aParameter)
+{
+	glUniform1i(GetUniformLocation(aUniformName), aParameter);
+}
+
+void Triton::Core::WindowsShader::SetUniform(const std::string & aUniformName, const float & aParameter)
+{
+	glUniform1f(GetUniformLocation(aUniformName), aParameter);
+}
+
+void Triton::Core::WindowsShader::SetUniform(const std::string & aUniformName, const Vector2 & aParameter)
+{
+	glUniform2f(GetUniformLocation(aUniformName), aParameter.x, aParameter.y);
+}
+
 void Triton::Core::WindowsShader::SetUniform(const std::string& aUniformName, const Vector3& aParameter)
 {
 	glUniform3f(GetUniformLocation(aUniformName), aParameter.x, aParameter.y, aParameter.z);

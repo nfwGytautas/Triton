@@ -13,6 +13,9 @@ namespace Triton
 			WindowsShader(const ShaderSettings& aSettings);
 			virtual ~WindowsShader();
 			
+			virtual void SetUniform(const std::string& aUniformName, const      int& aParameter) override;
+			virtual void SetUniform(const std::string& aUniformName, const    float& aParameter) override;
+			virtual void SetUniform(const std::string& aUniformName, const  Vector2& aParameter) override;
 			virtual void SetUniform(const std::string& aUniformName, const  Vector3& aParameter) override;
 			virtual void SetUniform(const std::string& aUniformName, const  Vector4& aParameter) override;
 			virtual void SetUniform(const std::string& aUniformName, const Matrix44& aParameter) override;
@@ -32,7 +35,7 @@ namespace Triton
 			int GetUniformLocation(const std::string& aName);
 		private:
 			std::unordered_map<std::string, int> m_UniformLocationCache;
-			unsigned int m_programID;	
+			unsigned int m_programID;			
 		};
 	}
 }

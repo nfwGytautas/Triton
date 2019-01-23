@@ -41,7 +41,8 @@ project "Triton"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
-		"%{prj.name}/vendor/glew/include",	
+		"%{prj.name}/vendor/glew/include",
+		"%{prj.name}/vendor/stb_image/include",
 	}
 	
 	libdirs 

@@ -1,5 +1,4 @@
 #pragma once
-#include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
 
 namespace Triton
@@ -7,7 +6,7 @@ namespace Triton
 	namespace Components
 	{
 		//A component which specifies entity transformation inside the world
-		struct TRITON_API Transform
+		struct Transform
 		{
 			Vector3 Position;
 			Vector3 Rotation;
@@ -16,7 +15,7 @@ namespace Triton
 			Transform()
 				: Position(0.0f, 0.0f, 0.0f), Rotation(0.0f, 0.0f, 0.0f), Scale(1.0f, 1.0f, 1.0f)
 			{}
-			Transform(Transform& aOther)
+			Transform(const Transform& aOther)
 				: Position(aOther.Position), Rotation(aOther.Rotation), Scale(aOther.Scale)
 			{ }
 			Transform(Vector3& aPosition, Vector3& aRotation, Vector3& aScale)
@@ -25,14 +24,28 @@ namespace Triton
 		};
 	
 		//A component which specifies what meshes an entity uses
-		struct TRITON_API MeshFilter
+		struct MeshFilter
 		{
-			MeshList Meshes;
+			std::shared_ptr<Data::Mesh> Mesh;
 
 			MeshFilter()
 			{ }
-			MeshFilter(MeshFilter& aOther)
-				: Meshes(aOther.Meshes)
+			MeshFilter(const MeshFilter& aOther)
+				: Mesh(aOther.Mesh)
+			{
+
+			}
+		};
+
+		//A component which specifies how a game object should be rendered
+		struct MeshRenderer
+		{
+			std::shared_ptr<Data::Texture> Material;
+
+			MeshRenderer()
+			{ }
+			MeshRenderer(const MeshRenderer& aOther)
+				: Material(aOther.Material)
 			{
 
 			}

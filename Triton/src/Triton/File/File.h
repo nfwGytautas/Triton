@@ -6,32 +6,12 @@ namespace Triton
 {
 	namespace Data
 	{
-		struct ModelData
-		{
-			std::string testdata;
-		};
-
-
-		//Class for reading all types of external data
-		class File
+		
+		class TRITON_API File
 		{
 		public:
-			File();
-			~File();
-
-			bool ReadAllSources();
-
-			template<class T>
-			T& ExtractData()
-			{
-
-			}
-
-			void AddSource(const char* Path);
-			void AddSource(std::string& Path);
-		private:
-			std::vector<std::string>& m_FilePaths;
-			std::string& m_Data;
+			static std::string ReadAllText(std::string& aPath);
 		};
+
 	}
 }

@@ -3,13 +3,15 @@
 
 namespace Triton
 {
-	namespace Storage
-	{
-		class MeshStorage;
-	}
-
 	namespace Data
 	{
+		struct TRITON_API MeshData
+		{
+			std::vector<float> Vertices;
+			std::vector<float> UVs;
+
+			void operator<<(std::string& aPathToMesh);
+		};
 
 		class TRITON_API Mesh
 		{
@@ -25,7 +27,7 @@ namespace Triton
 				return m_Height;
 			}
 
-			static std::shared_ptr<Mesh> Create(Storage::MeshStorage& aStorage, std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D = true);
+			static std::shared_ptr<Mesh> Create(MeshData& aData, bool a3D = true);
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;

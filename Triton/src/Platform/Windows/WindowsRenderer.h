@@ -12,7 +12,10 @@ namespace Triton
 			WindowsRenderer(WindowsShader* aShader);
 			~WindowsRenderer();
 
-			virtual void Render(ECS::Registry& aRegistry) override;
+			virtual void Render(std::vector<Data::RenderBatch>& aRenderBatch) override;
+		private:
+			void Prepare();
+			void SetDefaultValues();
 		private:
 			WindowsShader* m_Shader;
 		};

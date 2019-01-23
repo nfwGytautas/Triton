@@ -1,8 +1,8 @@
 #pragma once
 #include "Triton\TRMacros.h"
+#include "Triton\Core\Data\Structures\RenderBatch.h"
 #include "Triton\Entity\Registry.h"
 #include "Triton\Core\Shader\Shader.h"
-#include "Triton\Entity\Registry.h"
 
 namespace Triton
 {
@@ -16,7 +16,7 @@ namespace Triton
 
 			virtual ~Renderer() {}
 
-			virtual void Render(ECS::Registry& aRegistry) = 0;
+			virtual void Render(std::vector<Data::RenderBatch>& aRenderBatch) = 0;
 		private:
 		};
 

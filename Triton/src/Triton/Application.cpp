@@ -18,12 +18,10 @@ namespace Triton {
 
 		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
-				"D:/Programming/Test files/nfw/shaders/triton/v2.shader", 
-				"D:/Programming/Test files/nfw/shaders/triton/f2.shader")));
+				"D:/Programming/Test files/nfw/shaders/triton/v3.shader", 
+				"D:/Programming/Test files/nfw/shaders/triton/f3.shader")));
 
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
-
-		prtc_MainMeshStorage = std::unique_ptr<Storage::MeshStorage>(new Storage::MeshStorage());
 
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
 
@@ -40,8 +38,6 @@ namespace Triton {
 		m_Delta = currentFrame - m_LastFrame;
 		m_LastFrame = currentFrame;
 
-		glEnable(GL_DEPTH_TEST);
-
 		prtc_Shader->Enable();
 		Matrix44 ProjMatrix = Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 70, 2000.0f, 0.1f);
 		prtc_Shader->SetUniform("projectionMatrix", ProjMatrix);		
@@ -49,12 +45,11 @@ namespace Triton {
 		PreExecutionSetup();
 		while (!prtc_Display->Closed())
 		{			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			OnUpdate();
 
-			Core::EventManager::Dispatch();			
-			prtc_Renderer->Render(*prtc_EntityRegistry.get());
+			Core::EventManager::Dispatch();
+
+			prtc_Renderer->Render(prtc_v_RenderBatch);
 			prtc_Display->OnUpdate();
 		}
 	}

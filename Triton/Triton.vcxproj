@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,7 +132,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -159,12 +159,14 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
     <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Camera.h" />
-    <ClInclude Include="src\Triton\Core\Data\Storage\MeshStorage.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h" />
+    <ClInclude Include="src\Triton\Core\Data\Structures\RenderBatch.h" />
+    <ClInclude Include="src\Triton\Core\Data\Structures\Texture.h" />
     <ClInclude Include="src\Triton\Core\Display.h" />
     <ClInclude Include="src\Triton\Core\Math\Math.h" />
     <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
@@ -187,16 +189,17 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Camera.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Storage\MeshStorage.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Structures\Texture.cpp" />
     <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
     <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
-    <ClCompile Include="src\Triton\Entity\Systems\TritonSystems.cpp" />
     <ClCompile Include="src\Triton\Events\EventManager.cpp" />
     <ClCompile Include="src\Triton\Events\Events.cpp" />
     <ClCompile Include="src\Triton\File\File.cpp" />

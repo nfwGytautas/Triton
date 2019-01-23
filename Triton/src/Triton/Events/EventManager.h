@@ -1,4 +1,5 @@
 #pragma once
+#include "Triton\TRMacros.h"
 #include "Events.h"
 
 namespace Triton

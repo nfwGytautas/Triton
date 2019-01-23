@@ -41,7 +41,11 @@ namespace Triton
 	namespace Data
 	{
 		class Mesh;
+		class Texture;
 	}
 	TRITON_API typedef unsigned int MeshID;
 	TRITON_API typedef std::vector<std::shared_ptr<Data::Mesh>> MeshList;
+
+	TRITON_API typedef unsigned int TextureID;
+	TRITON_API typedef std::vector<std::shared_ptr<Data::Texture>> TextureList;
 }

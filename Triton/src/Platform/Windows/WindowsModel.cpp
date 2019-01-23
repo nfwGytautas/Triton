@@ -2,18 +2,17 @@
 #include "WindowsModel.h"
 
 #include <GL\glew.h>
-#include "Triton\Core\Data\Storage\MeshStorage.h"
 
 namespace Triton
 {
-	std::shared_ptr<Data::Mesh> Data::Mesh::Create(Storage::MeshStorage& aStorage, std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D)
+	std::shared_ptr<Data::Mesh> Data::Mesh::Create(MeshData& aData, bool a3D)
 	{
-		return aStorage.Store(new Core::WindowsMesh(aVertices, aColorData, a3D));
+		return std::make_shared<Core::WindowsMesh>(aData.Vertices, aData.UVs, a3D);
 	}
 
 	namespace Core
 	{		
-		WindowsMesh::WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aColorData, bool a3D)
+		WindowsMesh::WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aUVs, bool a3D)
 		{
 			unsigned int vao;
 			glGenVertexArrays(1, &vao);
@@ -36,9 +35,9 @@ namespace Triton
 			m_VBOS.push_back(vbo2);
 
 			glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-			glBufferData(GL_ARRAY_BUFFER, aColorData.size() * sizeof(float), &aColorData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, aUVs.size() * sizeof(float), &aUVs[0], GL_STATIC_DRAW);
 
-			glVertexAttribPointer(1, (a3D ? 3 : 2), GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 			glEnableVertexAttribArray(1);
 
