@@ -1,5 +1,5 @@
 # Triton
-Engine created with extensability in mind
+Just another game engine
 
 # *Tests projects*
 
