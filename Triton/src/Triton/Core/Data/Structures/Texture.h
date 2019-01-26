@@ -13,6 +13,12 @@ namespace Triton
 			int BPP;
 			std::unique_ptr<unsigned char> Buffer;
 
+			TextureData()
+				:Width(0), Height(0), BPP(0)
+			{
+				Buffer = std::make_unique<unsigned char>();
+			}
+
 			void operator<<(std::string& aPathToImage);
 		};
 

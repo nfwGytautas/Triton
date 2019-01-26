@@ -35,7 +35,7 @@ namespace Triton {
 	void Application::Run()
 	{	
 		float currentFrame = glfwGetTime();
-		m_Delta = currentFrame - m_LastFrame;
+		prtc_Delta = currentFrame - m_LastFrame;
 		m_LastFrame = currentFrame;
 
 		prtc_Shader->Enable();

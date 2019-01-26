@@ -128,6 +128,7 @@
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
@@ -179,5 +180,6 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
   </ItemGroup>
 </Project>

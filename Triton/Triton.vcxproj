@@ -155,6 +155,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
     <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
@@ -185,6 +186,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />

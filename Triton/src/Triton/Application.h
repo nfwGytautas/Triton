@@ -22,7 +22,7 @@
 
 #include "Core\Data\Structures\RenderBatch.h"
 #include "Core\Data\Structures\Mesh.h"
-#include "Core\Data\Structures\Texture.h"
+#include "Core\Data\Structures\Material.h"
 
 namespace Triton {
 
@@ -38,7 +38,7 @@ namespace Triton {
 		virtual void PreExecutionSetup() {}
 		virtual void OnUpdate() {}
 	protected:
-		float m_Delta = 0.0f;
+		float prtc_Delta = 0.0f;
 
 		std::vector<Data::RenderBatch> prtc_v_RenderBatch;
 	protected:

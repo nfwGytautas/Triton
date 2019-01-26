@@ -31,7 +31,7 @@ namespace Triton
 				m_Batches.clear();
 
 				std::vector<std::shared_ptr<Data::Mesh>> RegisteredMeshes;
-				std::vector<std::shared_ptr<Data::Texture>> Textures;
+				std::vector<std::shared_ptr<Data::Material>> Materials;
 				std::vector<std::vector<Components::Transform>> Transforms;
 
 				aRegistry.view<Components::Transform, Components::MeshFilter, Components::MeshRenderer>().each([&](const auto entity, auto &transform, auto &meshFilter, auto& meshRenderer) {
@@ -39,7 +39,7 @@ namespace Triton
 
 					for (unsigned int i = 0; i < RegisteredMeshes.size(); i++)
 					{
-						if (RegisteredMeshes[i] == meshFilter.Mesh)
+						if (RegisteredMeshes[i] == meshFilter.Mesh && Materials[i] == meshRenderer.Material)
 						{
 							meshFound = true;
 
@@ -52,7 +52,7 @@ namespace Triton
 					if (!meshFound)
 					{
 						RegisteredMeshes.push_back(meshFilter.Mesh);
-						Textures.push_back(meshRenderer.Material);
+						Materials.push_back(meshRenderer.Material);
 						Transforms.push_back(std::vector<Components::Transform> { Components::Transform(transform) });
 					}
 
@@ -65,7 +65,7 @@ namespace Triton
 					{
 						transformations.push_back(std::make_shared<Matrix44>(Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale)));
 					}
-					m_Batches.push_back(Data::RenderBatch(RegisteredMeshes[i], Textures[i],transformations));
+					m_Batches.push_back(Data::RenderBatch(RegisteredMeshes[i], Materials[i], transformations));
 				}
 			}
 

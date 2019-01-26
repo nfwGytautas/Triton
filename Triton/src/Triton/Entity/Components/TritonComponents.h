@@ -1,5 +1,7 @@
 #pragma once
 #include "Triton\Core\Math\Math.h"
+#include "Triton\Core\Data\Structures\Mesh.h"
+#include "Triton\Core\Data\Structures\Material.h"
 
 namespace Triton
 {
@@ -40,7 +42,7 @@ namespace Triton
 		//A component which specifies how a game object should be rendered
 		struct MeshRenderer
 		{
-			std::shared_ptr<Data::Texture> Material;
+			std::shared_ptr<Data::Material> Material;
 
 			MeshRenderer()
 			{ }

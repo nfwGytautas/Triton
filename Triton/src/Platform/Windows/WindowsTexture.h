@@ -9,7 +9,7 @@ namespace Triton
 		class TRITON_API WindowsTexture : public Data::Texture
 		{
 		public:
-			WindowsTexture(unsigned int aWidth, unsigned int aHeight, std::unique_ptr<unsigned char> aBuffer);
+			WindowsTexture(unsigned int aWidth, unsigned int aHeight, unsigned char* aBuffer);
 			~WindowsTexture();
 
 			void Bind(unsigned int aSlot = 0);

@@ -24,10 +24,10 @@ Triton::Core::WindowsRenderer::~WindowsRenderer()
 
 void Triton::Core::WindowsRenderer::Prepare()
 {
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LESS);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -47,10 +47,12 @@ void Triton::Core::WindowsRenderer::Render(std::vector<Data::RenderBatch>& aRend
 		castMesh.Bind();
 
 		//Cast the texture to windows texture
-		WindowsTexture& castTexture = dynamic_cast<WindowsTexture&>(*batch.Texture);
-		
+		WindowsTexture& castTexture = dynamic_cast<WindowsTexture&>(*batch.Material->GetTexture());
+
 		castTexture.Bind(0);
 		m_Shader->SetUniform("material.matTexture", 0);
+
+		m_Shader->SetUniform("material.diffuse", batch.Material->GetDiffuse());
 
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

@@ -5,10 +5,10 @@
 
 std::shared_ptr<Triton::Data::Texture> Triton::Data::Texture::Create(TextureData& aData)
 {
-	return std::make_shared<Core::WindowsTexture>(aData.Width, aData.Height, std::move(aData.Buffer));
+	return std::make_shared<Core::WindowsTexture>(aData.Width, aData.Height, aData.Buffer.get());
 }
 
-Triton::Core::WindowsTexture::WindowsTexture(unsigned int aWidth, unsigned int aHeight, std::unique_ptr<unsigned char> aBuffer)
+Triton::Core::WindowsTexture::WindowsTexture(unsigned int aWidth, unsigned int aHeight, unsigned char* aBuffer)
 {
 	m_Width = aWidth;
 	m_Height = aHeight;
@@ -16,8 +16,8 @@ Triton::Core::WindowsTexture::WindowsTexture(unsigned int aWidth, unsigned int a
 	unsigned int textureID = 0;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, aBuffer.get());
-	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, aBuffer);
+
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -26,6 +26,8 @@ Triton::Core::WindowsTexture::WindowsTexture(unsigned int aWidth, unsigned int a
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	m_TextureID = textureID;
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Triton::Core::WindowsTexture::~WindowsTexture()

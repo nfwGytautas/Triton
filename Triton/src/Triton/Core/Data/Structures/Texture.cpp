@@ -20,5 +20,5 @@ void Triton::Data::TextureData::operator<<(std::string& aPathToImage)
 
 	Buffer = std::unique_ptr<unsigned char>(stbi_load(aPathToImage.c_str(), &Width, &Height, &BPP, 4));
 
-	TR_CORE_ASSERT(Buffer.get(), stbi_failure_reason());
+	TR_CORE_ASSERT(Buffer, stbi_failure_reason());
 }

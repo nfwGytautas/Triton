@@ -35,6 +35,8 @@
 	#define TR_GLEW_INIT 
 #endif
 
+#define RANGED_FOR(x,y) for(int i = 0; i < x; i++) { y }
+
 //Project typedefs
 namespace Triton
 {
