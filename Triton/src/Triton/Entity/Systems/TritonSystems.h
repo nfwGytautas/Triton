@@ -23,7 +23,6 @@ namespace Triton
 		//Batching system for optimized mesh rendering
 		class BatchSystem : public System
 		{
-
 		public:
 			// Inherited via System
 			virtual void OnUpdate(ECS::Registry& aRegistry, float aDelta) override
@@ -35,27 +34,29 @@ namespace Triton
 				std::vector<std::vector<Components::Transform>> Transforms;
 
 				aRegistry.view<Components::Transform, Components::MeshFilter, Components::MeshRenderer>().each([&](const auto entity, auto &transform, auto &meshFilter, auto& meshRenderer) {
-					bool meshFound = false;
-
-					for (unsigned int i = 0; i < RegisteredMeshes.size(); i++)
+					if (std::find(m_CulledEntities.begin(), m_CulledEntities.end(), entity) != m_CulledEntities.end())
 					{
-						if (RegisteredMeshes[i] == meshFilter.Mesh && Materials[i] == meshRenderer.Material)
+						bool meshFound = false;
+
+						for (unsigned int i = 0; i < RegisteredMeshes.size(); i++)
 						{
-							meshFound = true;
+							if (RegisteredMeshes[i] == meshFilter.Mesh && Materials[i] == meshRenderer.Material)
+							{
+								meshFound = true;
 
-							Transforms[i].push_back(Components::Transform(transform));
+								Transforms[i].push_back(Components::Transform(transform));
 
-							break;
+								break;
+							}
+						}
+
+						if (!meshFound)
+						{
+							RegisteredMeshes.push_back(meshFilter.Mesh);
+							Materials.push_back(meshRenderer.Material);
+							Transforms.push_back(std::vector<Components::Transform> { Components::Transform(transform) });
 						}
 					}
-
-					if (!meshFound)
-					{
-						RegisteredMeshes.push_back(meshFilter.Mesh);
-						Materials.push_back(meshRenderer.Material);
-						Transforms.push_back(std::vector<Components::Transform> { Components::Transform(transform) });
-					}
-
 				});
 
 				for (unsigned int i = 0; i < RegisteredMeshes.size(); i++)
@@ -74,11 +75,57 @@ namespace Triton
 				return m_Batches;
 			}
 
+			void SetCulled(std::vector<ECS::Entity> aCulledEntities)
+			{
+				m_CulledEntities = aCulledEntities;
+			}
+
 			~BatchSystem()
 			{ }
 		private:
+			std::vector<ECS::Entity> m_CulledEntities;
 			std::vector<Data::RenderBatch> m_Batches;
 		};		
+
+		//Frustum culling system
+		class FrustumCullingSystem : public System
+		{
+		public:
+			// Inherited via System
+			virtual void OnUpdate(ECS::Registry& aRegistry, float aDelta) override
+			{
+				m_CulledEntities.clear();
+
+				aRegistry.view<Components::Transform>().each([&](auto entity, auto &transform) {
+					
+					auto cameraPosition = m_Camera->Position;
+					auto entityPosition = transform.Position;
+
+					if ((entityPosition.x > cameraPosition.x - 30.0f && entityPosition.x < cameraPosition.x + 30.0f) &&
+						(entityPosition.y > cameraPosition.y - 30.0f && entityPosition.y < cameraPosition.y + 30.0f))
+					{
+						m_CulledEntities.push_back(entity);
+					}
+
+				});
+			}
+
+			std::vector<ECS::Entity>& GetCulled()
+			{
+				return m_CulledEntities;
+			}
+
+			void SetCamera(std::shared_ptr<Camera> aCamera)
+			{
+				m_Camera = aCamera;
+			}
+
+			~FrustumCullingSystem()
+			{ }
+		private:
+			std::shared_ptr<Camera> m_Camera;
+			std::vector<ECS::Entity> m_CulledEntities;
+		};
 	}
 }
 
@@ -99,10 +146,14 @@ These systems are defined inside protected space and when the macro exits next d
 #define TR_INCLUDE_STANDARD_SYSTEMS \
 protected:\
 std::unique_ptr<Triton::Systems::BatchSystem> prtc_BatchSystem = std::make_unique<Triton::Systems::BatchSystem>();\
+std::unique_ptr<Triton::Systems::FrustumCullingSystem> prtc_FrustumCullingSystem = std::make_unique<Triton::Systems::FrustumCullingSystem>();\
 public:\
 
 #define TR_STANDARD_SYSTEMS_UPDATE(registryReference, delta) \
+prtc_FrustumCullingSystem->OnUpdate(registryReference, delta);\
+prtc_BatchSystem->SetCulled(prtc_FrustumCullingSystem->GetCulled());\
 prtc_BatchSystem->OnUpdate(registryReference, delta);\
+prtc_v_RenderBatch = prtc_BatchSystem->GetBatches();\
 
 #define TR_INITIALIZE_STANDARD_SYSTEMS
 

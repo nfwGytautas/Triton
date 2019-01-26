@@ -155,6 +155,14 @@ class MarioTest : public Triton::Application, private Triton::EventListener
 {
 	TR_INCLUDE_STANDARD_SYSTEMS
 
+private: //GAME STRUCTURES
+
+	struct Pipe
+	{
+		float Height;
+		std::vector<Triton::ECS::Entity> Entities;
+	};
+
 private: //GAME VARIABLE
 	float gv_JumpPower = -0.5f;
 	bool gv_NotFalling = true;
@@ -165,30 +173,32 @@ private: //GAME VARIABLE
 
 	Triton::ECS::Entity Mario;
 	std::vector<Triton::ECS::Entity> Ground;
+	std::vector<Triton::ECS::Entity> Enviroment;
+	std::vector<Pipe> Pipes;
 private: //GAME FUNCTIONS
 	void Jump()
 	{
 		if (gv_JumpPower >= -0.5f)
-			gv_JumpPower -= 0.01f * prtc_Delta;
+			gv_JumpPower -= 0.02f * prtc_Delta;
 
 		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
 
 		marioTransform.Position.y += gv_JumpPower * prtc_Delta;
 	}
 
-	void CreateObjects()
+	void CreateMesh()
 	{
-		//Create data struct
 		Triton::Data::MeshData mData;
 		mData.Vertices = CubeVertices;
 		mData.UVs = CubeColors;
 
+		CubeMesh = Triton::Data::Mesh::Create(mData);
+	}
+	void CreateMaterials()
+	{
 		Triton::Data::TextureData mTData;
 		Triton::Data::TextureData marioTData;
 		marioTData << std::string("D:\\Programming\\Test files\\mario\\Mario\\marioTest.png");
-
-		//Create Mesh, Material & Texture variables
-		CubeMesh = Triton::Data::Mesh::Create(mData);
 
 		TestTexture = Triton::Data::Texture::Create(mTData);
 		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
@@ -198,50 +208,186 @@ private: //GAME FUNCTIONS
 		MarioMaterial = std::make_shared<Triton::Data::Material>(MarioTexture);
 		MarioMaterial->SetDiffuse(Triton::Vector3(0.0f, 0.0f, 0.0f));
 
+		EnviromentTexture = Triton::Data::Texture::Create(mTData);
+		EnviromentMaterial = std::make_shared<Triton::Data::Material>(EnviromentTexture);
+		EnviromentMaterial->SetDiffuse(Triton::Vector3(0.0f, 1.0f, 1.0f));
+
+		PipeTexture = Triton::Data::Texture::Create(mTData);
+		PipeMaterial = std::make_shared<Triton::Data::Material>(PipeTexture);
+		PipeMaterial->SetDiffuse(Triton::Vector3(0.0f, 1.0f, 0.0f));
+	}
+	void CreateObjects()
+	{
+		CreateMesh();
+		CreateMaterials();		
+
 		//Create Mario Entity
 		Mario = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Mario).Position = Triton::Vector3(0.0f, 0.0f, 1.0f);
+		auto& mTransform = prtc_EntityRegistry->assign<Triton::Components::Transform>(Mario);
+		mTransform.Position = Triton::Vector3(0.0f, 0.0f, 1.0f);
+		//mTransform.Scale = Triton::Vector3(2.0f, 2.0f, 2.0f);
 		prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Mario).Mesh = CubeMesh;
 		prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Mario).Material = MarioMaterial;
 
 		//Create the ground
-		RANGED_FOR(10, Ground.push_back(prtc_EntityRegistry->create()); );
+		RANGED_FOR(212, Ground.push_back(prtc_EntityRegistry->create()); );
 		
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 212; i++)
 		{
-			prtc_EntityRegistry->assign<Triton::Components::Transform>(Ground[i]).Position = Triton::Vector3(-5.0f + (2.0f * i), -2.5f, 1.0f);
+			auto& transform = prtc_EntityRegistry->assign<Triton::Components::Transform>(Ground[i]);
+			transform.Position = Triton::Vector3(-20.0f + (2.0f * i), -2.0f, 1.0f);
+			//transform.Scale = Triton::Vector3(2.0f, 2.0f, 2.0f);
 			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Ground[i]).Mesh = CubeMesh;
 			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Ground[i]).Material = TestMaterial;
 		}
+
+		//Create other enviroment blocks
+		RANGED_FOR(7, Enviroment.push_back(prtc_EntityRegistry->create()); );
+
+		for (int i = 0; i < 7; i++)
+		{
+			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Enviroment[i]).Mesh = CubeMesh;
+			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Enviroment[i]).Material = EnviromentMaterial;
+		}
+
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[0]).Position = Triton::Vector3(10.0f, 8.0f, 1.0f);
+
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[1]).Position = Triton::Vector3(20.0f, 8.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[2]).Position = Triton::Vector3(22.0f, 8.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[3]).Position = Triton::Vector3(24.0f, 8.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[4]).Position = Triton::Vector3(26.0f, 8.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[5]).Position = Triton::Vector3(28.0f, 8.0f, 1.0f);
+
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[6]).Position = Triton::Vector3(24.0f, 16.0f, 1.0f);
+
+		//Create pipes
+		Pipe pipe;
+		RANGED_FOR(4, pipe.Entities.push_back(prtc_EntityRegistry->create()); );
+
+		for (int i = 0; i < 4; i++)
+		{
+			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(pipe.Entities[i]).Mesh = CubeMesh;
+			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(pipe.Entities[i]).Material = PipeMaterial;
+		}
+
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[0]).Position = Triton::Vector3(38.0f, 0.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[1]).Position = Triton::Vector3(40.0f, 0.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[2]).Position = Triton::Vector3(38.0f, 2.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[3]).Position = Triton::Vector3(40.0f, 2.0f, 1.0f);
+		pipe.Height = 2.0f;
+
+		Pipes.push_back(pipe);
 	}
 
 	void CheckCollision()
 	{
-		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
+		auto& culledEntities = prtc_FrustumCullingSystem->GetCulled();
 
-		//if (marioTransform.Position.y < -0.5f)
-		//{
-		//	marioTransform.Position.y = -0.5f;
-		//}
+		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
 
 		//Check collision with ground
 		gv_NotFalling = false;
 		for (Triton::ECS::Entity groundObject : Ground)
 		{
-			auto& groundTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(groundObject);
-			if (marioTransform.Position.y < groundTransform.Position.y + 2)
+			if (std::find(culledEntities.begin(), culledEntities.end(), groundObject) != culledEntities.end())
 			{
-				Triton::Vector2 marioRightPoint = Triton::Vector2(marioTransform.Position.x + 1.0f, marioTransform.Position.y - 1.0f);
-				Triton::Vector2 marioLeftPoint = Triton::Vector2(marioTransform.Position.x - 1.0f, marioTransform.Position.y - 1.0f);
-
-				Triton::Vector2 groundRightPoint = Triton::Vector2(groundTransform.Position.x + 1.0f, groundTransform.Position.y + 0.9f);
-				Triton::Vector2 groundLeftPoint = Triton::Vector2(groundTransform.Position.x - 1.0f, groundTransform.Position.y + 0.9f);
-
-				if(!(marioRightPoint.x < groundLeftPoint.x || marioLeftPoint.x > groundRightPoint.x) 
-					&& !(marioLeftPoint.y <= groundRightPoint.y))
+				auto& groundTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(groundObject);
+				if (marioTransform.Position.y < groundTransform.Position.y + 2)
 				{
-					marioTransform.Position.y = groundTransform.Position.y + 2;
-					gv_NotFalling = true;
+					Triton::Vector2 marioRightPoint = Triton::Vector2(marioTransform.Position.x + 1.0f, marioTransform.Position.y - 1.0f);
+					Triton::Vector2 marioLeftPoint = Triton::Vector2(marioTransform.Position.x - 1.0f, marioTransform.Position.y + 1.0f);
+
+					Triton::Vector2 groundRightPoint = Triton::Vector2(groundTransform.Position.x + 1.0f, groundTransform.Position.y - 1.0f);
+					Triton::Vector2 groundLeftPoint = Triton::Vector2(groundTransform.Position.x - 1.0f, groundTransform.Position.y + 1.0f);
+
+					if (marioLeftPoint.x < groundRightPoint.x && marioRightPoint.x > groundLeftPoint.x &&
+						marioLeftPoint.y > groundRightPoint.y && marioRightPoint.y < groundLeftPoint.y)
+					{
+						marioTransform.Position.y = groundTransform.Position.y + 2;
+						gv_NotFalling = true;
+						break;
+					}
+				}
+			}
+		}
+
+		//Check collision with enviroment
+		for (Triton::ECS::Entity enviromentObject : Enviroment)
+		{
+			if (std::find(culledEntities.begin(), culledEntities.end(), enviromentObject) != culledEntities.end())
+			{
+				auto& enviromentTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(enviromentObject);
+				if (marioTransform.Position.y < enviromentTransform.Position.y + 2)
+				{
+					Triton::Vector2 marioRightPoint = Triton::Vector2(marioTransform.Position.x + 1.0f, marioTransform.Position.y - 1.0f);
+					Triton::Vector2 marioLeftPoint = Triton::Vector2(marioTransform.Position.x - 1.0f, marioTransform.Position.y + 1.0f);
+
+					Triton::Vector2 enviromentRightPoint = Triton::Vector2(enviromentTransform.Position.x + 1.0f, enviromentTransform.Position.y - 1.0f);
+					Triton::Vector2 enviromentLeftPoint = Triton::Vector2(enviromentTransform.Position.x - 1.0f, enviromentTransform.Position.y + 1.0f);
+
+					if (marioLeftPoint.x < enviromentRightPoint.x && marioRightPoint.x > enviromentLeftPoint.x &&
+						marioLeftPoint.y > enviromentRightPoint.y && marioRightPoint.y < enviromentLeftPoint.y)
+					{
+						if (glm::abs(enviromentLeftPoint.y - marioRightPoint.y) < glm::abs(enviromentRightPoint.y - marioLeftPoint.y))
+						{
+							marioTransform.Position.y = enviromentTransform.Position.y + 2;
+							gv_NotFalling = true;
+						}
+						else
+						{
+							marioTransform.Position.y = enviromentRightPoint.y - 1;
+							gv_JumpPower = 0;
+						}
+						break;
+					}
+				}
+			}
+		}
+
+		//Check collision with pipes
+		for (Pipe pipe : Pipes)
+		{
+			for (Triton::ECS::Entity pipeObject : pipe.Entities)
+			{
+				if (std::find(culledEntities.begin(), culledEntities.end(), pipeObject) != culledEntities.end())
+				{
+					auto& pipeTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(pipeObject);
+					if (marioTransform.Position.y < pipeTransform.Position.y + 2)
+					{
+						Triton::Vector2 marioRightPoint = Triton::Vector2(marioTransform.Position.x + 1.0f, marioTransform.Position.y - 1.0f);
+						Triton::Vector2 marioLeftPoint = Triton::Vector2(marioTransform.Position.x - 1.0f, marioTransform.Position.y + 1.0f);
+
+						Triton::Vector2 pipeRightPoint = Triton::Vector2(pipeTransform.Position.x + 1.0f, pipeTransform.Position.y - 1.0f);
+						Triton::Vector2 pipeLeftPoint = Triton::Vector2(pipeTransform.Position.x - 1.0f, pipeTransform.Position.y + 1.0f);
+
+						if (marioLeftPoint.x < pipeRightPoint.x && marioRightPoint.x > pipeLeftPoint.x &&
+							marioLeftPoint.y > pipeRightPoint.y && marioRightPoint.y < pipeLeftPoint.y)
+						{
+							if (glm::abs(pipeLeftPoint.y - marioRightPoint.y) < glm::abs(pipeRightPoint.y - marioLeftPoint.y))
+							{
+								marioTransform.Position.y = pipe.Height + 2;
+								gv_NotFalling = true;
+							}
+
+							if (gv_MoveRight && marioRightPoint.y < pipe.Height)
+							{
+								if (marioRightPoint.x > pipeLeftPoint.x)
+								{
+									marioTransform.Position.x = pipeLeftPoint.x - 1;
+								}
+							}
+
+							if (gv_MoveLeft && marioRightPoint.y < pipe.Height)
+							{
+								if (marioLeftPoint.x < pipeRightPoint.x)
+								{
+									marioTransform.Position.x = pipeRightPoint.x + 1;
+								}
+							}
+
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -251,10 +397,9 @@ private: //GAME FUNCTIONS
 	{
 		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
 
-		if(marioTransform.Position.y > -10.0f)
+		if(marioTransform.Position.y > -10.0f && marioTransform.Position.x > -0.5f)
 		{
-			m_Camera->Position.x = marioTransform.Position.x;
-			m_Camera->Position.y = marioTransform.Position.y;
+			prtc_Camera->Position.x = marioTransform.Position.x;
 		}
 	}
 
@@ -264,12 +409,12 @@ private: //GAME FUNCTIONS
 
 		if (gv_Jump)
 		{
-			gv_JumpPower = 0.5f;
+			gv_JumpPower = 0.73f;
 			gv_NotFalling = true;
 			gv_Jump = false;
 		}
 
-		if (gv_MoveLeft)
+		if (gv_MoveLeft && marioTransform.Position.x > -20.0f)
 		{
 			marioTransform.Position.x += -0.2f * prtc_Delta;
 		}
@@ -288,27 +433,24 @@ public:
 
 	~MarioTest()
 	{
-		delete m_Camera;
 	}
 
 	void PreExecutionSetup() override
 	{
-		m_Camera = new Triton::Camera(Triton::Vector3(0.0f, 0.0f, 45.0f));
-		m_Camera->Yaw = -90;
-		m_Camera->Pitch = 0;
+		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(0.0f, 16.0f, 45.0f));
+		prtc_Camera->Yaw = -90;
+		prtc_Camera->Pitch = 0;
+
+		prtc_FrustumCullingSystem->SetCamera(prtc_Camera);
 
 		CreateObjects();
 	}
 
 	void OnUpdate() override
 	{
-		TR_STANDARD_SYSTEMS_UPDATE(*prtc_EntityRegistry.get(), 0);
+		TR_STANDARD_SYSTEMS_UPDATE(*prtc_EntityRegistry.get(), prtc_Delta);
 		
 		FocusCamera();
-
-		m_Camera->OnUpdate();
-		prtc_Shader->SetUniform("viewMatrix", m_Camera->ViewMatrix());
-		prtc_v_RenderBatch = prtc_BatchSystem->GetBatches();
 
 		HandleMovement();
 		Jump();
@@ -354,9 +496,6 @@ private:
 	}
 
 private: //DATA
-	Triton::Camera* m_Camera;
-	unsigned int ActiveCamera = 0;
-
 	std::vector<float> CubeVertices = {
 		-1.000000, -1.000000,  1.000000,
 		-1.000000,  1.000000,  1.000000,
@@ -381,6 +520,12 @@ private: //DATA
 
 	std::shared_ptr<Triton::Data::Texture> MarioTexture;
 	std::shared_ptr<Triton::Data::Material> MarioMaterial;
+
+	std::shared_ptr<Triton::Data::Texture> EnviromentTexture;
+	std::shared_ptr<Triton::Data::Material> EnviromentMaterial;
+
+	std::shared_ptr<Triton::Data::Texture> PipeTexture;
+	std::shared_ptr<Triton::Data::Material> PipeMaterial;
 };
 
 Triton::Application* Triton::CreateApplication()

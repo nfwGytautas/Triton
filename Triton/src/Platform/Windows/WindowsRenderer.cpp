@@ -69,5 +69,6 @@ void Triton::Core::WindowsRenderer::Render(std::vector<Data::RenderBatch>& aRend
 
 		//Unbind the mesh
 		castMesh.Unbind();
+		castTexture.Unbind();
 	}
 }

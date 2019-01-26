@@ -42,6 +42,7 @@ namespace Triton {
 
 		std::vector<Data::RenderBatch> prtc_v_RenderBatch;
 	protected:
+		std::shared_ptr<Camera> prtc_Camera;
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<ECS::Registry> prtc_EntityRegistry;

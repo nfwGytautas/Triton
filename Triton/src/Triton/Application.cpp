@@ -43,9 +43,13 @@ namespace Triton {
 		prtc_Shader->SetUniform("projectionMatrix", ProjMatrix);		
 
 		PreExecutionSetup();
+
 		while (!prtc_Display->Closed())
 		{			
 			OnUpdate();
+
+			prtc_Camera->OnUpdate();
+			prtc_Shader->SetUniform("viewMatrix", prtc_Camera->ViewMatrix());
 
 			Core::EventManager::Dispatch();
 
