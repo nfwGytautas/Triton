@@ -14,6 +14,9 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Triton/vendor/GLFW/include"
 IncludeDir["GLM"] = "Triton/vendor/glm"
 IncludeDir["entt"] = "Triton/vendor/entt/src"
+IncludeDir["pybind"] = "Triton/vendor/pybind/include"
+IncludeDir["python0"] = "Triton/vendor/python/include"
+IncludeDir["python1"] = "Triton/vendor/python/PC"
 
 include "Triton/vendor/GLFW"
 
@@ -41,6 +44,9 @@ project "Triton"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.pybind}",
+		"%{IncludeDir.python0}",
+		"%{IncludeDir.python1}",		
 		"%{prj.name}/vendor/glew/include",
 		"%{prj.name}/vendor/stb_image/include",
 	}
@@ -54,7 +60,7 @@ project "Triton"
 	{ 
 		"glew32",
 		"GLFW" ,
-		"opengl32.lib"
+		"opengl32.lib",
 	}
 
 	filter "system:windows"
@@ -72,7 +78,8 @@ project "Triton"
 		postbuildcommands
 		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} vendor/glew/glew32.dll ../bin/" .. outputdir .. "/SandBox"),
+			("{COPY} vendor/glew/glew32.dll ../bin/" .. outputdir .. "/SandBox"),			
+			("{COPY} vendor/python/PCbuild/amd64/**.dll ../bin/" .. outputdir .. "/SandBox"),	
 		}
 
 	filter "configurations:Debug"
@@ -114,9 +121,17 @@ project "SandBox"
 		"Triton/vendor/glew/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.pybind}",
+		"%{IncludeDir.python0}",
+		"%{IncludeDir.python1}",
 		"Triton/src"
 	}
-
+	
+	libdirs
+	{
+		"Triton/vendor/python/PCbuild/amd64/"
+	}
+	
 	links
 	{
 		"Triton"

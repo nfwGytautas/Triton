@@ -13,3 +13,9 @@
 [submodule "Triton/vendor/entt"]
 	path = Triton/vendor/entt
 	url = https://github.com/skypjack/entt
+[submodule "Triton/vendor/pybind"]
+	path = Triton/vendor/pybind
+	url = https://github.com/pybind/pybind11
+[submodule "Triton/vendor/python"]
+	path = Triton/vendor/python
+	url = https://github.com/nfwGytautas/cpython

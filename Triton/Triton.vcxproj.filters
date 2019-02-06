@@ -46,6 +46,12 @@
     <Filter Include="Triton\Logger">
       <UniqueIdentifier>{34B1E4AD-A071-60E4-69AC-A961D52BA5C0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Scripting">
+      <UniqueIdentifier>{47921565-338B-34B7-5CBD-193C481514C3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Scripting\Implementations">
+      <UniqueIdentifier>{CF74ABEF-BBC5-9631-E429-85F3D0D9299B}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h">
@@ -70,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Camera.h">
       <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h">
       <Filter>Triton\Core\Data\Structures</Filter>
@@ -125,10 +134,15 @@
     <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Triton\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Scripting\Implementations\TRPythonIMPL.h">
+      <Filter>Triton\Scripting\Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Scripting\TRScriptingConfig.h">
+      <Filter>Triton\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
@@ -152,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Camera.cpp">
       <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp">
+      <Filter>Triton\Core\Data\Structures</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp">
       <Filter>Triton\Core\Data\Structures</Filter>
@@ -180,6 +197,5 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
   </ItemGroup>
 </Project>

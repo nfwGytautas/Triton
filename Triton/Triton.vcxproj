@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\pybind\include;vendor\python\include;vendor\python\PC;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -95,7 +95,8 @@
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Triton\Triton.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Triton\Triton.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
+IF EXIST vendor\python\PCbuild\amd64\**.dll\ (xcopy /Q /E /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,7 +105,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\pybind\include;vendor\python\include;vendor\python\PC;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +124,8 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Triton\Triton.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Triton\Triton.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
+IF EXIST vendor\python\PCbuild\amd64\**.dll\ (xcopy /Q /E /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -132,7 +134,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\glm;vendor\entt\src;vendor\pybind\include;vendor\python\include;vendor\python\PC;vendor\glew\include;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -151,11 +153,11 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Dist-windows-x86_64\Triton\Triton.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Triton\Triton.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Triton\Triton.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
+IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\glew\glew32.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
+IF EXIST vendor\python\PCbuild\amd64\**.dll\ (xcopy /Q /E /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I vendor\python\PCbuild\amd64\**.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
     <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
@@ -165,6 +167,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Camera.h" />
+    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\RenderBatch.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Texture.h" />
@@ -183,10 +186,11 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     <ClInclude Include="src\Triton\Events\MouseEvent.h" />
     <ClInclude Include="src\Triton\File\File.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
+    <ClInclude Include="src\Triton\Scripting\Implementations\TRPythonIMPL.h" />
+    <ClInclude Include="src\Triton\Scripting\TRScriptingConfig.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
@@ -197,6 +201,7 @@ IF EXIST vendor\glew\glew32.dll\ (xcopy /Q /E /Y /I vendor\glew\glew32.dll ..\bi
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Camera.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Texture.cpp" />
     <ClCompile Include="src\Triton\Core\Math\Math.cpp" />

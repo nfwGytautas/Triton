@@ -1,4 +1,7 @@
+#define TR_SCRIPTING_ENABLED
+#define TR_SCRIPTING_LANG_PYTHON
 #include <Triton.h>
+
 #include <string>
 
 class Sandbox : public Triton::Application , private Triton::EventListener
@@ -444,6 +447,11 @@ public:
 		prtc_FrustumCullingSystem->SetCamera(prtc_Camera);
 
 		CreateObjects();
+
+		py::scoped_interpreter guard{};
+
+		py::object scope = py::module::import("__main__").attr("__dict__");
+		py::eval_file("D:/Programming/Python/test.py", scope);
 	}
 
 	void OnUpdate() override
