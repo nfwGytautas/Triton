@@ -1,5 +1,6 @@
 #define TR_SCRIPTING_ENABLED
 #define TR_SCRIPTING_LANG_PYTHON
+#include <TritonScript.h>
 #include <Triton.h>
 
 #include <string>
@@ -157,7 +158,7 @@ private:
 class MarioTest : public Triton::Application, private Triton::EventListener
 {
 	TR_INCLUDE_STANDARD_SYSTEMS
-
+	TR_INCLUDE_SCRIPTING
 private: //GAME STRUCTURES
 
 	struct Pipe
@@ -448,10 +449,11 @@ public:
 
 		CreateObjects();
 
-		py::scoped_interpreter guard{};
-
-		py::object scope = py::module::import("__main__").attr("__dict__");
-		py::eval_file("D:/Programming/Python/test.py", scope);
+		prtc_PyHandler->MainModule().import("Vector3");
+		prtc_PyHandler->MainModule().import("Material");
+		prtc_PyHandler->MainModule().attr("vector") = Triton::Vector3(0.0f, 0.0f, 0.0f);
+		prtc_PyHandler->MainModule().attr("material") = PipeMaterial;
+		prtc_PyHandler->EvalFile("C:/dev/Triton/PythonScripts/Test.py");
 	}
 
 	void OnUpdate() override

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton">
+      <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core">
+      <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Data">
+      <UniqueIdentifier>{062E5D22-F226-7C74-1B59-61F907B15B80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Data\Structures">
+      <UniqueIdentifier>{39A3A095-A5B0-CE7B-2E97-CA669AA39A32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Math">
+      <UniqueIdentifier>{761D6222-6216-8174-8B48-66F977A06080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Renderer">
+      <UniqueIdentifier>{C302A45B-AF91-2D25-58B0-4120441E3ECB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Shader">
+      <UniqueIdentifier>{8383D251-6F67-93A7-D8C7-8DFAC4CA7D29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Entity">
+      <UniqueIdentifier>{B1A7859D-1D68-01D4-E6A2-4A51522246B0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Entity\Components">
+      <UniqueIdentifier>{26BCBFF7-12E1-0E78-3B2C-F40727B00D96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Entity\Systems">
+      <UniqueIdentifier>{B81E2182-248B-DC7C-ED7E-74DA59AAFEE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Events">
+      <UniqueIdentifier>{49470E9E-B507-8AD4-7E42-D351EAC1CEB0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\File">
+      <UniqueIdentifier>{542DFBB3-C0E2-73A9-49D7-6D80B58B6AAD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Logger">
+      <UniqueIdentifier>{34B1E4AD-A071-60E4-69AC-A961D52BA5C0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Platform\Windows\WindowsDisplay.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsModel.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsShader.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsTexture.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TRpch.h" />
+    <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton\Application.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Camera.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\RenderBatch.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Structures\Texture.h">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Display.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Math\Math.h">
+      <Filter>Triton\Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h">
+      <Filter>Triton\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Shader\Shader.h">
+      <Filter>Triton\Core\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h">
+      <Filter>Triton\Entity\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Registry.h">
+      <Filter>Triton\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Systems\TritonSystems.h">
+      <Filter>Triton\Entity\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\EntryPoint.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\ApplicationEvent.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\EventManager.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\Events.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\KeyEvent.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\MouseEvent.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\File\File.h">
+      <Filter>Triton\File</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Logger\Log.h">
+      <Filter>Triton\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\TRMacros.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsModel.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsShader.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TRpch.cpp" />
+    <ClCompile Include="src\Triton\Application.cpp">
+      <Filter>Triton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Camera.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Structures\Texture.cpp">
+      <Filter>Triton\Core\Data\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Math\Math.cpp">
+      <Filter>Triton\Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp">
+      <Filter>Triton\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Shader\Shader.cpp">
+      <Filter>Triton\Core\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Events\EventManager.cpp">
+      <Filter>Triton\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Events\Events.cpp">
+      <Filter>Triton\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\File\File.cpp">
+      <Filter>Triton\File</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Logger\Log.cpp">
+      <Filter>Triton\Logger</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

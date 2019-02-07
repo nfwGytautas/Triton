@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="TritonScript">
+      <UniqueIdentifier>{9A396C89-869C-FB2D-2F22-34E41B64C7B0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TritonScript\Implementations">
+      <UniqueIdentifier>{226214BF-0E1D-046B-B7D4-7CB5A36E4EFB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\TRMacros.h" />
+    <ClInclude Include="src\TritonScript.h" />
+    <ClInclude Include="src\TritonScript\Implementations\TRPythonIMPL.h">
+      <Filter>TritonScript\Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonScript\TRScriptingConfig.h">
+      <Filter>TritonScript</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\TritonScript\Implementations\TRPythonIMPL.cpp">
+      <Filter>TritonScript\Implementations</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

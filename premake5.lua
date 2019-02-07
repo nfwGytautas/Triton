@@ -11,17 +11,93 @@ workspace "Triton"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Triton/vendor/GLFW/include"
-IncludeDir["GLM"] = "Triton/vendor/glm"
-IncludeDir["entt"] = "Triton/vendor/entt/src"
-IncludeDir["pybind"] = "Triton/vendor/pybind/include"
-IncludeDir["python0"] = "Triton/vendor/python/include"
-IncludeDir["python1"] = "Triton/vendor/python/PC"
+IncludeDir["GLFW"] = "TritonCore/vendor/GLFW/include"
+IncludeDir["Glad"] = "TritonCore/vendor/Glad/include"
+IncludeDir["GLM"] = "TritonCore/vendor/glm"
+IncludeDir["entt"] = "TritonCore/vendor/entt/src"
+IncludeDir["pybind"] = "TritonScript/vendor/pybind/include"
+IncludeDir["python0"] = "TritonScript/vendor/python/include"
+IncludeDir["python1"] = "TritonScript/vendor/python/PC"
 
-include "Triton/vendor/GLFW"
+include "TritonCore/vendor/GLFW"
+include "TritonCore/vendor/Glad"
 
-project "Triton"
-	location "Triton"
+project "TritonScript"
+	location "TritonScript"
+	kind "SharedLib"
+	language "C++"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp",
+	}
+
+	includedirs
+	{
+		"%{prj.name}/src",
+		"TritonCore/vendor/spdlog/include",
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.pybind}",
+		"%{IncludeDir.python0}",
+		"%{IncludeDir.python1}",
+		"TritonCore/src",
+	}
+	
+	libdirs
+	{
+		"TritonScript/vendor/python/PCbuild/amd64/",
+		"TritonScript/../bin/" .. outputdir .. "/TritonCore/"
+	}
+
+	links 
+	{ 
+		"TritonCore",
+	}
+
+	filter "system:windows"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+
+		defines
+		{
+			"TR_PLATFORM_WINDOWS",
+			"TR_SCRIPTING_BUILD_DLL",
+			"_WINDLL"
+		}
+
+		postbuildcommands
+		{
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
+			("{COPY} %{prj.location}/vendor/python/PCbuild/amd64/python38.dll ../bin/" .. outputdir .. "/SandBox"),					
+			("{COPY} %{prj.location}/vendor/python/Lib/ ../bin/" .. outputdir .. "/SandBox/Lib"),
+		}
+
+	filter "configurations:Debug"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS",
+		}
+		symbols "On"
+		staticruntime "off"
+	
+	filter "configurations:Release"
+		defines "TR_RELEASE"
+		optimize "On"
+		staticruntime "off"
+
+	filter "configurations:Dist"
+		defines "TR_DIST"
+		optimize "On"
+		staticruntime "off"
+
+project "TritonCore"
+	location "TritonCore"
 	kind "SharedLib"
 	language "C++"
 
@@ -29,7 +105,7 @@ project "Triton"
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 	
 	pchheader "TRpch.h"
-	pchsource "Triton/src/TRpch.cpp"
+	pchsource "TritonCore/src/TRpch.cpp"
 
 	files
 	{
@@ -42,24 +118,21 @@ project "Triton"
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.pybind}",
-		"%{IncludeDir.python0}",
-		"%{IncludeDir.python1}",		
-		"%{prj.name}/vendor/glew/include",
 		"%{prj.name}/vendor/stb_image/include",
 	}
-	
-	libdirs 
-	{ 
-		"%{prj.name}/vendor/glew/",
+
+	libdirs
+	{
+		"TritonScript/vendor/python/PCbuild/amd64/",
 	}
 	
 	links 
 	{ 
-		"glew32",
-		"GLFW" ,
+		"GLFW",
+		"Glad",
 		"opengl32.lib",
 	}
 
@@ -78,8 +151,7 @@ project "Triton"
 		postbuildcommands
 		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} vendor/glew/glew32.dll ../bin/" .. outputdir .. "/SandBox"),			
-			("{COPY} vendor/python/PCbuild/amd64/**.dll ../bin/" .. outputdir .. "/SandBox"),	
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/TritonScript"),
 		}
 
 	filter "configurations:Debug"
@@ -87,6 +159,7 @@ project "Triton"
 		{
 			"TR_DEBUG",
 			"TR_ENABLE_ASSERTS",
+			"GLFW_INCLUDE_NONE",
 		}
 		symbols "On"
 		staticruntime "off"
@@ -117,24 +190,25 @@ project "SandBox"
 
 	includedirs
 	{
-		"Triton/vendor/spdlog/include",
-		"Triton/vendor/glew/include",
+		"TritonCore/vendor/spdlog/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.pybind}",
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
-		"Triton/src"
+		"TritonCore/src",
+		"TritonScript/src"
 	}
 	
 	libdirs
 	{
-		"Triton/vendor/python/PCbuild/amd64/"
+		"TritonScript/vendor/python/PCbuild/amd64/",
 	}
-	
+
 	links
 	{
-		"Triton"
+		"TritonCore",
+		"TritonScript",
 	}
 
 	filter "system:windows"
