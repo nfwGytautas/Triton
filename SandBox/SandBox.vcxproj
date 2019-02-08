@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;..\TritonCore\vendor\entt\src;..\TritonScript\vendor\pybind\include;..\TritonScript\vendor\python\include;..\TritonScript\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -88,15 +88,19 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;..\TritonCore\vendor\entt\src;..\TritonScript\vendor\pybind\include;..\TritonScript\vendor\python\include;..\TritonScript\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -109,15 +113,19 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;..\TritonCore\vendor\entt\src;..\TritonScript\vendor\pybind\include;..\TritonScript\vendor\python\include;..\TritonScript\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,8 +138,12 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Sandbox.cpp" />

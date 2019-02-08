@@ -1,21 +1,22 @@
-[submodule "Triton/vendor/spdlog"]
- path = Triton/vendor/spdlog
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "Triton/vendor/GLFW"]
-	path = Triton/vendor/GLFW
+[submodule "vendor/GLFW"]
+	path = vendor/GLFW
 	url = https://github.com/nfwGytautas/glfw
-
-[submodule "Triton/vendor/GLM"]
-	path = Triton/vendor/GLM
+[submodule "vendor/GLM"]
+	path = vendor/GLM
 	url = https://github.com/nfwGytautas/glm
 	branch = stable
-
-[submodule "Triton/vendor/entt"]
-	path = Triton/vendor/entt
+[submodule "vendor/entt"]
+	path = vendor/entt
 	url = https://github.com/skypjack/entt
-[submodule "Triton/vendor/pybind"]
-	path = Triton/vendor/pybind
+[submodule "vendor/pybind"]
+	path = vendor/pybind
 	url = https://github.com/pybind/pybind11
-[submodule "Triton/vendor/python"]
-	path = Triton/vendor/python
+[submodule "vendor/python"]
+	path = vendor/python
 	url = https://github.com/nfwGytautas/cpython
+[submodule "vendor/stb_image"]
+	path = vendor/stb_image
+	url = https://github.com/nothings/stb

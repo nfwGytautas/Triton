@@ -28,6 +28,8 @@
 
 #define RANGED_FOR(x,y) for(int i = 0; i < x; i++) { y }
 
+#define TR_STRINGIZE(A, B) A ## B
+
 //Project typedefs
 namespace Triton
 {

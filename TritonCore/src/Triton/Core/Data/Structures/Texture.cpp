@@ -10,7 +10,7 @@ bool checkPath(std::string mFilePath)
 	return (stat(mFilePath.c_str(), &buffer) == 0);
 }
 
-void Triton::Data::TextureData::operator<<(std::string& aPathToImage)
+void Triton::Data::TextureData::Fill(std::string& aPathToImage)
 {
 	#ifdef TR_PLATFORM_WINDOWS
 	stbi_set_flip_vertically_on_load(1);

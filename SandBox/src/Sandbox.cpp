@@ -168,119 +168,34 @@ private: //GAME STRUCTURES
 	};
 
 private: //GAME VARIABLE
-	float gv_JumpPower = -0.5f;
-	bool gv_NotFalling = true;
 
-	bool gv_Jump = false;
-	bool gv_MoveLeft = false;
-	bool gv_MoveRight = false;
+	Triton::PythonModule pModule = prtc_PyHandler->CreateModule("testScript");
+
+	TR_GAME_VARIABLE(Float, JumpPower);
+	TR_GAME_VARIABLE(Bool, NotFalling);
+	TR_GAME_VARIABLE(Bool, Jump);
+	TR_GAME_VARIABLE(Bool, MoveLeft);
+	TR_GAME_VARIABLE(Bool, MoveRight);
+
+	TR_GAME_VARIABLE(Mesh, Mesh);
 
 	Triton::ECS::Entity Mario;
 	std::vector<Triton::ECS::Entity> Ground;
 	std::vector<Triton::ECS::Entity> Enviroment;
 	std::vector<Pipe> Pipes;
 private: //GAME FUNCTIONS
-	void Jump()
-	{
-		if (gv_JumpPower >= -0.5f)
-			gv_JumpPower -= 0.02f * prtc_Delta;
-
-		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
-
-		marioTransform.Position.y += gv_JumpPower * prtc_Delta;
-	}
-
 	void CreateMesh()
 	{
 		Triton::Data::MeshData mData;
 		mData.Vertices = CubeVertices;
 		mData.UVs = CubeColors;
-
 		CubeMesh = Triton::Data::Mesh::Create(mData);
-	}
-	void CreateMaterials()
-	{
-		Triton::Data::TextureData mTData;
-		Triton::Data::TextureData marioTData;
-		marioTData << std::string("D:\\Programming\\Test files\\mario\\Mario\\marioTest.png");
-
-		TestTexture = Triton::Data::Texture::Create(mTData);
-		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
-		TestMaterial->SetDiffuse(Triton::Vector3(1.0f, 0.0f, 0.0f));
-
-		MarioTexture = Triton::Data::Texture::Create(marioTData);
-		MarioMaterial = std::make_shared<Triton::Data::Material>(MarioTexture);
-		MarioMaterial->SetDiffuse(Triton::Vector3(0.0f, 0.0f, 0.0f));
-
-		EnviromentTexture = Triton::Data::Texture::Create(mTData);
-		EnviromentMaterial = std::make_shared<Triton::Data::Material>(EnviromentTexture);
-		EnviromentMaterial->SetDiffuse(Triton::Vector3(0.0f, 1.0f, 1.0f));
-
-		PipeTexture = Triton::Data::Texture::Create(mTData);
-		PipeMaterial = std::make_shared<Triton::Data::Material>(PipeTexture);
-		PipeMaterial->SetDiffuse(Triton::Vector3(0.0f, 1.0f, 0.0f));
+		gv_Mesh->value = CubeMesh;
+		prtc_AppState->Store("CubeMesh", gv_Mesh);
 	}
 	void CreateObjects()
 	{
 		CreateMesh();
-		CreateMaterials();		
-
-		//Create Mario Entity
-		Mario = prtc_EntityRegistry->create();
-		auto& mTransform = prtc_EntityRegistry->assign<Triton::Components::Transform>(Mario);
-		mTransform.Position = Triton::Vector3(0.0f, 0.0f, 1.0f);
-		//mTransform.Scale = Triton::Vector3(2.0f, 2.0f, 2.0f);
-		prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Mario).Mesh = CubeMesh;
-		prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Mario).Material = MarioMaterial;
-
-		//Create the ground
-		RANGED_FOR(212, Ground.push_back(prtc_EntityRegistry->create()); );
-		
-		for (int i = 0; i < 212; i++)
-		{
-			auto& transform = prtc_EntityRegistry->assign<Triton::Components::Transform>(Ground[i]);
-			transform.Position = Triton::Vector3(-20.0f + (2.0f * i), -2.0f, 1.0f);
-			//transform.Scale = Triton::Vector3(2.0f, 2.0f, 2.0f);
-			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Ground[i]).Mesh = CubeMesh;
-			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Ground[i]).Material = TestMaterial;
-		}
-
-		//Create other enviroment blocks
-		RANGED_FOR(7, Enviroment.push_back(prtc_EntityRegistry->create()); );
-
-		for (int i = 0; i < 7; i++)
-		{
-			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(Enviroment[i]).Mesh = CubeMesh;
-			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(Enviroment[i]).Material = EnviromentMaterial;
-		}
-
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[0]).Position = Triton::Vector3(10.0f, 8.0f, 1.0f);
-
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[1]).Position = Triton::Vector3(20.0f, 8.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[2]).Position = Triton::Vector3(22.0f, 8.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[3]).Position = Triton::Vector3(24.0f, 8.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[4]).Position = Triton::Vector3(26.0f, 8.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[5]).Position = Triton::Vector3(28.0f, 8.0f, 1.0f);
-
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Enviroment[6]).Position = Triton::Vector3(24.0f, 16.0f, 1.0f);
-
-		//Create pipes
-		Pipe pipe;
-		RANGED_FOR(4, pipe.Entities.push_back(prtc_EntityRegistry->create()); );
-
-		for (int i = 0; i < 4; i++)
-		{
-			prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(pipe.Entities[i]).Mesh = CubeMesh;
-			prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(pipe.Entities[i]).Material = PipeMaterial;
-		}
-
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[0]).Position = Triton::Vector3(38.0f, 0.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[1]).Position = Triton::Vector3(40.0f, 0.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[2]).Position = Triton::Vector3(38.0f, 2.0f, 1.0f);
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(pipe.Entities[3]).Position = Triton::Vector3(40.0f, 2.0f, 1.0f);
-		pipe.Height = 2.0f;
-
-		Pipes.push_back(pipe);
 	}
 
 	void CheckCollision()
@@ -290,7 +205,7 @@ private: //GAME FUNCTIONS
 		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
 
 		//Check collision with ground
-		gv_NotFalling = false;
+		gv_NotFalling->value = false;
 		for (Triton::ECS::Entity groundObject : Ground)
 		{
 			if (std::find(culledEntities.begin(), culledEntities.end(), groundObject) != culledEntities.end())
@@ -308,7 +223,7 @@ private: //GAME FUNCTIONS
 						marioLeftPoint.y > groundRightPoint.y && marioRightPoint.y < groundLeftPoint.y)
 					{
 						marioTransform.Position.y = groundTransform.Position.y + 2;
-						gv_NotFalling = true;
+						gv_NotFalling->value = true;
 						break;
 					}
 				}
@@ -335,12 +250,12 @@ private: //GAME FUNCTIONS
 						if (glm::abs(enviromentLeftPoint.y - marioRightPoint.y) < glm::abs(enviromentRightPoint.y - marioLeftPoint.y))
 						{
 							marioTransform.Position.y = enviromentTransform.Position.y + 2;
-							gv_NotFalling = true;
+							gv_NotFalling->value = true;
 						}
 						else
 						{
 							marioTransform.Position.y = enviromentRightPoint.y - 1;
-							gv_JumpPower = 0;
+							gv_JumpPower->value = 0;
 						}
 						break;
 					}
@@ -370,7 +285,7 @@ private: //GAME FUNCTIONS
 							if (glm::abs(pipeLeftPoint.y - marioRightPoint.y) < glm::abs(pipeRightPoint.y - marioLeftPoint.y))
 							{
 								marioTransform.Position.y = pipe.Height + 2;
-								gv_NotFalling = true;
+								gv_NotFalling->value = true;
 							}
 
 							if (gv_MoveRight && marioRightPoint.y < pipe.Height)
@@ -411,19 +326,19 @@ private: //GAME FUNCTIONS
 	{
 		auto& marioTransform = prtc_EntityRegistry->get<Triton::Components::Transform>(Mario);
 
-		if (gv_Jump)
+		if (gv_Jump->value)
 		{
-			gv_JumpPower = 0.73f;
-			gv_NotFalling = true;
-			gv_Jump = false;
+			gv_JumpPower->value = 0.73f;
+			gv_NotFalling->value = true;
+			gv_Jump->value = false;
 		}
 
-		if (gv_MoveLeft && marioTransform.Position.x > -20.0f)
+		if (gv_MoveLeft->value && marioTransform.Position.x > -20.0f)
 		{
 			marioTransform.Position.x += -0.2f * prtc_Delta;
 		}
 
-		if (gv_MoveRight)
+		if (gv_MoveRight->value)
 		{
 			marioTransform.Position.x += 0.2f * prtc_Delta;
 		}
@@ -441,29 +356,43 @@ public:
 
 	void PreExecutionSetup() override
 	{
+		CreateObjects();
+		gv_JumpPower->value = -0.5f;
+		prtc_AppState->Store("JumpPower", gv_JumpPower);
+		prtc_AppState->Store("NotFalling", gv_NotFalling);
+		prtc_AppState->Store("Jump", gv_Jump);
+		prtc_AppState->Store("MoveLeft", gv_MoveLeft);
+		prtc_AppState->Store("MoveRight", gv_MoveRight);
+
+		TR_PYTHON_SCRIPT_GUARD(TR_SCRIPTING_SETUP(prtc_EntityRegistry.get(), prtc_AppState.get()));
+
+		TR_APPSTATE_TAKE_ASSIGN(prtc_AppState, "Ground", Ground, Triton::Storage::List_Storable, std::vector<unsigned int>);
+		TR_APPSTATE_TAKE_ASSIGN(prtc_AppState, "Enviroment", Enviroment, Triton::Storage::List_Storable, std::vector<unsigned int>);
+		TR_APPSTATE_TAKE_ASSIGN(prtc_AppState, "Mario", Mario, Triton::Storage::Entity_Storable, Triton::ECS::Entity);
+
 		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(0.0f, 16.0f, 45.0f));
 		prtc_Camera->Yaw = -90;
 		prtc_Camera->Pitch = 0;
 
 		prtc_FrustumCullingSystem->SetCamera(prtc_Camera);
 
-		CreateObjects();
-
-		prtc_PyHandler->MainModule().import("Vector3");
-		prtc_PyHandler->MainModule().import("Material");
-		prtc_PyHandler->MainModule().attr("vector") = Triton::Vector3(0.0f, 0.0f, 0.0f);
-		prtc_PyHandler->MainModule().attr("material") = PipeMaterial;
-		prtc_PyHandler->EvalFile("C:/dev/Triton/PythonScripts/Test.py");
+		prtc_PyHandler->ImportTritonModule(
+			pModule, 
+			Triton::Scripting::TritonImport::Math | 
+			Triton::Scripting::TritonImport::Data |
+			Triton::Scripting::TritonImport::Components |
+			Triton::Scripting::TritonImport::Registry |
+			Triton::Scripting::TritonImport::TritonCore);
 	}
 
 	void OnUpdate() override
 	{
 		TR_STANDARD_SYSTEMS_UPDATE(*prtc_EntityRegistry.get(), prtc_Delta);
+		TR_PYTHON_SCRIPT_GUARD(TR_SCRIPTING_UPDATE(prtc_EntityRegistry.get(), prtc_AppState.get(), prtc_Delta));
 		
 		FocusCamera();
 
 		HandleMovement();
-		Jump();
 		CheckCollision();
 	}
 
@@ -473,17 +402,28 @@ private:
 		const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
 		int keycode = kpe.GetKeyCode();
 
-		if (keycode == (int)'W' && gv_NotFalling)
+		if (keycode == (int)'W' && gv_NotFalling->value)
 		{
-			gv_Jump = true;
+			gv_Jump->value = true;
 		}
 		if (keycode == (int)'A')
 		{
-			gv_MoveLeft = true;
+			gv_MoveLeft->value = true;
 		}
 		if (keycode == (int)'D')
 		{
-			gv_MoveRight = true;
+			gv_MoveRight->value = true;
+		}
+		if (keycode == (int)'`')
+		{
+			try
+			{
+				TR_PYTHON_SCRIPTING_RELOAD;
+			}
+			catch (const std::runtime_error &re) {
+				OutputDebugStringA(re.what());
+				::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
+			}
 		}
 
 		return true;
@@ -495,11 +435,11 @@ private:
 
 		if (keycode == (int)'A')
 		{
-			gv_MoveLeft = false;
+			gv_MoveLeft->value = false;
 		}
 		if (keycode == (int)'D')
 		{
-			gv_MoveRight = false;
+			gv_MoveRight->value = false;
 		}
 
 		return true;
@@ -524,18 +464,6 @@ private: //DATA
 	};
 
 	std::shared_ptr<Triton::Data::Mesh> CubeMesh;
-
-	std::shared_ptr<Triton::Data::Texture> TestTexture;
-	std::shared_ptr<Triton::Data::Material> TestMaterial;
-
-	std::shared_ptr<Triton::Data::Texture> MarioTexture;
-	std::shared_ptr<Triton::Data::Material> MarioMaterial;
-
-	std::shared_ptr<Triton::Data::Texture> EnviromentTexture;
-	std::shared_ptr<Triton::Data::Material> EnviromentMaterial;
-
-	std::shared_ptr<Triton::Data::Texture> PipeTexture;
-	std::shared_ptr<Triton::Data::Material> PipeMaterial;
 };
 
 Triton::Application* Triton::CreateApplication()

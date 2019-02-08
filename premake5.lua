@@ -11,16 +11,16 @@ workspace "Triton"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "TritonCore/vendor/GLFW/include"
-IncludeDir["Glad"] = "TritonCore/vendor/Glad/include"
-IncludeDir["GLM"] = "TritonCore/vendor/glm"
-IncludeDir["entt"] = "TritonCore/vendor/entt/src"
-IncludeDir["pybind"] = "TritonScript/vendor/pybind/include"
-IncludeDir["python0"] = "TritonScript/vendor/python/include"
-IncludeDir["python1"] = "TritonScript/vendor/python/PC"
+IncludeDir["GLFW"] = "vendor/GLFW/include"
+IncludeDir["Glad"] = "vendor/Glad/include"
+IncludeDir["GLM"] = "vendor/glm"
+IncludeDir["entt"] = "vendor/entt/src"
+IncludeDir["pybind"] = "vendor/pybind/include"
+IncludeDir["python0"] = "vendor/python/include"
+IncludeDir["python1"] = "vendor/python/PC"
 
-include "TritonCore/vendor/GLFW"
-include "TritonCore/vendor/Glad"
+include "vendor/GLFW"
+include "vendor/Glad"
 
 project "TritonScript"
 	location "TritonScript"
@@ -39,17 +39,18 @@ project "TritonScript"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"TritonCore/vendor/spdlog/include",
+		"vendor/spdlog/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.pybind}",
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
+		"%{IncludeDir.entt}",
 		"TritonCore/src",
 	}
 	
 	libdirs
 	{
-		"TritonScript/vendor/python/PCbuild/amd64/",
+		"vendor/python/PCbuild/amd64/",
 		"TritonScript/../bin/" .. outputdir .. "/TritonCore/"
 	}
 
@@ -73,8 +74,7 @@ project "TritonScript"
 		postbuildcommands
 		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} %{prj.location}/vendor/python/PCbuild/amd64/python38.dll ../bin/" .. outputdir .. "/SandBox"),					
-			("{COPY} %{prj.location}/vendor/python/Lib/ ../bin/" .. outputdir .. "/SandBox/Lib"),
+			("{COPY} ../vendor/python/PCbuild/amd64/python38.dll ../bin/" .. outputdir .. "/SandBox"),					
 		}
 
 	filter "configurations:Debug"
@@ -116,17 +116,17 @@ project "TritonCore"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include",
+		"vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
-		"%{prj.name}/vendor/stb_image/include",
+		"vendor/stb_image",
 	}
 
 	libdirs
 	{
-		"TritonScript/vendor/python/PCbuild/amd64/",
+		
 	}
 	
 	links 
@@ -190,7 +190,7 @@ project "SandBox"
 
 	includedirs
 	{
-		"TritonCore/vendor/spdlog/include",
+		"vendor/spdlog/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.pybind}",
@@ -202,13 +202,19 @@ project "SandBox"
 	
 	libdirs
 	{
-		"TritonScript/vendor/python/PCbuild/amd64/",
+		"vendor/python/PCbuild/amd64/",
 	}
 
 	links
 	{
 		"TritonCore",
 		"TritonScript",
+	}
+
+	postbuildcommands
+	{
+		("{COPY} %{prj.location}../PythonScripts/**.py ../bin/" .. outputdir .. "/SandBox/Logic"),
+		("{COPY} %{prj.location}../Configs/triton_config.py ../bin/" .. outputdir .. "/SandBox"),
 	}
 
 	filter "system:windows"

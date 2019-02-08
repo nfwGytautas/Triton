@@ -32,6 +32,9 @@ namespace Triton
 
 			MeshFilter()
 			{ }
+			MeshFilter(std::shared_ptr<Data::Mesh> aMesh)
+				:Mesh(aMesh)
+			{ }
 			MeshFilter(const MeshFilter& aOther)
 				: Mesh(aOther.Mesh)
 			{
@@ -45,6 +48,9 @@ namespace Triton
 			std::shared_ptr<Data::Material> Material;
 
 			MeshRenderer()
+			{ }
+			MeshRenderer(std::shared_ptr<Data::Material> aMaterial)
+				:Material(aMaterial)
 			{ }
 			MeshRenderer(const MeshRenderer& aOther)
 				: Material(aOther.Material)

@@ -24,6 +24,8 @@ namespace Triton {
 
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
 
+		prtc_AppState = std::make_unique<Storage::AppState>();
+
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 	}
 	
@@ -44,7 +46,7 @@ namespace Triton {
 		PreExecutionSetup();
 
 		while (!prtc_Display->Closed())
-		{			
+		{
 			OnUpdate();
 
 			prtc_Camera->OnUpdate();
@@ -55,5 +57,7 @@ namespace Triton {
 			prtc_Renderer->Render(prtc_v_RenderBatch);
 			prtc_Display->OnUpdate();
 		}
+
+		prtc_AppState->Clear();
 	}
 }

@@ -10,7 +10,7 @@ namespace Triton
 			std::vector<float> Vertices;
 			std::vector<float> UVs;
 
-			void operator<<(std::string& aPathToMesh);
+			void Fill(std::string& aPathToMesh);
 		};
 
 		class TRITON_API Mesh

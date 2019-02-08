@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\entt\src;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -90,7 +90,6 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -104,7 +103,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y 
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\entt\src;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -118,7 +117,6 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y 
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -132,7 +130,7 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\GLFW\include;vendor\Glad\include;vendor\glm;vendor\entt\src;vendor\stb_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -146,7 +144,6 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\TritonScript\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Dist-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -162,6 +159,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton\AppState\AppState.h" />
+    <ClInclude Include="src\Triton\AppState\Storables.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Camera.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
@@ -194,6 +193,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Triton\AppState\AppState.cpp" />
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Camera.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
@@ -208,10 +208,10 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
+    <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
-    <ProjectReference Include="vendor\Glad\Glad.vcxproj">
+    <ProjectReference Include="..\vendor\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -24,6 +24,8 @@
 #include "Core\Data\Structures\Mesh.h"
 #include "Core\Data\Structures\Material.h"
 
+#include "AppState\AppState.h"
+
 namespace Triton {
 
 	//Main class that allows for project creation
@@ -47,6 +49,7 @@ namespace Triton {
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<ECS::Registry> prtc_EntityRegistry;
 		std::unique_ptr<Core::Renderer> prtc_Renderer;
+		std::unique_ptr<Storage::AppState> prtc_AppState;
 	private:
 		float m_LastFrame = 0.0f;
 	};

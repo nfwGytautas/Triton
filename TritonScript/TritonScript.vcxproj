@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_SCRIPTING_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;vendor\pybind\include;vendor\python\include;vendor\python\PC;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\entt\src;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -88,13 +88,12 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\python\PCbuild\amd64;..\bin\Debug-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;..\bin\Debug-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86_64\TritonScript\TritonScript.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\TritonScript\TritonScript.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Debug-windows-x86_64\SandBox\Lib &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Debug-windows-x86_64\SandBox\Lib &gt; nul)</Command>
+IF EXIST ..\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -102,7 +101,7 @@ IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendo
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_SCRIPTING_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;vendor\pybind\include;vendor\python\include;vendor\python\PC;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\entt\src;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,13 +114,12 @@ IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendo
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>vendor\python\PCbuild\amd64;..\bin\Release-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;..\bin\Release-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86_64\TritonScript\TritonScript.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\TritonScript\TritonScript.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Release-windows-x86_64\SandBox\Lib &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Release-windows-x86_64\SandBox\Lib &gt; nul)</Command>
+IF EXIST ..\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -129,7 +127,7 @@ IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendo
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_SCRIPTING_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\TritonCore\vendor\spdlog\include;..\TritonCore\vendor\glm;vendor\pybind\include;vendor\python\include;vendor\python\PC;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\entt\src;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -142,19 +140,20 @@ IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendo
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>vendor\python\PCbuild\amd64;..\bin\Dist-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;..\bin\Dist-windows-x86_64\TritonCore;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Dist-windows-x86_64\TritonScript\TritonScript.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Dist-windows-x86_64\TritonScript\TritonScript.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\TritonScript\TritonScript.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\PCbuild\amd64\python38.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST $(ProjectDir)\vendor\python\Lib\ (xcopy /Q /E /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Dist-windows-x86_64\SandBox\Lib &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)\vendor\python\Lib ..\bin\Dist-windows-x86_64\SandBox\Lib &gt; nul)</Command>
+IF EXIST ..\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\vendor\python\PCbuild\amd64\python38.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\TRMacros.h" />
     <ClInclude Include="src\TritonScript.h" />
+    <ClInclude Include="src\TritonScript\Implementations\AdditionalStorables.h" />
     <ClInclude Include="src\TritonScript\Implementations\TRPythonIMPL.h" />
+    <ClInclude Include="src\TritonScript\Implementations\TRPythonModule.h" />
     <ClInclude Include="src\TritonScript\TRScriptingConfig.h" />
   </ItemGroup>
   <ItemGroup>

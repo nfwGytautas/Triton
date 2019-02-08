@@ -10,6 +10,9 @@
     <Filter Include="Triton">
       <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\AppState">
+      <UniqueIdentifier>{966998F3-02F5-05B8-0B06-89AC771062B8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Core">
       <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
     </Filter>
@@ -65,6 +68,12 @@
     </ClInclude>
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton\AppState\AppState.h">
+      <Filter>Triton\AppState</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\AppState\Storables.h">
+      <Filter>Triton\AppState</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Application.h">
       <Filter>Triton</Filter>
     </ClInclude>
@@ -149,6 +158,9 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\TRpch.cpp" />
+    <ClCompile Include="src\Triton\AppState\AppState.cpp">
+      <Filter>Triton\AppState</Filter>
+    </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp">
       <Filter>Triton</Filter>
     </ClCompile>
