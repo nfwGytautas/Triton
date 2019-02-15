@@ -1,15 +1,5 @@
 #pragma once
 
-#define _CRT_SECURE_NO_WARNINGS
-#include <pybind11\pybind11.h>
-#include <pybind11\eval.h>
-#include <pybind11\embed.h>
-#include <pybind11\operators.h>
-#include <pybind11\stl.h>
-#include <pybind11\complex.h>
-#include <pybind11\stl_bind.h>
-namespace py = pybind11;
-
 #include "Triton\TRMacros.h"
 namespace Triton
 {
@@ -20,8 +10,7 @@ namespace Triton
 			Math = BIT(0),
 			Data = BIT(1),
 			Components = BIT(2),
-			Registry = BIT(3),
-			TritonCore = BIT(4)
+			TritonCore = BIT(3)
 		};
 	}
 }
@@ -50,7 +39,30 @@ namespace Triton
 		})\
 
 #include "Triton\Core\Math\Math.h"
+PYBIND11_EMBEDDED_MODULE(TritonLib, m) {
+	auto mMath = m.def_submodule("TritonMath");
+
+	py::class_<Triton::Vector2, std::shared_ptr<Triton::Vector2>>(mMath, "Vector2")
+		.def(py::init<float, float>())
+		.def_readwrite("x", &Triton::Vector2::x)
+		.def_readwrite("y", &Triton::Vector2::y);
+
+	py::class_<Triton::Vector3, std::shared_ptr<Triton::Vector3>>(mMath, "Vector3")
+		.def(py::init<float, float, float>())
+		.def_readwrite("x", &Triton::Vector3::x)
+		.def_readwrite("y", &Triton::Vector3::y)
+		.def_readwrite("z", &Triton::Vector3::z);
+
+	py::class_<Triton::Vector4, std::shared_ptr<Triton::Vector4>>(mMath, "Vector4")
+		.def(py::init<float, float, float, float>())
+		.def_readwrite("x", &Triton::Vector4::x)
+		.def_readwrite("y", &Triton::Vector4::y)
+		.def_readwrite("z", &Triton::Vector4::z)
+		.def_readwrite("w", &Triton::Vector4::w);
+}
+
 PYBIND11_EMBEDDED_MODULE(TritonMath, m) {
+
 	py::class_<Triton::Vector2, std::shared_ptr<Triton::Vector2>>(m, "Vector2")
 		.def(py::init<float, float>())
 		.def_readwrite("x", &Triton::Vector2::x)
@@ -84,7 +96,6 @@ PYBIND11_EMBEDDED_MODULE(TritonData, m) {
 		.def(py::init<>())
 		.def_readwrite("Width", &Triton::Data::TextureData::Width)
 		.def_readwrite("Height", &Triton::Data::TextureData::Height)
-		.def_readwrite("BPP", &Triton::Data::TextureData::BPP)
 		.def_readwrite("BPP", &Triton::Data::TextureData::BPP)
 		.def("Fill", &Triton::Data::TextureData::Fill);
 
@@ -120,14 +131,14 @@ PYBIND11_EMBEDDED_MODULE(TritonComponents, m) {
 
 	py::class_<Triton::Components::MeshFilter, std::shared_ptr<Triton::Components::MeshFilter>>(m, "MeshFilter")
 		.def(py::init<>())
-		.def(py::init<std::shared_ptr<Triton::Data::Mesh>>())
 		.def(py::init<const Triton::Components::MeshFilter&>())
+		.def(py::init<std::shared_ptr<Triton::Data::Mesh>>())
 		.def_readwrite("Mesh", &Triton::Components::MeshFilter::Mesh);
 
 	py::class_<Triton::Components::MeshRenderer, std::shared_ptr<Triton::Components::MeshRenderer>>(m, "MeshRenderer")
 		.def(py::init<>())
-		.def(py::init<std::shared_ptr<Triton::Data::Material>>())
 		.def(py::init<const Triton::Components::MeshRenderer&>())
+		.def(py::init<std::shared_ptr<Triton::Data::Material>>())
 		.def_readwrite("Material", &Triton::Components::MeshRenderer::Material);
 }
 
@@ -156,7 +167,7 @@ PYBIND11_EMBEDDED_MODULE(TritonComponents, m) {
 		TR_PYTHON_COMPONENT_SET(name, type)\
 		TR_PYTHON_COMPONENT_ASSIGN(name, type)\
 
-PYBIND11_EMBEDDED_MODULE(TritonEntity, m) {
+PYBIND11_EMBEDDED_MODULE(TritonCore, m) {
 	py::class_<Triton::ECS::Registry, std::shared_ptr<Triton::ECS::Registry>>(m, "EntityRegistry")
 		.def(py::init<>())
 		TR_PYTHON_COMPONENT_GET_ASSIGN("Transform", Triton::Components::Transform)
@@ -167,36 +178,4 @@ PYBIND11_EMBEDDED_MODULE(TritonEntity, m) {
 			{
 				return aRegistry.create();
 			});
-}
-
-#include "Triton\AppState\AppState.h"
-#define TR_PYTHON_STORABLE(name, type, valueType) \
-		py::class_<type, Triton::Storage::Storable, std::shared_ptr<type>>(m, name)\
-			.def(py::init<>())\
-			.def(py::init<valueType>())\
-			.def_readwrite("value", &type::value)\
-
-#include "AdditionalStorables.h"
-
-PYBIND11_EMBEDDED_MODULE(TritonCore, m) {
-	py::class_<Triton::Storage::Storable, std::shared_ptr<Triton::Storage::Storable>>(m, "Storable")
-		.def(py::init<>());
-
-	py::class_<Triton::Storage::EntityWraper, std::shared_ptr<Triton::Storage::EntityWraper>>(m, "EntityWraper")
-		.def(py::init<>())
-		.def(py::init<Triton::ECS::Entity>())
-		.def_readwrite("entity", &Triton::Storage::EntityWraper::entity);
-
-	TR_PYTHON_STORABLE("Float_Storable", Triton::Storage::Float_Storable, float);
-	TR_PYTHON_STORABLE("Bool_Storable", Triton::Storage::Bool_Storable, bool);
-	TR_PYTHON_STORABLE("Int_Storable", Triton::Storage::Int_Storable, int);
-	TR_PYTHON_STORABLE("Texture_Storable", Triton::Storage::Texture_Storable, std::shared_ptr<Triton::Data::Texture>);
-	TR_PYTHON_STORABLE("Material_Storable", Triton::Storage::Material_Storable, std::shared_ptr<Triton::Data::Material>);
-	TR_PYTHON_STORABLE("Mesh_Storable", Triton::Storage::Mesh_Storable, std::shared_ptr<Triton::Data::Mesh>);
-	TR_PYTHON_STORABLE("Entity_Storable", Triton::Storage::Entity_Storable, py::object);
-	TR_PYTHON_STORABLE("List_Storable", Triton::Storage::List_Storable, py::object);
-
-	py::class_<Triton::Storage::AppState, std::shared_ptr<Triton::Storage::AppState>>(m, "AppState")
-		.def("Store", &Triton::Storage::AppState::Store)
-		.def("Take", &Triton::Storage::AppState::Take);
 }

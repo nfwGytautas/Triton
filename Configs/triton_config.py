@@ -2,12 +2,9 @@
 #current application type is release or debug
 def setup(type : int):
 	import os
+	import sys
 	dir_path = os.path.dirname(os.path.realpath(__file__))
 	if type == 0:
-		dir_path += "\\Logic"
-		return dir_path
+		sys.path.append(dir_path + "\\Logic")
 	elif type == 1:
-		dir_path += "\\..\\..\\..\\PythonScripts"
-		return dir_path
-	else:
-		return '.'
+		sys.path.append(dir_path + "\\..\\..\\..\\PythonScripts")

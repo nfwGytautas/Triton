@@ -213,7 +213,9 @@ project "SandBox"
 
 	postbuildcommands
 	{
-		("{COPY} %{prj.location}../PythonScripts/**.py ../bin/" .. outputdir .. "/SandBox/Logic"),
+		("{COPY} %{prj.location}../PythonScripts/*.py ../bin/" .. outputdir .. "/SandBox/Logic"),
+		("{COPY} %{prj.location}../PythonScripts/*.pyi ../bin/" .. outputdir .. "/SandBox/Logic"),
+		("{COPY} %{prj.location}../PythonScripts/User/*.py ../bin/" .. outputdir .. "/SandBox/Logic/User"),
 		("{COPY} %{prj.location}../Configs/triton_config.py ../bin/" .. outputdir .. "/SandBox"),
 	}
 

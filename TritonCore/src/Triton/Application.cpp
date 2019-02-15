@@ -47,7 +47,11 @@ namespace Triton {
 
 		while (!prtc_Display->Closed())
 		{
-			OnUpdate();
+			float currentFrame = glfwGetTime();
+			prtc_Delta = currentFrame - m_LastFrame;
+			m_LastFrame = currentFrame;
+
+			OnUpdate();	
 
 			prtc_Camera->OnUpdate();
 			prtc_Shader->SetUniform("viewMatrix", prtc_Camera->ViewMatrix());
@@ -59,5 +63,11 @@ namespace Triton {
 		}
 
 		prtc_AppState->Clear();
+	}
+
+	void Application::Restart()
+	{
+		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
+		PreExecutionSetup();
 	}
 }

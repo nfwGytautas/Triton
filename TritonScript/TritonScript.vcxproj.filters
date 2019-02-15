@@ -9,16 +9,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\TRMacros.h" />
     <ClInclude Include="src\TritonScript.h" />
-    <ClInclude Include="src\TritonScript\Implementations\AdditionalStorables.h">
-      <Filter>TritonScript\Implementations</Filter>
-    </ClInclude>
     <ClInclude Include="src\TritonScript\Implementations\TRPythonIMPL.h">
       <Filter>TritonScript\Implementations</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonScript\Implementations\TRPythonModule.h">
       <Filter>TritonScript\Implementations</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonScript\TRMacros.h">
+      <Filter>TritonScript</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonScript\TRScriptingConfig.h">
       <Filter>TritonScript</Filter>

@@ -36,9 +36,11 @@ namespace Triton {
 		virtual ~Application();
 
 		void Run();
+		void Restart();
 	protected:
 		virtual void PreExecutionSetup() {}
 		virtual void OnUpdate() {}
+		virtual void FixedTimeOnUpdate() {}
 	protected:
 		float prtc_Delta = 0.0f;
 

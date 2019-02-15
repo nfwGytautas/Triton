@@ -91,7 +91,9 @@
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul)
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\*.pyi\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Debug-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\User\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Debug-windows-x86_64\SandBox\Logic\User &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Debug-windows-x86_64\SandBox\Logic\User &gt; nul)
 IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Debug-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -116,7 +118,9 @@ IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectD
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul)
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\*.pyi\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Release-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\User\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Release-windows-x86_64\SandBox\Logic\User &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Release-windows-x86_64\SandBox\Logic\User &gt; nul)
 IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Release-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -141,7 +145,9 @@ IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectD
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST $(ProjectDir)..\PythonScripts\**.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\**.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul)
+      <Command>IF EXIST $(ProjectDir)..\PythonScripts\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.py ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\*.pyi\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\*.pyi ..\bin\Dist-windows-x86_64\SandBox\Logic &gt; nul)
+IF EXIST $(ProjectDir)..\PythonScripts\User\*.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Dist-windows-x86_64\SandBox\Logic\User &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\PythonScripts\User\*.py ..\bin\Dist-windows-x86_64\SandBox\Logic\User &gt; nul)
 IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I $(ProjectDir)..\Configs\triton_config.py ..\bin\Dist-windows-x86_64\SandBox &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
