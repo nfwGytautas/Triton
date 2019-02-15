@@ -7,3 +7,4 @@ Just another game engine
 
 *Note: Some projects are not fleshed out and might only work in certain circumstances, this is because these projects are created for the purpose of testing specific features of the engine and not to create a game or any other application*
 * Rubik's cube **Triton version: 000a** (Created for object rotation, simple model creation and event system testing)
+* Mario (sort of) **Triton version: 001a** (Created for texture loading and python embedding, EnTT integration and simple material testing)
