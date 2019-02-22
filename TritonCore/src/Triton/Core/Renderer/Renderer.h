@@ -1,7 +1,6 @@
 #pragma once
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Data\Structures\RenderBatch.h"
-#include "Triton\Entity\Registry.h"
 #include "Triton\Core\Shader\Shader.h"
 
 namespace Triton

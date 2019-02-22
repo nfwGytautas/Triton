@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;..\TritonShell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -102,7 +102,7 @@ IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectD
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;..\TritonShell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -129,7 +129,7 @@ IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectD
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\TritonCore\src;..\TritonScript\src;..\TritonShell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,11 +155,8 @@ IF EXIST $(ProjectDir)..\Configs\triton_config.py\ (xcopy /Q /E /Y /I $(ProjectD
     <ClCompile Include="src\Sandbox.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TritonCore\TritonCore.vcxproj">
-      <Project>{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\TritonScript\TritonScript.vcxproj">
-      <Project>{9A396C89-869C-FB2D-2F22-34E41B64C7B0}</Project>
+    <ProjectReference Include="..\TritonShell\TritonShell.vcxproj">
+      <Project>{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

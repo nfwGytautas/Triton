@@ -1,17 +1,12 @@
 #define TR_SCRIPTING_ENABLED
-#define TR_SCRIPTING_LANG_PYTHON
-#include <TritonScript.h>
-#include <Triton.h>
+#include <TritonShell.h>
 
 #include <string>
 
-class Sandbox : public Triton::Application , private Triton::EventListener
+//class Sandbox : public Triton::ShellApplication, private Triton::EventListener
+class Sandbox : public Triton::ShellApplication
 {
-	TR_INCLUDE_STANDARD_SYSTEMS
-	TR_INCLUDE_SCRIPTING
-
-private:
-		std::shared_ptr<Triton::Data::Mesh> gv_Mesh = std::make_shared<Triton::Data::Mesh>();
+	std::shared_ptr<Triton::Data::Mesh> gv_Mesh = std::make_shared<Triton::Data::Mesh>();
 private:
 	void CreateMesh()
 	{
@@ -20,7 +15,7 @@ private:
 		mData.UVs = CubeColors;
 		gv_Mesh = Triton::Data::Mesh::Create(mData);
 		//STORE MESH
-		prtc_PyVariableHandler->ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
+		py_ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
 	}
 public:
 	Sandbox()
@@ -40,9 +35,7 @@ public:
 	{
 		CreateMesh();
 
-		TR_PYTHON_SCRIPT_GUARD(TR_SCRIPTING_SETUP(prtc_EntityRegistry.get()));
-
-		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(0.0f, 0.0f, 6.0f));
+		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(1.0f, 1.0f, 1.0f));
 		prtc_Camera->Yaw = -90;
 		prtc_Camera->Pitch = 0;
 
@@ -56,21 +49,16 @@ public:
 		CubeMesh = Triton::Data::Mesh::Create(mData);
 		TestTexture = Triton::Data::Texture::Create(mTData);
 		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
+		TestMaterial->SetDiffuse(Triton::Vector3(0.5f, 0.5f, 0.5f));
 
 		TestModel = prtc_EntityRegistry->create();
 		prtc_EntityRegistry->assign<Triton::Components::Transform>(TestModel).Position = Triton::Vector3(1.0f, 1.0f, 1.0f);
 		prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(TestModel).Mesh = CubeMesh;
 		prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(TestModel).Material = TestMaterial;
-
-		prtc_FrustumCullingSystem->SetCamera(prtc_Camera);
 	}
 
 	void OnUpdate() override
 	{
-		TR_STANDARD_SYSTEMS_UPDATE(*prtc_EntityRegistry.get(), prtc_Delta);
-
-		TR_PYTHON_SCRIPT_GUARD(TR_SCRIPTING_UPDATE(prtc_EntityRegistry.get(), prtc_Delta));
-
 		TR_TRACE("YAW:{0} PITCH:{1}", prtc_Camera->Yaw, prtc_Camera->Pitch);
 	}
 
@@ -99,8 +87,7 @@ private:
 		{
 			try
 			{
-				this->Restart();
-				TR_PYTHON_SCRIPTING_RELOAD;
+				this->RestartShell();
 			}
 			catch (const std::runtime_error &re) {
 				OutputDebugStringA(re.what());

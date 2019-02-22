@@ -10,9 +10,6 @@
     <Filter Include="Triton">
       <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\AppState">
-      <UniqueIdentifier>{966998F3-02F5-05B8-0B06-89AC771062B8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Triton\Core">
       <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
     </Filter>
@@ -30,15 +27,6 @@
     </Filter>
     <Filter Include="Triton\Core\Shader">
       <UniqueIdentifier>{8383D251-6F67-93A7-D8C7-8DFAC4CA7D29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Triton\Entity">
-      <UniqueIdentifier>{B1A7859D-1D68-01D4-E6A2-4A51522246B0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Triton\Entity\Components">
-      <UniqueIdentifier>{26BCBFF7-12E1-0E78-3B2C-F40727B00D96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Triton\Entity\Systems">
-      <UniqueIdentifier>{B81E2182-248B-DC7C-ED7E-74DA59AAFEE4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Events">
       <UniqueIdentifier>{49470E9E-B507-8AD4-7E42-D351EAC1CEB0}</UniqueIdentifier>
@@ -68,12 +56,6 @@
     </ClInclude>
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
-    <ClInclude Include="src\Triton\AppState\AppState.h">
-      <Filter>Triton\AppState</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\AppState\Storables.h">
-      <Filter>Triton\AppState</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Application.h">
       <Filter>Triton</Filter>
     </ClInclude>
@@ -103,18 +85,6 @@
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Shader\Shader.h">
       <Filter>Triton\Core\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h">
-      <Filter>Triton\Entity\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Entity\Registry.h">
-      <Filter>Triton\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\Entity\Systems\TritonSystems.h">
-      <Filter>Triton\Entity\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Triton\EntryPoint.h">
-      <Filter>Triton</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h">
       <Filter>Triton\Events</Filter>
@@ -158,9 +128,6 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\TRpch.cpp" />
-    <ClCompile Include="src\Triton\AppState\AppState.cpp">
-      <Filter>Triton\AppState</Filter>
-    </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp">
       <Filter>Triton</Filter>
     </ClCompile>

@@ -1,38 +1,13 @@
 #pragma once
 
 #include "Triton\TRMacros.h"
-namespace Triton
-{
-	namespace Scripting
-	{
-		enum TritonImport
-		{
-			Math = BIT(0),
-			Data = BIT(1),
-			Components = BIT(2),
-			TritonCore = BIT(3)
-		};
-	}
-}
-
-#define TR_PYTHON_SCRIPT_GUARD(x, onFail) \
-		try\
-		{\
-			x;\
-		}\
-		catch (const std::runtime_error &re) {\
-			TR_WARN(re.what());\
-			onFail;\
-		}\
-
-#define TR_STRINGIZE(A, B) A ## B
 
 #define TR_PYTHON_IMMUTABLE_GET_SET(funcName, valueType, object, objectVariable) \
-		.def(TR_STRINGIZE("Get", ##funcName), \
+		.def(TR_STRINGIZE("get", ##funcName), \
 		[](const object& aObject) {\
 			return aObject.objectVariable;\
 		})\
-		.def(TR_STRINGIZE("Set", ##funcName), \
+		.def(TR_STRINGIZE("set", ##funcName), \
 		[](object& aObject, valueType aValue) {\
 			aObject.objectVariable = aValue;\
 			return aObject.objectVariable;\
@@ -88,76 +63,76 @@ PYBIND11_EMBEDDED_MODULE(TritonMath, m) {
 PYBIND11_EMBEDDED_MODULE(TritonData, m) {
 	py::class_<Triton::Data::MeshData, std::shared_ptr<Triton::Data::MeshData>>(m, "MeshData")
 		.def(py::init<>())
-		.def_readwrite("Vertices", &Triton::Data::MeshData::Vertices)
-		.def_readwrite("UVs", &Triton::Data::MeshData::UVs)
-		.def("Fill", &Triton::Data::MeshData::Fill);
-	
+		.def_readwrite("vertices", &Triton::Data::MeshData::Vertices)
+		.def_readwrite("uvs", &Triton::Data::MeshData::UVs)
+		.def("fill", &Triton::Data::MeshData::Fill);
+
 	py::class_<Triton::Data::TextureData, std::shared_ptr<Triton::Data::TextureData>>(m, "TextureData")
 		.def(py::init<>())
-		.def_readwrite("Width", &Triton::Data::TextureData::Width)
-		.def_readwrite("Height", &Triton::Data::TextureData::Height)
-		.def_readwrite("BPP", &Triton::Data::TextureData::BPP)
-		.def("Fill", &Triton::Data::TextureData::Fill);
+		.def_readwrite("width", &Triton::Data::TextureData::Width)
+		.def_readwrite("height", &Triton::Data::TextureData::Height)
+		.def_readwrite("bpp", &Triton::Data::TextureData::BPP)
+		.def("fill", &Triton::Data::TextureData::Fill);
 
 	py::class_<Triton::Data::Texture, std::shared_ptr<Triton::Data::Texture>>(m, "Texture")
 		.def(py::init<>())
-		.def_static("Create", &Triton::Data::Texture::Create)
-		.def("GetWidth", &Triton::Data::Texture::GetWidth)
-		.def("GetHeight", &Triton::Data::Texture::GetHeight);
+		.def_static("create", &Triton::Data::Texture::Create)
+		.def("get_width", &Triton::Data::Texture::GetWidth)
+		.def("get_height", &Triton::Data::Texture::GetHeight);
 
 	py::class_<Triton::Data::Mesh, std::shared_ptr<Triton::Data::Mesh>>(m, "Mesh")
 		.def(py::init<>())
-		.def_static("Create", &Triton::Data::Mesh::Create)
-		.def("GetWidth", &Triton::Data::Mesh::GetWidth)
-		.def("GetHeight", &Triton::Data::Mesh::GetHeight);
+		.def_static("create", &Triton::Data::Mesh::Create)
+		.def("get_width", &Triton::Data::Mesh::GetWidth)
+		.def("get_height", &Triton::Data::Mesh::GetHeight);
 
 	py::class_<Triton::Data::Material, std::shared_ptr<Triton::Data::Material>>(m, "Material")
 		.def(py::init<std::shared_ptr<Triton::Data::Texture>>())
 		.def(py::init<>())
-		.def("SetDiffuse", &Triton::Data::Material::SetDiffuse)
-		.def("GetDiffuse", &Triton::Data::Material::GetDiffuse)
-		.def("GetTexture", &Triton::Data::Material::GetTexture);
+		.def("set_diffuse", &Triton::Data::Material::SetDiffuse)
+		.def("get_diffuse", &Triton::Data::Material::GetDiffuse)
+		.def("get_texture", &Triton::Data::Material::GetTexture);
 }
 
-#include "Triton\Entity\Components\TritonComponents.h"
+#include "TritonShell\Entity\Components\TritonComponents.h"
 PYBIND11_EMBEDDED_MODULE(TritonComponents, m) {
 	py::class_<Triton::Components::Transform, std::shared_ptr<Triton::Components::Transform>>(m, "Transform")
 		.def(py::init<>())
 		.def(py::init<const Triton::Components::Transform&>())
 		.def(py::init<Triton::Vector3&, Triton::Vector3&, Triton::Vector3&>())
-		.def_readwrite("Position", &Triton::Components::Transform::Position)
-		.def_readwrite("Rotation", &Triton::Components::Transform::Rotation)
-		.def_readwrite("Scale", &Triton::Components::Transform::Scale);
+		.def_readwrite("position", &Triton::Components::Transform::Position)
+		.def_readwrite("rotation", &Triton::Components::Transform::Rotation)
+		.def_readwrite("scale", &Triton::Components::Transform::Scale);
 
 	py::class_<Triton::Components::MeshFilter, std::shared_ptr<Triton::Components::MeshFilter>>(m, "MeshFilter")
 		.def(py::init<>())
 		.def(py::init<const Triton::Components::MeshFilter&>())
 		.def(py::init<std::shared_ptr<Triton::Data::Mesh>>())
-		.def_readwrite("Mesh", &Triton::Components::MeshFilter::Mesh);
+		.def_readwrite("mesh", &Triton::Components::MeshFilter::Mesh);
 
 	py::class_<Triton::Components::MeshRenderer, std::shared_ptr<Triton::Components::MeshRenderer>>(m, "MeshRenderer")
 		.def(py::init<>())
 		.def(py::init<const Triton::Components::MeshRenderer&>())
 		.def(py::init<std::shared_ptr<Triton::Data::Material>>())
-		.def_readwrite("Material", &Triton::Components::MeshRenderer::Material);
+		.def_readwrite("material", &Triton::Components::MeshRenderer::Material);
 }
 
-#include "Triton\Entity\Registry.h"
+#include "TritonShell\Entity\Registry.h"
 
 #define TR_PYTHON_COMPONENT_GET(name, type) \
-		.def(TR_STRINGIZE("Get", name), \
+		.def(TR_STRINGIZE("get", name), \
 		[](Triton::ECS::Registry& aRegistry, Triton::ECS::Entity aEntity) {\
 			return aRegistry.get<type>(aEntity);\
 		})\
 
 #define TR_PYTHON_COMPONENT_SET(name, type) \
-		.def(TR_STRINGIZE("Set", name), \
+		.def(TR_STRINGIZE("set", name), \
 		[](Triton::ECS::Registry& aRegistry, Triton::ECS::Entity aEntity, type& aValue) {\
 			aRegistry.get<type>(aEntity) = aValue;\
 		})\
 
 #define TR_PYTHON_COMPONENT_ASSIGN(name, type) \
-		.def(TR_STRINGIZE("Assign", name), \
+		.def(TR_STRINGIZE("assign", name), \
 		[](Triton::ECS::Registry& aRegistry, Triton::ECS::Entity aEntity) {\
 			return aRegistry.assign<type>(aEntity);\
 		})\
@@ -170,12 +145,12 @@ PYBIND11_EMBEDDED_MODULE(TritonComponents, m) {
 PYBIND11_EMBEDDED_MODULE(TritonCore, m) {
 	py::class_<Triton::ECS::Registry, std::shared_ptr<Triton::ECS::Registry>>(m, "EntityRegistry")
 		.def(py::init<>())
-		TR_PYTHON_COMPONENT_GET_ASSIGN("Transform", Triton::Components::Transform)
-		TR_PYTHON_COMPONENT_GET_ASSIGN("MeshFilter", Triton::Components::MeshFilter)
-		TR_PYTHON_COMPONENT_GET_ASSIGN("MeshRenderer", Triton::Components::MeshRenderer)
-		.def("Create", 
+		TR_PYTHON_COMPONENT_GET_ASSIGN("transform", Triton::Components::Transform)
+		TR_PYTHON_COMPONENT_GET_ASSIGN("mesh_filter", Triton::Components::MeshFilter)
+		TR_PYTHON_COMPONENT_GET_ASSIGN("mesh_renderer", Triton::Components::MeshRenderer)
+		.def("create",
 			[](Triton::ECS::Registry& aRegistry)
-			{
-				return aRegistry.create();
-			});
+	{
+		return aRegistry.create();
+	});
 }

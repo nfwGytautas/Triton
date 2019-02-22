@@ -46,6 +46,7 @@ project "TritonScript"
 		"%{IncludeDir.python1}",
 		"%{IncludeDir.entt}",
 		"TritonCore/src",
+		"TritonShell/src",
 	}
 	
 	libdirs
@@ -174,6 +175,85 @@ project "TritonCore"
 		optimize "On"
 		staticruntime "off"
 
+project "TritonShell"
+	location "TritonShell"
+	kind "StaticLib"
+	language "C++"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp",
+	}
+
+	includedirs
+	{
+		"%{prj.name}/src",
+		"vendor/spdlog/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.entt}",
+		"vendor/stb_image",
+		"%{IncludeDir.pybind}",
+		"%{IncludeDir.python0}",
+		"%{IncludeDir.python1}",
+		"TritonCore/src",
+		"TritonScript/src"
+	}
+
+	libdirs
+	{
+		"vendor/python/PCbuild/amd64/",
+	}
+	
+	links 
+	{ 
+		"TritonCore",
+		"TritonScript",
+		"GLFW",
+		"Glad",
+		"opengl32.lib",
+	}
+
+	filter "system:windows"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+
+		defines
+		{
+			"TR_PLATFORM_WINDOWS",
+		}
+
+		postbuildcommands
+		{
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/TritonScript"),
+		}
+
+	filter "configurations:Debug"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS",
+		}
+		symbols "On"
+		staticruntime "off"
+	
+	filter "configurations:Release"
+		defines "TR_RELEASE"
+		optimize "On"
+		staticruntime "off"
+
+	filter "configurations:Dist"
+		defines "TR_DIST"
+		optimize "On"
+		staticruntime "off"
+		
 project "SandBox"
 	location "SandBox"
 	kind "ConsoleApp"
@@ -197,7 +277,8 @@ project "SandBox"
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
 		"TritonCore/src",
-		"TritonScript/src"
+		"TritonScript/src",
+		"TritonShell/src",
 	}
 	
 	libdirs
@@ -207,8 +288,7 @@ project "SandBox"
 
 	links
 	{
-		"TritonCore",
-		"TritonScript",
+		"TritonShell",
 	}
 
 	postbuildcommands

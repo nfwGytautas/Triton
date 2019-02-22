@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TritonScript\Implementations\TRPythonModule.h"
+
 extern Triton::Application* Triton::CreateApplication();
 
 int main(int argc, char** argv)
@@ -11,7 +13,7 @@ int main(int argc, char** argv)
 	Triton::Application* app = Triton::CreateApplication();
 
 	//Run the created application
-	app->Run();
+	app->Execute();
 
 	//Delete the created triton application
 	delete app;

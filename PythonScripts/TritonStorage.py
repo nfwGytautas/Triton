@@ -6,14 +6,16 @@ Resources = {
 
 }
 
-def ChangeVariable(name, value):
+
+def change_variable(name, value):
     GameVariables[name] = value
 
-def ChangeResource(name, value):
+
+def change_resource(name, value):
     Resources[name] = value
 
 
-def GetVariable(name):
+def get_variable(name):
     if name in GameVariables:
         return GameVariables[name]
     else:

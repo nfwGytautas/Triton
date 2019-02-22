@@ -2,7 +2,6 @@
 #include "WindowsRenderer.h"
 
 #include <glad\glad.h>
-#include "Triton\Entity\Components\TritonComponents.h"
 #include "WindowsModel.h"
 #include "WindowsTexture.h"
 #include "Triton\Logger\Log.h"

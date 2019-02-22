@@ -20,17 +20,14 @@ namespace Triton {
 				"D:/Programming/Test files/nfw/shaders/triton/v3.shader", 
 				"D:/Programming/Test files/nfw/shaders/triton/f3.shader")));
 
-		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
-
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
-
-		prtc_AppState = std::make_unique<Storage::AppState>();
 
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 	}
 	
 	Application::~Application()
 	{
+
 	}
 
 	void Application::Run()
@@ -39,35 +36,26 @@ namespace Triton {
 		prtc_Delta = currentFrame - m_LastFrame;
 		m_LastFrame = currentFrame;
 
-		prtc_Shader->Enable();
-		Matrix44 ProjMatrix = Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 70, 2000.0f, 0.1f);
-		prtc_Shader->SetUniform("projectionMatrix", ProjMatrix);		
+		OnUpdate();	
 
-		PreExecutionSetup();
-
-		while (!prtc_Display->Closed())
+		Core::EventManager::Dispatch();
+		
+		if (prtc_RenderBatch != nullptr)
 		{
-			float currentFrame = glfwGetTime();
-			prtc_Delta = currentFrame - m_LastFrame;
-			m_LastFrame = currentFrame;
-
-			OnUpdate();	
-
-			prtc_Camera->OnUpdate();
-			prtc_Shader->SetUniform("viewMatrix", prtc_Camera->ViewMatrix());
-
-			Core::EventManager::Dispatch();
-
-			prtc_Renderer->Render(prtc_v_RenderBatch);
-			prtc_Display->OnUpdate();
+			prtc_Shader->Enable();
+			prtc_Renderer->Render(*prtc_RenderBatch);
+			prtc_Shader->Disable();
 		}
 
-		prtc_AppState->Clear();
+		prtc_Display->OnUpdate();
 	}
 
-	void Application::Restart()
+	void Application::Execute()
 	{
-		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 		PreExecutionSetup();
+		while (!prtc_Display->Closed())
+		{
+			Run();
+		}
 	}
 }

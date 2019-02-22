@@ -1,9 +1,9 @@
 # coding: utf-8
 
 class Vector2:
-    '''
+    """
     Class representing a vector of 2 floats
-    '''
+    """
 
     def __init__(self, x : float, y : float): ...
     x : float = ...
@@ -11,9 +11,9 @@ class Vector2:
 
 
 class Vector3:
-    '''
+    """
     Class representing a vector of 3 floats
-    '''
+    """
 
     def __init__(self, x : float, y : float, z : float): ...
     x : float = ...
@@ -22,9 +22,9 @@ class Vector3:
 
 
 class Vector4:
-    '''
+    """
     Class representing a vector of 4 floats
-    '''
+    """
 
     def __init__(self, x : float, y : float, z : float, w : float): ...
     x : float = ...

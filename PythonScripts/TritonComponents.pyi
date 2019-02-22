@@ -4,9 +4,9 @@ from TritonMath import (Vector3)
 from TritonData import (Mesh, Material)
 
 class Transform:
-    '''
+    """
     Class representing a transform component
-    '''
+    """
 
     def __init__(self): ...
     def __init__(self, other : Transform): ...
@@ -17,9 +17,9 @@ class Transform:
     Scale : Vector3 = ...
 
 class MeshFilter:
-    '''
+    """
     Class representing a mesh filter component
-    '''
+    """
 
     def __init__(self): ...
     def __init__(self, other : MeshFilter): ...
@@ -28,9 +28,9 @@ class MeshFilter:
     Mesh : Mesh = ...
 
 class MeshRenderer:
-    '''
+    """
     Class representing a mesh renderer component
-    '''
+    """
 
     def __init__(self): ...
     def __init__(self, other : MeshRenderer): ...

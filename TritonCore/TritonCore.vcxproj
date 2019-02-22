@@ -159,8 +159,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
-    <ClInclude Include="src\Triton\AppState\AppState.h" />
-    <ClInclude Include="src\Triton\AppState\Storables.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Core\Camera.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
@@ -171,10 +169,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton\Core\Math\Math.h" />
     <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
     <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
-    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h" />
-    <ClInclude Include="src\Triton\Entity\Registry.h" />
-    <ClInclude Include="src\Triton\Entity\Systems\TritonSystems.h" />
-    <ClInclude Include="src\Triton\EntryPoint.h" />
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Events\EventManager.h" />
     <ClInclude Include="src\Triton\Events\Events.h" />
@@ -193,7 +187,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Triton\AppState\AppState.cpp" />
     <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Core\Camera.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
