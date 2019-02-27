@@ -17,6 +17,7 @@
 #include <bitset>
 #include <array>
 #include <initializer_list>
+#include <iterator>
 
 #ifdef TR_PLATFORM_WINDOWS
 	#define NOMINMAX

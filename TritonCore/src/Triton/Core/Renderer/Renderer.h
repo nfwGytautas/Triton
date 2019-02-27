@@ -15,7 +15,7 @@ namespace Triton
 
 			virtual ~Renderer() {}
 
-			virtual void Render(std::vector<Data::RenderBatch>& aRenderBatch) = 0;
+			virtual void Render(Data::RenderOrder& aRenderBatch) = 0;
 		private:
 		};
 

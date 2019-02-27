@@ -17,5 +17,12 @@ namespace Triton
 			RenderBatch(std::shared_ptr<Data::Mesh> aMesh, std::shared_ptr<Data::Material> aMaterial, std::vector<std::shared_ptr<Matrix44>> aTransformations)
 				: Mesh(aMesh), Material(aMaterial), Transformations(aTransformations) {}
 		};
+
+		struct RenderOrder
+		{
+			std::vector<RenderBatch>* Batches;
+
+			RenderOrder() { }
+		};
 	}
 }

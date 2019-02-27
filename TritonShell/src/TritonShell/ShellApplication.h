@@ -8,6 +8,8 @@
 #include "TritonShell\Entity\Registry.h"
 #include "TritonShell\Entity\Systems\TritonSystems.h"
 
+#include "Triton\Core\Data\Structures\RenderBatch.h"
+
 namespace Triton {
 
 	//Main class that allows for project creation

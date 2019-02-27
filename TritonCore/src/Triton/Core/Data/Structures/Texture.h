@@ -19,7 +19,7 @@ namespace Triton
 				Buffer = std::make_unique<unsigned char>();
 			}
 
-			void Fill(std::string& aPathToImage);
+			void Fill(const char* aPathToImage);
 		};
 
 		class TRITON_API Texture

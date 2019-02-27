@@ -123,6 +123,7 @@ project "TritonCore"
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
 		"vendor/stb_image",
+		"vendor/Assimp/include"
 	}
 
 	libdirs

@@ -1,8 +1,19 @@
 # coding: utf-8
 
-from TritonMath import (Vector3)
+from TritonMath import (Vector2, Vector3)
 
 from typing import List
+
+class Vertex:
+    """
+    Class representing the data inside a vertex
+    """
+
+    def __init__(self): ...
+
+    Vertice : Vector3 = ...
+    UV : Vector2 = ...
+    Normal : Vector3 = ...
 
 class MeshData:
     """
@@ -11,8 +22,8 @@ class MeshData:
 
     def __init__(self): ...
 
-    Vertices : List[float] = ...
-    UVs : List[float] = ...
+    Vertices : List[Vertex] = ...
+    Indices : List[int] = ...
 
     def fill(self, path : str):
         """
@@ -112,12 +123,11 @@ class Mesh:
         ...
 
     @staticmethod
-    def create(data : MeshData, a3d: bool = True) -> Mesh:
+    def create(data : MeshData) -> Mesh:
         """
         Create the a mesh object from a mesh data object
 
         :param str data: Data object
-        :param str a3d: Should the data be interpreted as 3D model data
         :return: Created mesh object
         :rtype: TritonData.Mesh
         """

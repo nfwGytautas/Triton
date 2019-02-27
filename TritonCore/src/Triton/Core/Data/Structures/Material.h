@@ -12,11 +12,11 @@ namespace Triton
 		{
 		public:
 			Material(std::shared_ptr<Texture> aTexture)
-				:m_Texture(aTexture)
+				:m_Texture(aTexture), m_Diffuse(0.0f, 0.0f, 0.0f)
 			{ }
 
 			Material()
-				:m_Texture()
+				:m_Texture(), m_Diffuse(0.0f, 0.0f, 0.0f)
 			{ }
 
 			~Material()

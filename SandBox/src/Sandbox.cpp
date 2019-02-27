@@ -11,9 +11,8 @@ private:
 	void CreateMesh()
 	{
 		Triton::Data::MeshData mData;
-		mData.Vertices = CubeVertices;
-		mData.UVs = CubeColors;
-		gv_Mesh = Triton::Data::Mesh::Create(mData);
+		mData.Fill("D:/Programming/Test files/nfw/stall.obj");
+		CubeMesh = Triton::Data::Mesh::Create(mData);
 		//STORE MESH
 		py_ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
 	}
@@ -35,24 +34,19 @@ public:
 	{
 		CreateMesh();
 
-		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(1.0f, 1.0f, 1.0f));
+		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(0.0f, 16.0f, 45.0f));
 		prtc_Camera->Yaw = -90;
 		prtc_Camera->Pitch = 0;
 
-		Triton::Data::MeshData mData;
-		mData.Vertices = CubeVertices;
-		mData.UVs = CubeColors;
-
 		Triton::Data::TextureData mTData;
-		//mTData << std::string("D:\\Programming\\Test files\\nfw\\dragon.png");
+		//mTData.Fill("D:/Programming/Test files/nfw/missingTexture64.png");
 
-		CubeMesh = Triton::Data::Mesh::Create(mData);
 		TestTexture = Triton::Data::Texture::Create(mTData);
 		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
-		TestMaterial->SetDiffuse(Triton::Vector3(0.5f, 0.5f, 0.5f));
+		TestMaterial->SetDiffuse(Triton::Vector3(1.0f, 1.0f, 1.0f));
 
 		TestModel = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(TestModel).Position = Triton::Vector3(1.0f, 1.0f, 1.0f);
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(TestModel).Position = Triton::Vector3(0.0, 0.1, 1.0);
 		prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(TestModel).Mesh = CubeMesh;
 		prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(TestModel).Material = TestMaterial;
 	}
@@ -60,6 +54,7 @@ public:
 	void OnUpdate() override
 	{
 		TR_TRACE("YAW:{0} PITCH:{1}", prtc_Camera->Yaw, prtc_Camera->Pitch);
+		TR_INFO("X:{0} Y:{1}", prtc_Camera->Position.x, prtc_Camera->Position.y);
 	}
 
 private:
@@ -143,23 +138,6 @@ private:
 
 	Triton::ECS::Entity TestModel;
 
-	std::vector<float> CubeVertices = {
-		-1.000000, -1.000000,  1.000000,
-		-1.000000,  1.000000,  1.000000,
-		 1.000000, -1.000000,  1.000000,
-		 1.000000, -1.000000,  1.000000,
-		 1.000000,  1.000000,  1.000000,
-		 -1.000000, 1.000000,  1.000000
-	};
-	std::vector<float> CubeColors = {
-		0.000000, 0.000000,
-		0.000000, 1.000000,
-		1.000000, 0.000000,
-		1.000000, 0.000000,
-		1.000000, 1.000000,
-		0.000000, 1.000000
-	};
-
 	std::shared_ptr<Triton::Data::Mesh> CubeMesh;
 	std::shared_ptr<Triton::Data::Texture> TestTexture;
 	std::shared_ptr<Triton::Data::Material> TestMaterial;
@@ -172,7 +150,87 @@ private:
 	double lastY;
 };
 
+#include <iterator>
+#include <vector>
+class UnitTest1 : public Triton::ShellApplication
+{
+public:
+	UnitTest1()
+	{
+		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(std::bind(&UnitTest1::KeyDown, this, std::placeholders::_1)));
+	}
+
+	bool KeyDown(const Triton::Event& event)
+	{
+		const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
+
+		if (kpe.GetKeyCode() == (int)'`')
+		{
+			RestartShell();
+		}
+
+		return true;
+	}
+
+	void PreExecutionSetup() override
+	{
+		TestEntity = prtc_EntityRegistry->create();
+
+		//float vertices[] = {
+		//	0.5f,  0.5f, 0.0f,  // top right
+		//	 0.5f, -0.5f, 0.0f,  // bottom right
+		//	-0.5f, -0.5f, 0.0f,  // bottom left
+		//	-0.5f,  0.5f, 0.0f   // top left 
+		//};
+		////float vertices[] = {
+		////	-0.5f, -0.5f, 0.0f,
+		////	 0.5f, -0.5f, 0.0f,
+		////	 0.0f,  0.5f, 0.0f
+		////};
+		//
+		//unsigned int indices[] = {  // note that we start from 0!
+		//	0, 1, 3,   // first triangle
+		//	1, 2, 3    // second triangle
+		//};
+		//
+		//float uvs[] = {
+		//	1.0f, 1.0f,   // top right
+		//	1.0f, 0.0f,   // bottom right
+		//	0.0f, 0.0f,   // bottom left
+		//	0.0f, 1.0f
+		//};
+		
+
+		
+		//Triton::Data::MeshData mData;
+		//mData.Fill("D:/Programming/Test files/nfw/stall.obj");
+		//Mesh = Triton::Data::Mesh::Create(mData);
+		//
+		//Triton::Data::TextureData tData;
+		//tData.Fill("D:/Programming/Test files/nfw/stallTexture.png");
+		//Material = std::make_shared<Triton::Data::Material>(Triton::Data::Texture::Create(tData));
+		//
+		//prtc_EntityRegistry->assign<Triton::Components::Transform>(TestEntity).Position = glm::vec3(0.0f, 0.0f, -15.0f);
+		//prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(TestEntity).Mesh = Mesh;
+		//prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(TestEntity).Material = Material;
+
+
+	}
+
+	void OnUpdate() override
+	{
+		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.z += 1.0f;
+		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.y += 1.0f;
+		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.x += 1.0f;
+	}
+private:
+	Triton::ECS::Entity TestEntity;
+
+	std::shared_ptr<Triton::Data::Mesh> Mesh;
+	std::shared_ptr<Triton::Data::Material> Material;
+};
+
 Triton::Application* Triton::CreateApplication()
 {
-	return new Sandbox();
+	return new UnitTest1();
 }

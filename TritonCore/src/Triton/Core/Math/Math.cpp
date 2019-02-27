@@ -5,7 +5,7 @@
 #include <glm\gtx\transform.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
-Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aFarRenderPlane, float aNearRenderPlane)
+Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aNearRenderPlane, float aFarRenderPlane)
 {
 	//Matrix44 returnMatrix = glm::mat4(1);
 
@@ -19,7 +19,7 @@ Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float 
 	//returnMatrix[2] = glm::vec4(0, 0, -((aFarRenderPlane + aNearRenderPlane) / frustum_length), -1);
 	//returnMatrix[3] = glm::vec4(0, 0, -((2 * aFarRenderPlane * aNearRenderPlane) / frustum_length), 0);
 
-	Matrix44 returnMatrix = glm::perspective(aFoV, aWindowWidth / aWindowHeight, aNearRenderPlane, aFarRenderPlane);
+	Matrix44 returnMatrix = glm::perspective(aFoV, (float)aWindowWidth / (float)aWindowHeight, aNearRenderPlane, aFarRenderPlane);
 
 	return returnMatrix;
 }

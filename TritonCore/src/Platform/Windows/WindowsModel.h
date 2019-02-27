@@ -11,14 +11,16 @@ namespace Triton
 		class TRITON_API WindowsMesh : public Data::Mesh
 		{
 		public:
-			WindowsMesh(std::vector<float>& aVertices, std::vector<float>& aUVs, bool a3D);
+			WindowsMesh(Data::MeshData& aData);
 			~WindowsMesh();
 
 			void Bind();
 			void Unbind();
 			unsigned int GetIndiceCount() const;
+
 		private:
 			unsigned int m_VAO;
+			unsigned int m_IBO;
 			std::vector<unsigned int> m_VBOS;
 			unsigned int m_IndiceCount;
 		};

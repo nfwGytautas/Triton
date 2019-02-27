@@ -17,12 +17,11 @@ namespace Triton {
 
 		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
-				"D:/Programming/Test files/nfw/shaders/triton/v3.shader", 
-				"D:/Programming/Test files/nfw/shaders/triton/f3.shader")));
+				"D:/Programming/Test files/nfw/shaders/triton/v4.shader", 
+				"D:/Programming/Test files/nfw/shaders/triton/f4.shader")));
 
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
-
-		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
+	
 	}
 	
 	Application::~Application()
@@ -40,18 +39,29 @@ namespace Triton {
 
 		Core::EventManager::Dispatch();
 		
-		if (prtc_RenderBatch != nullptr)
+		if (prtc_RenderOrder != nullptr)
 		{
 			prtc_Shader->Enable();
-			prtc_Renderer->Render(*prtc_RenderBatch);
+			prtc_Renderer->Render(*prtc_RenderOrder);
 			prtc_Shader->Disable();
 		}
 
 		prtc_Display->OnUpdate();
 	}
 
+	void Application::UpdateProjectionMatrix()
+	{
+		prtc_Shader->Enable();
+		glm::mat4 projection = Triton::Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 45.0f, 0.1f, 100.0f);
+		prtc_Shader->SetUniform("projectionMatrix", projection);
+		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
+		prtc_Shader->Disable();
+	}
+
 	void Application::Execute()
 	{
+		UpdateProjectionMatrix();
+
 		PreExecutionSetup();
 		while (!prtc_Display->Closed())
 		{

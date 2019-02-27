@@ -36,10 +36,11 @@ namespace Triton {
 		virtual void FixedTimeOnUpdate() {}
 
 		void Run();
+		void UpdateProjectionMatrix();
 	protected:
 		float prtc_Delta = 0.0f;
 
-		std::vector<Data::RenderBatch>* prtc_RenderBatch;
+		Data::RenderOrder* prtc_RenderOrder;
 	protected:
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::unique_ptr<Core::Shader> prtc_Shader;

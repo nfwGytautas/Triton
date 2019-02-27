@@ -79,8 +79,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;ASSIMP_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -89,8 +89,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;assimp-vc140-mt.lib;IrrXML.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\bin\Debug-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
+      <AdditionalLibraryDirectories>C:\dev\Triton\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
@@ -103,7 +104,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y 
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,8 +117,9 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y 
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;assimp-mt.lib;IrrXML.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\bin\Release-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
+      <AdditionalLibraryDirectories>C:\dev\Triton\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
@@ -130,7 +132,7 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

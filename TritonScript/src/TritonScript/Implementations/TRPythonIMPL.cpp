@@ -1,27 +1,43 @@
 #include "TRPythonIMPL.h"
 
-Triton::Scripting::TRPythonScriptingInterface::TRPythonScriptingInterface()
+void Triton::Scripting::TRPythonScriptingInterface::Init()
 {
 	py::initialize_interpreter();
+}
+
+void Triton::Scripting::TRPythonScriptingInterface::Disable()
+{
+	py::finalize_interpreter();
+}
+
+Triton::Scripting::TRPythonScriptingInterface::TRPythonScriptingInterface()
+{
+	if (Py_IsInitialized())
+	{
 
 #ifdef TR_RELEASE
-	py::module::import("triton_config").attr("setup").call(0);
+		py::module::import("triton_config").attr("setup").call(0);
 #endif // TR_RELEASE
 
 #ifdef TR_DEBUG
-	py::module::import("triton_config").attr("setup").call(1);
+		py::module::import("triton_config").attr("setup").call(1);
 
 #endif // TR_DEBUG
 
-	prtc_py_PreExecution = py_CreateTRModule("User.Setup");
-	prtc_py_Update = py_CreateTRModule("User.Update");
+		prtc_py_PreExecution = py_CreateTRModule("User.Setup");
+		prtc_py_Update = py_CreateTRModule("User.Update");
 
-	py_SetupModules();
+		py_SetupModules();
+	}
+	else
+	{
+		throw "PyInterface not initialized";
+	}
 }
 
 Triton::Scripting::TRPythonScriptingInterface::~TRPythonScriptingInterface()
 {
-	py::finalize_interpreter();
+	
 }
 
 Triton::PythonModule Triton::Scripting::TRPythonScriptingInterface::py_CreateModule(const char* aModuleName)
@@ -61,6 +77,9 @@ void Triton::Scripting::TRPythonScriptingInterface::py_ReloadModules()
 	prtc_py_Update.reload();
 
 	py_SetupModules();
+
+	TR_PYTHON_SCRIPT_GUARD(prtc_py_PreExecution.attr("reload").call());
+	TR_PYTHON_SCRIPT_GUARD(prtc_py_Update.attr("reload").call());
 }
 
 void Triton::Scripting::TRPythonScriptingInterface::py_ChangeVariable(std::string aVariableName, py::object aValue)

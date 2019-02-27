@@ -19,9 +19,7 @@
     <ClInclude Include="src\TritonScript\TRMacros.h">
       <Filter>TritonScript</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonScript\TRScriptingConfig.h">
-      <Filter>TritonScript</Filter>
-    </ClInclude>
+    <ClInclude Include="src\TritonScript\TRScriptingConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonScript\Implementations\TRPythonIMPL.cpp">

@@ -49,6 +49,9 @@ namespace Triton
 		class TRITON_SCRIPTING_API TRPythonScriptingInterface
 		{
 		public:
+			static void Init();
+			static void Disable();
+		public:
 			TRPythonScriptingInterface();
 			virtual ~TRPythonScriptingInterface();
 
