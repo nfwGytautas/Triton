@@ -4,6 +4,9 @@
 
 #include "Triton\Application.h"
 #include "Triton\Events\Events.h"
+#include "Triton\Events\KeyEvent.h"
+#include "Triton\Events\MouseEvent.h"
+#include "Triton\Events\ApplicationEvent.h"
 
 #include "TritonShell\Entity\Registry.h"
 #include "TritonShell\Entity\Systems\TritonSystems.h"
@@ -21,7 +24,7 @@ namespace Triton {
 #endif
 	{
 	public:
-		ShellApplication();
+		ShellApplication(const Triton::AppSettings& aSettings);
 		virtual ~ShellApplication();
 
 		virtual void Execute() override;

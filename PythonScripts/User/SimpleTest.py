@@ -25,7 +25,7 @@ def add_components(registry, entity):
 
 def set_position(registry, entity):
     transform = registry.get_transform(entity)
-    transform.Position = Vector3(0.0, 0.0, -15.0)
+    transform.Position = Vector3(0.0, 0.0, -25.0)
     registry.set_transform(entity, transform)
 
 

@@ -7,6 +7,9 @@
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\Windows\vendorIMPL">
+      <UniqueIdentifier>{936B40F1-FF78-6ED7-885F-6AC2F46B3A8E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton">
       <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
     </Filter>
@@ -34,6 +37,9 @@
     <Filter Include="Triton\File">
       <UniqueIdentifier>{542DFBB3-C0E2-73A9-49D7-6D80B58B6AAD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\GUI">
+      <UniqueIdentifier>{99CCC13B-8584-0389-EE8B-DCE4DA629E79}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Logger">
       <UniqueIdentifier>{34B1E4AD-A071-60E4-69AC-A961D52BA5C0}</UniqueIdentifier>
     </Filter>
@@ -53,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h">
       <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h">
+      <Filter>Platform\Windows\vendorIMPL</Filter>
     </ClInclude>
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
@@ -104,6 +113,12 @@
     <ClInclude Include="src\Triton\File\File.h">
       <Filter>Triton\File</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\GUI\GUI.h">
+      <Filter>Triton\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\GUI\GUICollection.h">
+      <Filter>Triton\GUI</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Triton\Logger</Filter>
     </ClInclude>
@@ -126,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp">
       <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp">
+      <Filter>Platform\Windows\vendorIMPL</Filter>
     </ClCompile>
     <ClCompile Include="src\TRpch.cpp" />
     <ClCompile Include="src\Triton\Application.cpp">
@@ -160,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="src\Triton\File\File.cpp">
       <Filter>Triton\File</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\GUI\GUI.cpp">
+      <Filter>Triton\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\GUI\GUICollection.cpp">
+      <Filter>Triton\GUI</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>

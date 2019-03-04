@@ -62,4 +62,20 @@ namespace Triton {
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	class TRITON_API KeyInputEvent : public KeyEvent
+	{
+	public:
+		KeyInputEvent(int keycode)
+			: KeyEvent(keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyPressedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyInputEvent)
+	};
 }

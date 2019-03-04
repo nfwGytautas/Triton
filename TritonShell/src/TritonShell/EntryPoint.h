@@ -4,7 +4,11 @@
 	#include "TritonScript\Implementations\TRPythonModule.h"
 #endif
 
-extern Triton::Application* Triton::CreateApplication();
+#ifndef TR_DISABLE_GUI
+	#include "imgui.h"
+#endif
+
+extern Triton::Application* Triton::CreateApplication(const Triton::AppSettings& aSettings);
 
 int main(int argc, char** argv)
 {
@@ -12,11 +16,23 @@ int main(int argc, char** argv)
 	Triton::Scripting::TRPythonScriptingInterface::Init();
 #endif
 
+#ifndef TR_DISABLE_GUI
+	//Init imgui
+	ImGuiContext* imguiContext = ImGui::CreateContext();
+#endif
+
 	//Initialize logger
 	Triton::Log::Init();
 
+	Triton::AppSettings appSettings;
+
+#ifndef TR_DISABLE_GUI
+	appSettings.ImGUIContext = imguiContext;
+#endif
+
 	//Create triton application by user defined procedure
-	Triton::Application* app = Triton::CreateApplication();
+	Triton::Application* app = Triton::CreateApplication(appSettings);
+
 
 	try
 	{
@@ -28,6 +44,10 @@ int main(int argc, char** argv)
 
 #ifndef TR_DISABLE_SCRIPTING 
 		Triton::Scripting::TRPythonScriptingInterface::Disable();
+#endif
+
+#ifndef TR_DISABLE_GUI
+		ImGui::DestroyContext(imguiContext);
 #endif
 
 		return 0;

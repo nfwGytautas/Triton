@@ -30,6 +30,8 @@
 
 #define TR_STRINGIZE(A, B) A ## B
 
+#define TR_BIND_FUNC(func, obj, ...) std::bind(&func, obj, __VA_ARGS__)
+
 //Project typedefs
 namespace Triton
 {

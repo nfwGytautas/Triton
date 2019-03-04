@@ -18,9 +18,13 @@ IncludeDir["entt"] = "vendor/entt/src"
 IncludeDir["pybind"] = "vendor/pybind/include"
 IncludeDir["python0"] = "vendor/python/include"
 IncludeDir["python1"] = "vendor/python/PC"
+IncludeDir["ImGui"] = "vendor/ImGui"
+IncludeDir["Assimp"] = "vendor/Assimp/include"
+IncludeDir["stb_image"] = "vendor/stb_image"
 
 include "vendor/GLFW"
 include "vendor/Glad"
+include "vendor/ImGui"
 
 project "TritonScript"
 	location "TritonScript"
@@ -122,19 +126,22 @@ project "TritonCore"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
-		"vendor/stb_image",
-		"vendor/Assimp/include"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.Assimp}",
 	}
 
 	libdirs
 	{
-		
+		"C:/dev/Triton/vendor/Assimp/lib/Release"
 	}
 	
 	links 
 	{ 
+		"assimp-vc140-mt.lib",
 		"GLFW",
 		"Glad",
+		"ImGui",
 		"opengl32.lib",
 	}
 
@@ -198,10 +205,11 @@ project "TritonShell"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
-		"vendor/stb_image",
+		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.pybind}",
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
+		"%{IncludeDir.ImGui}",
 		"TritonCore/src",
 		"TritonScript/src"
 	}
@@ -215,6 +223,7 @@ project "TritonShell"
 	{ 
 		"TritonCore",
 		"TritonScript",
+		"ImGui",
 		"GLFW",
 		"Glad",
 		"opengl32.lib",
@@ -277,6 +286,7 @@ project "SandBox"
 		"%{IncludeDir.pybind}",
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
+		"%{IncludeDir.ImGui}",
 		"TritonCore/src",
 		"TritonScript/src",
 		"TritonShell/src",

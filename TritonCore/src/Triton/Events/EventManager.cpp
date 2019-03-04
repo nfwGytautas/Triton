@@ -24,13 +24,12 @@ void Triton::Core::EventManager::Dispatch()
 			}
 			else
 			{
-				delete m_EventBuffer[i];
-				m_EventBuffer.erase(m_EventBuffer.begin() + i);
-				i--;
 				break;
 			}
 		}
 	}
+
+	ClearBuffer();
 }
 
 size_t Triton::Core::EventManager::AddListener(EventListener& listener)

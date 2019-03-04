@@ -24,6 +24,8 @@ namespace Triton
 
 			void SetVSync(bool aState) override;
 			bool IsVSync() override;
+
+			void ShowCursor(bool aState) override;
 		protected:
 			virtual void Init(const DisplaySettings& aSettings);
 			virtual void ShutDown();

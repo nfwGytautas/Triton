@@ -20,16 +20,27 @@
 #include "Core\Data\Structures\Mesh.h"
 #include "Core\Data\Structures\Material.h"
 
+#include "GUI\GUICollection.h"
+
 namespace Triton {
+
+	struct AppSettings
+	{
+
+#ifndef TR_DISABLE_GUI
+		ImGuiContext* ImGUIContext;
+#endif
+	};
 
 	//Main class that allows for project creation
 	class TRITON_API Application
 	{
 	public:
-		Application();
+		Application(const AppSettings& aSettings);
 		virtual ~Application();
 
 		virtual void Execute();
+
 	protected:
 		virtual void PreExecutionSetup() {}
 		virtual void OnUpdate() {}
@@ -42,6 +53,12 @@ namespace Triton {
 
 		Data::RenderOrder* prtc_RenderOrder;
 	protected:
+#ifndef TR_DISABLE_GUI
+		std::unique_ptr<UI::GUICollection> prtc_GUIS;
+	private:
+		ImGuiContext* mGUIContext;
+	protected:
+#endif
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<Core::Renderer> prtc_Renderer;
@@ -49,5 +66,5 @@ namespace Triton {
 		float m_LastFrame = 0.0f;
 	};
 
-	Application* CreateApplication();
+	Application* CreateApplication(const Triton::AppSettings& aSettings);
 }

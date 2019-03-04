@@ -152,8 +152,8 @@ IF EXIST ..\vendor\python\PCbuild\amd64\python38.dll\ (xcopy /Q /E /Y /I ..\vend
     <ClInclude Include="src\TritonScript.h" />
     <ClInclude Include="src\TritonScript\Implementations\TRPythonIMPL.h" />
     <ClInclude Include="src\TritonScript\Implementations\TRPythonModule.h" />
-    <ClInclude Include="src\TritonScript\TRScriptingConfig.h" />
     <ClInclude Include="src\TritonScript\TRMacros.h" />
+    <ClInclude Include="src\TritonScript\TRScriptingConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonScript\Implementations\TRPythonIMPL.cpp" />

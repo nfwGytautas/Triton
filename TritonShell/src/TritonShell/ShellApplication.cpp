@@ -4,12 +4,10 @@
 #include "Triton\Core\Math\Math.h"
 #include <glm\gtc\matrix_transform.hpp>
 
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
-
 namespace Triton {
 
-	ShellApplication::ShellApplication()
+	ShellApplication::ShellApplication(const Triton::AppSettings& aSettings)
+		: Application(aSettings)
 	{
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 

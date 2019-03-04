@@ -31,6 +31,8 @@ namespace Triton {
 			virtual void SetVSync(bool aState) = 0;
 			virtual bool IsVSync() = 0;
 
+			virtual void ShowCursor(bool aState) = 0;
+
 			static Display* Create(const DisplaySettings& settings = DisplaySettings());
 		};
 	}

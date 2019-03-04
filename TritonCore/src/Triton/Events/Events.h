@@ -2,6 +2,8 @@
 #include "TRpch.h"
 #include "../TRMacros.h"
 
+#define TR_EVENT_CAST(name, event, type) const type& name = dynamic_cast<const type&>(event);
+
 namespace Triton
 {
 	class TRITON_API Event;
@@ -16,11 +18,11 @@ namespace Triton
 	{
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyReleased, KeyInputEvent,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
-	const size_t MaxEvents = (size_t)EventType::MouseScrolled;
+	const size_t MaxEvents = (size_t)EventType::MouseScrolled + 1;
 
 	enum EventCategory
 	{

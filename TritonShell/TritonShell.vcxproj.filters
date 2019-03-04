@@ -25,10 +25,12 @@
     <ClInclude Include="src\TritonShell\Entity\Systems\TritonSystems.h">
       <Filter>TritonShell\Entity\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonShell\EntryPoint.h">
+      <Filter>TritonShell</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonShell\ShellApplication.h">
       <Filter>TritonShell</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonShell\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp">

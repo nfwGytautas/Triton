@@ -74,6 +74,11 @@ bool Triton::Core::WindowsDisplay::IsVSync()
 	return m_Data.VSync;
 }
 
+void Triton::Core::WindowsDisplay::ShowCursor(bool aState)
+{
+	glfwSetInputMode(m_Window, GLFW_CURSOR, aState ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+}
+
 void Triton::Core::WindowsDisplay::Init(const DisplaySettings& aSettings)
 {
 	m_Data.Title = aSettings.Title;
@@ -125,8 +130,6 @@ void Triton::Core::WindowsDisplay::ShutDown()
 
 void Triton::Core::WindowsDisplay::SetUpCallbacks()
 {
-	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 	auto errorCallback = [](int aCode, const char* aDescription)
 	{
 		TR_CORE_ERROR("GLFW Error: {0} '{1}'", aCode, aDescription);
@@ -166,11 +169,33 @@ void Triton::Core::WindowsDisplay::SetUpCallbacks()
 
 	auto windowResizeCallback = [](GLFWwindow* w, int width, int height)
 	{
+		glViewport(0, 0, width, height);
 		Triton::Core::EventManager::Post(new WindowResizeEvent(width, height));
+	};
+
+	auto mouseKeyCallback = [](GLFWwindow* w, int button, int action, int mods) 
+	{
+		if(action == GLFW_PRESS)
+			Triton::Core::EventManager::Post(new MouseButtonPressedEvent(button));
+		else if(action == GLFW_RELEASE)
+			Triton::Core::EventManager::Post(new MouseButtonReleasedEvent(button));
+	};
+
+	auto scrollCallback = [](GLFWwindow* window, double xoffset, double yoffset)
+	{
+		Triton::Core::EventManager::Post(new MouseScrolledEvent(xoffset, yoffset));
+	};
+
+	auto charCallback = [](GLFWwindow* window, unsigned int charInput)
+	{
+		Triton::Core::EventManager::Post(new KeyInputEvent(charInput));
 	};
 
 	glfwSetErrorCallback(errorCallback);
 	glfwSetKeyCallback(m_Window, keyCallback);
 	glfwSetCursorPosCallback(m_Window, mouseMoveCallback);
 	glfwSetWindowSizeCallback(m_Window, windowResizeCallback);
+	glfwSetMouseButtonCallback(m_Window, mouseKeyCallback);
+	glfwSetScrollCallback(m_Window, scrollCallback);
+	glfwSetCharCallback(m_Window, charCallback);
 }

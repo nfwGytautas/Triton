@@ -17,7 +17,8 @@ private:
 		py_ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
 	}
 public:
-	Sandbox()
+	Sandbox(const Triton::AppSettings& aSettings)
+		: ShellApplication(aSettings)
 	{
 		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(std::bind(&Sandbox::keyPressed, this, std::placeholders::_1)));
 		this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(std::bind(&Sandbox::keyReleased, this, std::placeholders::_1)));
@@ -152,85 +153,169 @@ private:
 
 #include <iterator>
 #include <vector>
-class UnitTest1 : public Triton::ShellApplication
+
+class TestGUI : public Triton::UI::GUI, public Triton::EventListener
 {
 public:
-	UnitTest1()
+	TestGUI(unsigned int aDisplayWidth, unsigned int aDisplayHeight)
+		: GUI(aDisplayWidth, aDisplayHeight)
 	{
-		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(std::bind(&UnitTest1::KeyDown, this, std::placeholders::_1)));
+		this->Listen<Triton::MouseButtonPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseButtonPressedEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::MouseButtonReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseButtonReleasedEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::MouseMovedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseMovedEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::MouseScrolledEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseScrolledEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyPressedEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyReleasedEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::KeyInputEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyInputEvent, this, std::placeholders::_1)));
+		this->Listen<Triton::WindowResizeEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnWindowResizeEvent, this, std::placeholders::_1)));
 	}
 
-	bool KeyDown(const Triton::Event& event)
+	void Visualize() override
 	{
-		const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
+		bool show = true;
+		ImGui::ShowDemoWindow(&show);
 
-		if (kpe.GetKeyCode() == (int)'`')
-		{
-			RestartShell();
-		}
+		//bool my_tool_active = true;
+		//
+		//ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
+		//if (ImGui::BeginMenuBar())
+		//{
+		//	if (ImGui::BeginMenu("File"))
+		//	{
+		//		if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+		//		if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
+		//		if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
+		//		ImGui::EndMenu();
+		//	}
+		//	ImGui::EndMenuBar();
+		//}
+		//
+		//// Plot some values
+		//const float my_values[] = { 0.2f, 0.1f, 1.0f, 0.5f, 0.9f, 2.2f };
+		//ImGui::PlotLines("Frame Times", my_values, IM_ARRAYSIZE(my_values));
+		//
+		//// Display contents in a scrolling region
+		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
+		//ImGui::BeginChild("Scrolling");
+		//for (int n = 0; n < 50; n++)
+		//	ImGui::Text("%04d: Some text", n);
+		//ImGui::EndChild();
+		//ImGui::End();
+	}
+
+	void Update(float aDelta) override
+	{
+		IO().DeltaTime = aDelta;
+	}
+
+	bool OnMouseButtonPressedEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(mbpe, e, Triton::MouseButtonPressedEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDown[mbpe.GetMouseButton()] = true;
+
+		return false;
+	}
+
+	bool OnMouseButtonReleasedEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(mbre, e, Triton::MouseButtonReleasedEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDown[mbre.GetMouseButton()] = false;
+
+		return false;
+	}
+
+	bool OnMouseMovedEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(mme, e, Triton::MouseMovedEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.MousePos = ImVec2(mme.GetX(), mme.GetY());
+
+		return false;
+	}
+
+	bool OnMouseScrolledEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(mse, e, Triton::MouseScrolledEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseWheelH += mse.GetXOffset();
+		io.MouseWheel += mse.GetYOffset();
 
 		return true;
 	}
 
-	void PreExecutionSetup() override
+	bool OnKeyPressedEvent(const Triton::Event& e)
 	{
-		TestEntity = prtc_EntityRegistry->create();
+		TR_EVENT_CAST(kpe, e, Triton::KeyPressedEvent);
 
-		//float vertices[] = {
-		//	0.5f,  0.5f, 0.0f,  // top right
-		//	 0.5f, -0.5f, 0.0f,  // bottom right
-		//	-0.5f, -0.5f, 0.0f,  // bottom left
-		//	-0.5f,  0.5f, 0.0f   // top left 
-		//};
-		////float vertices[] = {
-		////	-0.5f, -0.5f, 0.0f,
-		////	 0.5f, -0.5f, 0.0f,
-		////	 0.0f,  0.5f, 0.0f
-		////};
-		//
-		//unsigned int indices[] = {  // note that we start from 0!
-		//	0, 1, 3,   // first triangle
-		//	1, 2, 3    // second triangle
-		//};
-		//
-		//float uvs[] = {
-		//	1.0f, 1.0f,   // top right
-		//	1.0f, 0.0f,   // bottom right
-		//	0.0f, 0.0f,   // bottom left
-		//	0.0f, 1.0f
-		//};
-		
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[kpe.GetKeyCode()] = true;
 
-		
-		//Triton::Data::MeshData mData;
-		//mData.Fill("D:/Programming/Test files/nfw/stall.obj");
-		//Mesh = Triton::Data::Mesh::Create(mData);
-		//
-		//Triton::Data::TextureData tData;
-		//tData.Fill("D:/Programming/Test files/nfw/stallTexture.png");
-		//Material = std::make_shared<Triton::Data::Material>(Triton::Data::Texture::Create(tData));
-		//
-		//prtc_EntityRegistry->assign<Triton::Components::Transform>(TestEntity).Position = glm::vec3(0.0f, 0.0f, -15.0f);
-		//prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(TestEntity).Mesh = Mesh;
-		//prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(TestEntity).Material = Material;
-
-
+		io.KeyCtrl = io.KeysDown[341] || io.KeysDown[345];
+		io.KeyShift = io.KeysDown[340] || io.KeysDown[344];
+		io.KeyAlt = io.KeysDown[342] || io.KeysDown[346];
+		io.KeySuper = io.KeysDown[343] || io.KeysDown[347];
+		return false;
 	}
 
-	void OnUpdate() override
+	bool OnKeyReleasedEvent(const Triton::Event& e)
 	{
-		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.z += 1.0f;
-		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.y += 1.0f;
-		//prtc_EntityRegistry->get<Triton::Components::Transform>(TestEntity).Rotation.x += 1.0f;
-	}
-private:
-	Triton::ECS::Entity TestEntity;
+		TR_EVENT_CAST(kre, e, Triton::KeyReleasedEvent);
 
-	std::shared_ptr<Triton::Data::Mesh> Mesh;
-	std::shared_ptr<Triton::Data::Material> Material;
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[kre.GetKeyCode()] = false;
+
+		return false;
+	}
+
+	bool OnKeyInputEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(kie, e, Triton::KeyInputEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		int keycode = kie.GetKeyCode();
+		if (keycode > 0 && keycode < 0x10000)
+			io.AddInputCharacter((unsigned short)keycode);
+
+		return false;
+	}
+
+	bool OnWindowResizeEvent(const Triton::Event& e)
+	{
+		TR_EVENT_CAST(wre, e, Triton::WindowResizeEvent);
+
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(wre.GetWidth(), wre.GetHeight());
+		io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+
+		return false;
+	}
+
 };
 
-Triton::Application* Triton::CreateApplication()
+class UnitTest1 : public Triton::ShellApplication
 {
-	return new UnitTest1();
+public:
+	UnitTest1(const Triton::AppSettings& aSettings)
+		: ShellApplication(aSettings)
+	{
+		
+	}
+
+	void PreExecutionSetup() override
+	{
+		prtc_Display->ShowCursor(true);
+
+		prtc_GUIS->AddGUI(std::make_shared<TestGUI>(prtc_Display->GetWidth(), prtc_Display->GetHeight()));
+	}
+};
+
+Triton::Application* Triton::CreateApplication(const Triton::AppSettings& aSettings)
+{
+	return new UnitTest1(aSettings);
 }
