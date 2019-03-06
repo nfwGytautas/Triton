@@ -13,6 +13,8 @@
 
 #include "Triton\Core\Data\Structures\RenderBatch.h"
 
+#include "TritonShell\Tools\GUIConsole.h"
+
 namespace Triton {
 
 	//Main class that allows for project creation
@@ -40,5 +42,9 @@ namespace Triton {
 		std::unique_ptr<ECS::Registry> prtc_EntityRegistry;
 
 		std::unique_ptr<Triton::Systems::BatchSystem> prtc_BatchSystem;
+
+#ifndef TR_DISABLE_EDITOR_TOOLS
+		std::shared_ptr<Tools::GUIConsole> prtc_Console;
+#endif
 	};
 }

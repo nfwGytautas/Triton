@@ -12,6 +12,11 @@ namespace Triton {
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 
 		prtc_BatchSystem = std::make_unique<Triton::Systems::BatchSystem>();
+
+#ifndef TR_DISABLE_EDITOR_TOOLS
+		prtc_Console = std::make_shared<Tools::GUIConsole>(prtc_Display->GetWidth(), prtc_Display->GetHeight());
+		prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
+#endif
 	}
 	
 	ShellApplication::~ShellApplication()
@@ -47,9 +52,9 @@ namespace Triton {
 	void ShellApplication::RestartShell()
 	{
 		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
-		py_ReloadModules();
 
 #ifndef TR_DISABLE_SCRIPTING
+		py_ReloadModules();
 		TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
 #endif
 
@@ -64,6 +69,10 @@ namespace Triton {
 
 #ifndef TR_DISABLE_SCRIPTING 
 		TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
+#endif
+
+#ifndef TR_DISABLE_EDITOR_TOOLS
+		prtc_GUIS->AddGUI(prtc_Console);
 #endif
 
 		while (!prtc_Display->Closed())

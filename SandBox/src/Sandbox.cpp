@@ -153,151 +153,6 @@ private:
 
 #include <iterator>
 #include <vector>
-
-class TestGUI : public Triton::UI::GUI, public Triton::EventListener
-{
-public:
-	TestGUI(unsigned int aDisplayWidth, unsigned int aDisplayHeight)
-		: GUI(aDisplayWidth, aDisplayHeight)
-	{
-		this->Listen<Triton::MouseButtonPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseButtonPressedEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::MouseButtonReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseButtonReleasedEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::MouseMovedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseMovedEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::MouseScrolledEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnMouseScrolledEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyPressedEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyReleasedEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::KeyInputEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnKeyInputEvent, this, std::placeholders::_1)));
-		this->Listen<Triton::WindowResizeEvent>(Triton::EventBehavior(TR_BIND_FUNC(TestGUI::OnWindowResizeEvent, this, std::placeholders::_1)));
-	}
-
-	void Visualize() override
-	{
-		bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
-		//bool my_tool_active = true;
-		//
-		//ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
-		//if (ImGui::BeginMenuBar())
-		//{
-		//	if (ImGui::BeginMenu("File"))
-		//	{
-		//		if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-		//		if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Do stuff */ }
-		//		if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
-		//		ImGui::EndMenu();
-		//	}
-		//	ImGui::EndMenuBar();
-		//}
-		//
-		//// Plot some values
-		//const float my_values[] = { 0.2f, 0.1f, 1.0f, 0.5f, 0.9f, 2.2f };
-		//ImGui::PlotLines("Frame Times", my_values, IM_ARRAYSIZE(my_values));
-		//
-		//// Display contents in a scrolling region
-		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Important Stuff");
-		//ImGui::BeginChild("Scrolling");
-		//for (int n = 0; n < 50; n++)
-		//	ImGui::Text("%04d: Some text", n);
-		//ImGui::EndChild();
-		//ImGui::End();
-	}
-
-	void Update(float aDelta) override
-	{
-		IO().DeltaTime = aDelta;
-	}
-
-	bool OnMouseButtonPressedEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(mbpe, e, Triton::MouseButtonPressedEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDown[mbpe.GetMouseButton()] = true;
-
-		return false;
-	}
-
-	bool OnMouseButtonReleasedEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(mbre, e, Triton::MouseButtonReleasedEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDown[mbre.GetMouseButton()] = false;
-
-		return false;
-	}
-
-	bool OnMouseMovedEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(mme, e, Triton::MouseMovedEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.MousePos = ImVec2(mme.GetX(), mme.GetY());
-
-		return false;
-	}
-
-	bool OnMouseScrolledEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(mse, e, Triton::MouseScrolledEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.MouseWheelH += mse.GetXOffset();
-		io.MouseWheel += mse.GetYOffset();
-
-		return true;
-	}
-
-	bool OnKeyPressedEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(kpe, e, Triton::KeyPressedEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.KeysDown[kpe.GetKeyCode()] = true;
-
-		io.KeyCtrl = io.KeysDown[341] || io.KeysDown[345];
-		io.KeyShift = io.KeysDown[340] || io.KeysDown[344];
-		io.KeyAlt = io.KeysDown[342] || io.KeysDown[346];
-		io.KeySuper = io.KeysDown[343] || io.KeysDown[347];
-		return false;
-	}
-
-	bool OnKeyReleasedEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(kre, e, Triton::KeyReleasedEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.KeysDown[kre.GetKeyCode()] = false;
-
-		return false;
-	}
-
-	bool OnKeyInputEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(kie, e, Triton::KeyInputEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		int keycode = kie.GetKeyCode();
-		if (keycode > 0 && keycode < 0x10000)
-			io.AddInputCharacter((unsigned short)keycode);
-
-		return false;
-	}
-
-	bool OnWindowResizeEvent(const Triton::Event& e)
-	{
-		TR_EVENT_CAST(wre, e, Triton::WindowResizeEvent);
-
-		ImGuiIO& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2(wre.GetWidth(), wre.GetHeight());
-		io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-
-		return false;
-	}
-
-};
-
 class UnitTest1 : public Triton::ShellApplication
 {
 public:
@@ -310,8 +165,9 @@ public:
 	void PreExecutionSetup() override
 	{
 		prtc_Display->ShowCursor(true);
+		prtc_Display->SetVSync(true);
 
-		prtc_GUIS->AddGUI(std::make_shared<TestGUI>(prtc_Display->GetWidth(), prtc_Display->GetHeight()));
+		//prtc_GUIS->AddGUI(std::make_shared<TestGUI>(prtc_Display->GetWidth(), prtc_Display->GetHeight()));
 	}
 };
 
