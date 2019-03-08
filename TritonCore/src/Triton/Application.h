@@ -26,7 +26,9 @@ namespace Triton {
 
 	struct AppSettings
 	{
-
+		unsigned int WindowWidth = 600;
+		unsigned int WindowHeight = 600;
+		std::string WindowTitle = "Triton display";
 #ifndef TR_DISABLE_GUI
 		ImGuiContext* ImGUIContext;
 #endif
@@ -66,5 +68,5 @@ namespace Triton {
 		float m_LastFrame = 0.0f;
 	};
 
-	Application* CreateApplication(const Triton::AppSettings& aSettings);
+	Application* CreateApplication(Triton::AppSettings& aSettings);
 }

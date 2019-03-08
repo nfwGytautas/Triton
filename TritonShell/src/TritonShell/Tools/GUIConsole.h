@@ -11,7 +11,7 @@ namespace Triton
 		class GUIConsole : public UI::GUI
 		{
 		public:
-			GUIConsole(unsigned int aDisplayWidth, unsigned int aDisplayHeight);
+			GUIConsole();
 			~GUIConsole();
 
 			void Visualize() override;
@@ -21,8 +21,6 @@ namespace Triton
 			virtual void ExecCommand(const char* command_line);
 
 			void AddCommand(const char* aCommandString, std::function<void()> aFunction);
-
-			bool Open;
 		protected:
 			void ClearLog();
 			virtual void AddLog(const char* fmt, ...);

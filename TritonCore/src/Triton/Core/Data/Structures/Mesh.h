@@ -25,6 +25,8 @@ namespace Triton
 
 			std::vector<unsigned int> Indices;
 
+			std::string Path;
+
 			void Fill(const char* aPathToMesh);
 		};
 
@@ -41,11 +43,17 @@ namespace Triton
 			{
 				return m_Height;
 			}
+			std::string GetPath() const
+			{
+				return m_Path;
+			}
 
 			static std::shared_ptr<Mesh> Create(MeshData& aData);
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;
+
+			std::string m_Path;
 		};
 
 	}

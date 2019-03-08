@@ -152,6 +152,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TritonShell\Tools\GUIComponentVisualizer.h" />
     <ClInclude Include="src\TritonShell\Tools\GUIConsole.h" />
     <ClInclude Include="src\TritonShell.h" />
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
@@ -161,6 +162,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     <ClInclude Include="src\TritonShell\ShellApplication.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonShell\Tools\GUIComponentVisualizer.cpp" />
     <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp" />
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp" />
     <ClCompile Include="src\TritonShell\ShellApplication.cpp" />

@@ -9,13 +9,16 @@ namespace Triton {
 	ShellApplication::ShellApplication(const Triton::AppSettings& aSettings)
 		: Application(aSettings)
 	{
-		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
+		prtc_EntityRegistry = std::shared_ptr<ECS::Registry>(new ECS::Registry());
 
 		prtc_BatchSystem = std::make_unique<Triton::Systems::BatchSystem>();
 
 #ifndef TR_DISABLE_EDITOR_TOOLS
-		prtc_Console = std::make_shared<Tools::GUIConsole>(prtc_Display->GetWidth(), prtc_Display->GetHeight());
+		prtc_Console = std::make_shared<Tools::GUIConsole>();
 		prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
+		
+		prtc_ComponentVisualizer = std::make_shared<Tools::GUIComponentVisualizer>(prtc_EntityRegistry);
+		prtc_Console->AddCommand("ENTITY_VISUALIZER", [&]() { prtc_ComponentVisualizer->Enable(); prtc_ComponentVisualizer->IsOpen = true; });
 #endif
 	}
 	
@@ -73,6 +76,7 @@ namespace Triton {
 
 #ifndef TR_DISABLE_EDITOR_TOOLS
 		prtc_GUIS->AddGUI(prtc_Console);
+		prtc_GUIS->AddGUI(prtc_ComponentVisualizer);
 #endif
 
 		while (!prtc_Display->Closed())

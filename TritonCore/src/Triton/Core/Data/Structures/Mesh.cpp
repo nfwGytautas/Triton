@@ -10,6 +10,8 @@
 
 void Triton::Data::MeshData::Fill(const char* aPathToMesh)
 {
+	Path = std::string(aPathToMesh);
+
 	Assimp::Importer importer;
 
 	const aiScene* scene = importer.ReadFile(

@@ -12,6 +12,8 @@ bool checkPath(std::string mFilePath)
 
 void Triton::Data::TextureData::Fill(const char* aPathToImage)
 {
+	Path = std::string(aPathToImage);
+
 	#ifdef TR_PLATFORM_WINDOWS
 	stbi_set_flip_vertically_on_load(1);
 	#endif

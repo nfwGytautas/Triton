@@ -5,18 +5,19 @@
 
 std::shared_ptr<Triton::Data::Texture> Triton::Data::Texture::Create(TextureData& aData)
 {
-	return std::make_shared<Core::WindowsTexture>(aData.Width, aData.Height, aData.Buffer.get());
+	return std::make_shared<Core::WindowsTexture>(aData);
 }
 
-Triton::Core::WindowsTexture::WindowsTexture(unsigned int aWidth, unsigned int aHeight, unsigned char* aBuffer)
+Triton::Core::WindowsTexture::WindowsTexture(Triton::Data::TextureData& aData)
 {
-	m_Width = aWidth;
-	m_Height = aHeight;
+	m_Width = aData.Width;
+	m_Height = aData.Height;
+	m_Path = aData.Path;
 
 	unsigned int textureID = 0;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, aBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, aData.Buffer.get());
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

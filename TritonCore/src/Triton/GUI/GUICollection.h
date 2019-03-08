@@ -22,14 +22,12 @@ namespace Triton
 			GUICollection(size_t aSize);
 			~GUICollection();
 
-			void RefreshCollection();
+			static void InitGUI(unsigned int aWidth, unsigned int aHeight);
+
+			void UpdateCollection(float aDelta);
 			void DrawCollection();
 
-			void VisualizeCollection();
-			void UpdateCollection(float aDelta);
-
 			void AddGUI(std::shared_ptr<GUI> aGUI);
-
 
 		protected:
 			bool OnMouseButtonPressedEvent(const Triton::Event& e);

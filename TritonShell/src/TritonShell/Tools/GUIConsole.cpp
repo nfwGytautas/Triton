@@ -6,9 +6,10 @@ static int   Strnicmp(const char* str1, const char* str2, int n) { int d = 0; wh
 static char* Strdup(const char *str) { size_t len = strlen(str) + 1; void* buf = malloc(len); IM_ASSERT(buf); return (char*)memcpy(buf, (const void*)str, len); }
 static void  Strtrim(char* str) { char* str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
 
-Triton::Tools::GUIConsole::GUIConsole(unsigned int aDisplayWidth, unsigned int aDisplayHeight)
-	: GUI(aDisplayWidth, aDisplayHeight), Open(true)
+Triton::Tools::GUIConsole::GUIConsole()
 {
+	IsOpen = true;
+
 	ClearLog();
 	memset(InputBuf, 0, sizeof(InputBuf));
 	HistoryPos = -1;
@@ -20,7 +21,7 @@ Triton::Tools::GUIConsole::GUIConsole(unsigned int aDisplayWidth, unsigned int a
 	};
 	Commands["EXIT"] = [&]()
 	{
-		Open = false;
+		IsOpen = false;
 	};
 	AutoScroll = true;
 	ScrollToBottom = true;
@@ -35,14 +36,14 @@ Triton::Tools::GUIConsole::~GUIConsole()
 
 void Triton::Tools::GUIConsole::Visualize()
 {
-	if (!Open)
+	if (!IsOpen)
 	{
 		return;
 	}
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 
-	if (!ImGui::Begin("Triton editor console", &Open))
+	if (!ImGui::Begin("Triton editor console", &IsOpen))
 	{
 		ImGui::End();
 		return;
@@ -136,7 +137,7 @@ void Triton::Tools::GUIConsole::Update(float aDelta)
 	IO().DeltaTime = aDelta;
 	if (IO().KeysDown[96])
 	{
-		Open = true;
+		IsOpen = true;
 		IO().InputQueueCharacters.clear();
 	}
 }

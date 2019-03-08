@@ -8,7 +8,7 @@
 	#include "imgui.h"
 #endif
 
-extern Triton::Application* Triton::CreateApplication(const Triton::AppSettings& aSettings);
+extern Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings);
 
 int main(int argc, char** argv)
 {

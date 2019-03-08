@@ -3,6 +3,11 @@
 
 #ifndef TR_DISABLE_GUI
 
+#include <glad\glad.h>
+#include <GLFW\glfw3.h>
+
+#include "Platform\Windows\vendorIMPL\imgui_impl_opengl3.h"
+
 Triton::UI::GUICollection::GUICollection()
 {
 	this->Listen<Triton::MouseButtonPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseButtonPressedEvent, this, std::placeholders::_1)));
@@ -24,35 +29,64 @@ Triton::UI::GUICollection::~GUICollection()
 {
 }
 
-void Triton::UI::GUICollection::RefreshCollection()
+void Triton::UI::GUICollection::InitGUI(unsigned int aWidth, unsigned int aHeight)
 {
-	for (auto& gui : mGUIS)
-	{
-		gui->Refresh();
-	}
+	ImGui::StyleColorsDark();
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+
+	// TEMPORARY: should eventually use Hazel key codes
+	io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
+	io.KeyMap[ImGuiKey_LeftArrow] = GLFW_KEY_LEFT;
+	io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
+	io.KeyMap[ImGuiKey_UpArrow] = GLFW_KEY_UP;
+	io.KeyMap[ImGuiKey_DownArrow] = GLFW_KEY_DOWN;
+	io.KeyMap[ImGuiKey_PageUp] = GLFW_KEY_PAGE_UP;
+	io.KeyMap[ImGuiKey_PageDown] = GLFW_KEY_PAGE_DOWN;
+	io.KeyMap[ImGuiKey_Home] = GLFW_KEY_HOME;
+	io.KeyMap[ImGuiKey_End] = GLFW_KEY_END;
+	io.KeyMap[ImGuiKey_Insert] = GLFW_KEY_INSERT;
+	io.KeyMap[ImGuiKey_Delete] = GLFW_KEY_DELETE;
+	io.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
+	io.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
+	io.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
+	io.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
+	io.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
+	io.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
+	io.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
+	io.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
+	io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
+	io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+
+	io.DisplaySize.x = aWidth;
+	io.DisplaySize.y = aHeight;
+
+	ImGui_ImplOpenGL3_Init("#version 410");
 }
 
 void Triton::UI::GUICollection::DrawCollection()
 {
+	GUI::Refresh();
 	for (auto& gui : mGUIS)
 	{
-		gui->Draw();
+		if(gui->IsActive())
+		{
+			gui->Visualize();
+		}
 	}
-}
-
-void Triton::UI::GUICollection::VisualizeCollection()
-{
-	for (auto& gui : mGUIS)
-	{
-		gui->Visualize();
-	}
+	GUI::Draw();
 }
 
 void Triton::UI::GUICollection::UpdateCollection(float aDelta)
 {
 	for (auto& gui : mGUIS)
 	{
-		gui->Update(aDelta);
+		if (gui->IsActive())
+		{
+			gui->Update(aDelta);
+		}
 	}
 }
 
@@ -123,6 +157,10 @@ bool Triton::UI::GUICollection::OnKeyReleasedEvent(const Triton::Event& e)
 	ImGuiIO& io = ImGui::GetIO();
 	io.KeysDown[kre.GetKeyCode()] = false;
 
+	io.KeyCtrl = io.KeysDown[341] || io.KeysDown[345];
+	io.KeyShift = io.KeysDown[340] || io.KeysDown[344];
+	io.KeyAlt = io.KeysDown[342] || io.KeysDown[346];
+	io.KeySuper = io.KeysDown[343] || io.KeysDown[347];
 	return false;
 }
 

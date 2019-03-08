@@ -77,6 +77,8 @@ namespace Triton
 	{		
 		WindowsMesh::WindowsMesh(Data::MeshData& aData)
 		{
+			m_Path = std::string(aData.Path);
+
 			m_VAO = Triton::Core::CreateVAO();
 			Bind();
 

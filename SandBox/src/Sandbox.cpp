@@ -165,13 +165,13 @@ public:
 	void PreExecutionSetup() override
 	{
 		prtc_Display->ShowCursor(true);
-		prtc_Display->SetVSync(true);
-
-		//prtc_GUIS->AddGUI(std::make_shared<TestGUI>(prtc_Display->GetWidth(), prtc_Display->GetHeight()));
+		prtc_Display->SetVSync(false);
 	}
 };
 
-Triton::Application* Triton::CreateApplication(const Triton::AppSettings& aSettings)
+Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
 {
+	aSettings.WindowWidth = 1280;
+	aSettings.WindowHeight = 720;
 	return new UnitTest1(aSettings);
 }

@@ -13,12 +13,9 @@ namespace Triton {
 
 	Application::Application(const AppSettings& aSettings)
 	{
-#ifndef TR_DISABLE_GUI
-		mGUIContext = aSettings.ImGUIContext;
-		ImGui::SetCurrentContext(mGUIContext);
-#endif
-
-		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(Core::DisplaySettings()));
+		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
+			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
+		));
 
 		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
@@ -27,7 +24,13 @@ namespace Triton {
 
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
 
+#ifndef TR_DISABLE_GUI
+		mGUIContext = aSettings.ImGUIContext;
+		ImGui::SetCurrentContext(mGUIContext);
+		UI::GUICollection::InitGUI(aSettings.WindowWidth, aSettings.WindowHeight);
 		prtc_GUIS = std::make_unique<UI::GUICollection>();
+#endif
+
 	}
 	
 	Application::~Application()
@@ -53,9 +56,7 @@ namespace Triton {
 		}
 
 #ifndef TR_DISABLE_GUI
-		prtc_GUIS->RefreshCollection();
 		prtc_GUIS->UpdateCollection(prtc_Delta);
-		prtc_GUIS->VisualizeCollection();
 		prtc_GUIS->DrawCollection();
 #endif
 
