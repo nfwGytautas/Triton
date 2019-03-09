@@ -1,11 +1,16 @@
 #include "TRpch.h"
 #include "EventManager.h"
 
-#include "Events.h"
+#include "Triton\Events\Events.h"
+#include "Triton\Events\KeyEvent.h"
+#include "Triton\Events\MouseEvent.h"
+#include "Triton\Events\ApplicationEvent.h"
 
-std::vector<Triton::Event*> Triton::Core::EventManager::m_EventBuffer;
-std::vector<Triton::EventListener*> Triton::Core::EventManager::m_Listeners;
-size_t Triton::Core::EventManager::m_NextListenerID = 0;
+Triton::Core::EventManager::EventManager()
+	:m_NextListenerID(0)
+{
+
+}
 
 void Triton::Core::EventManager::Post(Event* event)
 {
@@ -18,6 +23,11 @@ void Triton::Core::EventManager::Dispatch()
 	{
 		for (EventListener* listener : m_Listeners)
 		{
+			if (listener == nullptr)
+			{
+				RemoveListener(*listener);
+				continue;
+			}
 			if (!m_EventBuffer[i]->IsHandled())
 			{
 				listener->React(*m_EventBuffer[i]);

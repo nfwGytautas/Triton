@@ -1,13 +1,13 @@
 #pragma once
 
 #include "TRMacros.h"
+#include "Triton\Config.h"
 
 #include "Core\Math\Math.h"
 
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
 #include "Core\Renderer\Renderer.h"
-#include "Core\Camera.h"
 
 #include "File\File.h"
 
@@ -15,12 +15,11 @@
 #include "Events\EventManager.h"
 #include "Events\KeyEvent.h"
 #include "Events\MouseEvent.h"
+#include "Events\EventReceiver.h"
 
 #include "Core\Data\Structures\RenderBatch.h"
 #include "Core\Data\Structures\Mesh.h"
 #include "Core\Data\Structures\Material.h"
-
-#include "GUI\GUICollection.h"
 
 namespace Triton {
 
@@ -29,13 +28,13 @@ namespace Triton {
 		unsigned int WindowWidth = 600;
 		unsigned int WindowHeight = 600;
 		std::string WindowTitle = "Triton display";
-#ifndef TR_DISABLE_GUI
-		ImGuiContext* ImGUIContext;
-#endif
+
+		TR_GUI_CONTEXT(ImGUIContext)
 	};
 
 	//Main class that allows for project creation
-	class TRITON_API Application
+	class TRITON_API Application : 
+		protected Core::EventReceiver
 	{
 	public:
 		Application(const AppSettings& aSettings);
@@ -50,20 +49,20 @@ namespace Triton {
 
 		void Run();
 		void UpdateProjectionMatrix();
+
+	private:
+		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
 
 		Data::RenderOrder* prtc_RenderOrder;
 	protected:
-#ifndef TR_DISABLE_GUI
-		std::unique_ptr<UI::GUICollection> prtc_GUIS;
-	private:
-		ImGuiContext* mGUIContext;
-	protected:
-#endif
+		TR_GUI_IMPLEMENTATION
+
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<Core::Renderer> prtc_Renderer;
+		std::shared_ptr<Core::EventManager> prtc_EventManager;
 	private:
 		float m_LastFrame = 0.0f;
 	};

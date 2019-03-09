@@ -63,6 +63,13 @@ namespace Triton
 
 			return vboID;
 		}
+
+		template <class T>
+		void VAOAttribPointer(unsigned int location, unsigned int dataSize, const void* pointer)
+		{
+			glEnableVertexAttribArray(location);
+			glVertexAttribPointer(location, dataSize, GL_FLOAT, GL_FALSE, sizeof(T), pointer);
+		}
 	}
 }
 
@@ -84,12 +91,11 @@ namespace Triton
 
 			m_IBO = CreateIBO(aData.Indices);
 
-			if(aData.Vertices.size() > 0)
-				m_VBOS.push_back(storeDataInAttributes(0, 3, aData.Vertices));
-			if (aData.UVS.size() > 0)
-				m_VBOS.push_back(storeDataInAttributes(1, 2, aData.UVS));
-			if (aData.Normals.size() > 0)
-				m_VBOS.push_back(storeDataInAttributes(2, 3, aData.Normals));
+			m_VBOS.push_back(StoreDataInVBO<Data::MeshData::Vertex>(aData.Vertices));
+			VAOAttribPointer<Data::MeshData::Vertex>(0, 3, (void*)0);
+			VAOAttribPointer<Data::MeshData::Vertex>(1, 2, (void*)offsetof(Data::MeshData::Vertex, UV));
+			VAOAttribPointer<Data::MeshData::Vertex>(2, 3, (void*)offsetof(Data::MeshData::Vertex, Normal));
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			m_IndiceCount = aData.Indices.size();
 

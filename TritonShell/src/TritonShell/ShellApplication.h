@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TritonScript.h"
+#include "TritonShell\Config.h"
 
 #include "Triton\Application.h"
 #include "Triton\Events\Events.h"
@@ -13,18 +13,15 @@
 
 #include "Triton\Core\Data\Structures\RenderBatch.h"
 
-#include "TritonShell\Tools\GUIConsole.h"
-#include "TritonShell\Tools\GUIComponentVisualizer.h"
+#include "TritonShell\Camera\Camera.h"
 
 namespace Triton {
 
-	//Main class that allows for project creation
+	//Class that inherits core application and extends it with some functionality
 	class ShellApplication : 
 		public Application, 
 		protected Triton::EventListener,
-#ifndef TR_DISABLE_SCRIPTING 
-		protected Triton::Scripting::TRPythonScriptingInterface 
-#endif
+		protected TR_SCRIPTING_INTERFACE
 	{
 	public:
 		ShellApplication(const Triton::AppSettings& aSettings);
@@ -44,9 +41,6 @@ namespace Triton {
 
 		std::unique_ptr<Triton::Systems::BatchSystem> prtc_BatchSystem;
 
-#ifndef TR_DISABLE_EDITOR_TOOLS
-		std::shared_ptr<Tools::GUIConsole> prtc_Console;
-		std::shared_ptr<Tools::GUIComponentVisualizer> prtc_ComponentVisualizer;
-#endif
+		TR_EDITOR_TOOLS
 	};
 }

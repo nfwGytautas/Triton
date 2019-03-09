@@ -2,14 +2,9 @@
 #include "Events.h"
 #include "EventManager.h"
 
-Triton::EventListener::EventListener()
+Triton::EventListener::EventListener(Core::EventManager* mManager)
 { 
-	m_ID = Core::EventManager::AddListener(*this);
-}
-
-Triton::EventListener::~EventListener()
-{
-	Core::EventManager::RemoveListener(*this);
+	m_ID = mManager->AddListener(*this);
 }
 
 void Triton::EventListener::React(Event& event)

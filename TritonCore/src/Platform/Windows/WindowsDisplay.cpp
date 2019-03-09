@@ -6,9 +6,6 @@
 #include "Triton\Logger\Log.h"
 
 #include "Triton\Events\EventManager.h"
-#include "Triton\Events\KeyEvent.h"
-#include "Triton\Events\MouseEvent.h"
-#include "Triton\Events\ApplicationEvent.h"
 
 static bool s_GLFWInitialized = false;
 
@@ -140,6 +137,8 @@ void Triton::Core::WindowsDisplay::SetUpCallbacks()
 		static int prevKey = 0;
 		static int repeat = 0;
 
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+
 		switch (action)
 		{
 		case GLFW_PRESS:
@@ -153,42 +152,53 @@ void Triton::Core::WindowsDisplay::SetUpCallbacks()
 			{
 				repeat = 0;
 			}
-			Triton::Core::EventManager::Post(new KeyPressedEvent(key, repeat, scancode, mods));
+			
+			data.Receiver->OnKeyPressed(key, repeat, scancode, mods);
 			prevKey = key;
 			break;
 		case GLFW_RELEASE:
-			Triton::Core::EventManager::Post(new KeyReleasedEvent(key, scancode, mods));
+			data.Receiver->OnKeyReleased(key, scancode, mods);
 			break;
 		}
 	};
 
 	auto mouseMoveCallback = [](GLFWwindow* w, double x, double y)
 	{
-		Triton::Core::EventManager::Post(new MouseMovedEvent(x, y));
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+		data.Receiver->OnMouseMoved(x, y);
 	};
 
 	auto windowResizeCallback = [](GLFWwindow* w, int width, int height)
 	{
 		glViewport(0, 0, width, height);
-		Triton::Core::EventManager::Post(new WindowResizeEvent(width, height));
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+		data.Receiver->OnWindowResized(width, height);
 	};
 
 	auto mouseKeyCallback = [](GLFWwindow* w, int button, int action, int mods) 
 	{
 		if(action == GLFW_PRESS)
-			Triton::Core::EventManager::Post(new MouseButtonPressedEvent(button));
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+			data.Receiver->OnMouseButtonPressed(button);
+		}
 		else if(action == GLFW_RELEASE)
-			Triton::Core::EventManager::Post(new MouseButtonReleasedEvent(button));
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+			data.Receiver->OnMouseButtonReleased(button);
+		}
 	};
 
-	auto scrollCallback = [](GLFWwindow* window, double xoffset, double yoffset)
+	auto scrollCallback = [](GLFWwindow* w, double xoffset, double yoffset)
 	{
-		Triton::Core::EventManager::Post(new MouseScrolledEvent(xoffset, yoffset));
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+		data.Receiver->OnMouseScrolled(xoffset, yoffset);
 	};
 
-	auto charCallback = [](GLFWwindow* window, unsigned int charInput)
+	auto charCallback = [](GLFWwindow* w, unsigned int charInput)
 	{
-		Triton::Core::EventManager::Post(new KeyInputEvent(charInput));
+		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(w);
+		data.Receiver->OnKeyInput(charInput);
 	};
 
 	glfwSetErrorCallback(errorCallback);
@@ -198,4 +208,9 @@ void Triton::Core::WindowsDisplay::SetUpCallbacks()
 	glfwSetMouseButtonCallback(m_Window, mouseKeyCallback);
 	glfwSetScrollCallback(m_Window, scrollCallback);
 	glfwSetCharCallback(m_Window, charCallback);
+}
+
+void Triton::Core::WindowsDisplay::SetEventReceiver(Triton::Core::EventReceiver* aReceiver)
+{
+	m_Data.Receiver = aReceiver;
 }

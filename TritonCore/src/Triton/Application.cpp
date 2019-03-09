@@ -16,6 +16,7 @@ namespace Triton {
 		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
 			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
 		));
+		prtc_Display->SetEventReceiver(this);
 
 		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
@@ -24,12 +25,14 @@ namespace Triton {
 
 		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
 
-#ifndef TR_DISABLE_GUI
-		mGUIContext = aSettings.ImGUIContext;
-		ImGui::SetCurrentContext(mGUIContext);
-		UI::GUICollection::InitGUI(aSettings.WindowWidth, aSettings.WindowHeight);
-		prtc_GUIS = std::make_unique<UI::GUICollection>();
-#endif
+		prtc_EventManager = std::make_unique<Core::EventManager>();
+
+		#ifndef TR_DISABLE_GUI
+			m_GUIContext = aSettings.ImGUIContext;
+			ImGui::SetCurrentContext(m_GUIContext);
+			UI::GUICollection::InitGUI(aSettings.WindowWidth, aSettings.WindowHeight);
+			prtc_GUIS = std::make_unique<UI::GUICollection>(prtc_EventManager.get());
+		#endif
 
 	}
 	
@@ -46,7 +49,7 @@ namespace Triton {
 
 		OnUpdate();	
 
-		Core::EventManager::Dispatch();
+		prtc_EventManager->Dispatch();
 		
 		if (prtc_RenderOrder != nullptr)
 		{
@@ -55,10 +58,10 @@ namespace Triton {
 			prtc_Shader->Disable();
 		}
 
-#ifndef TR_DISABLE_GUI
-		prtc_GUIS->UpdateCollection(prtc_Delta);
-		prtc_GUIS->DrawCollection();
-#endif
+		#ifndef TR_DISABLE_GUI
+			prtc_GUIS->UpdateCollection(prtc_Delta);
+			prtc_GUIS->DrawCollection();
+		#endif
 
 		prtc_Display->OnUpdate();
 	}
@@ -70,6 +73,11 @@ namespace Triton {
 		prtc_Shader->SetUniform("projectionMatrix", projection);
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 		prtc_Shader->Disable();
+	}
+
+	void Application::OnEvent(Event* aEvent)
+	{
+		prtc_EventManager->Post(aEvent);
 	}
 
 	void Application::Execute()

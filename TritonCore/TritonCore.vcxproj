@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y 
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,7 +132,7 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,16 +155,18 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Config.h" />
+    <ClInclude Include="src\Triton\Core\Data\Storage\DataMap.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
     <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Triton\Events\EventReceiver.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
-    <ClInclude Include="src\Triton\Core\Camera.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h" />
     <ClInclude Include="src\Triton\Core\Data\Structures\RenderBatch.h" />
@@ -185,17 +187,18 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\Data\Storage\DataMap.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
     <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
-    <ClCompile Include="src\Triton\Core\Camera.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Structures\Texture.cpp" />

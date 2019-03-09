@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Triton\TRMacros.h"
+#include "Triton\Events\EventReceiver.h"
 
 namespace Triton {
 	namespace Core {
@@ -32,6 +33,8 @@ namespace Triton {
 			virtual bool IsVSync() = 0;
 
 			virtual void ShowCursor(bool aState) = 0;
+
+			virtual void SetEventReceiver(EventReceiver* aReceiver) = 0;
 
 			static Display* Create(const DisplaySettings& settings = DisplaySettings());
 		};

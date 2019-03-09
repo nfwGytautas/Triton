@@ -7,19 +7,35 @@
 namespace Triton {
 
 	ShellApplication::ShellApplication(const Triton::AppSettings& aSettings)
-		: Application(aSettings)
+		: Application(aSettings), EventListener(prtc_EventManager.get())
 	{
 		prtc_EntityRegistry = std::shared_ptr<ECS::Registry>(new ECS::Registry());
 
 		prtc_BatchSystem = std::make_unique<Triton::Systems::BatchSystem>();
 
-#ifndef TR_DISABLE_EDITOR_TOOLS
-		prtc_Console = std::make_shared<Tools::GUIConsole>();
-		prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
+		#ifndef TR_DISABLE_EDITOR_TOOLS
+			prtc_Console = std::make_shared<Tools::GUIConsole>();
+			prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
 		
-		prtc_ComponentVisualizer = std::make_shared<Tools::GUIComponentVisualizer>(prtc_EntityRegistry);
-		prtc_Console->AddCommand("ENTITY_VISUALIZER", [&]() { prtc_ComponentVisualizer->Enable(); prtc_ComponentVisualizer->IsOpen = true; });
-#endif
+			prtc_ComponentVisualizer = std::make_shared<Tools::GUIComponentVisualizer>(prtc_EntityRegistry);
+			prtc_Console->AddCommand("ENTITY_VISUALIZER", [&]() { prtc_ComponentVisualizer->Enable(); prtc_ComponentVisualizer->IsOpen = true; });
+
+			prtc_Console->AddCommand("SAVE", [&]() { 
+				std::ofstream os("out.cereal", std::ios::binary);
+				cereal::BinaryOutputArchive archive(os);
+
+				prtc_EntityRegistry->snapshot().entities(archive).destroyed(archive)
+					.component<Components::Transform>(archive);
+			});
+
+			prtc_Console->AddCommand("LOAD", [&]() {
+				std::ifstream is("out.cereal", std::ios::binary);
+				cereal::BinaryInputArchive archive(is);
+
+				prtc_EntityRegistry->loader().entities(archive).destroyed(archive)
+					.component<Components::Transform>(archive);
+			});
+		#endif
 	}
 	
 	ShellApplication::~ShellApplication()
@@ -47,19 +63,19 @@ namespace Triton {
 		prtc_BatchSystem->OnUpdate(*prtc_EntityRegistry.get(), 0.0f);
 		prtc_RenderOrder->Batches = &prtc_BatchSystem->GetBatches();
 
-#ifndef TR_DISABLE_SCRIPTING 
-		TR_PYTHON_SCRIPT_GUARD(prtc_py_Update.attr("entry").call(prtc_EntityRegistry.get(), prtc_Delta));
-#endif
+		#ifndef TR_DISABLE_SCRIPTING 
+			TR_PYTHON_SCRIPT_GUARD(prtc_py_Update.attr("entry").call(prtc_EntityRegistry.get(), prtc_Delta));
+		#endif
 	}
 
 	void ShellApplication::RestartShell()
 	{
-		prtc_EntityRegistry = std::unique_ptr<ECS::Registry>(new ECS::Registry());
+		prtc_EntityRegistry->reset();
 
-#ifndef TR_DISABLE_SCRIPTING
-		py_ReloadModules();
-		TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
-#endif
+		#ifndef TR_DISABLE_SCRIPTING
+			py_ReloadModules();
+			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
+		#endif
 
 		PreExecutionSetup();
 	}
@@ -70,14 +86,14 @@ namespace Triton {
 
 		PreExecutionSetup();
 
-#ifndef TR_DISABLE_SCRIPTING 
-		TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
-#endif
+		#ifndef TR_DISABLE_SCRIPTING 
+			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
+		#endif
 
-#ifndef TR_DISABLE_EDITOR_TOOLS
-		prtc_GUIS->AddGUI(prtc_Console);
-		prtc_GUIS->AddGUI(prtc_ComponentVisualizer);
-#endif
+		#ifndef TR_DISABLE_EDITOR_TOOLS
+			prtc_GUIS->AddGUI(prtc_Console);
+			prtc_GUIS->AddGUI(prtc_ComponentVisualizer);
+		#endif
 
 		while (!prtc_Display->Closed())
 		{

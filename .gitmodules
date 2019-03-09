@@ -26,3 +26,6 @@
 [submodule "vendor/ImGui"]
 	path = vendor/ImGui
 	url = https://github.com/ocornut/imgui
+[submodule "vendor/cereal"]
+	path = vendor/cereal
+	url = https://github.com/USCiLab/cereal

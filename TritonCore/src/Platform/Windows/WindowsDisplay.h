@@ -26,11 +26,15 @@ namespace Triton
 			bool IsVSync() override;
 
 			void ShowCursor(bool aState) override;
+
 		protected:
 			virtual void Init(const DisplaySettings& aSettings);
 			virtual void ShutDown();
+
 		private:
 			void SetUpCallbacks();
+
+			virtual void SetEventReceiver(EventReceiver* aReceiver) override;
 		private:
 			GLFWwindow* m_Window;
 
@@ -39,6 +43,8 @@ namespace Triton
 				std::string Title;
 				unsigned int Width, Height;
 				bool VSync;
+
+				EventReceiver* Receiver;
 			};
 
 			WindowData m_Data;

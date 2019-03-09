@@ -1,9 +1,5 @@
 #pragma once
 
-//~----------TritonScript---------~
-#include "TritonScript.h"
-//!----------TritonScript---------!
-
 //~----------TritonCore-----------~
 #include "Triton.h"
 //!----------TritonCore-----------!

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Math/Math.h"
+#include "Triton/Core/Math/Math.h"
 
 namespace Triton
 {
 
-	class TRITON_API Camera
+	class Camera
 	{
 	public:
 		Camera(Vector3 aPosition, float aMoveSpeed = 3.0f, float aLookSpeed = 0.005f);

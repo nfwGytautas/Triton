@@ -151,8 +151,6 @@ private:
 	double lastY;
 };
 
-#include <iterator>
-#include <vector>
 class UnitTest1 : public Triton::ShellApplication
 {
 public:

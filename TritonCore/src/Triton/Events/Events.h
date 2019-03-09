@@ -62,8 +62,7 @@ namespace Triton
 	class TRITON_API EventListener
 	{		
 	public:
-		EventListener();
-		~EventListener();
+		EventListener(Core::EventManager* mManager);
 
 		template<typename T>
 		void Listen(EventBehavior& behavior)

@@ -1,11 +1,6 @@
 #include "TRpch.h"
 #include "GUI.h"
 
-#ifndef TR_DISABLE_GUI
-
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
-
 #include "Platform\Windows\vendorIMPL\imgui_impl_opengl3.h"
 
 Triton::UI::GUI::GUI()
@@ -49,6 +44,3 @@ void Triton::UI::GUI::Enable()
 {
 	mActive = true;
 }
-
-
-#endif

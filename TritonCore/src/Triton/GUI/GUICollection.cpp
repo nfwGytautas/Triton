@@ -1,14 +1,13 @@
 #include "TRpch.h"
 #include "GUICollection.h"
 
-#ifndef TR_DISABLE_GUI
-
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
 #include "Platform\Windows\vendorIMPL\imgui_impl_opengl3.h"
 
-Triton::UI::GUICollection::GUICollection()
+Triton::UI::GUICollection::GUICollection(Core::EventManager* mManager)
+	:EventListener(mManager)
 {
 	this->Listen<Triton::MouseButtonPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseButtonPressedEvent, this, std::placeholders::_1)));
 	this->Listen<Triton::MouseButtonReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseButtonReleasedEvent, this, std::placeholders::_1)));
@@ -20,9 +19,17 @@ Triton::UI::GUICollection::GUICollection()
 	this->Listen<Triton::WindowResizeEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnWindowResizeEvent, this, std::placeholders::_1)));
 }
 
-Triton::UI::GUICollection::GUICollection(size_t aSize)
-	: mGUIS(aSize)
+Triton::UI::GUICollection::GUICollection(Core::EventManager* mManager, size_t aSize)
+	: EventListener(mManager), mGUIS(aSize)
 {
+	this->Listen<Triton::MouseButtonPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseButtonPressedEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::MouseButtonReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseButtonReleasedEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::MouseMovedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseMovedEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::MouseScrolledEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnMouseScrolledEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnKeyPressedEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnKeyReleasedEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::KeyInputEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnKeyInputEvent, this, std::placeholders::_1)));
+	this->Listen<Triton::WindowResizeEvent>(Triton::EventBehavior(TR_BIND_FUNC(GUICollection::OnWindowResizeEvent, this, std::placeholders::_1)));
 }
 
 Triton::UI::GUICollection::~GUICollection()
@@ -186,5 +193,3 @@ bool Triton::UI::GUICollection::OnWindowResizeEvent(const Triton::Event& e)
 
 	return false;
 }
-
-#endif

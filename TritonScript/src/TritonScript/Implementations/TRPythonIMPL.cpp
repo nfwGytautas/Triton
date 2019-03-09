@@ -15,14 +15,13 @@ Triton::Scripting::TRPythonScriptingInterface::TRPythonScriptingInterface()
 	if (Py_IsInitialized())
 	{
 
-#ifdef TR_RELEASE
-		py::module::import("triton_config").attr("setup").call(0);
-#endif // TR_RELEASE
+		#ifdef TR_RELEASE
+			py::module::import("triton_config").attr("setup").call(0);
+		#endif // TR_RELEASE
 
-#ifdef TR_DEBUG
-		py::module::import("triton_config").attr("setup").call(1);
-
-#endif // TR_DEBUG
+		#ifdef TR_DEBUG
+			py::module::import("triton_config").attr("setup").call(1);
+		#endif // TR_DEBUG
 
 		prtc_py_PreExecution = py_CreateTRModule("User.Setup");
 		prtc_py_Update = py_CreateTRModule("User.Update");

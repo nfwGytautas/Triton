@@ -68,9 +68,6 @@
     <ClInclude Include="src\Triton\Application.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Camera.h">
-      <Filter>Triton\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Core\Data\Structures\Material.h">
       <Filter>Triton\Core\Data\Structures</Filter>
     </ClInclude>
@@ -125,6 +122,9 @@
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\Storage\DataMap.h" />
+    <ClInclude Include="src\Triton\Events\EventReceiver.h" />
+    <ClInclude Include="src\Triton\Config.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
@@ -148,9 +148,6 @@
     <ClCompile Include="src\TRpch.cpp" />
     <ClCompile Include="src\Triton\Application.cpp">
       <Filter>Triton</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Triton\Core\Camera.cpp">
-      <Filter>Triton\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp">
       <Filter>Triton\Core\Data\Structures</Filter>
@@ -188,5 +185,7 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\Core\Data\Storage\DataMap.cpp" />
+    <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
   </ItemGroup>
 </Project>

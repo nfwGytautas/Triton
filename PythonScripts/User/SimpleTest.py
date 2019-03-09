@@ -50,4 +50,10 @@ def load_object(registry, entity):
 
 def update(registry: EntityRegistry, delta):
     entity = TritonStorage.GameVariables['entity']
-  
+
+    transform = registry.get_transform(entity)
+    transform.Rotation.y += 0.005
+    transform.Rotation.x += 0.005
+    transform.Rotation.z += 0.005
+
+    registry.set_transform(entity, transform)

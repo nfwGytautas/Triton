@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -100,7 +100,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -128,7 +128,7 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,20 +152,23 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonShell\Tools\GUIComponentVisualizer.h" />
-    <ClInclude Include="src\TritonShell\Tools\GUIConsole.h" />
     <ClInclude Include="src\TritonShell.h" />
+    <ClInclude Include="src\TritonShell\Camera\Camera.h" />
+    <ClInclude Include="src\TritonShell\Config.h" />
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
     <ClInclude Include="src\TritonShell\Entity\Registry.h" />
     <ClInclude Include="src\TritonShell\Entity\Systems\TritonSystems.h" />
     <ClInclude Include="src\TritonShell\EntryPoint.h" />
     <ClInclude Include="src\TritonShell\ShellApplication.h" />
+    <ClInclude Include="src\TritonShell\Tools\GUIComponentVisualizer.h" />
+    <ClInclude Include="src\TritonShell\Tools\GUIConsole.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonShell\Tools\GUIComponentVisualizer.cpp" />
-    <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp" />
+    <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp" />
     <ClCompile Include="src\TritonShell\ShellApplication.cpp" />
+    <ClCompile Include="src\TritonShell\Tools\GUIComponentVisualizer.cpp" />
+    <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TritonCore\TritonCore.vcxproj">

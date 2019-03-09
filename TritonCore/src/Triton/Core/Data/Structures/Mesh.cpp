@@ -36,9 +36,7 @@ void Triton::Data::MeshData::Fill(const char* aPathToMesh)
 
 		try
 		{
-			Vertices.reserve(mesh->mNumVertices * 3);
-			UVS.reserve(mesh->mNumVertices * 2);
-			Normals.reserve(mesh->mNumVertices * 3);
+			Vertices.reserve(mesh->mNumVertices);
 			for (unsigned int verticeIdx = 0; verticeIdx < mesh->mNumVertices; verticeIdx++)
 			{
 				Vertex currentVertex;
@@ -61,18 +59,7 @@ void Triton::Data::MeshData::Fill(const char* aPathToMesh)
 					currentVertex.UV = glm::vec2(0.0f, 0.0f);
 				}
 
-				//Vertices.push_back(currentVertex);
-
-				Vertices.push_back(currentVertex.Vertice.x);
-				Vertices.push_back(currentVertex.Vertice.y);
-				Vertices.push_back(currentVertex.Vertice.z);
-
-				UVS.push_back(currentVertex.UV.x);
-				UVS.push_back(currentVertex.UV.y);
-
-				Normals.push_back(currentVertex.Normal.x);
-				Normals.push_back(currentVertex.Normal.y);
-				Normals.push_back(currentVertex.Normal.z);
+				Vertices.push_back(currentVertex);
 			}
 
 			for (unsigned int faceIdx = 0; faceIdx < mesh->mNumFaces; faceIdx++)

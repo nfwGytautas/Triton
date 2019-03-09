@@ -21,6 +21,7 @@ IncludeDir["python1"] = "vendor/python/PC"
 IncludeDir["ImGui"] = "vendor/ImGui"
 IncludeDir["Assimp"] = "vendor/Assimp/include"
 IncludeDir["stb_image"] = "vendor/stb_image"
+IncludeDir["cereal"] = "vendor/cereal/include"
 
 include "vendor/GLFW"
 include "vendor/Glad"
@@ -129,6 +130,7 @@ project "TritonCore"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.Assimp}",
+		"%{IncludeDir.cereal}",
 	}
 
 	libdirs
@@ -210,6 +212,7 @@ project "TritonShell"
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
 		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.cereal}",
 		"TritonCore/src",
 		"TritonScript/src"
 	}
@@ -287,6 +290,7 @@ project "SandBox"
 		"%{IncludeDir.python0}",
 		"%{IncludeDir.python1}",
 		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.cereal}",
 		"TritonCore/src",
 		"TritonScript/src",
 		"TritonShell/src",

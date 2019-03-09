@@ -16,12 +16,7 @@ namespace Triton
 				Vector3 Normal;
 			};
 
-			//std::vector<Vertex> Vertices;
-
-			std::vector<float> Vertices;
-			std::vector<float> UVS;
-			std::vector<float> Normals;
-
+			std::vector<Vertex> Vertices;
 
 			std::vector<unsigned int> Indices;
 

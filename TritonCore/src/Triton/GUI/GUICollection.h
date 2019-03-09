@@ -1,7 +1,5 @@
 #pragma once
 
-#ifndef TR_DISABLE_GUI
-
 #include "GUI.h"
 #include "Triton\Events\Events.h"
 
@@ -18,8 +16,8 @@ namespace Triton
 		class TRITON_API GUICollection : protected EventListener
 		{
 		public:
-			GUICollection();
-			GUICollection(size_t aSize);
+			GUICollection(Core::EventManager* mManager);
+			GUICollection(Core::EventManager* mManager, size_t aSize);
 			~GUICollection();
 
 			static void InitGUI(unsigned int aWidth, unsigned int aHeight);
@@ -45,5 +43,3 @@ namespace Triton
 
 	}
 }
-
-#endif

@@ -34,7 +34,25 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 		return;
 	}
 
-	
+	if (ImGui::CollapsingHeader("Entity selection"))
+	{
+		mRegistry->each([&](auto entity) {
+			char buf[32];
+			sprintf(buf, "ID: %d", entity);
+			if (ImGui::Selectable(buf, mEntity == entity))
+				mEntity = entity;
+		});	
+	}
+
+	ImGui::Spacing();
+	ImGui::Separator();
+	ImGui::Text("Components:");
+
+	if (!mRegistry->valid(mEntity))
+	{
+		ImGui::End();
+		return;
+	}
 
 	//Transformation
 	if (mRegistry->has<Components::Transform>(mEntity))

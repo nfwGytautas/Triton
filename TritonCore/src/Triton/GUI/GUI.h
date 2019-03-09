@@ -1,7 +1,5 @@
 #pragma once
 
-#ifndef TR_DISABLE_GUI
-
 #include "Triton\TRMacros.h"
 #include "imgui.h"
 
@@ -36,5 +34,3 @@ namespace Triton
 
 	}
 }
-
-#endif
