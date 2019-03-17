@@ -11,6 +11,7 @@ namespace Triton
 		{
 		public:
 			static std::string ReadAllText(std::string& aPath);
+			static bool Valid(std::string& aPath);
 		};
 
 	}

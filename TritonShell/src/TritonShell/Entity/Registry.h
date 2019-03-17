@@ -1,6 +1,4 @@
 #pragma once
-#include "TRpch.h"
-#include "Triton\TRMacros.h"
 
 //ENTT https://github.com/skypjack/entt
 #include <entt\entity\registry.hpp>

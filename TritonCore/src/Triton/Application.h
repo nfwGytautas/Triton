@@ -21,6 +21,8 @@
 #include "Core\Data\Structures\Mesh.h"
 #include "Core\Data\Structures\Material.h"
 
+#include "Core\Data\DataMap.h"
+
 namespace Triton {
 
 	struct AppSettings
@@ -63,6 +65,7 @@ namespace Triton {
 		std::unique_ptr<Core::Shader> prtc_Shader;
 		std::unique_ptr<Core::Renderer> prtc_Renderer;
 		std::shared_ptr<Core::EventManager> prtc_EventManager;
+		std::shared_ptr<Core::DataMap> prtc_DataMap;
 	private:
 		float m_LastFrame = 0.0f;
 	};

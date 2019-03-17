@@ -47,26 +47,26 @@ PYBIND11_EMBEDDED_MODULE(TritonData, m) {
 
 	py::class_<Triton::Data::MeshData, std::shared_ptr<Triton::Data::MeshData>>(m, "MeshData")
 		.def(py::init<>())
+		.def(py::init<std::string>())
 		.def_readwrite("Vertices", &Triton::Data::MeshData::Vertices)
 		.def_readwrite("Indices", &Triton::Data::MeshData::Indices)
-		.def("fill", &Triton::Data::MeshData::Fill);
+		.def_readwrite("Path", &Triton::Data::MeshData::Path);
 
 	py::class_<Triton::Data::TextureData, std::shared_ptr<Triton::Data::TextureData>>(m, "TextureData")
 		.def(py::init<>())
+		.def(py::init<std::string>())
 		.def_readwrite("Width", &Triton::Data::TextureData::Width)
 		.def_readwrite("Height", &Triton::Data::TextureData::Height)
 		.def_readwrite("BPP", &Triton::Data::TextureData::BPP)
-		.def("fill", &Triton::Data::TextureData::Fill);
+		.def_readwrite("Path", &Triton::Data::TextureData::Path);
 
 	py::class_<Triton::Data::Texture, std::shared_ptr<Triton::Data::Texture>>(m, "Texture")
 		.def(py::init<>())
-		.def_static("create", &Triton::Data::Texture::Create)
 		.def("get_width", &Triton::Data::Texture::GetWidth)
 		.def("get_height", &Triton::Data::Texture::GetHeight);
 
 	py::class_<Triton::Data::Mesh, std::shared_ptr<Triton::Data::Mesh>>(m, "Mesh")
 		.def(py::init<>())
-		.def_static("create", &Triton::Data::Mesh::Create)
 		.def("get_width", &Triton::Data::Mesh::GetWidth)
 		.def("get_height", &Triton::Data::Mesh::GetHeight);
 
@@ -137,4 +137,9 @@ PYBIND11_EMBEDDED_MODULE(TritonCore, m) {
 	{
 		return aRegistry.create();
 	});
+
+	py::class_<Triton::Core::DataMap, std::shared_ptr<Triton::Core::DataMap>>(m, "DataMap")
+		.def(py::init<>())
+		.def("register_mesh", &Triton::Core::DataMap::RegisterMesh)
+		.def("register_texture", &Triton::Core::DataMap::RegisterTexture);
 }

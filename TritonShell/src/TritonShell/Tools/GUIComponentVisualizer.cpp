@@ -2,12 +2,12 @@
 
 #include "TritonShell\Entity\Components\TritonComponents.h"
 
-Triton::Tools::GUIComponentVisualizer::GUIComponentVisualizer(std::shared_ptr<ECS::Registry> aRegistry)
-	: mRegistry(aRegistry)
+Triton::Tools::GUIComponentVisualizer::GUIComponentVisualizer(std::shared_ptr<ECS::Registry> aRegistry, std::shared_ptr<GUIDataMap> aGUIDmap)
+	: m_Registry(aRegistry), m_GUIDmap(aGUIDmap)
 {
 	IsOpen = true;
 
-	mEntity = 0;
+	m_Entity = 0;
 }
 
 
@@ -36,11 +36,11 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 
 	if (ImGui::CollapsingHeader("Entity selection"))
 	{
-		mRegistry->each([&](auto entity) {
+		m_Registry->each([&](auto entity) {
 			char buf[32];
 			sprintf(buf, "ID: %d", entity);
-			if (ImGui::Selectable(buf, mEntity == entity))
-				mEntity = entity;
+			if (ImGui::Selectable(buf, m_Entity == entity))
+				m_Entity = entity;
 		});	
 	}
 
@@ -48,19 +48,19 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 	ImGui::Separator();
 	ImGui::Text("Components:");
 
-	if (!mRegistry->valid(mEntity))
+	if (!m_Registry->valid(m_Entity))
 	{
 		ImGui::End();
 		return;
 	}
 
 	//Transformation
-	if (mRegistry->has<Components::Transform>(mEntity))
+	if (m_Registry->has<Components::Transform>(m_Entity))
 	{
 		ImGui::Spacing();
 		if (ImGui::CollapsingHeader("Transform"))
 		{
-			Components::Transform& transform = mRegistry->get<Components::Transform>(mEntity);
+			Components::Transform& transform = m_Registry->get<Components::Transform>(m_Entity);
 
 			//Transform -> Position
 			ImGui::Text("Position:"); ImGui::SameLine();
@@ -103,15 +103,19 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 	}
 
 	//MeshFilter
-	if (mRegistry->has<Components::MeshFilter>(mEntity))
+	if (m_Registry->has<Components::MeshFilter>(m_Entity))
 	{
 		ImGui::Spacing();
 		if (ImGui::CollapsingHeader("Mesh filter"))
 		{
-			Components::MeshFilter& mFilter = mRegistry->get<Components::MeshFilter>(mEntity);
+			Components::MeshFilter& mFilter = m_Registry->get<Components::MeshFilter>(m_Entity);
 
-			//Transform -> Position
-			ImGui::Text("Mesh:"); ImGui::SameLine(); ImGui::Text(mFilter.Mesh->GetPath().c_str());
+			ImGui::Text("Mesh:"); ImGui::SameLine(); 
+			
+			if (ImGui::Button(mFilter.Mesh->GetPath().c_str()))
+			{
+				mFilter.Mesh = std::shared_ptr<Data::Mesh>(&m_GUIDmap->GetSelected());
+			}
 		}
 
 		ImGui::Spacing();
@@ -119,14 +123,13 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 	}
 
 	//MeshRenderer
-	if (mRegistry->has<Components::MeshRenderer>(mEntity))
+	if (m_Registry->has<Components::MeshRenderer>(m_Entity))
 	{
 		ImGui::Spacing();
 		if (ImGui::CollapsingHeader("Mesh renderer"))
 		{
-			Components::MeshRenderer& mRenderer = mRegistry->get<Components::MeshRenderer>(mEntity);
+			Components::MeshRenderer& mRenderer = m_Registry->get<Components::MeshRenderer>(m_Entity);
 
-			//Transform -> Position
 			ImGui::Text("Material:"); ImGui::SameLine(); ImGui::Text(mRenderer.Material->GetTexture()->GetPath().c_str());
 		}
 
@@ -143,5 +146,5 @@ void Triton::Tools::GUIComponentVisualizer::Update(float aDelta)
 
 void Triton::Tools::GUIComponentVisualizer::ShowEntity(ECS::Entity aEntity)
 {
-	mEntity = aEntity;
+	m_Entity = aEntity;
 }

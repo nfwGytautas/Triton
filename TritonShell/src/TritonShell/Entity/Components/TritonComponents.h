@@ -26,13 +26,6 @@ namespace Triton
 				: Position(aPosition), Rotation(aRotation), Scale(aScale)
 			{}
 		};
-
-		template<typename Archive>
-		void serialize(Archive &ar, Transform &transform) {
-			ar(transform.Position.x, transform.Position.y, transform.Position.z,
-				transform.Rotation.x, transform.Rotation.y, transform.Rotation.z,
-				transform.Scale.x, transform.Scale.y, transform.Scale.z);
-		}
 	
 		//A component which specifies what meshes an entity uses
 		struct MeshFilter

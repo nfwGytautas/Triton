@@ -11,8 +11,8 @@ private:
 	void CreateMesh()
 	{
 		Triton::Data::MeshData mData;
-		mData.Fill("D:/Programming/Test files/nfw/stall.obj");
-		CubeMesh = Triton::Data::Mesh::Create(mData);
+		mData.Path = "D:/Programming/Test files/nfw/stall.obj";
+		CubeMesh = prtc_DataMap->RegisterMesh(mData);
 		//STORE MESH
 		py_ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
 	}
@@ -42,7 +42,7 @@ public:
 		Triton::Data::TextureData mTData;
 		//mTData.Fill("D:/Programming/Test files/nfw/missingTexture64.png");
 
-		TestTexture = Triton::Data::Texture::Create(mTData);
+		TestTexture = prtc_DataMap->RegisterTexture(mTData);
 		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
 		TestMaterial->SetDiffuse(Triton::Vector3(1.0f, 1.0f, 1.0f));
 
@@ -162,6 +162,8 @@ public:
 
 	void PreExecutionSetup() override
 	{
+		prtc_DataMap->RegisterMesh(Triton::Data::MeshData("D:/Programming/Test files/nfw/dragon.obj"));
+
 		prtc_Display->ShowCursor(true);
 		prtc_Display->SetVSync(false);
 	}

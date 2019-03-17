@@ -152,6 +152,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TritonShell\Tools\GUIDataMap.h" />
     <ClInclude Include="src\TritonShell.h" />
     <ClInclude Include="src\TritonShell\Camera\Camera.h" />
     <ClInclude Include="src\TritonShell\Config.h" />
@@ -164,6 +165,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     <ClInclude Include="src\TritonShell\Tools\GUIConsole.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonShell\Tools\GUIDataMap.cpp" />
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp" />
     <ClCompile Include="src\TritonShell\ShellApplication.cpp" />

@@ -155,8 +155,8 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Core\Data\DataMap.h" />
     <ClInclude Include="src\Triton\Config.h" />
-    <ClInclude Include="src\Triton\Core\Data\Storage\DataMap.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
     <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
@@ -187,7 +187,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Data\Storage\DataMap.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\DataMap.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />

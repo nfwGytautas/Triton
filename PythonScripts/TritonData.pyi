@@ -24,15 +24,7 @@ class MeshData:
 
     Vertices : List[Vertex] = ...
     Indices : List[int] = ...
-
-    def fill(self, path : str):
-        """
-        Fill object with data from file
-
-        :param str path: path to file
-        """
-
-        ...
+    Path : str = ...
 
 
 class TextureData:
@@ -45,15 +37,7 @@ class TextureData:
     Width : float = ...
     Height : float = ...
     BPP : int = ...
-
-    def fill(self, path : str):
-        """
-        Fill object with data from file
-
-        :param str path: path to file
-        """
-
-        ...
+    Path : str = ...
 
 
 class Texture:
@@ -83,17 +67,6 @@ class Texture:
 
         ...
 
-    @staticmethod
-    def create(data : TextureData) -> Texture:
-        """
-        Create the texture object from a data object
-
-        :return: Height of mesh
-        :rtype: float
-        """
-
-        ...
-
 
 class Mesh:
     """
@@ -118,18 +91,6 @@ class Mesh:
 
         :return: Height of mesh
         :rtype: float
-        """
-
-        ...
-
-    @staticmethod
-    def create(data : MeshData) -> Mesh:
-        """
-        Create the a mesh object from a mesh data object
-
-        :param str data: Data object
-        :return: Created mesh object
-        :rtype: TritonData.Mesh
         """
 
         ...

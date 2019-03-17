@@ -73,19 +73,17 @@ namespace Triton
 	}
 }
 
+std::shared_ptr<Triton::Data::Mesh> Create(Triton::Data::MeshData& aData)
+{
+	return std::make_shared<Triton::Core::WindowsMesh>(aData);
+}
+
 namespace Triton
 {
-	std::shared_ptr<Data::Mesh> Data::Mesh::Create(MeshData& aData)
-	{
-		return std::make_shared<Core::WindowsMesh>(aData);
-	}
-
 	namespace Core
 	{		
 		WindowsMesh::WindowsMesh(Data::MeshData& aData)
 		{
-			m_Path = std::string(aData.Path);
-
 			m_VAO = Triton::Core::CreateVAO();
 			Bind();
 

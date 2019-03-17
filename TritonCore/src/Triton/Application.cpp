@@ -27,6 +27,8 @@ namespace Triton {
 
 		prtc_EventManager = std::make_unique<Core::EventManager>();
 
+		prtc_DataMap = std::make_shared<Core::DataMap>();
+
 		#ifndef TR_DISABLE_GUI
 			m_GUIContext = aSettings.ImGUIContext;
 			ImGui::SetCurrentContext(m_GUIContext);

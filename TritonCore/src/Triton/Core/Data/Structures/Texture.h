@@ -15,12 +15,15 @@ namespace Triton
 			std::string Path;
 
 			TextureData()
-				:Width(0), Height(0), BPP(0), Path("null")
+				:Width(0), Height(0), BPP(0), Path("")
 			{
 				Buffer = std::make_unique<unsigned char>();
 			}
-
-			void Fill(const char* aPathToImage);
+			TextureData(std::string aPath)
+				:Width(0), Height(0), BPP(0), Path(aPath)
+			{
+				Buffer = std::make_unique<unsigned char>();
+			}
 		};
 
 		class TRITON_API Texture
@@ -40,8 +43,6 @@ namespace Triton
 			{
 				return m_Path;
 			}
-
-			static std::shared_ptr<Texture> Create(TextureData& aData);
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;

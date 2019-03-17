@@ -3,9 +3,9 @@
 
 #include <glad\glad.h>
 
-std::shared_ptr<Triton::Data::Texture> Triton::Data::Texture::Create(TextureData& aData)
+std::shared_ptr<Triton::Data::Texture> Create(Triton::Data::TextureData& aData)
 {
-	return std::make_shared<Core::WindowsTexture>(aData);
+	return std::make_shared<Triton::Core::WindowsTexture>(aData);
 }
 
 Triton::Core::WindowsTexture::WindowsTexture(Triton::Data::TextureData& aData)

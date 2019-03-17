@@ -8,3 +8,9 @@ std::string Triton::Data::File::ReadAllText(std::string& aPath)
 	buffer << is.rdbuf();
 	return buffer.str();
 }
+
+bool Triton::Data::File::Valid(std::string& aPath)
+{
+	struct stat buffer;
+	return (stat(aPath.c_str(), &buffer) == 0);
+}

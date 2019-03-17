@@ -22,7 +22,8 @@ namespace Triton
 
 			std::string Path;
 
-			void Fill(const char* aPathToMesh);
+			MeshData() {}
+			MeshData(std::string aPath) : Path(aPath) {}
 		};
 
 		class TRITON_API Mesh
@@ -42,8 +43,6 @@ namespace Triton
 			{
 				return m_Path;
 			}
-
-			static std::shared_ptr<Mesh> Create(MeshData& aData);
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;

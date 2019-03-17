@@ -1,10 +1,11 @@
 # coding: utf-8
 
 from TritonComponents import (Transform, MeshFilter, MeshRenderer)
+from TritonData import (MeshData, Mesh, TextureData, Texture)
 
 class EntityRegistry:
     """
-    class that stores entities and hooks components to such entities
+    Class that stores entities and hooks components to such entities
     """
 
     def __init__(self): ...
@@ -106,6 +107,34 @@ class EntityRegistry:
         Assign a MeshRenderer value to an entity
 
         :param str entity: Entity whose MeshRenderer to set
+        """
+
+        ...
+
+class DataMap:
+    """
+    Class that is responsible for keeping data alive through the
+    application lifetime
+    """
+
+    def register_mesh(self, mesh_data : MeshData) -> Mesh:
+        """
+        Registers a mesh to the data map
+
+        :param mesh_data: Data to register the mesh with
+        :return: Mesh object
+        :rtype: TritonData.Mesh
+        """
+
+        ...
+
+    def register_texture(self, texture_data : TextureData) -> Texture:
+        """
+        Registers a texture to the data map
+
+        :param texture_data: Data to register the texture with
+        :return: Texture object
+        :rtype: TritonData.Texture
         """
 
         ...

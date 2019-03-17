@@ -42,6 +42,7 @@
     </ClInclude>
     <ClInclude Include="src\TritonShell\Config.h" />
     <ClInclude Include="src\TritonShell\Camera\Camera.h" />
+    <ClInclude Include="src\TritonShell\Tools\GUIDataMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp">
@@ -57,5 +58,6 @@
       <Filter>TritonShell\Tools</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
+    <ClCompile Include="src\TritonShell\Tools\GUIDataMap.cpp" />
   </ItemGroup>
 </Project>
