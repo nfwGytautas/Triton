@@ -1,13 +1,12 @@
 #pragma once
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
-#include "Triton\Core\Data\Structures\Texture.h"
+#include "Triton\Core\Data\Texture.h"
 
 namespace Triton
 {
 	namespace Data
 	{
-
 		class TRITON_API Material
 		{
 		public:

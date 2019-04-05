@@ -155,28 +155,27 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Core\Data\DataMap.h" />
-    <ClInclude Include="src\Triton\Config.h" />
+    <ClInclude Include="src\Triton\Core\Platform.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsRenderable.h" />
     <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Triton\Events\EventReceiver.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
-    <ClInclude Include="src\Triton\Core\Data\Structures\Material.h" />
-    <ClInclude Include="src\Triton\Core\Data\Structures\Mesh.h" />
-    <ClInclude Include="src\Triton\Core\Data\Structures\RenderBatch.h" />
-    <ClInclude Include="src\Triton\Core\Data\Structures\Texture.h" />
+    <ClInclude Include="src\Triton\Config.h" />
+    <ClInclude Include="src\Triton\Core\Data\Material.h" />
+    <ClInclude Include="src\Triton\Core\Data\Mesh.h" />
+    <ClInclude Include="src\Triton\Core\Data\Texture.h" />
     <ClInclude Include="src\Triton\Core\Display.h" />
     <ClInclude Include="src\Triton\Core\Math\Math.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Renderable.h" />
     <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Events\EventManager.h" />
+    <ClInclude Include="src\Triton\Events\EventReceiver.h" />
     <ClInclude Include="src\Triton\Events\Events.h" />
     <ClInclude Include="src\Triton\Events\KeyEvent.h" />
     <ClInclude Include="src\Triton\Events\MouseEvent.h" />
@@ -187,25 +186,25 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton\TRMacros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Data\DataMap.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsRenderable.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
     <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
+    <ClCompile Include="src\Triton\Core\Platform.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Structures\Material.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Structures\Mesh.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Structures\Texture.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Material.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Mesh.cpp" />
+    <ClCompile Include="src\Triton\Core\Data\Texture.cpp" />
     <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Renderable.cpp" />
     <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
     <ClCompile Include="src\Triton\Events\EventManager.cpp" />
+    <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
     <ClCompile Include="src\Triton\Events\Events.cpp" />
     <ClCompile Include="src\Triton\File\File.cpp" />
     <ClCompile Include="src\Triton\GUI\GUI.cpp" />

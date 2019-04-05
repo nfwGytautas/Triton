@@ -3,9 +3,14 @@
 
 #include <glad\glad.h>
 
-std::shared_ptr<Triton::Data::Texture> Create(Triton::Data::TextureData& aData)
+#include "Triton\Core\Platform.h"
+
+namespace Triton
 {
-	return std::make_shared<Triton::Core::WindowsTexture>(aData);
+	std::shared_ptr<Triton::Data::Texture> Platform::Create(std::shared_ptr<Triton::Data::TextureData>& aData)
+	{
+		return std::make_shared<Triton::Core::WindowsTexture>(*aData.get());
+	}
 }
 
 Triton::Core::WindowsTexture::WindowsTexture(Triton::Data::TextureData& aData)
@@ -42,7 +47,8 @@ void Triton::Core::WindowsTexture::Bind(unsigned int aSlot)
 	glBindTexture(GL_TEXTURE_2D, m_TextureID);
 }
 
-void Triton::Core::WindowsTexture::Unbind()
+void Triton::Core::WindowsTexture::Unbind(unsigned int aSlot)
 {
+	glActiveTexture(GL_TEXTURE0 + aSlot);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

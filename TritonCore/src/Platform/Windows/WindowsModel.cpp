@@ -4,6 +4,8 @@
 #include "Triton\Core\Math\Math.h"
 #include <glad\glad.h>
 
+#include "Triton\Core\Platform.h"
+
 namespace Triton
 {
 	namespace Core
@@ -73,9 +75,9 @@ namespace Triton
 	}
 }
 
-std::shared_ptr<Triton::Data::Mesh> Create(Triton::Data::MeshData& aData)
+std::shared_ptr<Triton::Data::Mesh> Triton::Platform::Create(std::shared_ptr<Triton::Data::MeshData>& aData)
 {
-	return std::make_shared<Triton::Core::WindowsMesh>(aData);
+	return std::make_shared<Triton::Core::WindowsMesh>(*aData.get());
 }
 
 namespace Triton

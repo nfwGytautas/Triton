@@ -35,9 +35,9 @@ PYBIND11_EMBEDDED_MODULE(TritonMath, m) {
 		.def_readwrite("w", &Triton::Vector4::w);
 }
 
-#include "Triton\Core\Data\Structures\Mesh.h"
-#include "Triton\Core\Data\Structures\Texture.h"
-#include "Triton\Core\Data\Structures\Material.h"
+#include "Triton\Core\Data\Mesh.h"
+#include "Triton\Core\Data\Texture.h"
+#include "Triton\Core\Data\Material.h"
 PYBIND11_EMBEDDED_MODULE(TritonData, m) {
 	py::class_<Triton::Data::MeshData::Vertex, std::shared_ptr<Triton::Data::MeshData::Vertex>>(m, "Vertex")
 		.def(py::init<>())

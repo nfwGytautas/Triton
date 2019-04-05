@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;TR_DISABLE_SCRIPTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonScript\src;..\TritonShell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>

@@ -39,15 +39,9 @@ namespace Triton
 			{
 				return m_Height;
 			}
-			std::string GetPath() const
-			{
-				return m_Path;
-			}
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;
-
-			std::string m_Path;
 		};
 
 	}

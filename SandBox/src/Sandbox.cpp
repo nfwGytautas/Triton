@@ -1,7 +1,10 @@
-#define TR_SCRIPTING_ENABLED
 #include <TritonShell.h>
 
+#define UNIT_TEST
+
 #include <string>
+
+#ifdef SANDBOX
 
 //class Sandbox : public Triton::ShellApplication, private Triton::EventListener
 class Sandbox : public Triton::ShellApplication
@@ -76,7 +79,7 @@ private:
 		if (keycode == (int)'S')
 			prtc_Camera->Position -= cameraSpeed * prtc_Camera->GetViewDirection();
 		if (keycode == (int)'A')
-			prtc_Camera->Position -= glm::normalize(glm::cross(prtc_Camera->GetViewDirection(), Triton::Vector3(0.0f,1.0f,0.0f))) * cameraSpeed;
+			prtc_Camera->Position -= glm::normalize(glm::cross(prtc_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
 		if (keycode == (int)'D')
 			prtc_Camera->Position += glm::normalize(glm::cross(prtc_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
 		if (keycode == (int)'`')
@@ -109,26 +112,26 @@ private:
 	bool mouseMoved(const Triton::Event& event)
 	{
 		const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
-		
+
 		double xpos = mme.GetX();
 		double ypos = mme.GetY();
-		
+
 		if (m_firstMouse)
 		{
 			lastX = xpos;
 			lastY = ypos;
 			m_firstMouse = false;
 		}
-		
+
 		float xoffset = xpos - lastX;
 		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
 		lastX = xpos;
 		lastY = ypos;
-		
+
 		float sensitivity = 0.1f; // change this Get<>() to your liking
 		xoffset *= sensitivity;
 		yoffset *= sensitivity;
-		
+
 		prtc_Camera->Yaw += xoffset;
 		prtc_Camera->Pitch += yoffset;
 
@@ -151,23 +154,78 @@ private:
 	double lastY;
 };
 
+#endif // SANDBOX
+
+#ifdef UNIT_TEST
+
 class UnitTest1 : public Triton::ShellApplication
 {
+	std::shared_ptr<Triton::Data::Mesh> m_Mesh;
+	std::shared_ptr<Triton::Data::Material> m_Material;
+
+	std::shared_ptr<Triton::Core::Renderable> m_Stall;
+
+	size_t m_StallRndbl;
+	Triton::ECS::Entity m_MainEnt;
+
+	std::shared_ptr<Triton::ShaderUniforms::Matrix44Uniform> m_TransformationUniform;
 public:
+	void CreateResources()
+	{
+		m_Mesh = Triton::Platform::Create(
+				Triton::Data::File::ReadMesh(
+				"D:/Programming/Test files/nfw/stall.obj"));
+
+		m_Material = std::make_shared<Triton::Data::Material>(
+					Triton::Platform::Create(
+					Triton::Data::File::ReadTexture(
+					"D:/Programming/Test files/nfw/stallTexture.png")));
+		
+		m_Stall = Triton::Platform::Create(TR_DEFAULT_SHADER, m_Mesh);
+		m_Stall->AddMaterial(Triton::MaterialEntry(m_Material, "material.matTexture", 0));
+		
+		m_StallRndbl = this->AddRenderable(m_Stall);
+	}
+
 	UnitTest1(const Triton::AppSettings& aSettings)
 		: ShellApplication(aSettings)
 	{
-		
+		CreateResources();
+		m_MainEnt = prtc_EntityRegistry->create();
+		prtc_EntityRegistry->assign<Triton::Components::Renderable>(m_MainEnt).ID = m_StallRndbl;
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(m_MainEnt).Position = Triton::Vector3(0.0, 0.0, -25.0);
+
+		m_TransformationUniform = std::make_shared<Triton::ShaderUniforms::Matrix44Uniform>(
+			"transformationMatrix",
+			nullptr
+			);
+
+		m_Stall->AddRenderUniform(m_TransformationUniform);
 	}
 
 	void PreExecutionSetup() override
 	{
-		prtc_DataMap->RegisterMesh(Triton::Data::MeshData("D:/Programming/Test files/nfw/dragon.obj"));
-
 		prtc_Display->ShowCursor(true);
 		prtc_Display->SetVSync(false);
 	}
+
+	void OnUpdate() override
+	{
+		m_Stall->Bind();
+
+		Triton::Components::Transform trns = prtc_EntityRegistry->get<Triton::Components::Transform>(m_MainEnt);
+
+		Triton::Matrix44 val = Triton::Core::CreateTransformationMatrix(trns.Position, trns.Rotation, trns.Scale);
+
+		m_TransformationUniform->Change(&val);
+
+		m_Stall->Render();
+		m_Stall->Unbind();
+	}
 };
+
+#endif // UNIT_TEST
+
 
 Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
 {

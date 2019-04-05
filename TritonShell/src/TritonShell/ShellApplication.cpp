@@ -20,18 +20,15 @@ namespace Triton {
 		#ifndef TR_DISABLE_EDITOR_TOOLS
 			prtc_Console = std::make_shared<Tools::GUIConsole>();
 			prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
-		
-			prtc_DataMapTool = std::make_shared<Tools::GUIDataMap>(prtc_DataMap);
-			prtc_Console->AddCommand("DATA_MAP", [&]() { prtc_DataMapTool->Enable(); prtc_DataMapTool->IsOpen = true; });
 
-			prtc_ComponentVisualizer = std::make_shared<Tools::GUIComponentVisualizer>(prtc_EntityRegistry, prtc_DataMapTool);
+			prtc_ComponentVisualizer = std::make_shared<Tools::GUIComponentVisualizer>(prtc_EntityRegistry);
 			prtc_Console->AddCommand("ENTITY_VISUALIZER", [&]() { prtc_ComponentVisualizer->Enable(); prtc_ComponentVisualizer->IsOpen = true; });		
 
 			prtc_Console->AddCommand("SAVE", [&]() { 
 				std::ofstream os("out.cereal", std::ios::binary);
 				cereal::BinaryOutputArchive archive(os);
 
-				archive(*prtc_DataMap.get());
+				//archive(*prtc_DataMap.get());
 
 				//prtc_EntityRegistry->snapshot().entities(archive).destroyed(archive)
 				//	.component<Components::Transform>(archive);
@@ -41,7 +38,7 @@ namespace Triton {
 				std::ifstream is("out.cereal", std::ios::binary);
 				cereal::BinaryInputArchive archive(is);
 
-				archive(*prtc_DataMap.get());
+				//archive(*prtc_DataMap.get());
 
 				//prtc_EntityRegistry->loader().entities(archive).destroyed(archive)
 				//	.component<Components::Transform>(archive);
@@ -70,9 +67,7 @@ namespace Triton {
 
 		prtc_Shader->Disable();
 
-		prtc_RenderOrder = new Data::RenderOrder();
 		prtc_BatchSystem->OnUpdate(*prtc_EntityRegistry.get(), 0.0f);
-		prtc_RenderOrder->Batches = &prtc_BatchSystem->GetBatches();
 
 		#ifndef TR_DISABLE_SCRIPTING 
 			TR_PYTHON_SCRIPT_GUARD(prtc_py_Update.attr("entry").call(prtc_EntityRegistry.get(), prtc_Delta));
@@ -85,7 +80,7 @@ namespace Triton {
 
 		#ifndef TR_DISABLE_SCRIPTING
 			py_ReloadModules();
-			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get(), prtc_DataMap.get()));
+			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
 		#endif
 
 		PreExecutionSetup();
@@ -98,13 +93,12 @@ namespace Triton {
 		PreExecutionSetup();
 
 		#ifndef TR_DISABLE_SCRIPTING 
-			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get(), prtc_DataMap.get()));
+			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
 		#endif
 
 		#ifndef TR_DISABLE_EDITOR_TOOLS
 			prtc_GUIS->AddGUI(prtc_Console);
 			prtc_GUIS->AddGUI(prtc_ComponentVisualizer);
-			prtc_GUIS->AddGUI(prtc_DataMapTool);
 		#endif
 
 		while (!prtc_Display->Closed())

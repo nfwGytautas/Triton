@@ -11,17 +11,15 @@
 #include "TritonShell\Entity\Registry.h"
 #include "TritonShell\Entity\Systems\TritonSystems.h"
 
-#include "Triton\Core\Data\Structures\RenderBatch.h"
-
 #include "TritonShell\Camera\Camera.h"
 
 namespace Triton {
 
 	//Class that inherits core application and extends it with some functionality
 	class ShellApplication : 
+		TR_SCRIPTING_INTERFACE
 		public Application, 
-		protected Triton::EventListener,
-		protected TR_SCRIPTING_INTERFACE
+		protected Triton::EventListener
 	{
 	public:
 		ShellApplication(const Triton::AppSettings& aSettings);

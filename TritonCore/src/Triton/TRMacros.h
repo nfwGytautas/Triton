@@ -32,17 +32,15 @@
 
 #define TR_BIND_FUNC(func, obj, ...) std::bind(&func, obj, __VA_ARGS__)
 
-//Project typedefs
-namespace Triton
-{
-	namespace Data
-	{
-		class Mesh;
-		class Texture;
-	}
-	TRITON_API typedef unsigned int MeshID;
-	TRITON_API typedef std::vector<std::shared_ptr<Data::Mesh>> MeshList;
-
-	TRITON_API typedef unsigned int TextureID;
-	TRITON_API typedef std::vector<std::shared_ptr<Data::Texture>> TextureList;
-}
+#define TR_SHADER_UNIFORM_DEFINITION(val_type, nmspace) \
+class TRITON_API TR_STRINGIZE(val_type, Uniform) : public Triton::ShaderUniforms::ShaderUniform\
+{\
+public:\
+	TR_STRINGIZE(val_type, Uniform)(std::string aName, TR_STRINGIZE(nmspace, val_type)* aVal)\
+		: Triton::ShaderUniforms::ShaderUniform(aName), m_Value(aVal) {}\
+\
+	void Change(TR_STRINGIZE(nmspace, val_type)* new_val) { m_Value = new_val; }\
+	virtual void Set(Triton::Core::Shader& aShader) override;\
+private:\
+	TR_STRINGIZE(nmspace, val_type)* m_Value;\
+};

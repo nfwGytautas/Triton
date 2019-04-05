@@ -4,6 +4,9 @@
     <Filter Include="TritonShell">
       <UniqueIdentifier>{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TritonShell\Camera">
+      <UniqueIdentifier>{35BD1FE7-21A1-E03C-8A01-DB8F7604CBBE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="TritonShell\Entity">
       <UniqueIdentifier>{0935B9EC-F518-7A42-5E79-74954A7C64C4}</UniqueIdentifier>
     </Filter>
@@ -19,6 +22,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TritonShell.h" />
+    <ClInclude Include="src\TritonShell\Camera\Camera.h">
+      <Filter>TritonShell\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonShell\Config.h">
+      <Filter>TritonShell</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h">
       <Filter>TritonShell\Entity\Components</Filter>
     </ClInclude>
@@ -40,11 +49,11 @@
     <ClInclude Include="src\TritonShell\Tools\GUIConsole.h">
       <Filter>TritonShell\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonShell\Config.h" />
-    <ClInclude Include="src\TritonShell\Camera\Camera.h" />
-    <ClInclude Include="src\TritonShell\Tools\GUIDataMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonShell\Camera\Camera.cpp">
+      <Filter>TritonShell\Camera</Filter>
+    </ClCompile>
     <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp">
       <Filter>TritonShell\Entity\Systems</Filter>
     </ClCompile>
@@ -57,7 +66,5 @@
     <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp">
       <Filter>TritonShell\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
-    <ClCompile Include="src\TritonShell\Tools\GUIDataMap.cpp" />
   </ItemGroup>
 </Project>

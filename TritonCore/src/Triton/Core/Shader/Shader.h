@@ -2,6 +2,7 @@
 #include "TRpch.h"
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
+
 namespace Triton
 {
 	namespace Core
@@ -33,5 +34,26 @@ namespace Triton
 
 			static Shader* Create(const ShaderSettings& settings);
 		};
+	}
+
+	namespace ShaderUniforms
+	{
+		class TRITON_API ShaderUniform
+		{
+		public:
+			virtual void Set(Core::Shader& shader) = 0;
+
+			ShaderUniform(std::string aName)
+				: m_Name(aName) {}
+		protected:
+			std::string m_Name;
+		};
+
+		TR_SHADER_UNIFORM_DEFINITION(int, )
+		TR_SHADER_UNIFORM_DEFINITION(float, )
+		TR_SHADER_UNIFORM_DEFINITION(Vector2, Triton::)
+		TR_SHADER_UNIFORM_DEFINITION(Vector3, Triton::)
+		TR_SHADER_UNIFORM_DEFINITION(Vector4, Triton::)
+		TR_SHADER_UNIFORM_DEFINITION(Matrix44, Triton::)
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Triton\Core\Math\Math.h"
-#include "Triton\Core\Data\Structures\Mesh.h"
-#include "Triton\Core\Data\Structures\Material.h"
+#include "Triton\Core\Data\Mesh.h"
+#include "Triton\Core\Data\Material.h"
 
 #include <cereal\archives\binary.hpp>
 
@@ -26,39 +26,10 @@ namespace Triton
 				: Position(aPosition), Rotation(aRotation), Scale(aScale)
 			{}
 		};
-	
-		//A component which specifies what meshes an entity uses
-		struct MeshFilter
+
+		struct Renderable
 		{
-			std::shared_ptr<Data::Mesh> Mesh;
-
-			MeshFilter()
-			{ }
-			MeshFilter(std::shared_ptr<Data::Mesh> aMesh)
-				:Mesh(aMesh)
-			{ }
-			MeshFilter(const MeshFilter& aOther)
-				: Mesh(aOther.Mesh)
-			{
-
-			}
-		};
-
-		//A component which specifies how a game object should be rendered
-		struct MeshRenderer
-		{
-			std::shared_ptr<Data::Material> Material;
-
-			MeshRenderer()
-			{ }
-			MeshRenderer(std::shared_ptr<Data::Material> aMaterial)
-				:Material(aMaterial)
-			{ }
-			MeshRenderer(const MeshRenderer& aOther)
-				: Material(aOther.Material)
-			{
-
-			}
+			size_t ID;
 		};
 	}
 }

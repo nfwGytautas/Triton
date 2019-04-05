@@ -12,7 +12,9 @@
 #include <pybind11\stl_bind.h>
 namespace py = pybind11;
 
-#include "Triton\Core\Data\Structures\Mesh.h"
+#include "Triton\Core\Data\Mesh.h"
+
+#ifndef TR_DISABLE_SCRIPTING
 
 #define TR_PYTHON_SCRIPT_GUARD(x, onFail) \
 		try\
@@ -23,6 +25,12 @@ namespace py = pybind11;
 			TR_WARN(re.what());\
 			onFail;\
 		}\
+
+#else
+
+#define TR_PYTHON_SCRIPT_GUARD(x, onFail)
+
+#endif
 
 #define TR_STRINGIZE(A, B) A ## B
 

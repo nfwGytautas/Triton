@@ -2,12 +2,13 @@
 
 #include "TRMacros.h"
 #include "Triton\Config.h"
+#include "Triton\Core\Platform.h"
 
 #include "Core\Math\Math.h"
 
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
-#include "Core\Renderer\Renderer.h"
+#include "Core\Renderer\Renderable.h"
 
 #include "File\File.h"
 
@@ -17,11 +18,8 @@
 #include "Events\MouseEvent.h"
 #include "Events\EventReceiver.h"
 
-#include "Core\Data\Structures\RenderBatch.h"
-#include "Core\Data\Structures\Mesh.h"
-#include "Core\Data\Structures\Material.h"
-
-#include "Core\Data\DataMap.h"
+#include "Core\Data\Mesh.h"
+#include "Core\Data\Material.h"
 
 namespace Triton {
 
@@ -52,21 +50,22 @@ namespace Triton {
 		void Run();
 		void UpdateProjectionMatrix();
 
-	private:
+		size_t AddRenderable(std::shared_ptr<Core::Renderable> aRenderable);
+		std::shared_ptr<Core::Renderable> TakeRenderable(size_t aRenderable);
+
+	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
-
-		Data::RenderOrder* prtc_RenderOrder;
 	protected:
 		TR_GUI_IMPLEMENTATION
 
 		std::unique_ptr<Core::Display> prtc_Display;
-		std::unique_ptr<Core::Shader> prtc_Shader;
-		std::unique_ptr<Core::Renderer> prtc_Renderer;
-		std::shared_ptr<Core::EventManager> prtc_EventManager;
-		std::shared_ptr<Core::DataMap> prtc_DataMap;
+		std::shared_ptr<Core::Shader> prtc_Shader;
+		std::shared_ptr<Core::EventManager> prtc_EventManager;		
 	private:
+		std::vector< std::shared_ptr<Core::Renderable>> m_Renderables;
+
 		float m_LastFrame = 0.0f;
 	};
 

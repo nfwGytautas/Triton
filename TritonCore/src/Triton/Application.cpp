@@ -18,16 +18,12 @@ namespace Triton {
 		));
 		prtc_Display->SetEventReceiver(this);
 
-		prtc_Shader = std::unique_ptr<Core::Shader>(Core::Shader::Create(
+		prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
 				"D:/Programming/Test files/nfw/shaders/triton/v4.shader", 
 				"D:/Programming/Test files/nfw/shaders/triton/f4.shader")));
 
-		prtc_Renderer = std::unique_ptr<Core::Renderer>(Core::Renderer::Create(prtc_Shader.get()));
-
 		prtc_EventManager = std::make_unique<Core::EventManager>();
-
-		prtc_DataMap = std::make_shared<Core::DataMap>();
 
 		#ifndef TR_DISABLE_GUI
 			m_GUIContext = aSettings.ImGUIContext;
@@ -52,13 +48,6 @@ namespace Triton {
 		OnUpdate();	
 
 		prtc_EventManager->Dispatch();
-		
-		if (prtc_RenderOrder != nullptr)
-		{
-			prtc_Shader->Enable();
-			prtc_Renderer->Render(*prtc_RenderOrder);
-			prtc_Shader->Disable();
-		}
 
 		#ifndef TR_DISABLE_GUI
 			prtc_GUIS->UpdateCollection(prtc_Delta);
@@ -75,6 +64,24 @@ namespace Triton {
 		prtc_Shader->SetUniform("projectionMatrix", projection);
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 		prtc_Shader->Disable();
+	}
+
+	size_t Application::AddRenderable(std::shared_ptr<Core::Renderable> aRenderable)
+	{
+		m_Renderables.push_back(aRenderable);
+		return m_Renderables.size() - 1;
+	}
+
+	std::shared_ptr<Core::Renderable> Application::TakeRenderable(size_t aRenderable)
+	{
+		if (!m_Renderables.empty())
+			return m_Renderables[aRenderable];
+		else
+		{
+			TR_CORE_ERROR("Renderable with id: {0} doesn't exist!", aRenderable);
+			TR_CORE_ASSERT(0, aRenderable);
+			return nullptr;
+		}
 	}
 
 	void Application::OnEvent(Event* aEvent)

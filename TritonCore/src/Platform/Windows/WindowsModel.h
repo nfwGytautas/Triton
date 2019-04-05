@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Triton\TRMacros.h"
-#include "Triton\Core\Data\Structures\Mesh.h"
+#include "Triton\Core\Data\Mesh.h"
 
 namespace Triton
 {
