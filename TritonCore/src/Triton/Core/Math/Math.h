@@ -13,7 +13,7 @@ namespace Triton
 
 	namespace Core
 	{
-		TRITON_API Matrix44 CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aFarRenderPlane, float aNearRenderPlane);
-		TRITON_API Matrix44 CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale);
+		 Matrix44 CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aFarRenderPlane, float aNearRenderPlane);
+		 Matrix44 CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale);
 	}
 }

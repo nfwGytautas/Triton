@@ -7,7 +7,7 @@ namespace Triton
 {
 	namespace Data
 	{
-		struct TRITON_API MeshData
+		struct MeshData
 		{
 			struct Vertex
 			{
@@ -26,10 +26,18 @@ namespace Triton
 			MeshData(std::string aPath) : Path(aPath) {}
 		};
 
-		class TRITON_API Mesh
+		class Mesh
 		{
 		public:
 			virtual ~Mesh() { }
+
+			virtual void Bind() = 0;
+			virtual void Unbind() = 0;
+
+			unsigned int GetIndiceCount() const
+			{
+				return m_IndiceCount;
+			}
 
 			unsigned int GetWidth() const
 			{
@@ -42,6 +50,7 @@ namespace Triton
 		protected:
 			unsigned int m_Width;
 			unsigned int m_Height;
+			unsigned int m_IndiceCount;
 		};
 
 	}

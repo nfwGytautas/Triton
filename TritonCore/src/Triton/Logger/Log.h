@@ -6,7 +6,7 @@
 
 namespace Triton {
 
-	class TRITON_API Log
+	class  Log
 	{
 	public:
 		static void Init();

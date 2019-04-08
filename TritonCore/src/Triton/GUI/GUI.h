@@ -8,7 +8,7 @@ namespace Triton
 	namespace UI
 	{
 
-		class TRITON_API GUI
+		class  GUI
 		{
 		public:
 			GUI();

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "vendor\GLFW\GLFW.vcxproj", "{154B857C-0182-860D-AA6E-6C109684020F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Glad", "vendor\Glad\Glad.vcxproj", "{BDD6857C-A90D-870D-52FA-6C103E10030F}"
@@ -10,8 +12,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SandBox", "SandBox\SandBox.vcxproj", "{D43924E3-4019-A37E-4931-2E55B58F09E0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonCore", "TritonCore\TritonCore.vcxproj", "{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonScript", "TritonScript\TritonScript.vcxproj", "{9A396C89-869C-FB2D-2F22-34E41B64C7B0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonShell", "TritonShell\TritonShell.vcxproj", "{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}"
 EndProject
@@ -52,12 +52,6 @@ Global
 		{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}.Dist|x64.Build.0 = Dist|x64
 		{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}.Release|x64.ActiveCfg = Release|x64
 		{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}.Release|x64.Build.0 = Release|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Debug|x64.ActiveCfg = Debug|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Debug|x64.Build.0 = Debug|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Dist|x64.ActiveCfg = Dist|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Dist|x64.Build.0 = Dist|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Release|x64.ActiveCfg = Release|x64
-		{9A396C89-869C-FB2D-2F22-34E41B64C7B0}.Release|x64.Build.0 = Release|x64
 		{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}.Debug|x64.ActiveCfg = Debug|x64
 		{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}.Debug|x64.Build.0 = Debug|x64
 		{5D3399B6-C9E8-11AC-52DD-0B83BE9108B0}.Dist|x64.ActiveCfg = Dist|x64
@@ -67,5 +61,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {105B2F26-9A63-41F9-A9C6-667A1CD38EF0}
 	EndGlobalSection
 EndGlobal

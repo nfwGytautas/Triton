@@ -48,9 +48,6 @@
     <ClInclude Include="src\Platform\Windows\WindowsModel.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsRenderable.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsShader.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -68,6 +65,9 @@
     <ClInclude Include="src\Triton\Config.h">
       <Filter>Triton</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\Data\DataCollection.h">
+      <Filter>Triton\Core\Data</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Core\Data\Material.h">
       <Filter>Triton\Core\Data</Filter>
     </ClInclude>
@@ -83,8 +83,8 @@
     <ClInclude Include="src\Triton\Core\Math\Math.h">
       <Filter>Triton\Core\Math</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Renderer\Renderable.h">
-      <Filter>Triton\Core\Renderer</Filter>
+    <ClInclude Include="src\Triton\Core\Platform.h">
+      <Filter>Triton\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Shader\Shader.h">
       <Filter>Triton\Core\Shader</Filter>
@@ -122,16 +122,18 @@
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Platform.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderRoutine.h" />
+    <ClInclude Include="src\Triton\Core\Shader\UniformHost.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsRenderable.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp">
@@ -159,8 +161,8 @@
     <ClCompile Include="src\Triton\Core\Math\Math.cpp">
       <Filter>Triton\Core\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Core\Renderer\Renderable.cpp">
-      <Filter>Triton\Core\Renderer</Filter>
+    <ClCompile Include="src\Triton\Core\Platform.cpp">
+      <Filter>Triton\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Shader\Shader.cpp">
       <Filter>Triton\Core\Shader</Filter>
@@ -186,6 +188,11 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Core\Platform.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderRoutine.cpp" />
+    <ClCompile Include="src\Triton\Core\Shader\UniformHost.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

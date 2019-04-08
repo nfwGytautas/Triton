@@ -1,23 +1,5 @@
 #pragma once
 
-#ifndef TR_DISABLE_SCRIPTING 
-
-	#ifndef TR_DISABLE_PYTHON
-		#include "TritonScript.h"
-		#define TR_PYTHON_INTERFACE Triton::Scripting::TRPythonScriptingInterface
-	#else
-		#define TR_PYTHON_INTERFACE 
-	#endif
-
-	#define TR_SCRIPTING_INTERFACE protected TR_PYTHON_INTERFACE,
-
-#else
-
-#define TR_SCRIPTING_INTERFACE
-
-#endif
-
-
 #ifndef TR_DISABLE_EDITOR_TOOLS
 	#include "TritonShell\Tools\GUIConsole.h"
 	#include "TritonShell\Tools\GUIComponentVisualizer.h"

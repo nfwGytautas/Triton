@@ -7,7 +7,7 @@ namespace Triton
 {
 	namespace Core
 	{
-		class TRITON_API WindowsShader : public Shader
+		class  WindowsShader : public Shader
 		{
 		public:
 			WindowsShader(const ShaderSettings& aSettings);

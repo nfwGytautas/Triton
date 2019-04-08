@@ -1,12 +1,12 @@
 workspace "Triton"   
-   architecture "x64"
+	architecture "x64"
 
-   configurations 
-   { 
+	configurations 
+	{ 
 		"Debug", 
 		"Release",
 		"Dist"
-   }
+	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -102,10 +102,14 @@ project "TritonScript"
 		optimize "On"
 		staticruntime "off"
 
+
+
 project "TritonCore"
 	location "TritonCore"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -148,21 +152,11 @@ project "TritonCore"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
 		{
 			"TR_PLATFORM_WINDOWS",
-			"TR_BUILD_DLL",
-			"_WINDLL"
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/TritonScript"),
 		}
 
 	filter "configurations:Debug"
@@ -172,23 +166,27 @@ project "TritonCore"
 			"TR_ENABLE_ASSERTS",
 			"GLFW_INCLUDE_NONE",
 		}
-		symbols "On"
-		staticruntime "off"
+		runtime "Debug"
+		symbols "on"
 	
 	filter "configurations:Release"
 		defines "TR_RELEASE"
-		optimize "On"
-		staticruntime "off"
+		optimize "on"
+		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "TR_DIST"
-		optimize "On"
-		staticruntime "off"
+		optimize "on"
+		runtime "Release"
+
+
 
 project "TritonShell"
 	location "TritonShell"
 	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -233,19 +231,11 @@ project "TritonShell"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
 		{
 			"TR_PLATFORM_WINDOWS",
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/SandBox"),
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/TritonScript"),
 		}
 
 	filter "configurations:Debug"
@@ -254,23 +244,25 @@ project "TritonShell"
 			"TR_DEBUG",
 			"TR_ENABLE_ASSERTS",
 		}
-		symbols "On"
-		staticruntime "off"
+		runtime "Debug"
+		symbols "on"
 	
 	filter "configurations:Release"
 		defines "TR_RELEASE"
-		optimize "On"
-		staticruntime "off"
+		runtime "Release"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "TR_DIST"
-		optimize "On"
-		staticruntime "off"
+		runtime "Release"
+		optimize "on"
 		
 project "SandBox"
 	location "SandBox"
 	kind "ConsoleApp"
 	language "C++"	
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -315,8 +307,6 @@ project "SandBox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -328,17 +318,17 @@ project "SandBox"
 		defines 
 		{
 			"TR_DEBUG",
-			"TR_ENABLE_ASSERTS",
+			"TR_ENABLE_ASSERTS"
 		}
-		symbols "On"
-		staticruntime "off"
+		runtime "Debug"
+		symbols "on"
 	
 	filter "configurations:Release"
 		defines "TR_RELEASE"
-		optimize "On"
-		staticruntime "off"
+		optimize "on"
+		runtime "Release"
 
 	filter "configurations:Dist"
 		defines "TR_DIST"
-		optimize "On"
-		staticruntime "off"
+		runtime "Release"
+		optimize "on"

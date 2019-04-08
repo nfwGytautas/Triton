@@ -6,7 +6,7 @@ namespace Triton
 {
 	namespace Core
 	{
-		class TRITON_API EventManager
+		class  EventManager
 		{
 		public:
 			EventManager();

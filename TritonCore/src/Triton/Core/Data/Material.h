@@ -2,24 +2,24 @@
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
 #include "Triton\Core\Data\Texture.h"
+#include "Triton\Core\Shader\UniformHost.h"
 
 namespace Triton
 {
 	namespace Data
 	{
-		class TRITON_API Material
+		class Material : protected Core::UniformHost
 		{
+		private:
+			using Core::UniformHost::SetUniforms;
 		public:
-			Material(std::shared_ptr<Texture> aTexture)
-				:m_Texture(aTexture), m_Diffuse(0.0f, 0.0f, 0.0f)
+			Material(std::shared_ptr<Core::Shader> aShader, std::shared_ptr<Texture> aTexture);
+
+			virtual ~Material()
 			{ }
 
-			Material()
-				:m_Texture(), m_Diffuse(0.0f, 0.0f, 0.0f)
-			{ }
-
-			~Material()
-			{ }
+			void Bind();
+			void Unbind();
 
 			void SetDiffuse(Vector3 aValue)
 			{
@@ -31,11 +31,12 @@ namespace Triton
 				return m_Diffuse;
 			}
 
-			std::shared_ptr<Texture> GetTexture()
+			std::shared_ptr<Core::Shader> Shader() const
 			{
-				return m_Texture;
+				return m_Shader;
 			}
 		private:
+			std::shared_ptr<Core::Shader> m_Shader;
 			std::shared_ptr<Texture> m_Texture;
 			Vector3 m_Diffuse;
 		};

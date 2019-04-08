@@ -16,14 +16,14 @@ namespace Triton
 	namespace Core
 	{
 		class Shader;
-		class Renderable;
+		class Renderer;
 	}
 
-	class TRITON_API Platform
+	class Platform
 	{
 	public:
 		static std::shared_ptr<Triton::Data::Mesh> Create(std::shared_ptr<Triton::Data::MeshData>& aData);
 		static std::shared_ptr<Triton::Data::Texture> Create(std::shared_ptr<Triton::Data::TextureData>& aData);
-		static std::shared_ptr<Triton::Core::Renderable> Create(std::shared_ptr<Triton::Core::Shader> aShader, std::shared_ptr<Triton::Data::Mesh> aMesh);
+		static std::unique_ptr<Triton::Core::Renderer> Create();
 	};
 }

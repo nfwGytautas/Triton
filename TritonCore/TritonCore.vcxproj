@@ -23,19 +23,19 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
@@ -54,111 +54,100 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
     <OutDir>..\bin\Debug-windows-x86_64\TritonCore\</OutDir>
     <IntDir>..\bin-int\Debug-windows-x86_64\TritonCore\</IntDir>
     <TargetName>TritonCore</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\Release-windows-x86_64\TritonCore\</OutDir>
     <IntDir>..\bin-int\Release-windows-x86_64\TritonCore\</IntDir>
     <TargetName>TritonCore</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\Dist-windows-x86_64\TritonCore\</OutDir>
     <IntDir>..\bin-int\Dist-windows-x86_64\TritonCore\</IntDir>
     <TargetName>TritonCore</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
       <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>..\bin\Debug-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
-    </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Debug-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
       <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>..\bin\Release-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
-    </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Release-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_BUILD_DLL;_WINDLL;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
       <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ImportLibrary>..\bin\Dist-windows-x86_64\TritonCore\TritonCore.lib</ImportLibrary>
-    </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Dist-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll ..\bin\Dist-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Core\Platform.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderRoutine.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsRenderable.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h" />
@@ -166,12 +155,13 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Config.h" />
+    <ClInclude Include="src\Triton\Core\Data\DataCollection.h" />
     <ClInclude Include="src\Triton\Core\Data\Material.h" />
     <ClInclude Include="src\Triton\Core\Data\Mesh.h" />
     <ClInclude Include="src\Triton\Core\Data\Texture.h" />
     <ClInclude Include="src\Triton\Core\Display.h" />
     <ClInclude Include="src\Triton\Core\Math\Math.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\Renderable.h" />
+    <ClInclude Include="src\Triton\Core\Platform.h" />
     <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Events\EventManager.h" />
@@ -184,15 +174,17 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClInclude Include="src\Triton\GUI\GUICollection.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
+    <ClInclude Include="src\Triton\Core\Shader\UniformHost.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderRoutine.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsRenderable.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
     <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\Triton\Core\Platform.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -201,7 +193,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClCompile Include="src\Triton\Core\Data\Mesh.cpp" />
     <ClCompile Include="src\Triton\Core\Data\Texture.cpp" />
     <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\Renderable.cpp" />
+    <ClCompile Include="src\Triton\Core\Platform.cpp" />
     <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
     <ClCompile Include="src\Triton\Events\EventManager.cpp" />
     <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
@@ -210,6 +202,7 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonCore\TritonCore.dll\ (xcopy /Q /E /Y /
     <ClCompile Include="src\Triton\GUI\GUI.cpp" />
     <ClCompile Include="src\Triton\GUI\GUICollection.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
+    <ClCompile Include="src\Triton\Core\Shader\UniformHost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">

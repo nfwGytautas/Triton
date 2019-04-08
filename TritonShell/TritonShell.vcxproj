@@ -75,11 +75,11 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;TR_DISABLE_SCRIPTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\pybind\include;..\vendor\python\include;..\vendor\python\PC;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonScript\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -90,10 +90,6 @@
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Debug-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Debug-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Debug-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Debug-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -106,7 +102,7 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -118,10 +114,6 @@ IF EXIST ..\bin\Debug-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Release-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Release-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Release-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Release-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
@@ -134,7 +126,7 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -146,10 +138,6 @@ IF EXIST ..\bin\Release-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\python\PCbuild\amd64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Dist-windows-x86_64\SandBox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Dist-windows-x86_64\SandBox &gt; nul)
-IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Dist-windows-x86_64\TritonScript &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib ..\bin\Dist-windows-x86_64\TritonScript &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\TritonShell.h" />
@@ -157,7 +145,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
     <ClInclude Include="src\TritonShell\Config.h" />
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
     <ClInclude Include="src\TritonShell\Entity\Registry.h" />
-    <ClInclude Include="src\TritonShell\Entity\Systems\TritonSystems.h" />
     <ClInclude Include="src\TritonShell\EntryPoint.h" />
     <ClInclude Include="src\TritonShell\ShellApplication.h" />
     <ClInclude Include="src\TritonShell\Tools\GUIComponentVisualizer.h" />
@@ -165,7 +152,6 @@ IF EXIST ..\bin\Dist-windows-x86_64\TritonShell\TritonShell.lib\ (xcopy /Q /E /Y
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
-    <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp" />
     <ClCompile Include="src\TritonShell\ShellApplication.cpp" />
     <ClCompile Include="src\TritonShell\Tools\GUIComponentVisualizer.cpp" />
     <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp" />

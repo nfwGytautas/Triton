@@ -8,21 +8,19 @@ namespace Triton
 	namespace Core
 	{
 
-		class TRITON_API WindowsMesh : public Data::Mesh
+		class  WindowsMesh : public Data::Mesh
 		{
 		public:
 			WindowsMesh(Data::MeshData& aData);
 			~WindowsMesh();
 
-			void Bind();
-			void Unbind();
-			unsigned int GetIndiceCount() const;
+			void Bind() override;
+			void Unbind() override;
 
 		private:
 			unsigned int m_VAO;
 			unsigned int m_IBO;
 			std::vector<unsigned int> m_VBOS;
-			unsigned int m_IndiceCount;
 		};
 
 	}

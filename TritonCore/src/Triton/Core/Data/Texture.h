@@ -6,7 +6,7 @@ namespace Triton
 	namespace Data
 	{
 
-		struct TRITON_API TextureData
+		struct  TextureData
 		{
 			int Width;
 			int Height;
@@ -26,10 +26,13 @@ namespace Triton
 			}
 		};
 
-		class TRITON_API Texture
+		class  Texture
 		{
 		public:
 			virtual ~Texture() { }
+
+			virtual void Bind(unsigned int aSlot = 0) = 0;
+			virtual void Unbind(unsigned int aSlot = 0) = 0;
 
 			unsigned int GetWidth() const
 			{

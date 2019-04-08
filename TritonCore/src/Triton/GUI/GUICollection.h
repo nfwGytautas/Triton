@@ -13,7 +13,7 @@ namespace Triton
 	namespace UI
 	{
 
-		class TRITON_API GUICollection : protected EventListener
+		class  GUICollection : protected EventListener
 		{
 		public:
 			GUICollection(Core::EventManager* mManager);

@@ -28,15 +28,6 @@
     <ClInclude Include="src\TritonShell\Config.h">
       <Filter>TritonShell</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h">
-      <Filter>TritonShell\Entity\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonShell\Entity\Registry.h">
-      <Filter>TritonShell\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonShell\Entity\Systems\TritonSystems.h">
-      <Filter>TritonShell\Entity\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="src\TritonShell\EntryPoint.h">
       <Filter>TritonShell</Filter>
     </ClInclude>
@@ -49,13 +40,12 @@
     <ClInclude Include="src\TritonShell\Tools\GUIConsole.h">
       <Filter>TritonShell\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
+    <ClInclude Include="src\TritonShell\Entity\Registry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp">
       <Filter>TritonShell\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonShell\Entity\Systems\TritonSystems.cpp">
-      <Filter>TritonShell\Entity\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonShell\ShellApplication.cpp">
       <Filter>TritonShell</Filter>

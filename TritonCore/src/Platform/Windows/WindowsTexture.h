@@ -6,14 +6,14 @@ namespace Triton
 {
 	namespace Core
 	{
-		class TRITON_API WindowsTexture : public Data::Texture
+		class  WindowsTexture : public Data::Texture
 		{
 		public:
 			WindowsTexture(Triton::Data::TextureData& aData);
 			~WindowsTexture();
 
-			void Bind(unsigned int aSlot = 0);
-			void Unbind(unsigned int aSlot = 0);
+			void Bind(unsigned int aSlot = 0) override;
+			void Unbind(unsigned int aSlot = 0) override;
 		private:
 			unsigned int m_TextureID;
 		};

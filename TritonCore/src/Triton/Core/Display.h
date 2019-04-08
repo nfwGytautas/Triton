@@ -18,7 +18,7 @@ namespace Triton {
 		};
 
 		//Class that handles the display functionality
-		class TRITON_API Display
+		class  Display
 		{
 		public:
 			virtual ~Display() { };

@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef TR_DISABLE_SCRIPTING 
-	#include "TritonScript\Implementations\TRPythonModule.h"
-#endif
-
 #ifndef TR_DISABLE_GUI
 	#include "imgui.h"
 #endif
@@ -12,10 +8,6 @@ extern Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSett
 
 int main(int argc, char** argv)
 {
-#ifndef TR_DISABLE_SCRIPTING 
-	Triton::Scripting::TRPythonScriptingInterface::Init();
-#endif
-
 #ifndef TR_DISABLE_GUI
 	//Init imgui
 	ImGuiContext* imguiContext = ImGui::CreateContext();
@@ -41,10 +33,6 @@ int main(int argc, char** argv)
 
 		//Delete the created triton application
 		delete app;
-
-#ifndef TR_DISABLE_SCRIPTING 
-		Triton::Scripting::TRPythonScriptingInterface::Disable();
-#endif
 
 #ifndef TR_DISABLE_GUI
 		ImGui::DestroyContext(imguiContext);

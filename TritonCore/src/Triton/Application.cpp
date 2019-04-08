@@ -12,11 +12,19 @@
 namespace Triton {
 
 	Application::Application(const AppSettings& aSettings)
+		: prtc_DefaultRoutineValues()
 	{
 		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
 			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
 		));
 		prtc_Display->SetEventReceiver(this);
+
+		prtc_Renderer = std::unique_ptr<Core::Renderer>(std::move(Platform::Create()));
+
+		m_DefaultRenderRoutine = std::make_shared<Core::RenderRoutine>();
+		prtc_DefaultRoutineValues.TransformationUniform = std::make_shared<ShaderUniforms::Matrix44Uniform>("transformationMatrix", nullptr);
+		m_DefaultRenderRoutine->AddUniform(prtc_DefaultRoutineValues.TransformationUniform);
+		prtc_Routines.Add(m_DefaultRenderRoutine);
 
 		prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
@@ -49,6 +57,8 @@ namespace Triton {
 
 		prtc_EventManager->Dispatch();
 
+		Render();
+
 		#ifndef TR_DISABLE_GUI
 			prtc_GUIS->UpdateCollection(prtc_Delta);
 			prtc_GUIS->DrawCollection();
@@ -64,24 +74,6 @@ namespace Triton {
 		prtc_Shader->SetUniform("projectionMatrix", projection);
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
 		prtc_Shader->Disable();
-	}
-
-	size_t Application::AddRenderable(std::shared_ptr<Core::Renderable> aRenderable)
-	{
-		m_Renderables.push_back(aRenderable);
-		return m_Renderables.size() - 1;
-	}
-
-	std::shared_ptr<Core::Renderable> Application::TakeRenderable(size_t aRenderable)
-	{
-		if (!m_Renderables.empty())
-			return m_Renderables[aRenderable];
-		else
-		{
-			TR_CORE_ERROR("Renderable with id: {0} doesn't exist!", aRenderable);
-			TR_CORE_ASSERT(0, aRenderable);
-			return nullptr;
-		}
 	}
 
 	void Application::OnEvent(Event* aEvent)

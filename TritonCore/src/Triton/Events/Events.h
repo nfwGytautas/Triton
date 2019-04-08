@@ -6,12 +6,12 @@
 
 namespace Triton
 {
-	class TRITON_API Event;
-	class TRITON_API EventListener;
+	class  Event;
+	class  EventListener;
 
 	namespace Core
 	{
-		class TRITON_API EventManager;
+		class  EventManager;
 	}
 
 	enum class EventType : size_t
@@ -34,7 +34,7 @@ namespace Triton
 		EventCategoryMouseButton = BIT(4)
 	};
 
-	class TRITON_API Event
+	class  Event
 	{
 		friend class EventListener;
 	public:
@@ -59,7 +59,7 @@ namespace Triton
 	};
 
 	using EventBehavior = std::function<bool(const Event& e)>;
-	class TRITON_API EventListener
+	class  EventListener
 	{		
 	public:
 		EventListener(Core::EventManager* mManager);

@@ -112,16 +112,19 @@ namespace Triton
 		void WindowsMesh::Bind()
 		{
 			glBindVertexArray(m_VAO);
+
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(2);
 		}
 
 		void WindowsMesh::Unbind()
 		{
-			glBindVertexArray(0);
-		}
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
 
-		unsigned int WindowsMesh::GetIndiceCount() const
-		{
-			return m_IndiceCount;
+			glBindVertexArray(0);
 		}
 	}
 }

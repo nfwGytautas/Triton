@@ -10,7 +10,7 @@ namespace Triton
 	namespace Data
 	{
 		
-		class TRITON_API File
+		class  File
 		{
 		public:
 			static std::string ReadAllText(std::string& aPath);

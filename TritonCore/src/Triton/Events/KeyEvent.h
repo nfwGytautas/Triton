@@ -4,7 +4,7 @@
 
 namespace Triton {
 
-	class TRITON_API KeyEvent : public Event
+	class  KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -21,7 +21,7 @@ namespace Triton {
 		int m_Mods;
 	};
 
-	class TRITON_API KeyPressedEvent : public KeyEvent
+	class  KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -44,7 +44,7 @@ namespace Triton {
 		int m_RepeatCount;
 	};
 
-	class TRITON_API KeyReleasedEvent : public KeyEvent
+	class  KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -63,7 +63,7 @@ namespace Triton {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class TRITON_API KeyInputEvent : public KeyEvent
+	class  KeyInputEvent : public KeyEvent
 	{
 	public:
 		KeyInputEvent(int keycode)

@@ -15,8 +15,6 @@ namespace Triton {
 	{
 		prtc_EntityRegistry = std::shared_ptr<ECS::Registry>(new ECS::Registry());
 
-		prtc_BatchSystem = std::make_unique<Triton::Systems::BatchSystem>();
-
 		#ifndef TR_DISABLE_EDITOR_TOOLS
 			prtc_Console = std::make_shared<Tools::GUIConsole>();
 			prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
@@ -66,22 +64,11 @@ namespace Triton {
 		prtc_Shader->SetUniform("viewMatrix", view);
 
 		prtc_Shader->Disable();
-
-		prtc_BatchSystem->OnUpdate(*prtc_EntityRegistry.get(), 0.0f);
-
-		#ifndef TR_DISABLE_SCRIPTING 
-			TR_PYTHON_SCRIPT_GUARD(prtc_py_Update.attr("entry").call(prtc_EntityRegistry.get(), prtc_Delta));
-		#endif
 	}
 
 	void ShellApplication::RestartShell()
 	{
 		prtc_EntityRegistry->reset();
-
-		#ifndef TR_DISABLE_SCRIPTING
-			py_ReloadModules();
-			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
-		#endif
 
 		PreExecutionSetup();
 	}
@@ -91,10 +78,6 @@ namespace Triton {
 		UpdateProjectionMatrix();
 
 		PreExecutionSetup();
-
-		#ifndef TR_DISABLE_SCRIPTING 
-			TR_PYTHON_SCRIPT_GUARD(this->prtc_py_PreExecution.attr("entry").call(prtc_EntityRegistry.get()));
-		#endif
 
 		#ifndef TR_DISABLE_EDITOR_TOOLS
 			prtc_GUIS->AddGUI(prtc_Console);
@@ -106,5 +89,23 @@ namespace Triton {
 			RunShell();
 			Run();
 		}
+	}
+
+	void ShellApplication::Render()
+	{	
+		prtc_Renderer->Prepare();
+
+		prtc_EntityRegistry->view<Components::Visual>().each([&](auto &visual) {
+			
+			std::shared_ptr<Data::Material> material = prtc_Materials.Take(visual.Material);
+			std::shared_ptr<Data::Mesh> mesh = prtc_Meshes.Take(visual.Mesh);
+			std::shared_ptr<Core::RenderRoutine> routine = prtc_Routines.Take(visual.Routine);
+
+			material->Bind();
+			mesh->Bind();
+			routine->Bind(material->Shader());
+
+			prtc_Renderer->Render(mesh->GetIndiceCount());
+		});
 	}
 }

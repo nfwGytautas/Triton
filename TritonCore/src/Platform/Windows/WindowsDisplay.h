@@ -9,7 +9,7 @@ namespace Triton
 {
 	namespace Core
 	{
-		class TRITON_API WindowsDisplay : public Display
+		class  WindowsDisplay : public Display
 		{
 		public:
 			WindowsDisplay(const DisplaySettings& aSettings);

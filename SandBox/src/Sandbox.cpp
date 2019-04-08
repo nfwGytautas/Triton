@@ -160,31 +160,29 @@ private:
 
 class UnitTest1 : public Triton::ShellApplication
 {
-	std::shared_ptr<Triton::Data::Mesh> m_Mesh;
-	std::shared_ptr<Triton::Data::Material> m_Material;
+	size_t m_StallMesh;
+	size_t m_StallMaterial;
+	size_t m_StallRoutine;
 
-	std::shared_ptr<Triton::Core::Renderable> m_Stall;
+	Triton::Matrix44 m_Transformation;
 
-	size_t m_StallRndbl;
+
 	Triton::ECS::Entity m_MainEnt;
-
-	std::shared_ptr<Triton::ShaderUniforms::Matrix44Uniform> m_TransformationUniform;
 public:
 	void CreateResources()
 	{
-		m_Mesh = Triton::Platform::Create(
+		auto Mesh = Triton::Platform::Create(
 				Triton::Data::File::ReadMesh(
 				"D:/Programming/Test files/nfw/stall.obj"));
 
-		m_Material = std::make_shared<Triton::Data::Material>(
+		auto Material = std::make_shared<Triton::Data::Material>(
+					TR_DEFAULT_SHADER,
 					Triton::Platform::Create(
 					Triton::Data::File::ReadTexture(
 					"D:/Programming/Test files/nfw/stallTexture.png")));
 		
-		m_Stall = Triton::Platform::Create(TR_DEFAULT_SHADER, m_Mesh);
-		m_Stall->AddMaterial(Triton::MaterialEntry(m_Material, "material.matTexture", 0));
-		
-		m_StallRndbl = this->AddRenderable(m_Stall);
+		m_StallMesh = this->prtc_Meshes.Add(Mesh);
+		m_StallMaterial = this->prtc_Materials.Add(Material);
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
@@ -192,15 +190,11 @@ public:
 	{
 		CreateResources();
 		m_MainEnt = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::Renderable>(m_MainEnt).ID = m_StallRndbl;
 		prtc_EntityRegistry->assign<Triton::Components::Transform>(m_MainEnt).Position = Triton::Vector3(0.0, 0.0, -25.0);
 
-		m_TransformationUniform = std::make_shared<Triton::ShaderUniforms::Matrix44Uniform>(
-			"transformationMatrix",
-			nullptr
-			);
+		prtc_EntityRegistry->assign<Triton::Components::Visual>(m_MainEnt, m_StallMesh, m_StallMaterial);
 
-		m_Stall->AddRenderUniform(m_TransformationUniform);
+		prtc_DefaultRoutineValues.TransformationUniform->Change(&m_Transformation);
 	}
 
 	void PreExecutionSetup() override
@@ -211,16 +205,9 @@ public:
 
 	void OnUpdate() override
 	{
-		m_Stall->Bind();
-
 		Triton::Components::Transform trns = prtc_EntityRegistry->get<Triton::Components::Transform>(m_MainEnt);
 
-		Triton::Matrix44 val = Triton::Core::CreateTransformationMatrix(trns.Position, trns.Rotation, trns.Scale);
-
-		m_TransformationUniform->Change(&val);
-
-		m_Stall->Render();
-		m_Stall->Unbind();
+		m_Transformation = Triton::Core::CreateTransformationMatrix(trns.Position, trns.Rotation, trns.Scale);
 	}
 };
 

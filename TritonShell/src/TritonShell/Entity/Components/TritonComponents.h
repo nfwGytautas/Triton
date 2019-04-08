@@ -27,9 +27,30 @@ namespace Triton
 			{}
 		};
 
-		struct Renderable
+		struct Visual
 		{
-			size_t ID;
+			//Mesh of entity, -1 is illegal
+			size_t Mesh;
+			//Material of entity, -1 is illegal
+			size_t Material;
+			//Routine for rendering, 0 is the default
+			size_t Routine;
+
+			Visual()
+				: Mesh(-1), Material(-1), Routine(0)
+			{}
+
+			Visual(size_t aMesh)
+				: Mesh(aMesh), Material(-1), Routine(0)
+			{}
+
+			Visual(size_t aMesh, size_t aMaterial)
+				: Mesh(aMesh), Material(aMaterial), Routine(0)
+			{}
+
+			Visual(size_t aMesh, size_t aMaterial, size_t aRoutine)
+				: Mesh(aMesh), Material(aMaterial), Routine(aRoutine)
+			{}
 		};
 	}
 }

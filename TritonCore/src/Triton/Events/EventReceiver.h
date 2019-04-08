@@ -6,7 +6,7 @@ namespace Triton
 {
 	namespace Core
 	{
-		class TRITON_API EventReceiver
+		class  EventReceiver
 		{
 		public:
 			virtual ~EventReceiver() {}

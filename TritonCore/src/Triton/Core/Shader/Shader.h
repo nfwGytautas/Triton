@@ -17,7 +17,7 @@ namespace Triton
 			{ }
 		};
 
-		class TRITON_API Shader
+		class  Shader
 		{
 		public:
 			virtual ~Shader() { }
@@ -38,7 +38,7 @@ namespace Triton
 
 	namespace ShaderUniforms
 	{
-		class TRITON_API ShaderUniform
+		class  ShaderUniform
 		{
 		public:
 			virtual void Set(Core::Shader& shader) = 0;

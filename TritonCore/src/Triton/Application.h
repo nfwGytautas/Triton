@@ -8,7 +8,7 @@
 
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
-#include "Core\Renderer\Renderable.h"
+#include "Core\Renderer\Renderer.h"
 
 #include "File\File.h"
 
@@ -20,6 +20,8 @@
 
 #include "Core\Data\Mesh.h"
 #include "Core\Data\Material.h"
+#include "Core\Renderer\RenderRoutine.h"
+#include "Core\Data\DataCollection.h"
 
 namespace Triton {
 
@@ -33,9 +35,15 @@ namespace Triton {
 	};
 
 	//Main class that allows for project creation
-	class TRITON_API Application : 
+	class Application : 
 		protected Core::EventReceiver
 	{
+	public:
+		struct DefaultRoutineValues
+		{
+			std::shared_ptr<ShaderUniforms::Matrix44Uniform> TransformationUniform;
+		};
+
 	public:
 		Application(const AppSettings& aSettings);
 		virtual ~Application();
@@ -43,29 +51,39 @@ namespace Triton {
 		virtual void Execute();
 
 	protected:
-		virtual void PreExecutionSetup() {}
-		virtual void OnUpdate() {}
+		virtual void Render() = 0;
+		virtual void PreExecutionSetup() = 0;
+		virtual void OnUpdate() = 0;
 		virtual void FixedTimeOnUpdate() {}
 
 		void Run();
 		void UpdateProjectionMatrix();
 
-		size_t AddRenderable(std::shared_ptr<Core::Renderable> aRenderable);
-		std::shared_ptr<Core::Renderable> TakeRenderable(size_t aRenderable);
+		std::shared_ptr<Core::RenderRoutine> DefaultRenderRoutine()
+		{
+			return m_DefaultRenderRoutine;
+		}
 
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
+
+		DefaultRoutineValues prtc_DefaultRoutineValues;
+
+
+		Core::DataCollection<Data::Mesh> prtc_Meshes;
+		Core::DataCollection<Data::Material> prtc_Materials;
+		Core::DataCollection<Core::RenderRoutine> prtc_Routines;
 	protected:
 		TR_GUI_IMPLEMENTATION
 
 		std::unique_ptr<Core::Display> prtc_Display;
+		std::unique_ptr<Core::Renderer> prtc_Renderer;
 		std::shared_ptr<Core::Shader> prtc_Shader;
-		std::shared_ptr<Core::EventManager> prtc_EventManager;		
+		std::shared_ptr<Core::EventManager> prtc_EventManager;
 	private:
-		std::vector< std::shared_ptr<Core::Renderable>> m_Renderables;
-
+		std::shared_ptr<Core::RenderRoutine> m_DefaultRenderRoutine;
 		float m_LastFrame = 0.0f;
 	};
 
