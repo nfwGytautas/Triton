@@ -92,20 +92,62 @@ namespace Triton {
 	}
 
 	void ShellApplication::Render()
-	{	
-		prtc_Renderer->Prepare();
+	{
+		prtc_EntityRegistry->sort<Components::Visual>([&](const auto &lhs, const auto &rhs) {
 
-		prtc_EntityRegistry->view<Components::Visual>().each([&](auto &visual) {
-			
-			std::shared_ptr<Data::Material> material = prtc_Materials.Take(visual.Material);
-			std::shared_ptr<Data::Mesh> mesh = prtc_Meshes.Take(visual.Mesh);
-			std::shared_ptr<Core::RenderRoutine> routine = prtc_Routines.Take(visual.Routine);
+			if (lhs.Mesh < rhs.Mesh)
+			{
+				return true;
+			}
+			else if (lhs.Mesh > rhs.Mesh)
+			{
+				return false;
+			}
 
-			material->Bind();
-			mesh->Bind();
-			routine->Bind(material->Shader());
+			if (lhs.Material < rhs.Material)
+			{
+				return true;
+			}
+			else if (lhs.Material > rhs.Material)
+			{
+				return false;
+			}
 
-			prtc_Renderer->Render(mesh->GetIndiceCount());
+			return false;
 		});
+		
+		prtc_EntityRegistry->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
+
+			BindVisual(visual);
+
+			prtc_RenderChain->AddAction<RenderActions::ChangeShaderUniform>(m_CurrentShader,
+				std::make_shared<ShaderUniforms::Matrix44Uniform>(
+					"transformationMatrix",
+					Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale)
+					));
+
+			prtc_RenderChain->AddAction<RenderActions::Render>(prtc_Meshes.Take(visual.Mesh)->GetIndiceCount());
+		});
+	}
+
+	void ShellApplication::BindVisual(Components::Visual& aVisual)
+	{
+		if (m_CurrentVisual.Material != aVisual.Material)
+		{
+			std::shared_ptr<Data::Material> material = prtc_Materials.Take(aVisual.Material);
+
+			prtc_RenderChain->AddAction<RenderActions::ChangeMaterial>(material);
+			m_CurrentShader = material->Shader();
+			prtc_RenderChain->AddAction<RenderActions::BindShader>(material->Shader());
+		}
+
+		if (m_CurrentVisual.Mesh != aVisual.Mesh)
+		{
+			std::shared_ptr<Data::Mesh> mesh = prtc_Meshes.Take(aVisual.Mesh);
+			
+			prtc_RenderChain->AddAction<RenderActions::ChangeMesh>(mesh);
+		}
+
+		m_CurrentVisual = aVisual;
 	}
 }

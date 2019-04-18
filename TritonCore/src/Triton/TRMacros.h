@@ -29,11 +29,10 @@
 class  TR_STRINGIZE(val_type, Uniform) : public Triton::ShaderUniforms::ShaderUniform\
 {\
 public:\
-	TR_STRINGIZE(val_type, Uniform)(std::string aName, TR_STRINGIZE(nmspace, val_type)* aVal)\
-		: Triton::ShaderUniforms::ShaderUniform(aName), m_Value(aVal) {}\
+	TR_STRINGIZE(val_type, Uniform)(std::string aName, TR_STRINGIZE(nmspace, val_type) aVal)\
+		: Triton::ShaderUniforms::ShaderUniform(aName), Value(aVal) {}\
+	void Set(std::shared_ptr<Core::Shader> aShader) override;\
 \
-	void Change(TR_STRINGIZE(nmspace, val_type)* new_val) { m_Value = new_val; }\
-	virtual void Set(Triton::Core::Shader& aShader) override;\
-private:\
-	TR_STRINGIZE(nmspace, val_type)* m_Value;\
+public:\
+	TR_STRINGIZE(nmspace, val_type) Value;\
 };

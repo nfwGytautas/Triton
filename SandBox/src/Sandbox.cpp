@@ -162,12 +162,11 @@ class UnitTest1 : public Triton::ShellApplication
 {
 	size_t m_StallMesh;
 	size_t m_StallMaterial;
-	size_t m_StallRoutine;
 
 	Triton::Matrix44 m_Transformation;
 
-
-	Triton::ECS::Entity m_MainEnt;
+	std::shared_ptr<Triton::Graphics::Light> mTestLight;
+	size_t m_Light;
 public:
 	void CreateResources()
 	{
@@ -188,26 +187,39 @@ public:
 	UnitTest1(const Triton::AppSettings& aSettings)
 		: ShellApplication(aSettings)
 	{
-		CreateResources();
-		m_MainEnt = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(m_MainEnt).Position = Triton::Vector3(0.0, 0.0, -25.0);
-
-		prtc_EntityRegistry->assign<Triton::Components::Visual>(m_MainEnt, m_StallMesh, m_StallMaterial);
-
-		prtc_DefaultRoutineValues.TransformationUniform->Change(&m_Transformation);
+		CreateResources();	
 	}
 
 	void PreExecutionSetup() override
 	{
 		prtc_Display->ShowCursor(true);
 		prtc_Display->SetVSync(false);
+
+		mTestLight = std::make_shared<Triton::Graphics::Light>();
+
+		mTestLight->SetColor(Triton::Vector3(1.0f, 1.0f, 1.0f));
+		mTestLight->SetPosition(Triton::Vector3(10.0, 0.0, -25.0));
+
+		m_Light = prtc_Lights.Add(mTestLight);
+
+		for (int i = 0; i < 10; i++)
+		{
+			auto Ent = prtc_EntityRegistry->create();
+
+			prtc_EntityRegistry->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+
+			prtc_EntityRegistry->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
+		}
+
+		auto Ent = prtc_EntityRegistry->create();
+
+		prtc_EntityRegistry->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent, m_Light);
 	}
 
 	void OnUpdate() override
 	{
-		Triton::Components::Transform trns = prtc_EntityRegistry->get<Triton::Components::Transform>(m_MainEnt);
 
-		m_Transformation = Triton::Core::CreateTransformationMatrix(trns.Position, trns.Rotation, trns.Scale);
 	}
 };
 

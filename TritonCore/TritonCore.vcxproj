@@ -143,11 +143,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\RenderRoutine.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Actions\RenderActions.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderAction.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderChain.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\PointLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h" />
     <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
     <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
     <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
     <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h" />
@@ -174,14 +178,17 @@
     <ClInclude Include="src\Triton\GUI\GUICollection.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
-    <ClInclude Include="src\Triton\Core\Shader\UniformHost.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\RenderRoutine.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Actions\RenderActions.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderAction.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderChain.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\PointLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
     <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp" />
@@ -202,7 +209,6 @@
     <ClCompile Include="src\Triton\GUI\GUI.cpp" />
     <ClCompile Include="src\Triton\GUI\GUICollection.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
-    <ClCompile Include="src\Triton\Core\Shader\UniformHost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">

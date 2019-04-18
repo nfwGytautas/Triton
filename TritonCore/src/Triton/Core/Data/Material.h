@@ -2,16 +2,14 @@
 #include "Triton\TRMacros.h"
 #include "Triton\Core\Math\Math.h"
 #include "Triton\Core\Data\Texture.h"
-#include "Triton\Core\Shader\UniformHost.h"
+#include "Triton\Core\Shader\Shader.h"
 
 namespace Triton
 {
 	namespace Data
 	{
-		class Material : protected Core::UniformHost
+		class Material
 		{
-		private:
-			using Core::UniformHost::SetUniforms;
 		public:
 			Material(std::shared_ptr<Core::Shader> aShader, std::shared_ptr<Texture> aTexture);
 

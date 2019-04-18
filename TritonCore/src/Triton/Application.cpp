@@ -12,24 +12,18 @@
 namespace Triton {
 
 	Application::Application(const AppSettings& aSettings)
-		: prtc_DefaultRoutineValues()
 	{
 		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
 			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
 		));
 		prtc_Display->SetEventReceiver(this);
 
-		prtc_Renderer = std::unique_ptr<Core::Renderer>(std::move(Platform::Create()));
-
-		m_DefaultRenderRoutine = std::make_shared<Core::RenderRoutine>();
-		prtc_DefaultRoutineValues.TransformationUniform = std::make_shared<ShaderUniforms::Matrix44Uniform>("transformationMatrix", nullptr);
-		m_DefaultRenderRoutine->AddUniform(prtc_DefaultRoutineValues.TransformationUniform);
-		prtc_Routines.Add(m_DefaultRenderRoutine);
+		prtc_RenderChain = std::make_unique<RenderChain>();
 
 		prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
 				"D:/Programming/Test files/nfw/shaders/triton/v4.shader", 
-				"D:/Programming/Test files/nfw/shaders/triton/f4.shader")));
+				"D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader")));
 
 		prtc_EventManager = std::make_unique<Core::EventManager>();
 
@@ -58,6 +52,9 @@ namespace Triton {
 		prtc_EventManager->Dispatch();
 
 		Render();
+
+		prtc_RenderChain->Execute();
+		prtc_RenderChain->AddAction<RenderActions::Prepare>();
 
 		#ifndef TR_DISABLE_GUI
 			prtc_GUIS->UpdateCollection(prtc_Delta);

@@ -122,12 +122,13 @@
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Renderer\RenderRoutine.h" />
-    <ClInclude Include="src\Triton\Core\Shader\UniformHost.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsRenderer.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\PointLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderChain.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\RenderAction.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Actions\RenderActions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
@@ -188,11 +189,12 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Core\Renderer\RenderRoutine.cpp" />
-    <ClCompile Include="src\Triton\Core\Shader\UniformHost.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsRenderer.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\PointLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderChain.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\RenderAction.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Actions\RenderActions.cpp" />
   </ItemGroup>
 </Project>

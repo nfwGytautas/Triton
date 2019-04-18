@@ -2,10 +2,9 @@
 #include "Shader.h"
 
 #define SET_DECLARATION(type)\
-void Triton::ShaderUniforms::TR_STRINGIZE(type, Uniform)::Set(Triton::Core::Shader& aShader)\
+void Triton::ShaderUniforms::TR_STRINGIZE(type, Uniform)::Set(std::shared_ptr<Triton::Core::Shader> aShader)\
 {\
-	TR_CORE_ASSERT(m_Value, "Shader value is null");\
-	aShader.SetUniform(m_Name, *m_Value);\
+	aShader->SetUniform(Name, Value);\
 }\
 
 SET_DECLARATION(int)

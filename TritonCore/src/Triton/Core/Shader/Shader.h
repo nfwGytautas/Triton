@@ -17,7 +17,7 @@ namespace Triton
 			{ }
 		};
 
-		class  Shader
+		class Shader
 		{
 		public:
 			virtual ~Shader() { }
@@ -38,15 +38,15 @@ namespace Triton
 
 	namespace ShaderUniforms
 	{
-		class  ShaderUniform
+		class ShaderUniform
 		{
 		public:
-			virtual void Set(Core::Shader& shader) = 0;
-
 			ShaderUniform(std::string aName)
-				: m_Name(aName) {}
-		protected:
-			std::string m_Name;
+				: Name(aName) {}
+
+			virtual void Set(std::shared_ptr<Core::Shader> aShader) = 0;
+		public:
+			std::string Name;
 		};
 
 		TR_SHADER_UNIFORM_DEFINITION(int, )

@@ -24,6 +24,5 @@ namespace Triton
 	public:
 		static std::shared_ptr<Triton::Data::Mesh> Create(std::shared_ptr<Triton::Data::MeshData>& aData);
 		static std::shared_ptr<Triton::Data::Texture> Create(std::shared_ptr<Triton::Data::TextureData>& aData);
-		static std::unique_ptr<Triton::Core::Renderer> Create();
 	};
 }

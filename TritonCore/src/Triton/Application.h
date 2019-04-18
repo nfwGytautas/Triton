@@ -8,7 +8,8 @@
 
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
-#include "Core\Renderer\Renderer.h"
+#include "Core\Renderer\Actions\RenderActions.h"
+#include "Core\Renderer\RenderChain.h"
 
 #include "File\File.h"
 
@@ -20,8 +21,9 @@
 
 #include "Core\Data\Mesh.h"
 #include "Core\Data\Material.h"
-#include "Core\Renderer\RenderRoutine.h"
 #include "Core\Data\DataCollection.h"
+
+#include "Core\Graphics\Lighting\Light.h"
 
 namespace Triton {
 
@@ -39,12 +41,6 @@ namespace Triton {
 		protected Core::EventReceiver
 	{
 	public:
-		struct DefaultRoutineValues
-		{
-			std::shared_ptr<ShaderUniforms::Matrix44Uniform> TransformationUniform;
-		};
-
-	public:
 		Application(const AppSettings& aSettings);
 		virtual ~Application();
 
@@ -58,32 +54,23 @@ namespace Triton {
 
 		void Run();
 		void UpdateProjectionMatrix();
-
-		std::shared_ptr<Core::RenderRoutine> DefaultRenderRoutine()
-		{
-			return m_DefaultRenderRoutine;
-		}
-
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
 
-		DefaultRoutineValues prtc_DefaultRoutineValues;
-
-
 		Core::DataCollection<Data::Mesh> prtc_Meshes;
 		Core::DataCollection<Data::Material> prtc_Materials;
-		Core::DataCollection<Core::RenderRoutine> prtc_Routines;
+		Core::DataCollection<Graphics::Light> prtc_Lights;
 	protected:
 		TR_GUI_IMPLEMENTATION
 
 		std::unique_ptr<Core::Display> prtc_Display;
-		std::unique_ptr<Core::Renderer> prtc_Renderer;
+		std::unique_ptr<RenderChain> prtc_RenderChain;
+		std::shared_ptr<Core::Renderer> prtc_Renderer;
 		std::shared_ptr<Core::Shader> prtc_Shader;
 		std::shared_ptr<Core::EventManager> prtc_EventManager;
 	private:
-		std::shared_ptr<Core::RenderRoutine> m_DefaultRenderRoutine;
 		float m_LastFrame = 0.0f;
 	};
 

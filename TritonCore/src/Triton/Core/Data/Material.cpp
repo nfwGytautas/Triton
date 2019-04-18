@@ -10,7 +10,6 @@ void Triton::Data::Material::Bind()
 	m_Shader->Enable();
 	m_Texture->Bind(0);
 	m_Shader->SetUniform("material.matTexture", 0);
-	SetUniforms(*m_Shader.get());
 }
 
 void Triton::Data::Material::Unbind()

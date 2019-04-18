@@ -13,7 +13,6 @@
 
 #include "TritonShell\Camera\Camera.h"
 
-
 namespace Triton {
 
 	//Class that inherits core application and extends it with some functionality
@@ -39,5 +38,9 @@ namespace Triton {
 		std::shared_ptr<ECS::Registry> prtc_EntityRegistry;
 
 		TR_EDITOR_TOOLS
+	private:
+		Components::Visual m_CurrentVisual;
+		std::shared_ptr<Core::Shader> m_CurrentShader;
+		void BindVisual(Components::Visual& aVisual);
 	};
 }
