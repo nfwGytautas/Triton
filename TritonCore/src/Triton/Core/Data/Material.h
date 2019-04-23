@@ -19,16 +19,6 @@ namespace Triton
 			void Bind();
 			void Unbind();
 
-			void SetDiffuse(Vector3 aValue)
-			{
-				m_Diffuse = aValue;
-			}
-
-			Vector3 GetDiffuse()
-			{
-				return m_Diffuse;
-			}
-
 			std::shared_ptr<Core::Shader> Shader() const
 			{
 				return m_Shader;
@@ -36,7 +26,11 @@ namespace Triton
 		private:
 			std::shared_ptr<Core::Shader> m_Shader;
 			std::shared_ptr<Texture> m_Texture;
+
+			Vector3 m_Ambient;
 			Vector3 m_Diffuse;
+			Vector3 m_Specular;
+			float m_Shininess;
 		};
 
 	}

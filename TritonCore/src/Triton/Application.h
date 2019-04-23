@@ -10,6 +10,7 @@
 #include "Core\Shader\Shader.h"
 #include "Core\Renderer\Actions\RenderActions.h"
 #include "Core\Renderer\RenderChain.h"
+#include "Core\Renderer\Renderer.h"
 
 #include "File\File.h"
 
@@ -23,7 +24,9 @@
 #include "Core\Data\Material.h"
 #include "Core\Data\DataCollection.h"
 
-#include "Core\Graphics\Lighting\Light.h"
+#include "Core\Graphics\Lighting\PointLight.h"
+#include "Core\Graphics\Lighting\DirectionalLight.h"
+#include "Core\Graphics\Lighting\SpotLight.h"
 
 namespace Triton {
 
@@ -66,7 +69,6 @@ namespace Triton {
 		TR_GUI_IMPLEMENTATION
 
 		std::unique_ptr<Core::Display> prtc_Display;
-		std::unique_ptr<RenderChain> prtc_RenderChain;
 		std::shared_ptr<Core::Renderer> prtc_Renderer;
 		std::shared_ptr<Core::Shader> prtc_Shader;
 		std::shared_ptr<Core::EventManager> prtc_EventManager;

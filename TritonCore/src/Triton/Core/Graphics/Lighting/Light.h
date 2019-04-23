@@ -1,5 +1,6 @@
 #pragma once
 #include "Triton\Core\Math\Math.h"
+#include "Triton\Core\Shader\Shader.h"
 
 namespace Triton
 {
@@ -10,19 +11,14 @@ namespace Triton
 		{
 		public:
 			Light();
+			Light(Vector3 aAmbient, Vector3 aDiffuse, Vector3 aSpecular);
 			virtual ~Light() { }
 
-			void SetColor(Vector3 aColor)
-			{
-				mColor = aColor;
-			}
-			void SetPosition(Vector3 aPosition)
-			{
-				mPosition = aPosition;
-			}
-		private:
-			Vector3 mColor;
-			Vector3 mPosition;
+			virtual void Bind(Core::Shader& aShader) = 0;
+		protected:
+			Vector3 m_Ambient;
+			Vector3 m_Diffuse;
+			Vector3 m_Specular;
 		};
 
 	}

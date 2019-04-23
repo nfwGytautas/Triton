@@ -18,7 +18,7 @@ namespace Triton {
 		));
 		prtc_Display->SetEventReceiver(this);
 
-		prtc_RenderChain = std::make_unique<RenderChain>();
+		prtc_Renderer = std::make_shared<Core::Renderer>();
 
 		prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 			Core::ShaderSettings(
@@ -53,8 +53,8 @@ namespace Triton {
 
 		Render();
 
-		prtc_RenderChain->Execute();
-		prtc_RenderChain->AddAction<RenderActions::Prepare>();
+		prtc_Renderer->Render();
+		prtc_Renderer->AddAction<RenderActions::Prepare>();
 
 		#ifndef TR_DISABLE_GUI
 			prtc_GUIS->UpdateCollection(prtc_Delta);

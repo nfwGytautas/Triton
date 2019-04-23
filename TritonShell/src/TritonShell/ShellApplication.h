@@ -40,7 +40,6 @@ namespace Triton {
 		TR_EDITOR_TOOLS
 	private:
 		Components::Visual m_CurrentVisual;
-		std::shared_ptr<Core::Shader> m_CurrentShader;
 		void BindVisual(Components::Visual& aVisual);
 	};
 }

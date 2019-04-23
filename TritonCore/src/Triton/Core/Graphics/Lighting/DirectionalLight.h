@@ -9,8 +9,13 @@ namespace Triton
 		class DirectionalLight : public Light
 		{
 		public:
-			DirectionalLight();
-			~DirectionalLight();
+			DirectionalLight(Vector3 aDirection);
+			virtual ~DirectionalLight() { }
+
+			// Inherited via Light
+			virtual void Bind(Core::Shader & aShader) override;
+		private:
+			Vector3 m_Direction;
 		};
 
 	}

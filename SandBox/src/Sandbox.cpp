@@ -193,12 +193,9 @@ public:
 	void PreExecutionSetup() override
 	{
 		prtc_Display->ShowCursor(true);
-		prtc_Display->SetVSync(false);
+		prtc_Display->SetVSync(true);
 
-		mTestLight = std::make_shared<Triton::Graphics::Light>();
-
-		mTestLight->SetColor(Triton::Vector3(1.0f, 1.0f, 1.0f));
-		mTestLight->SetPosition(Triton::Vector3(10.0, 0.0, -25.0));
+		mTestLight = std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(0.0, 0.0, 0.0));
 
 		m_Light = prtc_Lights.Add(mTestLight);
 

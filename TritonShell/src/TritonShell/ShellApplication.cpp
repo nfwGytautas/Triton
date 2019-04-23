@@ -15,6 +15,8 @@ namespace Triton {
 	{
 		prtc_EntityRegistry = std::shared_ptr<ECS::Registry>(new ECS::Registry());
 
+		prtc_Camera = std::make_shared<Camera>(Vector3(0.0f, 0.0f, 0.0f));
+
 		#ifndef TR_DISABLE_EDITOR_TOOLS
 			prtc_Console = std::make_shared<Tools::GUIConsole>();
 			prtc_Console->AddCommand("RESTART_SHELL", std::bind(&ShellApplication::RestartShell, this));
@@ -120,13 +122,13 @@ namespace Triton {
 
 			BindVisual(visual);
 
-			prtc_RenderChain->AddAction<RenderActions::ChangeShaderUniform>(m_CurrentShader,
+			prtc_Renderer->AddAction<RenderActions::ChangeShaderUniform>(
 				std::make_shared<ShaderUniforms::Matrix44Uniform>(
 					"transformationMatrix",
 					Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale)
 					));
 
-			prtc_RenderChain->AddAction<RenderActions::Render>(prtc_Meshes.Take(visual.Mesh)->GetIndiceCount());
+			prtc_Renderer->AddAction<RenderActions::Render>();
 		});
 	}
 
@@ -136,16 +138,26 @@ namespace Triton {
 		{
 			std::shared_ptr<Data::Material> material = prtc_Materials.Take(aVisual.Material);
 
-			prtc_RenderChain->AddAction<RenderActions::ChangeMaterial>(material);
-			m_CurrentShader = material->Shader();
-			prtc_RenderChain->AddAction<RenderActions::BindShader>(material->Shader());
+			prtc_Renderer->AddAction<RenderActions::ChangeMaterial>(material);
+			prtc_Renderer->AddAction<RenderActions::BindShader>(material->Shader());
+
+			prtc_EntityRegistry->view<Components::LightEmitter>().each([&](auto& emitter) {
+
+				prtc_Renderer->AddAction<RenderActions::BindLight>(prtc_Lights.Take(emitter.Light));
+			});
+
+			prtc_Renderer->AddAction<RenderActions::ChangeShaderUniform>(
+				std::make_shared<ShaderUniforms::Vector3Uniform>(
+					"camera.position",
+					prtc_Camera->Position
+					));
 		}
 
 		if (m_CurrentVisual.Mesh != aVisual.Mesh)
 		{
 			std::shared_ptr<Data::Mesh> mesh = prtc_Meshes.Take(aVisual.Mesh);
 			
-			prtc_RenderChain->AddAction<RenderActions::ChangeMesh>(mesh);
+			prtc_Renderer->AddAction<RenderActions::ChangeMesh>(mesh);
 		}
 
 		m_CurrentVisual = aVisual;

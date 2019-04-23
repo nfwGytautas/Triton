@@ -9,8 +9,18 @@ namespace Triton
 		class PointLight : public Light
 		{
 		public:
-			PointLight();
-			~PointLight();
+			PointLight(Vector3 aPosition);
+			PointLight(Vector3 aPosition, float aConstant, float aLinear, float aQuadratic);
+			virtual ~PointLight() { }
+
+			// Inherited via Light
+			virtual void Bind(Core::Shader & aShader) override;
+		private:
+			Vector3 m_Position;
+
+			float m_Constant;
+			float m_Linear;
+			float m_Quadratic;
 		};
 
 	}

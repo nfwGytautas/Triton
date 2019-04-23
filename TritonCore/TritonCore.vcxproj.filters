@@ -129,6 +129,8 @@
     <ClInclude Include="src\Triton\Core\Renderer\RenderChain.h" />
     <ClInclude Include="src\Triton\Core\Renderer\RenderAction.h" />
     <ClInclude Include="src\Triton\Core\Renderer\Actions\RenderActions.h" />
+    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
+    <ClInclude Include="src\Triton\Core\ContextState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">
@@ -196,5 +198,7 @@
     <ClCompile Include="src\Triton\Core\Renderer\RenderChain.cpp" />
     <ClCompile Include="src\Triton\Core\Renderer\RenderAction.cpp" />
     <ClCompile Include="src\Triton\Core\Renderer\Actions\RenderActions.cpp" />
+    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Triton\Core\ContextState.cpp" />
   </ItemGroup>
 </Project>
