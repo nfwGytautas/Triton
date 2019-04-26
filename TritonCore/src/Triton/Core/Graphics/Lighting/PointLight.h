@@ -14,7 +14,7 @@ namespace Triton
 			virtual ~PointLight() { }
 
 			// Inherited via Light
-			virtual void Bind(Core::Shader & aShader) override;
+			virtual void Bind(relay_ptr<Singleton::State> aState) override;
 		private:
 			Vector3 m_Position;
 

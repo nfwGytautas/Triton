@@ -1,23 +1,26 @@
 #pragma once
 
-#include "Triton\Core\ContextState.h"
-#include "Triton\Core\Renderer\RenderChain.h"
+#include "RenderAction.h"
 
 namespace Triton
 {
 	namespace Core
 	{
 
-		class Renderer : private RenderChain
+		class Renderer
 		{
 		public:
 			Renderer();
 
 			void Render();
 
-			using RenderChain::AddAction;
+			template <class T, class... _Args>
+			void AddAction(_Args&&... Args)
+			{
+				m_Actions.push(std::make_shared<T>(std::forward<_Args>(Args)...));
+			}
 		private:
-			std::shared_ptr<ContextState> m_State;
+			std::queue<std::shared_ptr<RenderAction>> m_Actions;
 		};
 
 	}

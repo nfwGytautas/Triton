@@ -4,6 +4,11 @@
 
 namespace Triton
 {
+	namespace Singleton
+	{
+		class State;
+	}
+
 	namespace Graphics
 	{
 
@@ -14,7 +19,7 @@ namespace Triton
 			Light(Vector3 aAmbient, Vector3 aDiffuse, Vector3 aSpecular);
 			virtual ~Light() { }
 
-			virtual void Bind(Core::Shader& aShader) = 0;
+			virtual void Bind(relay_ptr<Singleton::State> aState) = 0;
 		protected:
 			Vector3 m_Ambient;
 			Vector3 m_Diffuse;

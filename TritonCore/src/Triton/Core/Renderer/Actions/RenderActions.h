@@ -15,7 +15,7 @@ namespace Triton
 			Prepare() { }
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 		};
 
@@ -25,7 +25,7 @@ namespace Triton
 			ChangeMaterial(std::shared_ptr<Data::Material> aMaterial);
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 			std::shared_ptr<Data::Material> m_Material;
 		};
@@ -36,7 +36,7 @@ namespace Triton
 			ChangeMesh(std::shared_ptr<Data::Mesh> aMesh);
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 			std::shared_ptr<Data::Mesh> m_Mesh;
 		};
@@ -47,7 +47,7 @@ namespace Triton
 			BindShader(std::shared_ptr<Core::Shader> aShader);
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 			std::shared_ptr<Core::Shader> m_Shader;
 		};
@@ -58,7 +58,7 @@ namespace Triton
 			ChangeShaderUniform(std::shared_ptr<ShaderUniforms::ShaderUniform> aUniform);
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 			std::shared_ptr<ShaderUniforms::ShaderUniform> m_Uniform;
 		};
@@ -69,7 +69,7 @@ namespace Triton
 			BindLight(std::shared_ptr<Graphics::Light> aLight);
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
 		private:
 			std::shared_ptr<Graphics::Light> m_Light;
 		};
@@ -80,7 +80,16 @@ namespace Triton
 			Render() { }
 
 			// Inherited via RenderAction
-			virtual void Execute(Core::ContextState& aState) override;
+			virtual void Execute() override;
+		};
+
+		class UpdateUniforms : public RenderAction
+		{
+		public:
+			UpdateUniforms() { }
+
+			// Inherited via RenderAction
+			virtual void Execute() override;
 		};
 	}
 }

@@ -31,6 +31,7 @@ namespace Triton
 		public:
 			virtual ~Mesh() { }
 
+			// Inherited via StateChanger
 			virtual void Bind() = 0;
 			virtual void Unbind() = 0;
 

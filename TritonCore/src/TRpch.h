@@ -19,6 +19,8 @@
 #include <initializer_list>
 #include <iterator>
 
+#include "TritonTypes\relay_ptr.h"
+
 #ifdef TR_PLATFORM_WINDOWS
 	#define NOMINMAX
 	#include <Windows.h>

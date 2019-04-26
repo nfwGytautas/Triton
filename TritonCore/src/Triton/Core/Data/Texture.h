@@ -6,7 +6,7 @@ namespace Triton
 	namespace Data
 	{
 
-		struct  TextureData
+		struct TextureData
 		{
 			int Width;
 			int Height;
@@ -26,7 +26,7 @@ namespace Triton
 			}
 		};
 
-		class  Texture
+		class Texture
 		{
 		public:
 			virtual ~Texture() { }

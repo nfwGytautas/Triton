@@ -16,8 +16,8 @@ namespace Triton
 			virtual ~Material()
 			{ }
 
-			void Bind();
-			void Unbind();
+			virtual void Bind();
+			virtual void Unbind();
 
 			std::shared_ptr<Core::Shader> Shader() const
 			{

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Triton\Core\ContextState.h"
-
 namespace Triton
 {
 
@@ -9,7 +7,7 @@ namespace Triton
 	{
 	public:
 		virtual ~RenderAction() { }
-		virtual void Execute(Core::ContextState& aState) = 0;
+		virtual void Execute() = 0;
 	};
 
 }

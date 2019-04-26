@@ -87,7 +87,11 @@ namespace Triton
 		WindowsMesh::WindowsMesh(Data::MeshData& aData)
 		{
 			m_VAO = Triton::Core::CreateVAO();
-			Bind();
+
+			glBindVertexArray(m_VAO);
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(2);
 
 			m_IBO = CreateIBO(aData.Indices);
 
@@ -99,7 +103,11 @@ namespace Triton
 
 			m_IndiceCount = aData.Indices.size();
 
-			Unbind();
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
+
+			glBindVertexArray(0);
 		}
 
 		WindowsMesh::~WindowsMesh()

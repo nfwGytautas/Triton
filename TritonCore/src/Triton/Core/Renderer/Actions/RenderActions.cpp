@@ -3,7 +3,9 @@
 
 #include <glad\glad.h>
 
-void Triton::RenderActions::Prepare::Execute(Core::ContextState& aState)
+#include "Triton\State\State.h"
+
+void Triton::RenderActions::Prepare::Execute()
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -18,7 +20,7 @@ Triton::RenderActions::ChangeMaterial::ChangeMaterial(std::shared_ptr<Data::Mate
 	m_Material = aMaterial;
 }
 
-void Triton::RenderActions::ChangeMaterial::Execute(Core::ContextState& aState)
+void Triton::RenderActions::ChangeMaterial::Execute()
 {
 	m_Material->Bind();
 }
@@ -28,10 +30,11 @@ Triton::RenderActions::ChangeMesh::ChangeMesh(std::shared_ptr<Data::Mesh> aMesh)
 	m_Mesh = aMesh;
 }
 
-void Triton::RenderActions::ChangeMesh::Execute(Core::ContextState& aState)
+void Triton::RenderActions::ChangeMesh::Execute()
 {
 	m_Mesh->Bind();
-	aState.BoundMesh = m_Mesh;
+
+	Singleton::State::GetInstance()->CurrentMesh = m_Mesh;
 }
 
 Triton::RenderActions::BindShader::BindShader(std::shared_ptr<Core::Shader> aShader)
@@ -39,10 +42,11 @@ Triton::RenderActions::BindShader::BindShader(std::shared_ptr<Core::Shader> aSha
 	m_Shader = aShader;
 }
 
-void Triton::RenderActions::BindShader::Execute(Core::ContextState& aState)
+void Triton::RenderActions::BindShader::Execute()
 {
 	m_Shader->Enable();
-	aState.BoundShader = m_Shader;
+
+	Singleton::State::GetInstance()->BindShader(m_Shader);
 }
 
 Triton::RenderActions::ChangeShaderUniform::ChangeShaderUniform(std::shared_ptr<ShaderUniforms::ShaderUniform> aUniform)
@@ -50,15 +54,15 @@ Triton::RenderActions::ChangeShaderUniform::ChangeShaderUniform(std::shared_ptr<
 	m_Uniform = aUniform;
 }
 
-void Triton::RenderActions::ChangeShaderUniform::Execute(Core::ContextState& aState)
+void Triton::RenderActions::ChangeShaderUniform::Execute()
 {
-	aState.BoundShader->Enable();
-	m_Uniform->Set(aState.BoundShader);
+	Singleton::State::GetInstance()->Shader()->Enable();
+	m_Uniform->Set(Singleton::State::GetInstance()->Shader());
 }
 
-void Triton::RenderActions::Render::Execute(Core::ContextState& aState)
+void Triton::RenderActions::Render::Execute()
 {
-	glDrawElements(GL_TRIANGLES, aState.BoundMesh->GetIndiceCount(), GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, Singleton::State::GetInstance()->CurrentMesh->GetIndiceCount(), GL_UNSIGNED_INT, (void*)0);
 }
 
 Triton::RenderActions::BindLight::BindLight(std::shared_ptr<Graphics::Light> aLight)
@@ -66,7 +70,12 @@ Triton::RenderActions::BindLight::BindLight(std::shared_ptr<Graphics::Light> aLi
 	m_Light = aLight;
 }
 
-void Triton::RenderActions::BindLight::Execute(Core::ContextState& aState)
+void Triton::RenderActions::BindLight::Execute()
 {
-	m_Light->Bind(*aState.BoundShader.get());
+	m_Light->Bind(Singleton::State::GetInstance());
+}
+
+void Triton::RenderActions::UpdateUniforms::Execute()
+{
+	Singleton::State::GetInstance()->UpdateUniforms();
 }

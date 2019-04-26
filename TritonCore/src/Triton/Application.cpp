@@ -13,6 +13,8 @@ namespace Triton {
 
 	Application::Application(const AppSettings& aSettings)
 	{
+		Singleton::State::Create();
+
 		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
 			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
 		));
@@ -38,7 +40,7 @@ namespace Triton {
 	
 	Application::~Application()
 	{
-		
+		Singleton::State::Destroy();
 	}
 
 	void Application::Run()

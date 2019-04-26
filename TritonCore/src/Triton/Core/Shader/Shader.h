@@ -44,7 +44,7 @@ namespace Triton
 			ShaderUniform(std::string aName)
 				: Name(aName) {}
 
-			virtual void Set(std::shared_ptr<Core::Shader> aShader) = 0;
+			virtual void Set(relay_ptr<Core::Shader> aShader) = 0;
 		public:
 			std::string Name;
 		};

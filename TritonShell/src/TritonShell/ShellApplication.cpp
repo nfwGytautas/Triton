@@ -141,16 +141,20 @@ namespace Triton {
 			prtc_Renderer->AddAction<RenderActions::ChangeMaterial>(material);
 			prtc_Renderer->AddAction<RenderActions::BindShader>(material->Shader());
 
-			prtc_EntityRegistry->view<Components::LightEmitter>().each([&](auto& emitter) {
-
-				prtc_Renderer->AddAction<RenderActions::BindLight>(prtc_Lights.Take(emitter.Light));
-			});
-
 			prtc_Renderer->AddAction<RenderActions::ChangeShaderUniform>(
 				std::make_shared<ShaderUniforms::Vector3Uniform>(
 					"camera.position",
 					prtc_Camera->Position
 					));
+
+			Singleton::State::GetInstance()->ResetLights();
+
+			prtc_EntityRegistry->view<Components::LightEmitter>().each([&](auto& emitter) {
+
+				prtc_Renderer->AddAction<RenderActions::BindLight>(prtc_Lights.Take(emitter.Light));
+			});
+
+			prtc_Renderer->AddAction<RenderActions::UpdateUniforms>();
 		}
 
 		if (m_CurrentVisual.Mesh != aVisual.Mesh)

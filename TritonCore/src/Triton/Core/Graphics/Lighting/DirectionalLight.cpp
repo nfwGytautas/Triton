@@ -1,18 +1,28 @@
 #include "TRpch.h"
 #include "DirectionalLight.h"
 
+#include "Triton\State\State.h"
+
 Triton::Graphics::DirectionalLight::DirectionalLight(Vector3 aDirection)
 	:m_Direction(aDirection)
 {
 }
 
-void Triton::Graphics::DirectionalLight::Bind(Core::Shader& aShader)
+void Triton::Graphics::DirectionalLight::Bind(relay_ptr<Singleton::State> aState)
 {
-	aShader.Enable();
+	unsigned int slot = aState->AddLight(this);
 
-	aShader.SetUniform("pointLights[0].ambient", m_Ambient);
-	aShader.SetUniform("pointLights[0].diffuse", m_Diffuse);
-	aShader.SetUniform("pointLights[0].specular", m_Specular);
+	auto shader = aState->Shader();
 
-	aShader.SetUniform("light.direction", m_Direction);
+	std::string head = "dirLights[" + std::to_string(slot) + "]";
+
+	shader->Enable();
+
+	shader->SetUniform(head + ".ambient", m_Ambient);
+	shader->SetUniform(head + ".diffuse", m_Diffuse);
+	shader->SetUniform(head + ".specular", m_Specular);
+
+	shader->SetUniform(head + ".direction", m_Direction);
+
+	shader->Disable();
 }

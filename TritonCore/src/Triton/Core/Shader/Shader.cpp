@@ -2,7 +2,7 @@
 #include "Shader.h"
 
 #define SET_DECLARATION(type)\
-void Triton::ShaderUniforms::TR_STRINGIZE(type, Uniform)::Set(std::shared_ptr<Triton::Core::Shader> aShader)\
+void Triton::ShaderUniforms::TR_STRINGIZE(type, Uniform)::Set(relay_ptr<Triton::Core::Shader> aShader)\
 {\
 	aShader->SetUniform(Name, Value);\
 }\

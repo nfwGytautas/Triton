@@ -2,6 +2,9 @@
 
 #include "TRMacros.h"
 #include "Triton\Config.h"
+#include "Triton\Limits.h"
+#include "Triton\State\State.h"
+
 #include "Triton\Core\Platform.h"
 
 #include "Core\Math\Math.h"
@@ -9,7 +12,6 @@
 #include "Core\Display.h"
 #include "Core\Shader\Shader.h"
 #include "Core\Renderer\Actions\RenderActions.h"
-#include "Core\Renderer\RenderChain.h"
 #include "Core\Renderer\Renderer.h"
 
 #include "File\File.h"

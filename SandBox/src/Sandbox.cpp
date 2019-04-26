@@ -165,8 +165,8 @@ class UnitTest1 : public Triton::ShellApplication
 
 	Triton::Matrix44 m_Transformation;
 
-	std::shared_ptr<Triton::Graphics::Light> mTestLight;
-	size_t m_Light;
+	size_t m_Light1;
+	size_t m_Light2;
 public:
 	void CreateResources()
 	{
@@ -193,11 +193,11 @@ public:
 	void PreExecutionSetup() override
 	{
 		prtc_Display->ShowCursor(true);
-		prtc_Display->SetVSync(true);
+		prtc_Display->SetVSync(false);
 
-		mTestLight = std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(0.0, 0.0, 0.0));
+		m_Light1 = prtc_Lights.Add(std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(20.0, 0.0, -25.0)));
 
-		m_Light = prtc_Lights.Add(mTestLight);
+		m_Light2 = prtc_Lights.Add(std::make_shared<Triton::Graphics::SpotLight>(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
 
 		for (int i = 0; i < 10; i++)
 		{
@@ -208,10 +208,11 @@ public:
 			prtc_EntityRegistry->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
 		}
 
-		auto Ent = prtc_EntityRegistry->create();
+		auto Ent1 = prtc_EntityRegistry->create();
+		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
 
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent, m_Light);
+		auto Ent2 = prtc_EntityRegistry->create();
+		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
 	}
 
 	void OnUpdate() override
