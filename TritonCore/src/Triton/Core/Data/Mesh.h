@@ -44,6 +44,7 @@ namespace Triton
 			{
 				return m_Width;
 			}
+
 			unsigned int GetHeight() const
 			{
 				return m_Height;

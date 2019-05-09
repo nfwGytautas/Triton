@@ -2,7 +2,7 @@
 
 #include "TritonShell\Entity\Components\TritonComponents.h"
 
-Triton::Tools::GUIComponentVisualizer::GUIComponentVisualizer(std::shared_ptr<ECS::Registry> aRegistry)
+Triton::Tools::GUIComponentVisualizer::GUIComponentVisualizer(relay_ptr<ECS::Registry> aRegistry)
 	: m_Registry(aRegistry)
 {
 	IsOpen = true;
@@ -55,6 +55,29 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 	}
 
 	//Transformation
+	VisualizeTransform();
+
+	//Visual
+	VisualizeVisual();
+
+	//Light emitter
+	VisualizeLightEmitter();
+
+
+	ImGui::End();
+}
+
+void Triton::Tools::GUIComponentVisualizer::Update(float aDelta)
+{
+}
+
+void Triton::Tools::GUIComponentVisualizer::ShowEntity(ECS::Entity aEntity)
+{
+	m_Entity = aEntity;
+}
+
+void Triton::Tools::GUIComponentVisualizer::VisualizeTransform()
+{
 	if (m_Registry->has<Components::Transform>(m_Entity))
 	{
 		ImGui::Spacing();
@@ -101,15 +124,56 @@ void Triton::Tools::GUIComponentVisualizer::Visualize()
 		ImGui::Spacing();
 		ImGui::Separator();
 	}
-
-	ImGui::End();
 }
 
-void Triton::Tools::GUIComponentVisualizer::Update(float aDelta)
+void Triton::Tools::GUIComponentVisualizer::VisualizeVisual()
 {
+	if (m_Registry->has<Components::Visual>(m_Entity))
+	{
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Visual"))
+		{
+			Components::Visual& visual = m_Registry->get<Components::Visual>(m_Entity);
+
+			//Visual -> Mesh
+			ImGui::Text("Mesh:"); ImGui::SameLine();
+
+			size_t& mesh = visual.Mesh;
+			ImGui::Text("ID:"); ImGui::SameLine(); ImGui::PushItemWidth(cFloatInputWidth); ImGui::InputInt("##mesh", (int*)&mesh, cFloatInputSensitivity);
+			ImGui::Spacing();
+
+
+			//Visual -> Material
+			ImGui::Text("Material:"); ImGui::SameLine();
+
+			size_t& material = visual.Material;
+			ImGui::Text("ID:"); ImGui::SameLine(); ImGui::PushItemWidth(cFloatInputWidth); ImGui::InputInt("##material", (int*)&material, cFloatInputSensitivity);
+			ImGui::Spacing();
+		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+	}
 }
 
-void Triton::Tools::GUIComponentVisualizer::ShowEntity(ECS::Entity aEntity)
+void Triton::Tools::GUIComponentVisualizer::VisualizeLightEmitter()
 {
-	m_Entity = aEntity;
+	if (m_Registry->has<Components::LightEmitter>(m_Entity))
+	{
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Light emitter"))
+		{
+			Components::LightEmitter& emitter = m_Registry->get<Components::LightEmitter>(m_Entity);
+
+			//LightEmitter -> Light
+			ImGui::Text("Light:"); ImGui::SameLine();
+
+			size_t& light = emitter.Light;
+			ImGui::Text("ID:"); ImGui::SameLine(); ImGui::PushItemWidth(cFloatInputWidth); ImGui::InputInt("##mesh", (int*)&light, cFloatInputSensitivity);
+			ImGui::Spacing();
+		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+	}
 }

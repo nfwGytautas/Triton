@@ -146,12 +146,15 @@
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
     <ClInclude Include="src\TritonShell\Entity\Registry.h" />
     <ClInclude Include="src\TritonShell\EntryPoint.h" />
+    <ClInclude Include="src\TritonShell\Core\Scene.h" />
+    <ClInclude Include="src\TritonShell\Serialize\Serialize.h" />
     <ClInclude Include="src\TritonShell\ShellApplication.h" />
     <ClInclude Include="src\TritonShell\Tools\GUIComponentVisualizer.h" />
     <ClInclude Include="src\TritonShell\Tools\GUIConsole.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp" />
+    <ClCompile Include="src\TritonShell\Core\Scene.cpp" />
     <ClCompile Include="src\TritonShell\ShellApplication.cpp" />
     <ClCompile Include="src\TritonShell\Tools\GUIComponentVisualizer.cpp" />
     <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp" />

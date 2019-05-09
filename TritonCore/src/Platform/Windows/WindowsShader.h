@@ -10,7 +10,7 @@ namespace Triton
 		class  WindowsShader : public Shader
 		{
 		public:
-			WindowsShader(const ShaderSettings& aSettings);
+			WindowsShader(const ShaderData& aSettings);
 			virtual ~WindowsShader();
 			
 			virtual void SetUniform(const std::string& aUniformName, const      int& aParameter) override;

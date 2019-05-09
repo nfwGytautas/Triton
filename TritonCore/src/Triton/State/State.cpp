@@ -94,7 +94,32 @@ void Triton::Singleton::State::UpdateLightCounts()
 
 void Triton::Singleton::State::UpdateUniforms()
 {
+	//Update counts
 	UpdateLightCounts();
+
+
+	m_CurrentShader->Enable();
+
+	//Bind lights
+	if (m_count_point > 0)
+	for (unsigned int i = 0; i < m_count_point - 1; i++)
+	{
+		m_PointLights[i]->Bind(this);
+	}
+
+	if (m_count_dir > 0)
+	for (unsigned int i = 0; i < m_count_dir - 1; i++)
+	{
+		m_DirectionalLights[i]->Bind(this);
+	}
+
+	if (m_count_spot > 0)
+	for (unsigned int i = 0; i < m_count_spot - 1; i++)
+	{
+		m_SpotLights[i]->Bind(this);
+	}
+
+	m_CurrentShader->Disable();
 }
 
 void Triton::Singleton::State::BindShader(relay_ptr<Core::Shader> aShader)

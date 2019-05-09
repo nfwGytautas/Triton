@@ -1,7 +1,7 @@
 #include "TRpch.h"
 #include "Material.h"
 
-Triton::Data::Material::Material(std::shared_ptr<Core::Shader> aShader, std::shared_ptr<Texture> aTexture)
+Triton::Data::Material::Material(relay_ptr<Core::Shader> aShader, relay_ptr<Texture> aTexture)
 	: m_Shader(aShader), m_Texture(aTexture), m_Ambient(1.0f, 1.0f, 1.0f), m_Diffuse(1.0f, 1.0f, 1.0f), m_Specular(1.0f, 1.0f, 1.0f), m_Shininess(32.0f)
 { }
 

@@ -15,41 +15,41 @@ namespace Triton
 			Prepare() { }
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
 		};
 
 		class ChangeMaterial : public RenderAction
 		{
 		public:
-			ChangeMaterial(std::shared_ptr<Data::Material> aMaterial);
+			ChangeMaterial(relay_ptr<Data::Material> aMaterial);
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
-			std::shared_ptr<Data::Material> m_Material;
+			relay_ptr<Data::Material> m_Material;
 		};
 
 		class ChangeMesh : public RenderAction
 		{
 		public:
-			ChangeMesh(std::shared_ptr<Data::Mesh> aMesh);
+			ChangeMesh(relay_ptr<Data::Mesh> aMesh);
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
-			std::shared_ptr<Data::Mesh> m_Mesh;
+			relay_ptr<Data::Mesh> m_Mesh;
 		};
 
 		class BindShader : public RenderAction
 		{
 		public:
-			BindShader(std::shared_ptr<Core::Shader> aShader);
+			BindShader(relay_ptr<Core::Shader> aShader);
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
-			std::shared_ptr<Core::Shader> m_Shader;
+			relay_ptr<Core::Shader> m_Shader;
 		};
 
 		class ChangeShaderUniform : public RenderAction 
@@ -58,7 +58,7 @@ namespace Triton
 			ChangeShaderUniform(std::shared_ptr<ShaderUniforms::ShaderUniform> aUniform);
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
 			std::shared_ptr<ShaderUniforms::ShaderUniform> m_Uniform;
 		};
@@ -66,12 +66,12 @@ namespace Triton
 		class BindLight : public RenderAction
 		{
 		public:
-			BindLight(std::shared_ptr<Graphics::Light> aLight);
+			BindLight(relay_ptr<Graphics::Light> aLight);
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		private:
-			std::shared_ptr<Graphics::Light> m_Light;
+			relay_ptr<Graphics::Light> m_Light;
 		};
 
 		class Render : public RenderAction
@@ -80,7 +80,7 @@ namespace Triton
 			Render() { }
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		};
 
 		class UpdateUniforms : public RenderAction
@@ -89,7 +89,7 @@ namespace Triton
 			UpdateUniforms() { }
 
 			// Inherited via RenderAction
-			virtual void Execute() override;
+			virtual void Execute(relay_ptr<Singleton::State> aState) override;
 		};
 	}
 }

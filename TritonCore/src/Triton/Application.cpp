@@ -22,11 +22,6 @@ namespace Triton {
 
 		prtc_Renderer = std::make_shared<Core::Renderer>();
 
-		prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
-			Core::ShaderSettings(
-				"D:/Programming/Test files/nfw/shaders/triton/v4.shader", 
-				"D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader")));
-
 		prtc_EventManager = std::make_unique<Core::EventManager>();
 
 		#ifndef TR_DISABLE_GUI
@@ -66,13 +61,10 @@ namespace Triton {
 		prtc_Display->OnUpdate();
 	}
 
-	void Application::UpdateProjectionMatrix()
+	Matrix44 Application::GetProjectionMatrix()
 	{
-		prtc_Shader->Enable();
-		glm::mat4 projection = Triton::Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 45.0f, 0.1f, 100.0f);
-		prtc_Shader->SetUniform("projectionMatrix", projection);
 		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
-		prtc_Shader->Disable();
+		return Triton::Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 45.0f, 0.1f, 100.0f);
 	}
 
 	void Application::OnEvent(Event* aEvent)
@@ -82,7 +74,7 @@ namespace Triton {
 
 	void Application::Execute()
 	{
-		UpdateProjectionMatrix();
+		GetProjectionMatrix();
 
 		PreExecutionSetup();
 		while (!prtc_Display->Closed())

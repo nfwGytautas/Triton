@@ -170,49 +170,79 @@ class UnitTest1 : public Triton::ShellApplication
 public:
 	void CreateResources()
 	{
-		auto Mesh = Triton::Platform::Create(
-				Triton::Data::File::ReadMesh(
-				"D:/Programming/Test files/nfw/stall.obj"));
+		auto Shader = prtc_Scene->AddResource(
+			std::make_shared<Triton::Core::ShaderData>(
+			"D:/Programming/Test files/nfw/shaders/triton/v4.shader",
+			"D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader")
+		);
 
-		auto Material = std::make_shared<Triton::Data::Material>(
-					TR_DEFAULT_SHADER,
-					Triton::Platform::Create(
-					Triton::Data::File::ReadTexture(
-					"D:/Programming/Test files/nfw/stallTexture.png")));
-		
-		m_StallMesh = this->prtc_Meshes.Add(Mesh);
-		m_StallMaterial = this->prtc_Materials.Add(Material);
+		prtc_Scene->ExecuteShaderCommand(Shader, 
+			[&](auto Shader)
+			{
+				Shader->SetUniform("projectionMatrix", GetProjectionMatrix());
+			});
+
+		m_StallMesh = prtc_Scene->AddResource(
+			Triton::Data::File::ReadMesh(
+			"D:/Programming/Test files/nfw/stall.obj"));
+
+		auto Texture = prtc_Scene->AddResource(
+			Triton::Data::File::ReadTexture(
+			"D:/Programming/Test files/nfw/stallTexture.png"));
+
+		m_StallMaterial = prtc_Scene->AddResource(
+			std::make_shared<Triton::Data::MaterialData>(
+				Shader,
+				Texture)
+		);
+
+		this->prtc_Scene->AddResource
+		(
+			std::make_shared<Triton::Data::MaterialData>
+			(
+				Shader,
+				prtc_Scene->AddResource
+				(
+					Triton::Data::File::ReadTexture
+					(
+					"D:/Programming/Test files/nfw/missingTexture64.png"
+					)
+				)
+			)
+		);
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
 		: ShellApplication(aSettings)
 	{
-		CreateResources();	
 	}
 
 	void PreExecutionSetup() override
 	{
+		//CreateResources();	
+
 		prtc_Display->ShowCursor(true);
-		prtc_Display->SetVSync(false);
+		prtc_Display->SetVSync(true);
 
-		m_Light1 = prtc_Lights.Add(std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(20.0, 0.0, -25.0)));
+		m_Light1 = prtc_Scene->m_Lights.Add(std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(20.0, 0.0, -25.0)));
 
-		m_Light2 = prtc_Lights.Add(std::make_shared<Triton::Graphics::SpotLight>(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
+		m_Light2 = prtc_Scene->m_Lights.Add(std::make_shared<Triton::Graphics::SpotLight>(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
 
-		for (int i = 0; i < 10; i++)
-		{
-			auto Ent = prtc_EntityRegistry->create();
 
-			prtc_EntityRegistry->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-
-			prtc_EntityRegistry->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
-		}
-
-		auto Ent1 = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
-
-		auto Ent2 = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
+		//for (int i = 0; i < 10; i++)
+		//{
+		//	auto Ent = prtc_Scene->Registry()->create();
+		//
+		//	prtc_Scene->Registry()->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+		//
+		//	prtc_Scene->Registry()->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
+		//}
+		//
+		//auto Ent1 = prtc_Scene->Registry()->create();
+		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
+		//
+		//auto Ent2 = prtc_Scene->Registry()->create();
+		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
 	}
 
 	void OnUpdate() override

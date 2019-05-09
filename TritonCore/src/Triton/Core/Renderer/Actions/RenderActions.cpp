@@ -5,7 +5,7 @@
 
 #include "Triton\State\State.h"
 
-void Triton::RenderActions::Prepare::Execute()
+void Triton::RenderActions::Prepare::Execute(relay_ptr<Singleton::State> aState)
 {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -15,38 +15,39 @@ void Triton::RenderActions::Prepare::Execute()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-Triton::RenderActions::ChangeMaterial::ChangeMaterial(std::shared_ptr<Data::Material> aMaterial)
+Triton::RenderActions::ChangeMaterial::ChangeMaterial(relay_ptr<Data::Material> aMaterial)
 {
 	m_Material = aMaterial;
 }
 
-void Triton::RenderActions::ChangeMaterial::Execute()
+void Triton::RenderActions::ChangeMaterial::Execute(relay_ptr<Singleton::State> aState)
 {
 	m_Material->Bind();
 }
 
-Triton::RenderActions::ChangeMesh::ChangeMesh(std::shared_ptr<Data::Mesh> aMesh)
+Triton::RenderActions::ChangeMesh::ChangeMesh(relay_ptr<Data::Mesh> aMesh)
 {
 	m_Mesh = aMesh;
 }
 
-void Triton::RenderActions::ChangeMesh::Execute()
+void Triton::RenderActions::ChangeMesh::Execute(relay_ptr<Singleton::State> aState)
 {
 	m_Mesh->Bind();
 
-	Singleton::State::GetInstance()->CurrentMesh = m_Mesh;
+	aState->CurrentMesh = m_Mesh;
 }
 
-Triton::RenderActions::BindShader::BindShader(std::shared_ptr<Core::Shader> aShader)
+Triton::RenderActions::BindShader::BindShader(relay_ptr<Core::Shader> aShader)
 {
 	m_Shader = aShader;
 }
 
-void Triton::RenderActions::BindShader::Execute()
+void Triton::RenderActions::BindShader::Execute(relay_ptr<Singleton::State> aState)
 {
 	m_Shader->Enable();
 
-	Singleton::State::GetInstance()->BindShader(m_Shader);
+	aState->BindShader(m_Shader);
+	aState->UpdateUniforms();
 }
 
 Triton::RenderActions::ChangeShaderUniform::ChangeShaderUniform(std::shared_ptr<ShaderUniforms::ShaderUniform> aUniform)
@@ -54,28 +55,28 @@ Triton::RenderActions::ChangeShaderUniform::ChangeShaderUniform(std::shared_ptr<
 	m_Uniform = aUniform;
 }
 
-void Triton::RenderActions::ChangeShaderUniform::Execute()
+void Triton::RenderActions::ChangeShaderUniform::Execute(relay_ptr<Singleton::State> aState)
 {
-	Singleton::State::GetInstance()->Shader()->Enable();
-	m_Uniform->Set(Singleton::State::GetInstance()->Shader());
+	aState->Shader()->Enable();
+	m_Uniform->Set(aState->Shader());
 }
 
-void Triton::RenderActions::Render::Execute()
+void Triton::RenderActions::Render::Execute(relay_ptr<Singleton::State> aState)
 {
 	glDrawElements(GL_TRIANGLES, Singleton::State::GetInstance()->CurrentMesh->GetIndiceCount(), GL_UNSIGNED_INT, (void*)0);
 }
 
-Triton::RenderActions::BindLight::BindLight(std::shared_ptr<Graphics::Light> aLight)
+Triton::RenderActions::BindLight::BindLight(relay_ptr<Graphics::Light> aLight)
 {
 	m_Light = aLight;
 }
 
-void Triton::RenderActions::BindLight::Execute()
+void Triton::RenderActions::BindLight::Execute(relay_ptr<Singleton::State> aState)
 {
-	m_Light->Bind(Singleton::State::GetInstance());
+	m_Light->Bind(aState);
 }
 
-void Triton::RenderActions::UpdateUniforms::Execute()
+void Triton::RenderActions::UpdateUniforms::Execute(relay_ptr<Singleton::State> aState)
 {
-	Singleton::State::GetInstance()->UpdateUniforms();
+	aState->UpdateUniforms();
 }

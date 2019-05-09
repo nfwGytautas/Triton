@@ -65,9 +65,6 @@
     <ClInclude Include="src\Triton\Config.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Core\Data\DataCollection.h">
-      <Filter>Triton\Core\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Core\Data\Material.h">
       <Filter>Triton\Core\Data</Filter>
     </ClInclude>
@@ -133,6 +130,9 @@
     <ClInclude Include="src\Triton\State\State.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\Package.h" />
     <ClInclude Include="src\Triton\Limits.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
+    <ClInclude Include="src\TritonTypes\data_collection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp">

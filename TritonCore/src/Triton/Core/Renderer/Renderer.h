@@ -21,6 +21,7 @@ namespace Triton
 			}
 		private:
 			std::queue<std::shared_ptr<RenderAction>> m_Actions;
+			relay_ptr<Singleton::State> m_State;
 		};
 
 	}

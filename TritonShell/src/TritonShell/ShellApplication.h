@@ -11,7 +11,11 @@
 #include "Triton\Events\MouseEvent.h"
 #include "Triton\Events\ApplicationEvent.h"
 
+#include "TritonShell\Core\Scene.h"
+
 #include "TritonShell\Camera\Camera.h"
+
+#include "TritonShell\Serialize\Serialize.h"
 
 namespace Triton {
 
@@ -26,7 +30,7 @@ namespace Triton {
 
 		virtual void Execute() override;
 	protected:
-		virtual void Render() override;
+		virtual void Render() final;
 		virtual void PreExecutionSetup() = 0;
 		virtual void OnUpdate() = 0;
 		virtual void FixedTimeOnUpdate() {}
@@ -34,12 +38,8 @@ namespace Triton {
 		void RunShell();
 		void RestartShell();
 	protected:
-		std::shared_ptr<Camera> prtc_Camera;
-		std::shared_ptr<ECS::Registry> prtc_EntityRegistry;
-
+		std::unique_ptr<Scene> prtc_Scene;
+	protected:
 		TR_EDITOR_TOOLS
-	private:
-		Components::Visual m_CurrentVisual;
-		void BindVisual(Components::Visual& aVisual);
 	};
 }

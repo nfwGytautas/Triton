@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Triton\State\State.h"
+
 namespace Triton
 {
 
@@ -7,7 +9,7 @@ namespace Triton
 	{
 	public:
 		virtual ~RenderAction() { }
-		virtual void Execute() = 0;
+		virtual void Execute(relay_ptr<Singleton::State> aState) = 0;
 	};
 
 }

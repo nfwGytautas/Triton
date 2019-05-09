@@ -42,6 +42,8 @@
     </ClInclude>
     <ClInclude Include="src\TritonShell\Entity\Components\TritonComponents.h" />
     <ClInclude Include="src\TritonShell\Entity\Registry.h" />
+    <ClInclude Include="src\TritonShell\Serialize\Serialize.h" />
+    <ClInclude Include="src\TritonShell\Core\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonShell\Camera\Camera.cpp">
@@ -56,5 +58,6 @@
     <ClCompile Include="src\TritonShell\Tools\GUIConsole.cpp">
       <Filter>TritonShell\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\TritonShell\Core\Scene.cpp" />
   </ItemGroup>
 </Project>

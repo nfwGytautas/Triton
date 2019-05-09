@@ -15,6 +15,7 @@ namespace Triton
 
 	namespace Core
 	{
+		struct ShaderData;
 		class Shader;
 		class Renderer;
 	}
@@ -24,5 +25,6 @@ namespace Triton
 	public:
 		static std::shared_ptr<Triton::Data::Mesh> Create(std::shared_ptr<Triton::Data::MeshData>& aData);
 		static std::shared_ptr<Triton::Data::Texture> Create(std::shared_ptr<Triton::Data::TextureData>& aData);
+		static std::shared_ptr<Triton::Core::Shader> Create(std::shared_ptr<Triton::Core::ShaderData>& aSettings);
 	};
 }

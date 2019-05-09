@@ -7,13 +7,17 @@ namespace Triton
 {
 	namespace Core
 	{
-		struct ShaderSettings
+		struct ShaderData
 		{
 			std::string VertexFilepath;
 			std::string FragmentFilepath;
 
-			ShaderSettings(std::string aVertexPath, std::string aFragmentPath)
+			ShaderData(std::string aVertexPath, std::string aFragmentPath)
 				:VertexFilepath(aVertexPath), FragmentFilepath(aFragmentPath)
+			{ }
+
+			ShaderData()
+				:VertexFilepath("not set"), FragmentFilepath("not set")
 			{ }
 		};
 
@@ -31,8 +35,6 @@ namespace Triton
 
 			virtual void Enable() = 0;
 			virtual void Disable() = 0;
-
-			static Shader* Create(const ShaderSettings& settings);
 		};
 	}
 

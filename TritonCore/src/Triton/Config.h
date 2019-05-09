@@ -15,5 +15,3 @@
 
 	#define TR_GUI_IMPLEMENTATION
 #endif
-
-#define TR_DEFAULT_SHADER prtc_Shader

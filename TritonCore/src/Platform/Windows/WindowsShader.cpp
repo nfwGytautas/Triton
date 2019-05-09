@@ -4,12 +4,14 @@
 #include <glad\glad.h>
 #include "Triton\Logger\Log.h"
 
-Triton::Core::Shader* Triton::Core::Shader::Create(const ShaderSettings& aSettings)
+#include "Triton\Core\Platform.h"
+
+std::shared_ptr<Triton::Core::Shader> Triton::Platform::Create(std::shared_ptr<Triton::Core::ShaderData>& aSettings)
 {
-	return new WindowsShader(aSettings);
+	return std::make_shared<Triton::Core::WindowsShader>(*aSettings.get());
 }
 
-Triton::Core::WindowsShader::WindowsShader(const ShaderSettings& aSettings)
+Triton::Core::WindowsShader::WindowsShader(const ShaderData& aSettings)
 {
 	TR_CORE_TRACE("Loading shader: \n	Vertex: {0}\n	Fragment: {1}", aSettings.VertexFilepath, aSettings.FragmentFilepath);
 

@@ -3,6 +3,7 @@
 #include "Triton\GUI\GUI.h"
 #include "TritonShell\Entity\Registry.h"
 
+#include "TritonTypes\relay_ptr.h"
 
 namespace Triton
 {
@@ -11,7 +12,7 @@ namespace Triton
 		class GUIComponentVisualizer : public UI::GUI
 		{
 		public:
-			GUIComponentVisualizer(std::shared_ptr<ECS::Registry> aRegistry);
+			GUIComponentVisualizer(relay_ptr<ECS::Registry> aRegistry);
 			~GUIComponentVisualizer();
 
 			virtual void Visualize() override;
@@ -19,8 +20,13 @@ namespace Triton
 			virtual void Update(float aDelta) override;
 			
 			virtual void ShowEntity(ECS::Entity aEntity);
+
 		private:
-			std::shared_ptr<ECS::Registry> m_Registry;
+			void VisualizeTransform();
+			void VisualizeVisual();
+			void VisualizeLightEmitter();
+		private:
+			relay_ptr<ECS::Registry> m_Registry;
 			ECS::Entity m_Entity;
 
 		private:

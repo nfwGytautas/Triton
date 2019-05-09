@@ -143,6 +143,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TritonTypes\data_collection.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\Package.h" />
     <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
@@ -162,7 +165,6 @@
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Config.h" />
-    <ClInclude Include="src\Triton\Core\Data\DataCollection.h" />
     <ClInclude Include="src\Triton\Core\Data\Material.h" />
     <ClInclude Include="src\Triton\Core\Data\Mesh.h" />
     <ClInclude Include="src\Triton\Core\Data\Texture.h" />

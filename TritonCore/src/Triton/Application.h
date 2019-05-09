@@ -24,7 +24,7 @@
 
 #include "Core\Data\Mesh.h"
 #include "Core\Data\Material.h"
-#include "Core\Data\DataCollection.h"
+#include "TritonTypes\data_collection.h"
 
 #include "Core\Graphics\Lighting\PointLight.h"
 #include "Core\Graphics\Lighting\DirectionalLight.h"
@@ -58,21 +58,17 @@ namespace Triton {
 		virtual void FixedTimeOnUpdate() {}
 
 		void Run();
-		void UpdateProjectionMatrix();
+		Matrix44 GetProjectionMatrix();
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
 
-		Core::DataCollection<Data::Mesh> prtc_Meshes;
-		Core::DataCollection<Data::Material> prtc_Materials;
-		Core::DataCollection<Graphics::Light> prtc_Lights;
 	protected:
 		TR_GUI_IMPLEMENTATION
 
 		std::unique_ptr<Core::Display> prtc_Display;
 		std::shared_ptr<Core::Renderer> prtc_Renderer;
-		std::shared_ptr<Core::Shader> prtc_Shader;
 		std::shared_ptr<Core::EventManager> prtc_EventManager;
 	private:
 		float m_LastFrame = 0.0f;
