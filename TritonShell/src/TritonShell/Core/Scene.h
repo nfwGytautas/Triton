@@ -119,15 +119,15 @@ namespace Triton
 			shader->Disable();
 		}
 
+		data_collection<Data::Mesh> m_Meshes;
+		data_collection<Data::Texture> m_Textures;
+		data_collection<Data::Material> m_Materials;
+		data_collection<Graphics::Light> m_Lights;
 	protected: // Runtime
 		std::unique_ptr<ECS::Registry> m_Registry;
 
 		std::unique_ptr<Camera> m_Camera;
 
-		data_collection<Data::Mesh> m_Meshes;
-		data_collection<Data::Texture> m_Textures;
-		data_collection<Data::Material> m_Materials;
-		data_collection<Graphics::Light> m_Lights;
 	private: // Pre-initialization
 		std::vector<std::string> m_MeshFiles;
 		std::vector<std::string> m_TextureFiles;
