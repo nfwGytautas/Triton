@@ -1,8 +1,6 @@
 #include "TRpch.h"
 #include "PointLight.h"
 
-#include "Triton\State\State.h"
-
 Triton::Graphics::PointLight::PointLight(Vector3 aPosition)
 	:m_Position(aPosition), m_Constant(1.0f), m_Linear(0.09f), m_Quadratic(0.032f)
 {
@@ -13,24 +11,16 @@ Triton::Graphics::PointLight::PointLight(Vector3 aPosition, float aConstant, flo
 {
 }
 
-void Triton::Graphics::PointLight::Bind(relay_ptr<Singleton::State> aState)
+void Triton::Graphics::PointLight::bind(relay_ptr<PType::Shader> shader)
 {
-	unsigned int slot = aState->AddLight(this);
+	std::string head = "pointLights[" + std::to_string(Slot) + "]";
 
-	auto shader = aState->Shader();
+	shader->setUniformVector3(head + ".ambient", m_Ambient);
+	shader->setUniformVector3(head + ".diffuse", m_Diffuse);
+	shader->setUniformVector3(head + ".specular", m_Specular);
 
-	std::string head = "pointLights[" + std::to_string(slot) + "]";
-
-	shader->Enable();
-
-	shader->SetUniform(head + ".ambient", m_Ambient);
-	shader->SetUniform(head + ".diffuse", m_Diffuse);
-	shader->SetUniform(head + ".specular", m_Specular);
-
-	shader->SetUniform(head + ".position", m_Position);
-	shader->SetUniform(head + ".constant", m_Constant);
-	shader->SetUniform(head + ".linear", m_Linear);
-	shader->SetUniform(head + ".quadratic", m_Quadratic);
-
-	shader->Disable();
+	shader->setUniformVector3(head + ".position", m_Position);
+	shader->setUniformFloat(head + ".constant", m_Constant);
+	shader->setUniformFloat(head + ".linear", m_Linear);
+	shader->setUniformFloat(head + ".quadratic", m_Quadratic);
 }

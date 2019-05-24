@@ -6,70 +6,65 @@
 #include "Events\ApplicationEvent.h"
 #include "Events\KeyEvent.h"
 
-#include <glad\glad.h>
-#include <GLFW\glfw3.h>
+#include <chrono>
 
 namespace Triton {
 
 	Application::Application(const AppSettings& aSettings)
+		: EventManager(), EventListener(this)
 	{
-		Singleton::State::Create();
+		// Init graphics, create context and set up event callbacks
+		m_Context = Impl::createContext();
 
-		prtc_Display = std::unique_ptr<Core::Display>(Core::Display::Create(
-			Core::DisplaySettings(aSettings.WindowTitle, aSettings.WindowWidth, aSettings.WindowHeight)
-		));
-		prtc_Display->SetEventReceiver(this);
+		m_Context->init();
+		m_Context->window->create(aSettings.WindowWidth, aSettings.WindowHeight);
+		m_Context->setContextEventCallBacks(this);
 
-		prtc_Renderer = std::make_shared<Core::Renderer>();
+		m_SceneManager = new Manager::SceneManager(m_Context);
 
-		prtc_EventManager = std::make_unique<Core::EventManager>();
-
-		#ifndef TR_DISABLE_GUI
-			m_GUIContext = aSettings.ImGUIContext;
-			ImGui::SetCurrentContext(m_GUIContext);
-			UI::GUICollection::InitGUI(aSettings.WindowWidth, aSettings.WindowHeight);
-			prtc_GUIS = std::make_unique<UI::GUICollection>(prtc_EventManager.get());
-		#endif
-
+		// Set up relay ptrs
+		Context = m_Context;
+		SceneManager = m_SceneManager;
 	}
 	
 	Application::~Application()
 	{
-		Singleton::State::Destroy();
+		Impl::destroyContext(m_Context);
 	}
 
 	void Application::Run()
 	{	
-		float currentFrame = glfwGetTime();
-		prtc_Delta = currentFrame - m_LastFrame;
-		m_LastFrame = currentFrame;
+		static std::chrono::high_resolution_clock timer;
+		using ms = std::chrono::duration<float, std::milli>;
+		auto start = timer.now();
+
+
+		m_Context->renderer->default(); // Reset the renderer to it's default state
+		m_Context->window->clear(0.0f, 0.5f, 0.5f, 0.0f); // Clear the window for rerendering
+
+		Dispatch();
 
 		OnUpdate();	
 
-		prtc_EventManager->Dispatch();
-
 		Render();
 
-		prtc_Renderer->Render();
-		prtc_Renderer->AddAction<RenderActions::Prepare>();
+		m_Context->update();
 
-		#ifndef TR_DISABLE_GUI
-			prtc_GUIS->UpdateCollection(prtc_Delta);
-			prtc_GUIS->DrawCollection();
-		#endif
 
-		prtc_Display->OnUpdate();
+		auto stop = timer.now();
+		prtc_Delta = std::chrono::duration_cast<ms>(stop - start).count() / 1000.0f;
 	}
 
 	Matrix44 Application::GetProjectionMatrix()
 	{
-		glViewport(0, 0, prtc_Display->GetWidth(), prtc_Display->GetHeight());
-		return Triton::Core::CreateProjectionMatrix(prtc_Display->GetWidth(), prtc_Display->GetHeight(), 45.0f, 0.1f, 100.0f);
+		auto[width, height] = m_Context->window->getWindowSize();
+		m_Context->setViewPort(0, 0, width, height);
+		return Triton::Core::CreateProjectionMatrix(width, height, 45.0f, 0.1f, 100.0f);
 	}
 
 	void Application::OnEvent(Event* aEvent)
 	{
-		prtc_EventManager->Post(aEvent);
+		Post(aEvent);
 	}
 
 	void Application::Execute()
@@ -77,9 +72,14 @@ namespace Triton {
 		GetProjectionMatrix();
 
 		PreExecutionSetup();
-		while (!prtc_Display->Closed())
+		while (!m_Context->window->windowClosed())
 		{
 			Run();
 		}
+	}
+
+	void Application::Restart()
+	{
+		PreExecutionSetup();
 	}
 }

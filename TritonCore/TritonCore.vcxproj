@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -88,7 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -138,40 +138,30 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\Assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonTypes\data_collection.h" />
-    <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
-    <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
-    <ClInclude Include="src\TritonTypes\relay_ptr.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Package.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\Renderer.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\Actions\RenderActions.h" />
-    <ClInclude Include="src\Triton\Core\Renderer\RenderAction.h" />
+    <ClInclude Include="src\TritonTypes\mathematical.h" />
+    <ClInclude Include="src\Triton\Camera\Camera.h" />
+    <ClInclude Include="src\Triton\Core\Asset\Asset.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\PointLight.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsDisplay.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsModel.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsShader.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsTexture.h" />
-    <ClInclude Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.h" />
-    <ClInclude Include="src\Triton\Limits.h" />
+    <ClInclude Include="src\Triton\Core\Scene.h" />
+    <ClInclude Include="src\Triton\Core\Wrapers\Material.h" />
+    <ClInclude Include="src\Triton\Core\Wrapers\Mesh.h" />
+    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h" />
+    <ClInclude Include="src\Triton\Entity\Registry.h" />
+    <ClInclude Include="src\Triton\EntryPoint.h" />
+    <ClInclude Include="src\Triton\Managers\SceneManager.h" />
+    <ClInclude Include="src\Triton\Serialize\Serialize.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Config.h" />
-    <ClInclude Include="src\Triton\Core\Data\Material.h" />
-    <ClInclude Include="src\Triton\Core\Data\Mesh.h" />
-    <ClInclude Include="src\Triton\Core\Data\Texture.h" />
-    <ClInclude Include="src\Triton\Core\Display.h" />
-    <ClInclude Include="src\Triton\Core\Math\Math.h" />
-    <ClInclude Include="src\Triton\Core\Platform.h" />
-    <ClInclude Include="src\Triton\Core\Shader\Shader.h" />
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Events\EventManager.h" />
     <ClInclude Include="src\Triton\Events\EventReceiver.h" />
@@ -179,50 +169,39 @@
     <ClInclude Include="src\Triton\Events\KeyEvent.h" />
     <ClInclude Include="src\Triton\Events\MouseEvent.h" />
     <ClInclude Include="src\Triton\File\File.h" />
-    <ClInclude Include="src\Triton\GUI\GUI.h" />
-    <ClInclude Include="src\Triton\GUI\GUICollection.h" />
+    <ClInclude Include="src\Triton\Limits.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
-    <ClInclude Include="src\Triton\State\State.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
+    <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
+    <ClInclude Include="src\TritonTypes\data_collection.h" />
+    <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\Core\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\Actions\RenderActions.cpp" />
-    <ClCompile Include="src\Triton\Core\Renderer\RenderAction.cpp" />
+    <ClCompile Include="src\TritonTypes\mathematical.cpp" />
+    <ClCompile Include="src\Triton\Camera\Camera.cpp" />
+    <ClCompile Include="src\Triton\Core\Asset\Asset.cpp" />
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp" />
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\PointLight.cpp" />
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp" />
-    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsDisplay.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsModel.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsShader.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsTexture.cpp" />
-    <ClCompile Include="src\Platform\Windows\vendorIMPL\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Triton\Core\Scene.cpp" />
+    <ClCompile Include="src\Triton\Core\Wrapers\Material.cpp" />
+    <ClCompile Include="src\Triton\Core\Wrapers\Mesh.cpp" />
+    <ClCompile Include="src\Triton\Managers\SceneManager.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton\Application.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Material.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Mesh.cpp" />
-    <ClCompile Include="src\Triton\Core\Data\Texture.cpp" />
-    <ClCompile Include="src\Triton\Core\Math\Math.cpp" />
-    <ClCompile Include="src\Triton\Core\Platform.cpp" />
-    <ClCompile Include="src\Triton\Core\Shader\Shader.cpp" />
     <ClCompile Include="src\Triton\Events\EventManager.cpp" />
     <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
     <ClCompile Include="src\Triton\Events\Events.cpp" />
     <ClCompile Include="src\Triton\File\File.cpp" />
-    <ClCompile Include="src\Triton\GUI\GUI.cpp" />
-    <ClCompile Include="src\Triton\GUI\GUICollection.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
-    <ClCompile Include="src\Triton\State\State.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\vendor\Glad\Glad.vcxproj">
-      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    <ProjectReference Include="..\TritonGraphics\TritonGraphics.vcxproj">
+      <Project>{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}</Project>
     </ProjectReference>
     <ProjectReference Include="..\vendor\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>

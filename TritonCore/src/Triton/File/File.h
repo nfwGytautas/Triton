@@ -2,8 +2,7 @@
 #include "TRpch.h"
 #include "Triton\TRMacros.h"
 
-#include "Triton\Core\Data\Mesh.h"
-#include "Triton\Core\Data\Material.h"
+#include "TritonPlatform\PlatformAbstraction.h"
 
 namespace Triton
 {
@@ -16,8 +15,8 @@ namespace Triton
 			static std::string ReadAllText(std::string& aPath);
 			static bool Valid(std::string& aPath);
 
-			static std::shared_ptr<MeshData> ReadMesh(std::string aPath);
-			static std::shared_ptr<TextureData> ReadTexture(std::string aPath);
+			static void ReadMesh(std::string aPath, Triton::PType::VAOCreateParams* params);
+			static void ReadTexture(std::string aPath, Triton::PType::TextureCreateParams* params);
 		};
 
 	}

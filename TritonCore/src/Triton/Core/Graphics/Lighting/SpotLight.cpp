@@ -1,8 +1,6 @@
 #include "TRpch.h"
 #include "SpotLight.h"
 
-#include "Triton\State\State.h"
-
 Triton::Graphics::SpotLight::SpotLight(Vector3 aPosition, Vector3 aDirection)
 	:m_Position(aPosition), m_Direction(aDirection), m_CutOff(glm::cos(glm::radians(12.5f))), m_OuterCutOff(glm::cos(glm::radians(17.5f)))
 {
@@ -15,24 +13,16 @@ Triton::Graphics::SpotLight::SpotLight(Vector3 aPosition, Vector3 aDirection, fl
 
 }
 
-void Triton::Graphics::SpotLight::Bind(relay_ptr<Singleton::State> aState)
+void Triton::Graphics::SpotLight::bind(relay_ptr<PType::Shader> shader)
 {
-	unsigned int slot = aState->AddLight(this);
+	std::string head = "spotLights[" + std::to_string(Slot) + "]";
 
-	auto shader = aState->Shader();
+	shader->setUniformVector3(head + ".ambient", m_Ambient);
+	shader->setUniformVector3(head + ".diffuse", m_Diffuse);
+	shader->setUniformVector3(head + ".specular", m_Specular);
 
-	std::string head = "spotLights[" + std::to_string(slot) + "]";
-
-	shader->Enable();
-
-	shader->SetUniform(head + ".ambient", m_Ambient);
-	shader->SetUniform(head + ".diffuse", m_Diffuse);
-	shader->SetUniform(head + ".specular", m_Specular);
-
-	shader->SetUniform(head + ".position", m_Position);
-	shader->SetUniform(head + ".direction", m_Direction);
-	shader->SetUniform(head + ".cutOff", m_CutOff);
-	shader->SetUniform(head + ".outerCutOff", m_OuterCutOff);
-
-	shader->Disable();
+	shader->setUniformVector3(head + ".position", m_Position);
+	shader->setUniformVector3(head + ".direction", m_Direction);
+	shader->setUniformFloat(head + ".cutOff", m_CutOff);
+	shader->setUniformFloat(head + ".outerCutOff", m_OuterCutOff);
 }

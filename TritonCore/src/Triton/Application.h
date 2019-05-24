@@ -1,18 +1,12 @@
 #pragma once
 
+#include "TritonPlatform\PlatformAbstraction.h"
+
 #include "TRMacros.h"
 #include "Triton\Config.h"
 #include "Triton\Limits.h"
-#include "Triton\State\State.h"
 
-#include "Triton\Core\Platform.h"
-
-#include "Core\Math\Math.h"
-
-#include "Core\Display.h"
-#include "Core\Shader\Shader.h"
-#include "Core\Renderer\Actions\RenderActions.h"
-#include "Core\Renderer\Renderer.h"
+#include "TritonTypes/mathematical.h"
 
 #include "File\File.h"
 
@@ -22,13 +16,22 @@
 #include "Events\MouseEvent.h"
 #include "Events\EventReceiver.h"
 
-#include "Core\Data\Mesh.h"
-#include "Core\Data\Material.h"
 #include "TritonTypes\data_collection.h"
 
+#include "Core\Graphics\Lighting\Light.h"
 #include "Core\Graphics\Lighting\PointLight.h"
 #include "Core\Graphics\Lighting\DirectionalLight.h"
 #include "Core\Graphics\Lighting\SpotLight.h"
+
+#include "Entity\Registry.h"
+#include "Entity\Components\TritonComponents.h"
+
+#include "Managers/SceneManager.h"
+#include "Core/Wrapers/Material.h"
+
+#include "Core\Scene.h"
+#include "Camera\Camera.h"
+#include "Serialize\Serialize.h"
 
 namespace Triton {
 
@@ -37,20 +40,19 @@ namespace Triton {
 		unsigned int WindowWidth = 600;
 		unsigned int WindowHeight = 600;
 		std::string WindowTitle = "Triton display";
-
-		TR_GUI_CONTEXT(ImGUIContext)
 	};
 
 	//Main class that allows for project creation
 	class Application : 
-		protected Core::EventReceiver
+		protected Core::EventReceiver,
+		protected Core::EventManager,
+		protected Triton::EventListener
 	{
 	public:
 		Application(const AppSettings& aSettings);
 		virtual ~Application();
 
 		virtual void Execute();
-
 	protected:
 		virtual void Render() = 0;
 		virtual void PreExecutionSetup() = 0;
@@ -58,20 +60,21 @@ namespace Triton {
 		virtual void FixedTimeOnUpdate() {}
 
 		void Run();
+		void Restart();
 		Matrix44 GetProjectionMatrix();
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
 		float prtc_Delta = 0.0f;
 
+		
 	protected:
-		TR_GUI_IMPLEMENTATION
+		relay_ptr<PType::Context> Context;
+		relay_ptr<Manager::SceneManager> SceneManager;
 
-		std::unique_ptr<Core::Display> prtc_Display;
-		std::shared_ptr<Core::Renderer> prtc_Renderer;
-		std::shared_ptr<Core::EventManager> prtc_EventManager;
 	private:
-		float m_LastFrame = 0.0f;
+		PType::Context* m_Context;
+		Manager::SceneManager* m_SceneManager;
 	};
 
 	Application* CreateApplication(Triton::AppSettings& aSettings);

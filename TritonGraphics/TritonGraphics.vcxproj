@@ -15,27 +15,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D43924E3-4019-A37E-4931-2E55B58F09E0}</ProjectGuid>
+    <ProjectGuid>{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SandBox</RootNamespace>
+    <RootNamespace>TritonGraphics</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
@@ -54,48 +54,48 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-x86_64\SandBox\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86_64\SandBox\</IntDir>
-    <TargetName>SandBox</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <OutDir>..\bin\Debug-windows-x86_64\TritonGraphics\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\TritonGraphics\</IntDir>
+    <TargetName>TritonGraphics</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Release-windows-x86_64\SandBox\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86_64\SandBox\</IntDir>
-    <TargetName>SandBox</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <OutDir>..\bin\Release-windows-x86_64\TritonGraphics\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\TritonGraphics\</IntDir>
+    <TargetName>TritonGraphics</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Dist-windows-x86_64\SandBox\</OutDir>
-    <IntDir>..\bin-int\Dist-windows-x86_64\SandBox\</IntDir>
-    <TargetName>SandBox</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <OutDir>..\bin\Dist-windows-x86_64\TritonGraphics\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\TritonGraphics\</IntDir>
+    <TargetName>TritonGraphics</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -105,17 +105,20 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,17 +128,43 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sandbox.cpp" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Base.h" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Factory.h" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Shader.h" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Texture.h" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Types.h" />
+    <ClInclude Include="src\TritonPlatform\CrossTypes\VAO.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Factory.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Init.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Macros.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Renderer.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Shader.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Specific.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Texture.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Types.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\VAO.h" />
+    <ClInclude Include="src\TritonPlatform\OpenGL\Window.h" />
+    <ClInclude Include="src\TritonPlatform\PlatformAbstraction.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TritonCore\TritonCore.vcxproj">
-      <Project>{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}</Project>
+    <ClCompile Include="src\TritonPlatform\OpenGL\Types.cpp" />
+    <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\vendor\Glad\Glad.vcxproj">
+      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

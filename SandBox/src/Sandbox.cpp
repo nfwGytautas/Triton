@@ -1,110 +1,148 @@
-#include <TritonShell.h>
+#include <Triton.h>
 
 #define UNIT_TEST
 
 #include <string>
 
-#ifdef SANDBOX
+#ifdef UNIT_TEST
 
-//class Sandbox : public Triton::ShellApplication, private Triton::EventListener
-class Sandbox : public Triton::ShellApplication
+class UnitTest1 : public Triton::Application
 {
-	std::shared_ptr<Triton::Data::Mesh> gv_Mesh = std::make_shared<Triton::Data::Mesh>();
-private:
-	void CreateMesh()
-	{
-		Triton::Data::MeshData mData;
-		mData.Path = "D:/Programming/Test files/nfw/stall.obj";
-		CubeMesh = prtc_DataMap->RegisterMesh(mData);
-		//STORE MESH
-		py_ChangeResource<std::shared_ptr<Triton::Data::Mesh>>("CubeMesh", gv_Mesh);
-	}
+	size_t m_StallMesh = 1;
+	size_t m_StallMaterial = 2;
+
+	Triton::Matrix44 m_Transformation;
+
+	size_t m_Light1;
+	size_t m_Light2;
+
+	double lastX;
+	double lastY;
+	bool m_firstMouse = true;
+
+	Triton::relay_ptr<Triton::Scene> m_MainScene;
+	Triton::Data::Material* mat;
+	Triton::Data::Mesh* mesh;
 public:
-	Sandbox(const Triton::AppSettings& aSettings)
-		: ShellApplication(aSettings)
+	void CreateResources()
 	{
-		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(std::bind(&Sandbox::keyPressed, this, std::placeholders::_1)));
-		this->Listen<Triton::KeyReleasedEvent>(Triton::EventBehavior(std::bind(&Sandbox::keyReleased, this, std::placeholders::_1)));
-		this->Listen<Triton::MouseMovedEvent>(Triton::EventBehavior(std::bind(&Sandbox::mouseMoved, this, std::placeholders::_1)));
-		prtc_Display->SetVSync(true);
+		m_MainScene = SceneManager->createScene();
+
+		// Create shader
+		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
+		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
+		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+
+		auto Shader = dynamic_cast<Triton::PType::Shader*>(Context->factory->createShader(shader_params));
+		m_MainScene->shader = Shader;
+		//m_Objects.push_back((Triton::PType::FactoryObject*)Shader);
+
+		delete shader_params;
+
+
+		Shader->enable();
+		auto proj_mat = GetProjectionMatrix();
+		Shader->setUniformMatrix44("projectionMatrix", proj_mat);
+
+
+		// Create VAO
+		Triton::PType::VAOCreateParams* vao_params = new Triton::PType::VAOCreateParams();
+		Triton::Data::File::ReadMesh("D:/Programming/Test files/nfw/stall.obj", vao_params);
+
+		auto vao = dynamic_cast<Triton::PType::VAO*>(Context->factory->createVAO(vao_params));
+
+		delete vao_params;
+
+		// Create mesh
+		mesh = new Triton::Data::Mesh(vao);
+		m_MainScene->addAsset(m_StallMesh, mesh);
+
+
+		// Create texture
+		Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
+		Triton::Data::File::ReadTexture("D:/Programming/Test files/nfw/stallTexture.png", tex_params);
+
+		auto texture = dynamic_cast<Triton::PType::Texture*>(Context->factory->createTexture(tex_params));
+
+		delete tex_params;
+
+		// Create material
+		mat = new Triton::Data::Material(texture);
+		mat->Shader = Shader;
+		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
+		m_MainScene->addAsset(m_StallMaterial, mat);
 	}
 
-	~Sandbox()
+	UnitTest1(const Triton::AppSettings& aSettings)
+		: Application(aSettings)
+	{
+		this->Listen<Triton::KeyPressedEvent>(Triton::EventBehavior(std::bind(&UnitTest1::keyPressed, this, std::placeholders::_1)));
+		this->Listen<Triton::MouseMovedEvent>(Triton::EventBehavior(std::bind(&UnitTest1::mouseMoved, this, std::placeholders::_1)));
+	}
+
+	~UnitTest1()
 	{
 
 	}
 
 	void PreExecutionSetup() override
 	{
-		CreateMesh();
+		CreateResources();	
 
-		prtc_Camera = std::make_shared<Triton::Camera>(Triton::Vector3(0.0f, 16.0f, 45.0f));
-		prtc_Camera->Yaw = -90;
-		prtc_Camera->Pitch = 0;
+		Context->window->showCursor(false);
+		//prtc_Display->SetVSync(true);
 
-		Triton::Data::TextureData mTData;
-		//mTData.Fill("D:/Programming/Test files/nfw/missingTexture64.png");
+		m_MainScene->addLight("pointlight", new Triton::Graphics::PointLight(Triton::Vector3(20.0, 0.0, -25.0)));		
+		m_MainScene->addLight("spotlight", new Triton::Graphics::SpotLight(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
 
-		TestTexture = prtc_DataMap->RegisterTexture(mTData);
-		TestMaterial = std::make_shared<Triton::Data::Material>(TestTexture);
-		TestMaterial->SetDiffuse(Triton::Vector3(1.0f, 1.0f, 1.0f));
 
-		TestModel = prtc_EntityRegistry->create();
-		prtc_EntityRegistry->assign<Triton::Components::Transform>(TestModel).Position = Triton::Vector3(0.0, 0.1, 1.0);
-		prtc_EntityRegistry->assign<Triton::Components::MeshFilter>(TestModel).Mesh = CubeMesh;
-		prtc_EntityRegistry->assign<Triton::Components::MeshRenderer>(TestModel).Material = TestMaterial;
+		for (int i = 0; i < 10; i++)
+		{
+			auto Ent = m_MainScene->Entities->create();
+		
+			m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+		
+			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
+		}
+		
+		//auto Ent1 = prtc_Scene->Registry()->create();
+		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
+		//
+		//auto Ent2 = prtc_Scene->Registry()->create();
+		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
 	}
 
 	void OnUpdate() override
 	{
-		TR_TRACE("YAW:{0} PITCH:{1}", prtc_Camera->Yaw, prtc_Camera->Pitch);
-		TR_INFO("X:{0} Y:{1}", prtc_Camera->Position.x, prtc_Camera->Position.y);
+		m_MainScene->Update(prtc_Delta);
+		Triton::Impl::logErrors();
 	}
 
-private:
 	bool keyPressed(const Triton::Event& event)
 	{
 		const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
 
 		int keycode = kpe.GetKeyCode();
 
-		if (keycode == (int)(' '))
-		{
-			m_AlternateAction = true;
-		}
-
-		float cameraSpeed = 2.5 * prtc_Delta;
+		float cameraSpeed = 2.5 * prtc_Delta * 10;
 		if (keycode == (int)'W')
-			prtc_Camera->Position += cameraSpeed * prtc_Camera->GetViewDirection();
+			m_MainScene->m_Camera->Position += cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
 		if (keycode == (int)'S')
-			prtc_Camera->Position -= cameraSpeed * prtc_Camera->GetViewDirection();
+			m_MainScene->m_Camera->Position -= cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
 		if (keycode == (int)'A')
-			prtc_Camera->Position -= glm::normalize(glm::cross(prtc_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+			m_MainScene->m_Camera->Position -= glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
 		if (keycode == (int)'D')
-			prtc_Camera->Position += glm::normalize(glm::cross(prtc_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+			m_MainScene->m_Camera->Position += glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
 		if (keycode == (int)'`')
 		{
 			try
 			{
-				this->RestartShell();
+				this->Restart();
 			}
 			catch (const std::runtime_error &re) {
 				OutputDebugStringA(re.what());
 				::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
 			}
-		}
-
-		return true;
-	}
-	bool keyReleased(const Triton::Event& event)
-	{
-		const Triton::KeyReleasedEvent& kre = dynamic_cast<const Triton::KeyReleasedEvent&>(event);
-
-		int keycode = kre.GetKeyCode();
-
-		if (keycode == (int)(' '))
-		{
-			m_AlternateAction = false;
 		}
 
 		return true;
@@ -128,126 +166,19 @@ private:
 		lastX = xpos;
 		lastY = ypos;
 
-		float sensitivity = 0.1f; // change this Get<>() to your liking
+		float sensitivity = 0.1f;
 		xoffset *= sensitivity;
 		yoffset *= sensitivity;
 
-		prtc_Camera->Yaw += xoffset;
-		prtc_Camera->Pitch += yoffset;
+		m_MainScene->m_Camera->Yaw += xoffset;
+		m_MainScene->m_Camera->Pitch += yoffset;
 
 		return true;
 	}
-private:
-	unsigned int ActiveCamera = 0;
 
-	Triton::ECS::Entity TestModel;
-
-	std::shared_ptr<Triton::Data::Mesh> CubeMesh;
-	std::shared_ptr<Triton::Data::Texture> TestTexture;
-	std::shared_ptr<Triton::Data::Material> TestMaterial;
-
-	bool m_AlternateAction = false;
-
-	bool m_firstMouse = true;
-
-	double lastX;
-	double lastY;
-};
-
-#endif // SANDBOX
-
-#ifdef UNIT_TEST
-
-class UnitTest1 : public Triton::ShellApplication
-{
-	size_t m_StallMesh;
-	size_t m_StallMaterial;
-
-	Triton::Matrix44 m_Transformation;
-
-	size_t m_Light1;
-	size_t m_Light2;
-public:
-	void CreateResources()
+	virtual void Render() override
 	{
-		auto Shader = prtc_Scene->AddResource(
-			std::make_shared<Triton::Core::ShaderData>(
-			"D:/Programming/Test files/nfw/shaders/triton/v4.shader",
-			"D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader")
-		);
-
-		prtc_Scene->ExecuteShaderCommand(Shader, 
-			[&](auto Shader)
-			{
-				Shader->SetUniform("projectionMatrix", GetProjectionMatrix());
-			});
-
-		m_StallMesh = prtc_Scene->AddResource(
-			Triton::Data::File::ReadMesh(
-			"D:/Programming/Test files/nfw/stall.obj"));
-
-		auto Texture = prtc_Scene->AddResource(
-			Triton::Data::File::ReadTexture(
-			"D:/Programming/Test files/nfw/stallTexture.png"));
-
-		m_StallMaterial = prtc_Scene->AddResource(
-			std::make_shared<Triton::Data::MaterialData>(
-				Shader,
-				Texture)
-		);
-
-		this->prtc_Scene->AddResource
-		(
-			std::make_shared<Triton::Data::MaterialData>
-			(
-				Shader,
-				prtc_Scene->AddResource
-				(
-					Triton::Data::File::ReadTexture
-					(
-					"D:/Programming/Test files/nfw/missingTexture64.png"
-					)
-				)
-			)
-		);
-	}
-
-	UnitTest1(const Triton::AppSettings& aSettings)
-		: ShellApplication(aSettings)
-	{
-	}
-
-	void PreExecutionSetup() override
-	{
-		//CreateResources();	
-
-		prtc_Display->ShowCursor(true);
-		prtc_Display->SetVSync(true);
-
-		m_Light1 = prtc_Scene->m_Lights.Add(std::make_shared<Triton::Graphics::PointLight>(Triton::Vector3(20.0, 0.0, -25.0)));
-
-		m_Light2 = prtc_Scene->m_Lights.Add(std::make_shared<Triton::Graphics::SpotLight>(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
-
-
-		//for (int i = 0; i < 10; i++)
-		//{
-		//	auto Ent = prtc_Scene->Registry()->create();
-		//
-		//	prtc_Scene->Registry()->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-		//
-		//	prtc_Scene->Registry()->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
-		//}
-		//
-		//auto Ent1 = prtc_Scene->Registry()->create();
-		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
-		//
-		//auto Ent2 = prtc_Scene->Registry()->create();
-		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
-	}
-
-	void OnUpdate() override
-	{
-
+		m_MainScene->render();
 	}
 };
 
