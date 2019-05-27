@@ -1,5 +1,5 @@
 #pragma once
-#include "TritonTypes/mathematical.h"
+#include "TritonPlatform/mathematical.h"
 #include "TritonPlatform/PlatformAbstraction.h"
 
 namespace Triton

@@ -1,6 +1,6 @@
 #pragma once
 #include "Triton\TRMacros.h"
-#include "TritonTypes/mathematical.h"
+#include "TritonPlatform/mathematical.h"
 
 #include "TritonPlatform/PlatformAbstraction.h"
 #include "Triton/Core/Asset/Asset.h"

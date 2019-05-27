@@ -1,7 +1,7 @@
 #include <TRpch.h>
 #include "Scene.h"
 
-#include "TritonTypes/mathematical.h"
+#include "TritonPlatform/mathematical.h"
 #include <glm\gtc\matrix_transform.hpp>
 
 #define TR_SERIALIZABLE_COMPONENTS Triton::Components::Transform, Triton::Components::Visual, Triton::Components::LightEmitter
@@ -105,8 +105,6 @@ void Triton::Scene::render()
 
 		m_context->renderer->render(static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->object());
 	});
-
-	shader->disable();
 }
 
 void Triton::Scene::Update(float aDelta)
@@ -133,8 +131,6 @@ void Triton::Scene::Update(float aDelta)
 	{
 		shader->setUniformInt("num_of_" + pair.first + "s", pair.second + 1);
 	}
-
-	shader->disable();
 
 	Entities->sort<Components::Visual>([&](const auto &lhs, const auto &rhs) {
 	

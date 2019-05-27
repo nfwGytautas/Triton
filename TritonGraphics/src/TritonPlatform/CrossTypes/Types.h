@@ -49,13 +49,32 @@ namespace Triton
 			virtual ~Renderer() { }
 
 			// Create the renderer
-			virtual void create() = 0;;
+			virtual void create() = 0;
+
+			// Start new frame
+			virtual void newFrame(float red, float green, float blue, float alpha) = 0;
+
+			// End frame
+			virtual void endFrame() = 0;
 
 			// Render object
 			virtual void render(PlatformObject* renderable) = 0;
 
 			// Set renderer values to default ones
 			virtual void default() = 0;
+
+			// Returns a projection matrix from the values the renderer has
+			virtual Matrix44 projection() = 0;
+
+			// Recalculated the projection matrix
+			virtual Matrix44 recalc_projection() = 0;
+		public:
+			float fov;
+			float nearPlane;
+			float farPlane;
+		protected:
+			unsigned int m_width;
+			unsigned int m_height;
 		};
 
 		class Context
@@ -72,6 +91,9 @@ namespace Triton
 
 			// Init the context
 			virtual bool init() = 0;
+
+			// Additional init if required mostly used by DirectX
+			virtual bool init_additional() { return true; }
 
 			// Shutdown context and free resources
 			virtual void shutdown() = 0;

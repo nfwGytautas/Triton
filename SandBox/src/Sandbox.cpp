@@ -30,18 +30,20 @@ public:
 
 		// Create shader
 		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
-		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
-		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+		//shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
+		//shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+
+		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_texture.hlsl";
+		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_texture.hlsl";
 
 		auto Shader = dynamic_cast<Triton::PType::Shader*>(Context->factory->createShader(shader_params));
 		m_MainScene->shader = Shader;
-		//m_Objects.push_back((Triton::PType::FactoryObject*)Shader);
 
 		delete shader_params;
 
 
 		Shader->enable();
-		auto proj_mat = GetProjectionMatrix();
+		auto proj_mat = Context->renderer->projection();
 		Shader->setUniformMatrix44("projectionMatrix", proj_mat);
 
 
@@ -71,6 +73,8 @@ public:
 		mat->Shader = Shader;
 		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
 		m_MainScene->addAsset(m_StallMaterial, mat);
+
+		m_MainScene->m_Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
@@ -96,11 +100,16 @@ public:
 		m_MainScene->addLight("spotlight", new Triton::Graphics::SpotLight(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
 
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			auto Ent = m_MainScene->Entities->create();
 		
-			m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+			//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(Ent);
+
+			transform.Position = Triton::Vector3(-2.0, 2.0, 5.0);
+			transform.Scale = Triton::Vector3(0.5, 0.5, 0.5);
+			transform.Rotation = Triton::Vector3(0.0, 0.0, 90.0);
 		
 			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
 		}
@@ -124,26 +133,28 @@ public:
 
 		int keycode = kpe.GetKeyCode();
 
-		float cameraSpeed = 2.5 * prtc_Delta * 10;
-		if (keycode == (int)'W')
-			m_MainScene->m_Camera->Position += cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
-		if (keycode == (int)'S')
-			m_MainScene->m_Camera->Position -= cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
-		if (keycode == (int)'A')
-			m_MainScene->m_Camera->Position -= glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
-		if (keycode == (int)'D')
-			m_MainScene->m_Camera->Position += glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
-		if (keycode == (int)'`')
-		{
-			try
-			{
-				this->Restart();
-			}
-			catch (const std::runtime_error &re) {
-				OutputDebugStringA(re.what());
-				::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
-			}
-		}
+		//float cameraSpeed = 2.5 * prtc_Delta * 10;
+		//if (keycode == (int)'W')
+		//	m_MainScene->m_Camera->Position += cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
+		//if (keycode == (int)'S')
+		//	m_MainScene->m_Camera->Position -= cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
+		//if (keycode == (int)'A')
+		//	m_MainScene->m_Camera->Position -= glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+		//if (keycode == (int)'D')
+		//	m_MainScene->m_Camera->Position += glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+		//if (keycode == (int)'`')
+		//{
+		//	try
+		//	{
+		//		this->Restart();
+		//	}
+		//	catch (const std::runtime_error &re) {
+		//		OutputDebugStringA(re.what());
+		//		::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
+		//	}
+		//}
+
+		TR_TRACE("KEY DOWN: {0}", (char)keycode);
 
 		return true;
 	}
@@ -190,4 +201,12 @@ Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
 	aSettings.WindowWidth = 1280;
 	aSettings.WindowHeight = 720;
 	return new UnitTest1(aSettings);
+}
+
+void Triton::Loop(Triton::Application* application)
+{
+	while (!application->shouldClose())
+	{
+		application->frame();
+	}
 }

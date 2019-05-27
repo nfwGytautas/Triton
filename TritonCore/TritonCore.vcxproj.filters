@@ -4,11 +4,14 @@
     <Filter Include="Triton">
       <UniqueIdentifier>{05D31AD4-F174-45AA-DA2F-59FEC670CCFA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Camera">
+      <UniqueIdentifier>{DD2FEC97-49F0-67CE-122B-B14B7EAAACAA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Core">
       <UniqueIdentifier>{7DA2F9B3-E957-72A9-724C-6C80DE0069AD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\Core\Data">
-      <UniqueIdentifier>{062E5D22-F226-7C74-1B59-61F907B15B80}</UniqueIdentifier>
+    <Filter Include="Triton\Core\Asset">
+      <UniqueIdentifier>{CC80D66D-3897-D403-810E-6025ED63A58B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Core\Graphics">
       <UniqueIdentifier>{5D870C00-4916-96C9-F234-AAC4DEA2A66F}</UniqueIdentifier>
@@ -16,17 +19,14 @@
     <Filter Include="Triton\Core\Graphics\Lighting">
       <UniqueIdentifier>{82B3D0E8-EECB-B712-B778-47AC23504CAC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\Core\Math">
-      <UniqueIdentifier>{761D6222-6216-8174-8B48-66F977A06080}</UniqueIdentifier>
+    <Filter Include="Triton\Core\Wrapers">
+      <UniqueIdentifier>{301266D7-9C73-43E5-25E1-899791417AA4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\Core\Renderer">
-      <UniqueIdentifier>{C302A45B-AF91-2D25-58B0-4120441E3ECB}</UniqueIdentifier>
+    <Filter Include="Triton\Entity">
+      <UniqueIdentifier>{B1A7859D-1D68-01D4-E6A2-4A51522246B0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\Core\Renderer\Actions">
-      <UniqueIdentifier>{63E34C4E-4F9E-3CFA-F855-B544E4EF868A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Triton\Core\Shader">
-      <UniqueIdentifier>{8383D251-6F67-93A7-D8C7-8DFAC4CA7D29}</UniqueIdentifier>
+    <Filter Include="Triton\Entity\Components">
+      <UniqueIdentifier>{26BCBFF7-12E1-0E78-3B2C-F40727B00D96}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Events">
       <UniqueIdentifier>{49470E9E-B507-8AD4-7E42-D351EAC1CEB0}</UniqueIdentifier>
@@ -37,8 +37,11 @@
     <Filter Include="Triton\Logger">
       <UniqueIdentifier>{34B1E4AD-A071-60E4-69AC-A961D52BA5C0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Triton\State">
-      <UniqueIdentifier>{15F25134-0155-E1D8-AADA-198F961CAD5B}</UniqueIdentifier>
+    <Filter Include="Triton\Managers">
+      <UniqueIdentifier>{82CA5080-EE55-BE44-F766-413963711A45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Serialize">
+      <UniqueIdentifier>{FC6A853C-E863-A48E-1196-8913FDED839A}</UniqueIdentifier>
     </Filter>
     <Filter Include="TritonTypes">
       <UniqueIdentifier>{3ACCB4B6-A681-2DAC-2F76-27839B2A24B0}</UniqueIdentifier>
@@ -50,10 +53,49 @@
   <ItemGroup>
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton\AppSettings.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Application.h">
       <Filter>Triton</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Camera\Camera.h">
+      <Filter>Triton\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Config.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Asset\Asset.h">
+      <Filter>Triton\Core\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\PointLight.h">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Scene.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\Material.h">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\Mesh.h">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h">
+      <Filter>Triton\Entity\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\Registry.h">
+      <Filter>Triton\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\EntryPoint.h">
       <Filter>Triton</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h">
@@ -83,6 +125,12 @@
     <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Triton\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Managers\SceneManager.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Serialize\Serialize.h">
+      <Filter>Triton\Serialize</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
     </ClInclude>
@@ -98,26 +146,38 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonTypes\mathematical.h" />
-    <ClInclude Include="src\Triton\EntryPoint.h" />
-    <ClInclude Include="src\Triton\Camera\Camera.h" />
-    <ClInclude Include="src\Triton\Core\Scene.h" />
-    <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h" />
-    <ClInclude Include="src\Triton\Entity\Registry.h" />
-    <ClInclude Include="src\Triton\Serialize\Serialize.h" />
-    <ClInclude Include="src\Triton\Managers\SceneManager.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\PointLight.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\Light.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\Material.h" />
-    <ClInclude Include="src\Triton\Core\Asset\Asset.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
     <ClCompile Include="src\Triton\Application.cpp">
       <Filter>Triton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Camera\Camera.cpp">
+      <Filter>Triton\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Asset\Asset.cpp">
+      <Filter>Triton\Core\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\PointLight.cpp">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp">
+      <Filter>Triton\Core\Graphics\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Scene.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\Material.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\Mesh.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Events\EventManager.cpp">
       <Filter>Triton\Events</Filter>
@@ -134,16 +194,8 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonTypes\mathematical.cpp" />
-    <ClCompile Include="src\Triton\Camera\Camera.cpp" />
-    <ClCompile Include="src\Triton\Core\Scene.cpp" />
-    <ClCompile Include="src\Triton\Managers\SceneManager.cpp" />
-    <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp" />
-    <ClCompile Include="src\Triton\Core\Graphics\Lighting\PointLight.cpp" />
-    <ClCompile Include="src\Triton\Core\Graphics\Lighting\Light.cpp" />
-    <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\Material.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\Mesh.cpp" />
-    <ClCompile Include="src\Triton\Core\Asset\Asset.cpp" />
+    <ClCompile Include="src\Triton\Managers\SceneManager.cpp">
+      <Filter>Triton\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

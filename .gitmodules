@@ -29,3 +29,6 @@
 [submodule "vendor/cereal"]
 	path = vendor/cereal
 	url = https://github.com/USCiLab/cereal
+[submodule "vendor/DirectXTK"]
+	path = vendor/DirectXTK
+	url = https://github.com/Microsoft/DirectXTK

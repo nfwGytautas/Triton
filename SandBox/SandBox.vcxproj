@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\DirectXTK\Inc;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\DirectXTK\Inc;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\DirectXTK\Inc;..\vendor\ImGui;..\vendor\cereal\include;..\TritonCore\src;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

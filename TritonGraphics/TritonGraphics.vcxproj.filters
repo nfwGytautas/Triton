@@ -4,6 +4,9 @@
     <Filter Include="CrossTypes">
       <UniqueIdentifier>{0454463B-F00B-8888-5913-61E445EA2279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{D86A6D73-444A-EC0E-4D62-77E5B9C05270}</UniqueIdentifier>
+    </Filter>
     <Filter Include="OpenGL">
       <UniqueIdentifier>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</UniqueIdentifier>
     </Filter>
@@ -26,6 +29,36 @@
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\CrossTypes\VAO.h">
       <Filter>CrossTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Factory.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Init.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Macros.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Renderer.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Shader.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Specific.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Texture.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Types.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\VAO.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Window.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\OpenGL\Factory.h">
       <Filter>OpenGL</Filter>
@@ -58,11 +91,10 @@
       <Filter>OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\PlatformAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonPlatform\OpenGL\Types.cpp">
-      <Filter>OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
+    <ClCompile Include="src\TritonPlatform\mathematical.cpp" />
   </ItemGroup>
 </Project>

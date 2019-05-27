@@ -92,7 +92,7 @@ void LoadMeshData(std::string& aPath, Triton::PType::VAOCreateParams* params)
 				}
 				else
 				{
-					currentVertex.UV = glm::vec2(0.0f, 0.0f);
+					currentVertex.UV = Triton::Vector2(0.0f, 0.0f);
 				}
 
 				params->vertices.push_back(currentVertex);

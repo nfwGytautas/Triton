@@ -1,5 +1,5 @@
 #pragma once
-#include "TritonTypes/mathematical.h"
+#include "TritonPlatform/mathematical.h"
 #include <cereal\archives\binary.hpp>
 
 #define TR_SERIALIZABLE_COMPONENTS Triton::Components::Transform, Triton::Components::Visual, Triton::Components::LightEmitter
@@ -61,3 +61,7 @@ namespace Triton
 		};
 	}
 }
+
+ENTT_NAMED_TYPE(Triton::Components::Transform)
+ENTT_NAMED_TYPE(Triton::Components::Visual)
+ENTT_NAMED_TYPE(Triton::Components::LightEmitter)

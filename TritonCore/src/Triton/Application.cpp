@@ -14,11 +14,12 @@ namespace Triton {
 		: EventManager(), EventListener(this)
 	{
 		// Init graphics, create context and set up event callbacks
-		m_Context = Impl::createContext();
+		m_Context = Impl::createContext(aSettings);
 
 		m_Context->init();
 		m_Context->window->create(aSettings.WindowWidth, aSettings.WindowHeight);
 		m_Context->setContextEventCallBacks(this);
+		m_Context->init_additional();
 
 		m_SceneManager = new Manager::SceneManager(m_Context);
 
@@ -32,21 +33,29 @@ namespace Triton {
 		Impl::destroyContext(m_Context);
 	}
 
-	void Application::Run()
+	void Application::setup()
+	{
+		Context->renderer->recalc_projection();
+		PreExecutionSetup();
+	}
+
+	void Application::frame()
 	{	
 		static std::chrono::high_resolution_clock timer;
 		using ms = std::chrono::duration<float, std::milli>;
 		auto start = timer.now();
 
+		m_Context->renderer->newFrame(0.0f, 0.5f, 0.5f, 0.0f);
 
 		m_Context->renderer->default(); // Reset the renderer to it's default state
-		m_Context->window->clear(0.0f, 0.5f, 0.5f, 0.0f); // Clear the window for rerendering
 
 		Dispatch();
 
 		OnUpdate();	
 
 		Render();
+
+		m_Context->renderer->endFrame();
 
 		m_Context->update();
 
@@ -55,27 +64,14 @@ namespace Triton {
 		prtc_Delta = std::chrono::duration_cast<ms>(stop - start).count() / 1000.0f;
 	}
 
-	Matrix44 Application::GetProjectionMatrix()
+	bool Application::shouldClose()
 	{
-		auto[width, height] = m_Context->window->getWindowSize();
-		m_Context->setViewPort(0, 0, width, height);
-		return Triton::Core::CreateProjectionMatrix(width, height, 45.0f, 0.1f, 100.0f);
+		return m_Context->window->windowClosed();
 	}
 
 	void Application::OnEvent(Event* aEvent)
 	{
 		Post(aEvent);
-	}
-
-	void Application::Execute()
-	{
-		GetProjectionMatrix();
-
-		PreExecutionSetup();
-		while (!m_Context->window->windowClosed())
-		{
-			Run();
-		}
 	}
 
 	void Application::Restart()

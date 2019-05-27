@@ -2,13 +2,13 @@
 #include "SpotLight.h"
 
 Triton::Graphics::SpotLight::SpotLight(Vector3 aPosition, Vector3 aDirection)
-	:m_Position(aPosition), m_Direction(aDirection), m_CutOff(glm::cos(glm::radians(12.5f))), m_OuterCutOff(glm::cos(glm::radians(17.5f)))
+	:m_Position(aPosition), m_Direction(aDirection), m_CutOff(std::cos(Triton::to_radians(12.5f))), m_OuterCutOff(std::cos(Triton::to_radians(17.5f)))
 {
 
 }
 
 Triton::Graphics::SpotLight::SpotLight(Vector3 aPosition, Vector3 aDirection, float aCutOff, float aOuterCutOff)
-	: m_Position(aPosition), m_Direction(aDirection), m_CutOff(glm::cos(glm::radians(aCutOff))), m_OuterCutOff(glm::cos(glm::radians(aOuterCutOff)))
+	: m_Position(aPosition), m_Direction(aDirection), m_CutOff(std::cos(Triton::to_radians(aCutOff))), m_OuterCutOff(std::cos(Triton::to_radians(aOuterCutOff)))
 {
 
 }

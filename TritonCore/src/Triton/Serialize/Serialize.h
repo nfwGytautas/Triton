@@ -7,9 +7,9 @@
 
 namespace glm
 {
-	template<class Archive> void serialize(Archive& archive, glm::vec2& v) { archive(v.x, v.y); }
-	template<class Archive> void serialize(Archive& archive, glm::vec3& v) { archive(v.x, v.y, v.z); }
-	template<class Archive> void serialize(Archive& archive, glm::vec4& v) { archive(v.x, v.y, v.z, v.w); }
+	template<class Archive> void serialize(Archive& archive, Triton::Vector2& v) { archive(v.x, v.y); }
+	template<class Archive> void serialize(Archive& archive, Triton::Vector3& v) { archive(v.x, v.y, v.z); }
+	template<class Archive> void serialize(Archive& archive, Triton::Vector4& v) { archive(v.x, v.y, v.z, v.w); }
 }
 
 namespace Triton

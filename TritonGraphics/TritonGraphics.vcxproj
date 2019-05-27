@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;GLFW_INCLUDE_NONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\DirectXTK\Inc;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\DirectXTK\Inc;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -118,7 +118,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\GLFW\include;..\vendor\Glad\include;..\vendor\glm;..\vendor\DirectXTK\Inc;..\TritonCore\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,6 +143,16 @@
     <ClInclude Include="src\TritonPlatform\CrossTypes\Texture.h" />
     <ClInclude Include="src\TritonPlatform\CrossTypes\Types.h" />
     <ClInclude Include="src\TritonPlatform\CrossTypes\VAO.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Factory.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Init.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Macros.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Renderer.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Shader.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Specific.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Texture.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Types.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\VAO.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\Window.h" />
     <ClInclude Include="src\TritonPlatform\OpenGL\Factory.h" />
     <ClInclude Include="src\TritonPlatform\OpenGL\Init.h" />
     <ClInclude Include="src\TritonPlatform\OpenGL\Macros.h" />
@@ -154,10 +164,11 @@
     <ClInclude Include="src\TritonPlatform\OpenGL\VAO.h" />
     <ClInclude Include="src\TritonPlatform\OpenGL\Window.h" />
     <ClInclude Include="src\TritonPlatform\PlatformAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonPlatform\OpenGL\Types.cpp" />
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
+    <ClCompile Include="src\TritonPlatform\mathematical.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">

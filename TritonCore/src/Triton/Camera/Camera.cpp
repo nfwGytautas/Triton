@@ -23,24 +23,8 @@ void Triton::Camera::OnUpdate()
 		Pitch = 89.99999f;
 	if (Pitch < -89.99999f)
 		Pitch = -89.99999f;
-
-	Vector3 viewDirection = glm::vec3(
-		cos(glm::radians(Pitch)) * cos(glm::radians(Yaw)),
-		sin(glm::radians(Pitch)),
-		cos(glm::radians(Pitch)) * sin(glm::radians(Yaw))
-	);
-
-	m_ViewDirection = glm::normalize(viewDirection);
-	viewPoint = Position + m_ViewDirection;
-	Vector3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	glm::mat4 ViewMatrix = glm::lookAt(
-		Position,
-		viewPoint,
-		up
-	);
-
-	m_ViewMatrix = ViewMatrix;
+	
+	m_ViewMatrix = Triton::Core::createViewMatrix(Position, Triton::to_radians(Pitch), Triton::to_radians(Yaw), Triton::to_radians(0.0f));
 }
 
 const Triton::Matrix44& Triton::Camera::ViewMatrix()

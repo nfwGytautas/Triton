@@ -6,7 +6,7 @@
 #include "Triton\Config.h"
 #include "Triton\Limits.h"
 
-#include "TritonTypes/mathematical.h"
+#include "TritonPlatform/mathematical.h"
 
 #include "File\File.h"
 
@@ -33,14 +33,10 @@
 #include "Camera\Camera.h"
 #include "Serialize\Serialize.h"
 
-namespace Triton {
+#include "AppSettings.h"
 
-	struct AppSettings
-	{
-		unsigned int WindowWidth = 600;
-		unsigned int WindowHeight = 600;
-		std::string WindowTitle = "Triton display";
-	};
+namespace Triton 
+{
 
 	//Main class that allows for project creation
 	class Application : 
@@ -52,16 +48,21 @@ namespace Triton {
 		Application(const AppSettings& aSettings);
 		virtual ~Application();
 
-		virtual void Execute();
+		// Setup the engine and context
+		void setup();
+
+		// Update and render a single frame
+		void frame();
+
+		// Check if the engine has recieved a command to close
+		bool shouldClose();
 	protected:
 		virtual void Render() = 0;
 		virtual void PreExecutionSetup() = 0;
 		virtual void OnUpdate() = 0;
 		virtual void FixedTimeOnUpdate() {}
 
-		void Run();
 		void Restart();
-		Matrix44 GetProjectionMatrix();
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
@@ -78,4 +79,5 @@ namespace Triton {
 	};
 
 	Application* CreateApplication(Triton::AppSettings& aSettings);
+	void Loop(Triton::Application* application);
 }

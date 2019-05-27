@@ -22,6 +22,7 @@ IncludeDir["ImGui"] = "vendor/ImGui"
 IncludeDir["Assimp"] = "vendor/Assimp/include"
 IncludeDir["stb_image"] = "vendor/stb_image"
 IncludeDir["cereal"] = "vendor/cereal/include"
+IncludeDir["XTK"] = "vendor/DirectXTK/Inc"
 
 include "vendor/GLFW"
 include "vendor/Glad"
@@ -51,6 +52,7 @@ project "TritonGraphics"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLM}",
+		"%{IncludeDir.XTK}",
 		"TritonCore/src",
 	}
 
@@ -118,6 +120,7 @@ project "TritonCore"
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.cereal}",
+		"%{IncludeDir.XTK}",
 		"TritonGraphics/src",
 	}
 
@@ -181,6 +184,7 @@ project "SandBox"
 		"vendor/spdlog/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.XTK}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.cereal}",
 		"TritonCore/src",
