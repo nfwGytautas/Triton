@@ -3,6 +3,18 @@ Just another game engine that I am coding for fun in my spare time
 
 *NOTE:* The engine is in a very early state of development and currently doesn't support many features, but I am actively developing it
 
+
+# Features I would like to implement
+* Basic editor
+* Text rendering
+* Sound engine
+* Shadows
+* Texture mapping (Alpha, bump, specular, ect...)
+* Reflection
+* Particle system
+* Picking
+* Physics based rendering
+
 # *Tests projects*
 
 **You can find test projects in the test projects folder (https://github.com/nfwGytautas/Triton/tree/master/Test%20projects)**
