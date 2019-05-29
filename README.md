@@ -1,5 +1,7 @@
 # Triton
-Just another game engine
+Just another game engine that I am coding for fun in my spare time
+
+*NOTE:* The engine is in a very early state of development and currently doesn't support many features, but I am actively developing it
 
 # *Tests projects*
 
