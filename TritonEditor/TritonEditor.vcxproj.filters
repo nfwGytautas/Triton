@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Impl">
+      <UniqueIdentifier>{B7F5867C-A32C-880D-4C19-6E10382F040F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\EditorScene.h" />
+    <ClInclude Include="src\Impl\imgui_impl_dx11.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Impl\imgui_impl_win32.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Widgets\DockSpace.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EditorScene.cpp" />
+    <ClCompile Include="src\Impl\imgui_impl_dx11.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Impl\imgui_impl_win32.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonEditor.cpp" />
+  </ItemGroup>
+</Project>

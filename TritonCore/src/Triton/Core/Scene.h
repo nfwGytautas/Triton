@@ -16,10 +16,24 @@
 
 namespace Triton
 {
-	class Scene
+	// Base class that allows for multiple types of scenes that can all be managed by a single manager
+	class SceneBase
 	{
 	public:
-		Scene(relay_ptr<Triton::PType::Context> context);
+		SceneBase(Triton::PType::Context* context);
+		virtual ~SceneBase() { }
+
+		virtual void update(float delta) = 0;
+		virtual void render() = 0;
+		virtual void destroy() = 0;
+	protected:
+		Triton::PType::Context* Context;
+	};
+
+	class Scene : public SceneBase
+	{
+	public:
+		Scene(Triton::PType::Context* context);
 		virtual ~Scene();
 
 
@@ -30,21 +44,18 @@ namespace Triton
 
 		virtual void Prepare();
 
-		virtual void render();
-		virtual void Update(float aDelta);
+		virtual void render() override;
+		virtual void update(float delta) override;
 
-		virtual void destroy();
+		virtual void destroy() override;
 	public: // Non virtual
 		void UpdateProjection(Triton::Matrix44 aNewProjection);
-
 	public:
 		Triton::PType::Shader* shader;
 
 		std::unique_ptr<Camera> m_Camera;
 		std::unique_ptr<ECS::Registry> Entities;
 	private:
-		relay_ptr<Triton::PType::Context> m_context;
-
 		std::unordered_map<size_t, Triton::Resource::Asset*> m_Assets;
 
 		std::vector<Triton::Graphics::Light*> m_Lights;

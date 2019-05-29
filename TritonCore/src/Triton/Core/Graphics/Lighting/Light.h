@@ -17,10 +17,10 @@ namespace Triton
 			virtual void bind(relay_ptr<PType::Shader> shader) = 0;
 
 			unsigned int Slot;
-		protected:
-			Vector3 m_Ambient;
-			Vector3 m_Diffuse;
-			Vector3 m_Specular;
+
+			Vector3 Ambient;
+			Vector3 Diffuse;
+			Vector3 Specular;
 		};
 
 	}

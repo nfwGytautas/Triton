@@ -106,6 +106,9 @@ namespace Triton
 
 			// Update viewport
 			virtual void setViewPort(int x, int y, int width, int height) = 0;
+
+			// Fill's packet data
+			virtual void fillPacket(PlatformObject* packet) = 0;
 		};
 	}
 }

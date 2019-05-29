@@ -1,9 +1,8 @@
 #pragma once
 
-#include <GLFW\glfw3.h>
-#include <glad\glad.h>
-
 #include "Triton\Logger\Log.h"
+
+#include "Manip.h"
 
 #include "Macros.h"
 #include "Types.h"
@@ -24,9 +23,11 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	D3D11_INPUT_ELEMENT_DESC polygonLayout[2];
+	D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
+	D3D11_BUFFER_DESC lightBufferDesc;
+	D3D11_BUFFER_DESC cameraBufferDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 
 
@@ -109,6 +110,14 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	polygonLayout[1].InstanceDataStepRate = 0;
 
+	polygonLayout[2].SemanticName = "NORMAL";
+	polygonLayout[2].SemanticIndex = 0;
+	polygonLayout[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	polygonLayout[2].InputSlot = 0;
+	polygonLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	polygonLayout[2].InstanceDataStepRate = 0;
+
 	// Get a count of the elements in the layout.
 	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
@@ -136,8 +145,41 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
+	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
+	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
+	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	lightBufferDesc.ByteWidth = sizeof(DXShader::LightBufferType);
+	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightBufferDesc.MiscFlags = 0;
+	lightBufferDesc.StructureByteStride = 0;
+
+	// Setup the description of the camera dynamic constant buffer that is in the vertex shader.
+	cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cameraBufferDesc.ByteWidth = sizeof(DXShader::CameraBufferType);
+	cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cameraBufferDesc.MiscFlags = 0;
+	cameraBufferDesc.StructureByteStride = 0;
+
 	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
 	result = m_device->CreateBuffer(&matrixBufferDesc, NULL, &shader->m_matrixBuffer);
+	if (FAILED(result))
+	{
+		TR_ERROR("Creating constant buffer pointer failed");
+		return nullptr;
+	}
+
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	result = m_device->CreateBuffer(&lightBufferDesc, NULL, &shader->m_lightBuffer);
+	if (FAILED(result))
+	{
+		TR_ERROR("Creating constant buffer pointer failed");
+		return nullptr;
+	}
+
+	// Create the camera constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	result = m_device->CreateBuffer(&cameraBufferDesc, NULL, &shader->m_cameraBuffer);
 	if (FAILED(result))
 	{
 		TR_ERROR("Creating constant buffer pointer failed");
@@ -176,20 +218,22 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 {
 	DXVAO* vao = new DXVAO();
 
-	DXVAO::VertexType* vertices;
-	unsigned long* indices;
+	VAOCreateParams::Vertex* vertices;
+	unsigned int* indices;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
+	auto vaoParams = OBJECT_AS(VAOCreateParams, createParams);
+	
 	// Set the number of vertices in the vertex array.
-	unsigned int vertexCount = 3;
+	unsigned int vertexCount = vaoParams->vertices.size();
 
 	// Set the number of indices in the index array.
-	unsigned int indexCount = 3;
+	unsigned int indexCount = vaoParams->indices.size();
 
 	// Create the vertex array.
-	vertices = new DXVAO::VertexType[vertexCount];
+	vertices = vaoParams->vertices.data();
 	if (!vertices)
 	{
 		TR_ERROR("Creating vertex array failed");
@@ -197,33 +241,18 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 	}
 
 	// Create the index array.
-	indices = new unsigned long[indexCount];
+	indices = vaoParams->indices.data();
 	if (!indices)
 	{
 		TR_ERROR("Creating index array failed");
 		return nullptr;
 	}
 
-	// Load the vertex array with data.
-	vertices[0].position = DirectX::XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].texture = DirectX::XMFLOAT2(0.0f, 1.0f);
-
-	vertices[1].position = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].texture = DirectX::XMFLOAT2(0.5f, 0.0f);
-
-	vertices[2].position = DirectX::XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].texture = DirectX::XMFLOAT2(1.0f, 1.0f);
-
-	// Load the index array with data.
-	indices[0] = 0;  // Bottom left.
-	indices[1] = 1;  // Top middle.
-	indices[2] = 2;  // Bottom right.
-
 	vao->m_indiceCount = indexCount;
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(DXVAO::VertexType) * vertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VAOCreateParams::Vertex) * vertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -244,7 +273,7 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 
 	// Set up the description of the static index buffer.
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned long) * indexCount;
+	indexBufferDesc.ByteWidth = sizeof(unsigned int) * indexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -262,13 +291,6 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 		TR_ERROR("Creating index buffer failed");
 		return nullptr;
 	}
-
-	// Release the arrays now that the vertex and index buffers have been created and loaded.
-	delete[] vertices;
-	vertices = 0;
-
-	delete[] indices;
-	indices = 0;
 
 	vao->m_deviceContext = m_deviceContext;
 	vao->create(createParams);

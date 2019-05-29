@@ -9,16 +9,24 @@ namespace Triton
 		class SceneManager
 		{
 		public:
-			SceneManager(relay_ptr<PType::Context> context);
+			SceneManager(PType::Context* context);
 			virtual ~SceneManager();
 
 			relay_ptr<Scene> createScene();
 
+			template <class T, typename... Args>
+			relay_ptr<T> createSceneCustom(Args&&... args)
+			{
+				T* scene = new T(m_Context, std::forward<Args>(args)...);
+				m_Scenes.push_back(scene);
+				return scene;
+			}
+
 			void cleanUp();
 		private:
-			relay_ptr<PType::Context> m_Context;
+			PType::Context* m_Context;
 
-			std::vector<Scene*> m_Scenes;
+			std::vector<SceneBase*> m_Scenes;
 		};
 	}
 }

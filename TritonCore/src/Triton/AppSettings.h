@@ -14,6 +14,8 @@ namespace Triton {
 		HINSTANCE hPrevInstance;
 		PSTR pScmdline;
 		int iCmdshow;
+		HWND hHwnd;
+		bool hasWindow = false;
 #else
 		// Default to OpenGL
 		int argc;

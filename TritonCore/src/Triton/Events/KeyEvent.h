@@ -8,6 +8,7 @@ namespace Triton {
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
+		inline int GetKeyMods() const { return m_Mods; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:

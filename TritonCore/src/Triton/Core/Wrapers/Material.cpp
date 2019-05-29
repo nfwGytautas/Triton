@@ -4,11 +4,11 @@
 void Triton::Data::Material::enable()
 {
 	object()->enable();
-	Shader->setUniformInt("material.matTexture", object()->Slot);
-	Shader->setUniformVector3("material.ambient", Ambient);
-	Shader->setUniformVector3("material.diffuse", Diffuse);
-	Shader->setUniformVector3("material.specular", Specular);
-	Shader->setUniformFloat("material.shininess", Shininess);
+	//Shader->setUniformInt("material.matTexture", object()->Slot);
+	//Shader->setUniformVector3("material.ambient", Ambient);
+	//Shader->setUniformVector3("material.diffuse", Diffuse);
+	//Shader->setUniformVector3("material.specular", Specular);
+	Shader->setUniformFloat("specularPower", Shininess);
 }
 
 void Triton::Data::Material::destroyFunc(relay_ptr<PType::Context> context, PType::FactoryDestroyParams* params)

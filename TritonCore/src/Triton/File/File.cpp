@@ -56,7 +56,11 @@ void LoadMeshData(std::string& aPath, Triton::PType::VAOCreateParams* params)
 		aiProcess_OptimizeMeshes |
 		aiProcess_Triangulate |
 		aiProcess_GenNormals |
-		aiProcess_JoinIdenticalVertices
+		aiProcess_JoinIdenticalVertices 
+#ifdef TR_PLATFORM_WINDOWS
+		| aiProcess_MakeLeftHanded 
+		| aiProcess_FlipWindingOrder
+#endif
 	);
 
 	if (!scene)

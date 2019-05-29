@@ -146,6 +146,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Events\EventInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -197,5 +198,6 @@
     <ClCompile Include="src\Triton\Managers\SceneManager.cpp">
       <Filter>Triton\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
   </ItemGroup>
 </Project>

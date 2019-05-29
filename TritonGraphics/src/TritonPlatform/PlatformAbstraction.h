@@ -10,7 +10,6 @@
 #include <d3d11.h>
 #include <SimpleMath.h>
 
-
 #else
 
 #include "OpenGL/Specific.h"
@@ -31,6 +30,5 @@ namespace Triton
 		Triton::PType::Context* createContext(const Triton::AppSettings& appSettings);
 		void destroyContext(Triton::PType::Context* context);
 		void logErrors();
-		std::wstring s2ws(const std::string& s);
 	}
 }

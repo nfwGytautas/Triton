@@ -8,7 +8,7 @@ namespace Triton
 	namespace Manager
 	{
 
-		SceneManager::SceneManager(relay_ptr<PType::Context> context)
+		SceneManager::SceneManager(PType::Context* context)
 			: m_Context(context)
 		{
 		}

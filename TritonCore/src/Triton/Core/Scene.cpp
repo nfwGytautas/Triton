@@ -27,14 +27,19 @@ namespace Triton
 
 		return { diffMat , diffMesh};
 	}
+
+	SceneBase::SceneBase(Triton::PType::Context* context)
+	{
+		Context = context;
+	}
 }
 
-Triton::Scene::Scene(relay_ptr<Triton::PType::Context> context)
+Triton::Scene::Scene(Triton::PType::Context* context)
+	:SceneBase(context)
 {
 	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 	
 	m_Camera = std::make_unique<Camera>(Vector3(0.0f, 0.0f, 0.0f));
-	m_context = context;
 
 	//prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 	//	Core::ShaderSettings(
@@ -46,7 +51,7 @@ Triton::Scene::~Scene()
 {
 	for (auto pair : m_Assets)
 	{
-		pair.second->destroyAsset(m_context, nullptr);
+		pair.second->destroyAsset(Context, nullptr);
 	}
 
 	for (unsigned int i = 0; i < m_Lights.size(); i++)
@@ -103,11 +108,11 @@ void Triton::Scene::render()
 		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
 		shader->setUniformMatrix44("transformationMatrix", trans_mat);
 
-		m_context->renderer->render(static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->object());
+		Context->renderer->render(static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->object());
 	});
 }
 
-void Triton::Scene::Update(float aDelta)
+void Triton::Scene::update(float delta)
 {
 	//glm::mat4 view = glm::mat4(1.0f);
 	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));

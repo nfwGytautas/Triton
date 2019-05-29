@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TritonPlatform\CrossTypes\Types.h"
+#include "Triton/AppSettings.h"
 
 #include <d3d11.h>
 
@@ -45,6 +46,7 @@ namespace Triton
 			{
 				DirectX::XMFLOAT3 position;
 				DirectX::XMFLOAT2 texture;
+				DirectX::XMFLOAT3 normal;
 			};
 		public:
 			virtual ~DXVAO() { }
@@ -75,6 +77,20 @@ namespace Triton
 				DirectX::XMMATRIX projectionMatrix;
 			};
 
+			struct LightBufferType
+			{
+				Triton::Vector4 diffuseColor;
+				Triton::Vector4 ambientColor;
+				Triton::Vector4 specularColor;
+				Triton::Vector3 lightDirection;
+				float specularPower;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.
+			};
+
+			struct CameraBufferType
+			{
+				Triton::Vector3 cameraPosition;
+				float padding;
+			};
 		public:
 			virtual ~DXShader() { }
 
@@ -99,14 +115,21 @@ namespace Triton
 
 		private:
 			void updateCBufferMatrix(MatrixBufferType* buffer, const std::string& name, const Matrix44& matrix);
+			void updateCBufferFloat(void* buffer, const std::string& name, const float& vector);
+			void updateCBufferVector3(void* buffer, const std::string& name, const Vector3& vector);
+			void updateCBufferVector4(void* buffer, const std::string& name, const Vector4& vector);
 		private:
 			ID3D11VertexShader* m_vertexShader;
 			ID3D11PixelShader* m_pixelShader;
 			ID3D11InputLayout* m_layout;
 			ID3D11Buffer* m_matrixBuffer;
+			ID3D11Buffer* m_lightBuffer;
+			ID3D11Buffer* m_cameraBuffer;
 			ID3D11DeviceContext* m_deviceContext;
 			ID3D11SamplerState* m_sampleState;
-			MatrixBufferType m_prevVal;
+			MatrixBufferType m_prevMatrixVal;
+			LightBufferType m_prevLightVal;
+			CameraBufferType m_prevCameraVal;
 
 			friend DXFactory;
 		};
@@ -147,6 +170,8 @@ namespace Triton
 		private:
 			Core::EventReceiver* m_receiver;
 			bool m_fullscreen = false;
+
+			bool m_hasWindow;
 
 			LPCWSTR m_applicationName;
 			HINSTANCE m_hinstance;
@@ -210,7 +235,7 @@ namespace Triton
 		public:
 			Core::EventReceiver* receiver;
 		public:
-			DXContext(std::string appName);
+			DXContext(const Triton::AppSettings& appSettings);
 			virtual ~DXContext() { }
 
 			// Inherited via Context
@@ -220,7 +245,7 @@ namespace Triton
 			virtual void setContextEventCallBacks(Core::EventReceiver* receiver) override;
 			virtual void update() override;
 			virtual void setViewPort(int x, int y, int width, int height) override;
-
+			virtual void fillPacket(PlatformObject* packet) override;
 		private:
 			std::string m_appNameSTD;
 			LPCWSTR m_appName;
@@ -238,17 +263,3 @@ namespace Triton
 		};
 	}
 }
-
-#include "Init.h"
-
-#include "Window.h"
-
-#include "Renderer.h"
-
-#include "Shader.h"
-
-#include "Factory.h"
-
-#include "VAO.h"
-
-#include "Texture.h"

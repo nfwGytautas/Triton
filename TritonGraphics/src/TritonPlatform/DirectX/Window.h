@@ -2,6 +2,7 @@
 
 #include "Triton\Logger\Log.h"
 
+#include <windowsx.h>
 #include "Macros.h"
 #include "Types.h"
 
@@ -41,6 +42,11 @@ NAMESPACE_BEGIN
 	// Creates the window
 	inline void DXWindow::create(unsigned int width, unsigned height)
 	{
+		if (m_hasWindow)
+		{
+			return;
+		}
+
 		TR_CORE_INFO("Creating a WINDOWS display: W:{0} H:{1}", width, height);
 
 		// Initialize the message structure.
@@ -114,7 +120,7 @@ NAMESPACE_BEGIN
 		SetFocus(m_hwnd);
 
 		// Hide the mouse cursor.
-		ShowCursor(false);
+		//ShowCursor(false);
 
 		return;
 	}
@@ -204,40 +210,65 @@ NAMESPACE_BEGIN
 		return;
 	}
 
-	inline LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+	inline LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		static unsigned int prevKey = 0;
 		static int repeat = 0;
 
-		switch (umsg)
+		switch (msg)
 		{
-			// Check if a key has been pressed on the keyboard.
-			case WM_KEYDOWN:
+			case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
+			case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
+			case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
+			case WM_XBUTTONDOWN: case WM_XBUTTONDBLCLK:
 			{
-				if (prevKey == (unsigned int)wparam)
-				{
-					repeat++;
-				}
-				else
-				{
-					prevKey = (unsigned int)wparam;
-					repeat = 0;
-				}
-				m_receiver->OnKeyPressed((unsigned int)wparam, repeat, -1, 0);
+				int button = 0;
+				if (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK) { button = 0; }
+				if (msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK) { button = 1; }
+				if (msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK) { button = 2; }
+				if (msg == WM_XBUTTONDOWN || msg == WM_XBUTTONDBLCLK) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
+				
+				m_receiver->OnMouseButtonPressed(button);			
 				return 0;
 			}
-
-			// Check if a key has been released on the keyboard.
+			case WM_LBUTTONUP:
+			case WM_RBUTTONUP:
+			case WM_MBUTTONUP:
+			case WM_XBUTTONUP:
+			{
+				int button = 0;
+				if (msg == WM_LBUTTONUP) { button = 0; }
+				if (msg == WM_RBUTTONUP) { button = 1; }
+				if (msg == WM_MBUTTONUP) { button = 2; }
+				if (msg == WM_XBUTTONUP) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
+				
+				m_receiver->OnMouseButtonReleased(button);
+				return 0;
+			}
+			case WM_MOUSEWHEEL:
+				m_receiver->OnMouseScrolled((float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA, 0);
+				return 0;
+			case WM_MOUSEHWHEEL:
+				m_receiver->OnMouseScrolled(0, (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA);
+				return 0;
+			case WM_KEYDOWN:
+			case WM_SYSKEYDOWN:
+				if (wParam < 256)
+					m_receiver->OnKeyPressed(wParam, 0, 0, 0);
+				return 0;
 			case WM_KEYUP:
-			{			
-				m_receiver->OnKeyReleased((unsigned int)wparam, -1, 0);
+			case WM_SYSKEYUP:
+				if (wParam < 256)
+					m_receiver->OnKeyReleased(wParam, 0, 0);
 				return 0;
-			}
-
+			case WM_CHAR:
+				m_receiver->OnKeyInput((unsigned int)wParam);
+				return 0;
+	
 			// Any other messages send to the default message handler as our application won't make use of them.
 			default:
 			{
-				return DefWindowProc(hwnd, umsg, wparam, lparam);
+				return DefWindowProc(hwnd, msg, wParam, lParam);
 			}
 		}
 	}

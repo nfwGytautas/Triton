@@ -18,7 +18,7 @@ IncludeDir["entt"] = "vendor/entt/src"
 IncludeDir["pybind"] = "vendor/pybind/include"
 IncludeDir["python0"] = "vendor/python/include"
 IncludeDir["python1"] = "vendor/python/PC"
-IncludeDir["ImGui"] = "vendor/ImGui"
+IncludeDir["ImGui"] = "vendor/imguiDocking"
 IncludeDir["Assimp"] = "vendor/Assimp/include"
 IncludeDir["stb_image"] = "vendor/stb_image"
 IncludeDir["cereal"] = "vendor/cereal/include"
@@ -26,7 +26,7 @@ IncludeDir["XTK"] = "vendor/DirectXTK/Inc"
 
 include "vendor/GLFW"
 include "vendor/Glad"
-include "vendor/ImGui"
+include "vendor/imguiDocking"
 
 
 project "TritonGraphics"
@@ -162,7 +162,70 @@ project "TritonCore"
 		optimize "on"
 		runtime "Release"
 
+project "TritonEditor"
+	location "TritonEditor"
+	kind "ConsoleApp"
+	language "C++"	
+	cppdialect "C++17"
+	staticruntime "on"
 
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"vendor/spdlog/include",
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.XTK}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.cereal}",
+		"TritonEditor/src",
+		"TritonCore/src",
+		"TritonGraphics/src",
+	}
+
+	links
+	{
+		"TritonCore",
+		"ImGui",
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"TR_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS"
+		}
+		runtime "Debug"
+		symbols "on"
+	
+	filter "configurations:Release"
+		defines "TR_RELEASE"
+		optimize "on"
+		runtime "Release"
+
+	filter "configurations:Dist"
+		defines "TR_DIST"
+		runtime "Release"
+		optimize "on"
+
+		
+		
 project "SandBox"
 	location "SandBox"
 	kind "ConsoleApp"

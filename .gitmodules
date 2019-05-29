@@ -32,3 +32,7 @@
 [submodule "vendor/DirectXTK"]
 	path = vendor/DirectXTK
 	url = https://github.com/Microsoft/DirectXTK
+[submodule "vendor/imguiDocking"]
+	path = vendor/imguiDocking
+	url = https://github.com/ocornut/imgui
+	branch = docking

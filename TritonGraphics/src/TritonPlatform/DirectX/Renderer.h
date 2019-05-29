@@ -59,6 +59,9 @@ inline void Triton::PType::DXRenderer::newFrame(float red, float green, float bl
 	color[2] = blue;
 	color[3] = alpha;
 
+	// Bind the render target view and depth stencil buffer to the output render pipeline.
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+
 	// Clear the back buffer.
 	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
 

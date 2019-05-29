@@ -70,11 +70,10 @@ namespace Triton
 
 		
 	protected:
-		relay_ptr<PType::Context> Context;
 		relay_ptr<Manager::SceneManager> SceneManager;
 
+		PType::Context* Context;
 	private:
-		PType::Context* m_Context;
 		Manager::SceneManager* m_SceneManager;
 	};
 

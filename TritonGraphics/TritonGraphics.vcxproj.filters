@@ -39,6 +39,9 @@
     <ClInclude Include="src\TritonPlatform\DirectX\Macros.h">
       <Filter>DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Manip.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonPlatform\DirectX\Renderer.h">
       <Filter>DirectX</Filter>
     </ClInclude>
@@ -94,6 +97,12 @@
     <ClInclude Include="src\TritonPlatform\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonPlatform\DirectX\Manip.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\Types.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
     <ClCompile Include="src\TritonPlatform\mathematical.cpp" />
   </ItemGroup>

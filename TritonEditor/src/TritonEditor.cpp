@@ -1,10 +1,11 @@
 #include <Triton.h>
-
-#define UNIT_TEST
-
+#include "EditorScene.h"
 #include <string>
 
-#ifdef UNIT_TEST
+namespace Triton
+{
+
+}
 
 class UnitTest1 : public Triton::Application
 {
@@ -25,10 +26,13 @@ class UnitTest1 : public Triton::Application
 	Triton::relay_ptr<Triton::Scene> m_MainScene;
 	Triton::Data::Material* mat;
 	Triton::Data::Mesh* mesh;
+
+	Triton::relay_ptr<Triton::EditorScene> m_EditorScene;
 public:
 	void CreateResources()
 	{
 		m_MainScene = SceneManager->createScene();
+		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>((Triton::Core::EventManager*)this);
 
 		// Create shader
 		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
@@ -96,7 +100,7 @@ public:
 	{
 		CreateResources();	
 
-		Context->window->showCursor(false);
+		Context->window->showCursor(true);
 		//prtc_Display->SetVSync(true);
 		auto dlight = new Triton::Graphics::DirectionalLight(Triton::Vector3(1.0f, 0.0f, 1.0f));
 		dlight->Ambient = Triton::Vector3(0.15f, 0.15f, 0.15f);
@@ -133,6 +137,7 @@ public:
 		auto& transform = m_MainScene->Entities->get<Triton::Components::Transform>(Ent);
 		transform.Rotation.y += 0.01f;
 		m_MainScene->update(prtc_Delta);
+		m_EditorScene->update(prtc_Delta);
 		Triton::Impl::logErrors();
 	}
 
@@ -165,7 +170,7 @@ public:
 
 		TR_TRACE("KEY DOWN: {0}", (char)keycode);
 
-		return true;
+		return false;
 	}
 	bool mouseMoved(const Triton::Event& event)
 	{
@@ -193,17 +198,15 @@ public:
 		m_MainScene->m_Camera->Yaw += xoffset;
 		m_MainScene->m_Camera->Pitch += yoffset;
 
-		return true;
+		return false;
 	}
 
 	virtual void Render() override
 	{
 		m_MainScene->render();
+		m_EditorScene->render();
 	}
 };
-
-#endif // UNIT_TEST
-
 
 Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
 {
