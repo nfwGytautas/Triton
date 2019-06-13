@@ -135,6 +135,7 @@
     <ClInclude Include="src\Impl\imgui_impl_dx11.h" />
     <ClInclude Include="src\Impl\imgui_impl_win32.h" />
     <ClInclude Include="src\Widgets\DockSpace.h" />
+    <ClInclude Include="src\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorScene.cpp" />
@@ -145,6 +146,9 @@
   <ItemGroup>
     <ProjectReference Include="..\TritonCore\TritonCore.vcxproj">
       <Project>{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TritonGraphics\TritonGraphics.vcxproj">
+      <Project>{1611c7dd-02df-bae3-eb72-2b0ad7df9648}</Project>
     </ProjectReference>
     <ProjectReference Include="..\vendor\imguiDocking\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>

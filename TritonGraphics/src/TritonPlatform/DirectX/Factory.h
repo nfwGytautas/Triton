@@ -360,6 +360,71 @@ inline FactoryObject* Triton::PType::DXFactory::createTexture(FactoryCreateParam
 	return texture;
 }
 
+inline FactoryObject* DXFactory::createFramebuffer(FactoryCreateParams * createParams)
+{
+	DXFrameBuffer* frameBuffer = new DXFrameBuffer();
+
+	auto textureParams = OBJECT_AS(TextureCreateParams, createParams);
+
+	D3D11_TEXTURE2D_DESC textureDesc;
+	HRESULT result;
+	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+
+
+	// Initialize the render target texture description.
+	ZeroMemory(&textureDesc, sizeof(textureDesc));
+
+	// Setup the render target texture description.
+	textureDesc.Width = textureParams->width;
+	textureDesc.Height = textureParams->height;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
+
+	// Create the render target texture.
+	result = m_device->CreateTexture2D(&textureDesc, NULL, &frameBuffer->m_renderTargetTexture);
+	if (FAILED(result))
+	{
+		return nullptr;
+	}
+
+	// Setup the description of the render target view.
+	renderTargetViewDesc.Format = textureDesc.Format;
+	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	// Create the render target view.
+	result = m_device->CreateRenderTargetView(frameBuffer->m_renderTargetTexture, &renderTargetViewDesc, &frameBuffer->m_renderTargetView);
+	if (FAILED(result))
+	{
+		return nullptr;
+	}
+
+	// Setup the description of the shader resource view.
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	// Create the shader resource view.
+	result = m_device->CreateShaderResourceView(frameBuffer->m_renderTargetTexture, &shaderResourceViewDesc, &frameBuffer->m_shaderResourceView);
+	if (FAILED(result))
+	{
+		return nullptr;
+	}
+
+	frameBuffer->m_deviceContext = m_deviceContext;
+	frameBuffer->m_depthStencilView = m_depthStencilView;
+
+	return frameBuffer;
+}
+
 inline void Triton::PType::DXFactory::destroyObject(FactoryObject* object, FactoryDestroyParams* destroyParams)
 {
 	object->destroy(destroyParams);

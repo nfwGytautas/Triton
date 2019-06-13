@@ -34,5 +34,22 @@ namespace Triton
 			{ }
 		};
 
+		class FrameBuffer : public FactoryObject
+		{
+		public:
+			virtual ~FrameBuffer() { }
+
+			virtual void enable() = 0;
+			virtual void disable() = 0;
+
+			virtual void clear(float red, float green, float blue, float alpha) = 0;
+			virtual void render() = 0;
+		protected:
+			virtual void create(FactoryCreateParams* createParams) override = 0;
+			virtual void destroy(FactoryDestroyParams* destroyParams) override = 0;
+		protected:
+			FrameBuffer()
+			{ }
+		};
 	}
 }

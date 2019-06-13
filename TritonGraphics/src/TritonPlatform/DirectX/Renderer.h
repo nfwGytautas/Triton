@@ -32,6 +32,8 @@ inline void Triton::PType::DXRenderer::render(PlatformObject* renderable)
 
 inline void Triton::PType::DXRenderer::default()
 {
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 	//glEnable(GL_DEPTH_TEST);

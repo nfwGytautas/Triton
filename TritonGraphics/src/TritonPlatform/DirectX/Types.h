@@ -39,6 +39,38 @@ namespace Triton
 			friend DXFactory;
 		};
 
+		class DXFrameBuffer : public FrameBuffer
+		{
+		public:
+			// Inherited via FrameBuffer
+			virtual void enable() override;
+			virtual void disable() override;
+
+			virtual void clear(float red, float green, float blue, float alpha) override;
+			virtual void render() override;
+
+			ID3D11Texture2D* getTextureData()
+			{
+				return m_renderTargetTexture;
+			}
+			ID3D11ShaderResourceView* getShaderResourceView()
+			{
+				return m_shaderResourceView;
+			}
+		protected:
+			virtual void create(FactoryCreateParams* createParams) override;
+			virtual void destroy(FactoryDestroyParams* destroyParams) override;
+		private:
+			ID3D11DeviceContext* m_deviceContext;
+			ID3D11RenderTargetView* m_renderTargetView;
+			ID3D11ShaderResourceView* m_shaderResourceView;
+			ID3D11Texture2D* m_renderTargetTexture;
+			ID3D11DepthStencilView* m_depthStencilView;
+
+			friend DXRenderer;
+			friend DXFactory;
+		};
+
 		class DXVAO : public VAO
 		{
 		private:
@@ -140,6 +172,7 @@ namespace Triton
 			FactoryObject* createShader(FactoryCreateParams* createParams) override;
 			FactoryObject* createVAO(FactoryCreateParams* createParams) override;
 			FactoryObject* createTexture(FactoryCreateParams * createParams) override;
+			FactoryObject* createFramebuffer(FactoryCreateParams * createParams) override;
 
 			void destroyObject(FactoryObject* object, FactoryDestroyParams* destroyParams) override;
 
@@ -149,6 +182,7 @@ namespace Triton
 			HWND m_hwnd;
 			ID3D11Device* m_device;
 			ID3D11DeviceContext* m_deviceContext;
+			ID3D11DepthStencilView* m_depthStencilView;
 
 			friend DXContext;
 		};

@@ -373,6 +373,7 @@ NAMESPACE_BEGIN
 		dx_factory()->m_device = m_device;
 		dx_factory()->m_deviceContext = m_deviceContext;
 		dx_factory()->m_hwnd = dx_window()->m_hwnd;
+		dx_factory()->m_depthStencilView = m_depthStencilView;
 		
 		dx_window()->m_swapChain = m_swapChain;
 

@@ -39,6 +39,7 @@ namespace Triton
 			virtual FactoryObject* createShader(FactoryCreateParams* createParams) = 0;
 			virtual FactoryObject* createVAO(FactoryCreateParams* createParams) = 0;
 			virtual FactoryObject* createTexture(FactoryCreateParams* createParams) = 0;
+			virtual FactoryObject* createFramebuffer(FactoryCreateParams* createParams) = 0;
 
 			virtual void destroyObject(FactoryObject* object, FactoryDestroyParams* destroyParams) = 0;
 		};

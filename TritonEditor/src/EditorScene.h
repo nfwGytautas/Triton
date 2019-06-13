@@ -32,10 +32,14 @@ namespace Triton
 		virtual bool OnMouseScrolled(double aXOffset, double aYOffset) override;
 
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
+
+		Triton::PType::FrameBuffer* ViewPort;
+		Triton::Vector2 ViewportSize;
 	private:
+
 		ImGuiIO* m_imguiIO;
 		bool m_dockspace = false;
-
+		bool m_viewport = true;
 	};
 
 }

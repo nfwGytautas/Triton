@@ -14,6 +14,7 @@
       <Filter>Impl</Filter>
     </ClInclude>
     <ClInclude Include="src\Widgets\DockSpace.h" />
+    <ClInclude Include="src\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorScene.cpp" />

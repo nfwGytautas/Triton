@@ -8,11 +8,12 @@
 #include "TritonPlatform/DirectX/Specific.h"
 
 #include "Widgets/DockSpace.h"
+#include "Widgets/Viewport.h"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 Triton::EditorScene::EditorScene(PType::Context* context, Core::EventManager* manager)
-	: SceneBase(context), EventInterface(manager)
+	: SceneBase(context), EventInterface(manager), ViewportSize(500,500)
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
 
@@ -77,6 +78,9 @@ void Triton::EditorScene::render()
 	if(m_dockspace)
 		ShowDockSpace(&m_dockspace);
 
+	// Viewport
+	ShowViewport(&m_viewport, ViewPort, ViewportSize);
+
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);
 
@@ -84,6 +88,8 @@ void Triton::EditorScene::render()
 	ImGui::Render();
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+	
 
 	// Update and Render additional Platform Windows
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

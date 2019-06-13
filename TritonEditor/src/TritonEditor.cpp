@@ -9,6 +9,9 @@ namespace Triton
 
 class UnitTest1 : public Triton::Application
 {
+	Triton::PType::FrameBuffer* m_viewPort;
+
+
 	size_t m_StallMesh = 1;
 	size_t m_StallMaterial = 2;
 
@@ -26,6 +29,7 @@ class UnitTest1 : public Triton::Application
 	Triton::relay_ptr<Triton::Scene> m_MainScene;
 	Triton::Data::Material* mat;
 	Triton::Data::Mesh* mesh;
+	Triton::PType::Shader* shader;
 
 	Triton::relay_ptr<Triton::EditorScene> m_EditorScene;
 public:
@@ -33,6 +37,14 @@ public:
 	{
 		m_MainScene = SceneManager->createScene();
 		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>((Triton::Core::EventManager*)this);
+
+		Triton::PType::TextureCreateParams* fbo_params = new Triton::PType::TextureCreateParams();
+		fbo_params->width = 1280;
+		fbo_params->height = 720;
+		m_viewPort = (Triton::PType::FrameBuffer*)Context->factory->createFramebuffer(fbo_params);
+		delete fbo_params;
+
+		m_EditorScene->ViewPort = m_viewPort;
 
 		// Create shader
 		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
@@ -44,6 +56,7 @@ public:
 
 		auto Shader = dynamic_cast<Triton::PType::Shader*>(Context->factory->createShader(shader_params));
 		m_MainScene->shader = Shader;
+		shader = Shader;
 
 		delete shader_params;
 
@@ -81,7 +94,7 @@ public:
 		mat->Shininess = 32;
 		m_MainScene->addAsset(m_StallMaterial, mat);
 
-		m_MainScene->m_Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);
+		m_MainScene->m_Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);		
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
@@ -168,8 +181,6 @@ public:
 		//	}
 		//}
 
-		TR_TRACE("KEY DOWN: {0}", (char)keycode);
-
 		return false;
 	}
 	bool mouseMoved(const Triton::Event& event)
@@ -203,7 +214,20 @@ public:
 
 	virtual void Render() override
 	{
+		shader->enable();
+		float fov = 3.141592654f / 4.0f;
+		auto proj_mat = Triton::Core::CreateProjectionMatrix(m_EditorScene->ViewportSize.x, m_EditorScene->ViewportSize.y, fov, 0.1f, 100.0f);
+		shader->setUniformMatrix44("projectionMatrix", proj_mat);
+
+		m_viewPort->enable();
+		m_viewPort->clear(0.0f, 0.5f, 0.5f, 0.0f);
+
 		m_MainScene->render();
+	
+		Context->renderer->default();
+
+		Context->setViewPort(0, 0, 1280, 720);
+
 		m_EditorScene->render();
 	}
 };
