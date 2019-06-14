@@ -105,5 +105,6 @@
     </ClCompile>
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
     <ClCompile Include="src\TritonPlatform\mathematical.cpp" />
+    <ClCompile Include="src\TritonPlatform\CrossTypes\Shader.cpp" />
   </ItemGroup>
 </Project>

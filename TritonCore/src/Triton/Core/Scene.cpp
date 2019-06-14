@@ -91,6 +91,9 @@ void Triton::Scene::render()
 {
 	shader->enable();
 
+	//shader->updateBuffers(PType::BufferUpdateType::FRAME);
+	shader->updateBuffers(Triton::PType::BufferUpdateType::ALL);
+
 	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
 
 		auto[changeMat, changeMesh] = BindVisual(m_CurrVisual, visual);
@@ -106,8 +109,10 @@ void Triton::Scene::render()
 		}
 
 		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		shader->setUniformMatrix44("transformationMatrix", trans_mat);
+		shader->setBufferValue("MatrixBuffer", "transformationMatrix", &trans_mat);
 
+		//shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+		shader->updateBuffers(Triton::PType::BufferUpdateType::ALL);
 		Context->renderer->render(static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->object());
 	});
 }
@@ -124,7 +129,12 @@ void Triton::Scene::update(float delta)
 	if (m_Camera.get() != nullptr)
 	{
 		m_Camera->OnUpdate();
-		shader->setUniformMatrix44("viewMatrix", m_Camera->ViewMatrix());
+
+		auto viewMat = m_Camera->ViewMatrix();
+		shader->setBufferValue("MatrixBuffer", "viewMatrix", &viewMat);
+
+		shader->setBufferValue("CameraBuffer", "cameraPosition", &m_Camera->Position);
+
 	}
 
 	for (unsigned int i = 0; i < m_Lights.size(); i++)
@@ -134,7 +144,7 @@ void Triton::Scene::update(float delta)
 
 	for (auto pair : m_LightCounts)
 	{
-		shader->setUniformInt("num_of_" + pair.first + "s", pair.second + 1);
+		//shader->setBufferValue("num_of_" + pair.first + "s", pair.second + 1);
 	}
 
 	Entities->sort<Components::Visual>([&](const auto &lhs, const auto &rhs) {

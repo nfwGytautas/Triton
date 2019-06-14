@@ -7,6 +7,10 @@
 #include "Macros.h"
 #include "Types.h"
 
+#include "comdef.h"
+
+#include <d3dcompiler.h>
+
 #define NAMESPACE_BEGIN namespace Triton { namespace PType {
 #define NAMESPACE_END } }
 
@@ -15,19 +19,17 @@ NAMESPACE_BEGIN
 
 inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams* createParams)
 {
-	DXShader* shader = new DXShader();
-
 	auto shaderCreate = OBJECT_AS(ShaderCreateParams, createParams);
+
+	auto layout = shaderCreate->layout;
+
+	DXShader* shader = new DXShader(layout);
 
 	HRESULT result;
 	ID3D10Blob* errorMessage;
 	ID3D10Blob* vertexShaderBuffer;
 	ID3D10Blob* pixelShaderBuffer;
-	D3D11_INPUT_ELEMENT_DESC polygonLayout[3];
-	unsigned int numElements;
-	D3D11_BUFFER_DESC matrixBufferDesc;
-	D3D11_BUFFER_DESC lightBufferDesc;
-	D3D11_BUFFER_DESC cameraBufferDesc;
+	std::vector<D3D11_INPUT_ELEMENT_DESC> inputDesc;
 	D3D11_SAMPLER_DESC samplerDesc;
 
 
@@ -92,43 +94,35 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 		return false;
 	}
 
+
+	inputDesc.reserve(layout->getInputLayout().getVariableCount());
 	// Create the vertex input layout description.
-	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
-	polygonLayout[0].SemanticName = "POSITION";
-	polygonLayout[0].SemanticIndex = 0;
-	polygonLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	polygonLayout[0].InputSlot = 0;
-	polygonLayout[0].AlignedByteOffset = 0;
-	polygonLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[0].InstanceDataStepRate = 0;
-
-	polygonLayout[1].SemanticName = "TEXCOORD";
-	polygonLayout[1].SemanticIndex = 0;
-	polygonLayout[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	polygonLayout[1].InputSlot = 0;
-	polygonLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	polygonLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[1].InstanceDataStepRate = 0;
-
-	polygonLayout[2].SemanticName = "NORMAL";
-	polygonLayout[2].SemanticIndex = 0;
-	polygonLayout[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	polygonLayout[2].InputSlot = 0;
-	polygonLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	polygonLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	polygonLayout[2].InstanceDataStepRate = 0;
-
-	// Get a count of the elements in the layout.
-	numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
-
+	for (const ShaderInputVariable& siVariable : layout->getInputLayout())
+	{
+		D3D11_INPUT_ELEMENT_DESC polygonLayout;
+	
+		polygonLayout.SemanticName = siVariable.Name.c_str();
+		polygonLayout.SemanticIndex = 0;
+		polygonLayout.Format = Impl::sdtToDXGIFormat(siVariable.Type);
+		polygonLayout.InputSlot = 0;	
+		polygonLayout.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	
+		polygonLayout.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		polygonLayout.InstanceDataStepRate = 0;
+	
+		inputDesc.push_back(polygonLayout);
+	}
+	
 	// Create the vertex input layout.
-	result = m_device->CreateInputLayout(polygonLayout, numElements, vertexShaderBuffer->GetBufferPointer(),
+	result = m_device->CreateInputLayout(&inputDesc[0], inputDesc.size(), vertexShaderBuffer->GetBufferPointer(),
 		vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating vertex input layout failed");
+		_com_error err(result);
+		LPCTSTR errMsg = err.ErrorMessage();
+		TR_CORE_ERROR("Creating vertex input layout failed");
 		return nullptr;
 	}
+
 
 	// Release the vertex shader buffer and pixel shader buffer since they are no longer needed.
 	vertexShaderBuffer->Release();
@@ -137,53 +131,25 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
 
-	// Setup the description of the dynamic matrix constant buffer that is in the vertex shader.
-	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(DXShader::MatrixBufferType);
-	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	matrixBufferDesc.MiscFlags = 0;
-	matrixBufferDesc.StructureByteStride = 0;
 
-	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
-	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
-	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	lightBufferDesc.ByteWidth = sizeof(DXShader::LightBufferType);
-	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	lightBufferDesc.MiscFlags = 0;
-	lightBufferDesc.StructureByteStride = 0;
-
-	// Setup the description of the camera dynamic constant buffer that is in the vertex shader.
-	cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	cameraBufferDesc.ByteWidth = sizeof(DXShader::CameraBufferType);
-	cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	cameraBufferDesc.MiscFlags = 0;
-	cameraBufferDesc.StructureByteStride = 0;
-
-	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = m_device->CreateBuffer(&matrixBufferDesc, NULL, &shader->m_matrixBuffer);
-	if (FAILED(result))
+	for (ShaderBufferLayout& buffer : *shaderCreate->layout)
 	{
-		TR_ERROR("Creating constant buffer pointer failed");
-		return nullptr;
-	}
+		D3D11_BUFFER_DESC bufferDesc;
 
-	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = m_device->CreateBuffer(&lightBufferDesc, NULL, &shader->m_lightBuffer);
-	if (FAILED(result))
-	{
-		TR_ERROR("Creating constant buffer pointer failed");
-		return nullptr;
-	}
+		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		bufferDesc.ByteWidth = buffer.getStride();
+		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bufferDesc.MiscFlags = 0;
+		bufferDesc.StructureByteStride = 0;
 
-	// Create the camera constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-	result = m_device->CreateBuffer(&cameraBufferDesc, NULL, &shader->m_cameraBuffer);
-	if (FAILED(result))
-	{
-		TR_ERROR("Creating constant buffer pointer failed");
-		return nullptr;
+		// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+		result = m_device->CreateBuffer(&bufferDesc, NULL, &shader->m_buffers[buffer.getName()]);
+		if (FAILED(result))
+		{
+			TR_ERROR("Creating constant buffer pointer failed");
+			return nullptr;
+		}
 	}
 
 	// Create a texture sampler state description.

@@ -13,200 +13,9 @@
 NAMESPACE_BEGIN
 
 
-inline void Triton::PType::DXShader::setUniformInt(const std::string& aUniformName, const int& aParameter)
+inline Triton::PType::DXShader::DXShader(ShaderLayout* layout)
+	: Shader(layout)
 {
-	
-}
-
-inline void Triton::PType::DXShader::setUniformFloat(const std::string& aUniformName, const float& aParameter)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	void* dataPtr;
-	unsigned int bufferNumber;
-
-	// Lock the light constant buffer so it can be written to.
-	result = m_deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	dataPtr = mappedResource.pData;
-
-	// Copy the lighting variables into the constant buffer.
-	updateCBufferFloat(dataPtr, aUniformName, aParameter);
-
-	// Unlock the constant buffer.
-	m_deviceContext->Unmap(m_lightBuffer, 0);
-
-	// Set the position of the light constant buffer in the pixel shader.
-	bufferNumber = 0;
-
-	// Finally set the light constant buffer in the pixel shader with the updated values.
-	m_deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-
-	result = m_deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	updateCBufferFloat(dataPtr, aUniformName, aParameter);
-
-	// Unlock the camera constant buffer.
-	m_deviceContext->Unmap(m_cameraBuffer, 0);
-
-	// Set the position of the camera constant buffer in the vertex shader.
-	bufferNumber = 1;
-
-	// Now set the camera constant buffer in the vertex shader with the updated values.
-	m_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
-}
-
-inline void Triton::PType::DXShader::setUniformVector2(const std::string& aUniformName, const Vector2 aParameter)
-{
-	
-}
-
-inline void Triton::PType::DXShader::setUniformVector3(const std::string& aUniformName, const Vector3 aParameter)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	void* dataPtr;
-	unsigned int bufferNumber;
-
-	// Lock the light constant buffer so it can be written to.
-	result = m_deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	dataPtr = mappedResource.pData;
-
-	// Copy the lighting variables into the constant buffer.
-	updateCBufferVector3(dataPtr, aUniformName, aParameter);
-
-	// Unlock the constant buffer.
-	m_deviceContext->Unmap(m_lightBuffer, 0);
-
-	// Set the position of the light constant buffer in the pixel shader.
-	bufferNumber = 0;
-
-	// Finally set the light constant buffer in the pixel shader with the updated values.
-	m_deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-
-	result = m_deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	updateCBufferVector3(dataPtr, aUniformName, aParameter);
-
-	// Unlock the camera constant buffer.
-	m_deviceContext->Unmap(m_cameraBuffer, 0);
-
-	// Set the position of the camera constant buffer in the vertex shader.
-	bufferNumber = 1;
-
-	// Now set the camera constant buffer in the vertex shader with the updated values.
-	m_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
-}
-
-inline void Triton::PType::DXShader::setUniformVector4(const std::string& aUniformName, const Vector4 aParameter)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	void* dataPtr;
-	unsigned int bufferNumber;
-
-	// Lock the light constant buffer so it can be written to.
-	result = m_deviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	dataPtr = mappedResource.pData;
-
-	// Copy the lighting variables into the constant buffer.
-	updateCBufferVector4(dataPtr, aUniformName, aParameter);
-
-	// Unlock the constant buffer.
-	m_deviceContext->Unmap(m_lightBuffer, 0);
-
-	// Set the position of the light constant buffer in the pixel shader.
-	bufferNumber = 0;
-
-	// Finally set the light constant buffer in the pixel shader with the updated values.
-	m_deviceContext->PSSetConstantBuffers(bufferNumber, 1, &m_lightBuffer);
-
-
-	result = m_deviceContext->Map(m_cameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	updateCBufferVector4(dataPtr, aUniformName, aParameter);
-
-	// Unlock the camera constant buffer.
-	m_deviceContext->Unmap(m_cameraBuffer, 0);
-
-
-	// Set the position of the camera constant buffer in the vertex shader.
-	bufferNumber = 1;
-
-	// Now set the camera constant buffer in the vertex shader with the updated values.
-	m_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_cameraBuffer);
-}
-
-inline void Triton::PType::DXShader::setUniformMatrix44(const std::string& aUniformName, const Matrix44& aParameter)
-{
-	HRESULT result;
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	MatrixBufferType* dataPtr;
-	unsigned int bufferNumber;
-
-	// Transpose the matrices to prepare them for the shader.
-	auto transposed = DirectX::XMMatrixTranspose(aParameter);
-
-	// Lock the constant buffer so it can be written to.
-	result = m_deviceContext->Map(m_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(result))
-	{
-		TR_ERROR("Locking of constant buffer failed!");
-		return ;
-	}
-
-	// Get a pointer to the data in the constant buffer.
-	dataPtr = (MatrixBufferType*)mappedResource.pData;
-
-	// Copy the matrices into the constant buffer.
-	updateCBufferMatrix(dataPtr, aUniformName, transposed);
-
-	// Unlock the constant buffer.
-	m_deviceContext->Unmap(m_matrixBuffer, 0);
-
-	// Set the position of the constant buffer in the vertex shader.
-	bufferNumber = 0;
-
-	// Finanly set the constant buffer in the vertex shader with the updated values.
-	m_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_matrixBuffer);
 }
 
 inline void Triton::PType::DXShader::enable()
@@ -237,18 +46,10 @@ inline void Triton::PType::DXShader::create(FactoryCreateParams* createParams)
 
 inline void Triton::PType::DXShader::destroy(FactoryDestroyParams* destroyParams)
 {
-	// Release the camera constant buffer.
-	if (m_cameraBuffer)
-	{
-		m_cameraBuffer->Release();
-		m_cameraBuffer = 0;
-	}
-
-	// Release the light constant buffer.
-	if (m_lightBuffer)
-	{
-		m_lightBuffer->Release();
-		m_lightBuffer = 0;
+	// Release all shader buffers
+	for (auto &[name, buffer] : m_buffers) {
+		buffer->Release();
+		buffer = 0;
 	}
 
 	// Release the sampler state.
@@ -256,13 +57,6 @@ inline void Triton::PType::DXShader::destroy(FactoryDestroyParams* destroyParams
 	{
 		m_sampleState->Release();
 		m_sampleState = 0;
-	}
-
-	// Release the matrix constant buffer.
-	if (m_matrixBuffer)
-	{
-		m_matrixBuffer->Release();
-		m_matrixBuffer = 0;
 	}
 
 	// Release the layout.
@@ -289,107 +83,81 @@ inline void Triton::PType::DXShader::destroy(FactoryDestroyParams* destroyParams
 	return;
 }
 
-inline void DXShader::updateCBufferMatrix(MatrixBufferType* buffer, const std::string& name, const Matrix44& matrix)
+inline ID3D11Buffer* Triton::PType::DXShader::getBuffer(const std::string& name)
 {
-	if (name == "transformationMatrix")
+	ID3D11Buffer* d3dbuffer = m_buffers[name];
+
+	if (d3dbuffer == nullptr)
 	{
-		buffer->worldMatrix = matrix;
-		m_prevMatrixVal.worldMatrix = matrix;
-		buffer->projectionMatrix = m_prevMatrixVal.projectionMatrix;
-		buffer->viewMatrix = m_prevMatrixVal.viewMatrix;
-		return;
+		TR_CORE_ERROR("Buffer of name {0} does not exist.", name);
+		TR_CORE_ASSERT(d3dbuffer, "Buffer does not exist.")
+		return NULL;
 	}
 
-	if (name == "viewMatrix")
-	{
-		buffer->viewMatrix = matrix;
-		m_prevMatrixVal.viewMatrix = matrix;
-		buffer->worldMatrix = m_prevMatrixVal.worldMatrix;
-		buffer->projectionMatrix = m_prevMatrixVal.projectionMatrix;
-		return;
-	}
-
-	if (name == "projectionMatrix")
-	{
-		buffer->projectionMatrix = matrix;
-		m_prevMatrixVal.projectionMatrix = matrix;
-		buffer->worldMatrix = m_prevMatrixVal.worldMatrix;
-		buffer->viewMatrix = m_prevMatrixVal.viewMatrix;
-		return;
-	}
-
+	return d3dbuffer;
 }
 
-inline void Triton::PType::DXShader::updateCBufferFloat(void* buffer, const std::string & name, const float & vector)
+inline void Triton::PType::DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource)
 {
-	if (name == "specularPower")
+	HRESULT result;
+
+	// Lock the light constant buffer so it can be written to.
+	result = m_deviceContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(result))
 	{
-		((LightBufferType*)buffer)->specularPower = vector;
-		m_prevLightVal.specularPower = vector;
-		((LightBufferType*)buffer)->ambientColor = m_prevLightVal.ambientColor;
-		((LightBufferType*)buffer)->diffuseColor = m_prevLightVal.diffuseColor;
-		((LightBufferType*)buffer)->specularColor = m_prevLightVal.specularColor;
-		((LightBufferType*)buffer)->lightDirection = m_prevLightVal.lightDirection;
+		TR_ERROR("Locking of constant buffer failed!");
 		return;
 	}
 }
 
-inline void Triton::PType::DXShader::updateCBufferVector3(void* buffer, const std::string& name, const Vector3& vector)
+inline void Triton::PType::DXShader::unmapBuffer(ID3D11Buffer* buffer)
 {
-	if (name == "lightDirection")
-	{
-		((LightBufferType*)buffer)->lightDirection = vector;
-		m_prevLightVal.lightDirection = vector;
-		((LightBufferType*)buffer)->ambientColor = m_prevLightVal.ambientColor;
-		((LightBufferType*)buffer)->diffuseColor = m_prevLightVal.diffuseColor;
-		((LightBufferType*)buffer)->specularColor = m_prevLightVal.specularColor;
-		((LightBufferType*)buffer)->specularPower = m_prevLightVal.specularPower;
-		return;
-	}
+	// Unlock the constant buffer.
+	m_deviceContext->Unmap(buffer, 0);
+}
 
-	if (name == "cameraPosition")
+inline void Triton::PType::DXShader::setBuffer(ID3D11Buffer* buffer, const BufferShaderType& type, unsigned int count, unsigned int number)
+{
+	if (type == BufferShaderType::PIXEL)
 	{
-		((CameraBufferType*)buffer)->cameraPosition = vector;
-		m_prevCameraVal.cameraPosition = vector;
-		((CameraBufferType*)buffer)->padding = 0;
-		m_prevCameraVal.padding = 0;
-		return;
+		m_deviceContext->PSSetConstantBuffers(number, count, &buffer);
+	}
+	else if (type == BufferShaderType::VERTEX)
+	{
+		m_deviceContext->VSSetConstantBuffers(number, count, &buffer);
 	}
 }
 
-inline void Triton::PType::DXShader::updateCBufferVector4(void* buffer, const std::string& name, const Vector4& vector)
+inline void Triton::PType::DXShader::updateBuffer(Shader::Buffer& buffer)
 {
-	if (name == "diffuseColor")
-	{	
-		((LightBufferType*)buffer)->diffuseColor = vector;
-		m_prevLightVal.diffuseColor = vector;
-		((LightBufferType*)buffer)->ambientColor = m_prevLightVal.ambientColor;
-		((LightBufferType*)buffer)->lightDirection = m_prevLightVal.lightDirection;
-		((LightBufferType*)buffer)->specularColor = m_prevLightVal.specularColor;
-		((LightBufferType*)buffer)->specularPower = m_prevLightVal.specularPower;
-		return;
-	}
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	unsigned char* dataPtr;
 
-	if (name == "ambientColor")
-	{
-		((LightBufferType*)buffer)->ambientColor = vector;
-		m_prevLightVal.ambientColor = vector;
-		((LightBufferType*)buffer)->diffuseColor = m_prevLightVal.diffuseColor;
-		((LightBufferType*)buffer)->lightDirection = m_prevLightVal.lightDirection;
-		((LightBufferType*)buffer)->specularColor = m_prevLightVal.specularColor;
-		((LightBufferType*)buffer)->specularPower = m_prevLightVal.specularPower;
-		return;
-	}
+	ID3D11Buffer* d3dbuffer = getBuffer(buffer.layout.getName());
 
-	if (name == "specularColor")
+	mapBuffer(d3dbuffer, mappedResource);
+
+	// Get a pointer to the data in the constant buffer.
+	dataPtr = static_cast<unsigned char*>(mappedResource.pData);
+
+	// Copy the lighting variables into the constant buffer.
+	buffer.writeData(dataPtr);
+
+	unmapBuffer(d3dbuffer);
+
+	// Finally set the light constant buffer in the pixel shader with the updated values.
+	setBuffer(d3dbuffer, buffer.layout.getShaderType(), 1, buffer.layout.getNumber());
+}
+
+inline void Triton::PType::DXShader::updateBuffers(BufferUpdateType type)
+{
+	for (unsigned int i = 0; i < prtc_Buffers.size(); i++)
 	{
-		((LightBufferType*)buffer)->specularColor = vector;
-		m_prevLightVal.specularColor = vector;
-		((LightBufferType*)buffer)->ambientColor = m_prevLightVal.ambientColor;
-		((LightBufferType*)buffer)->lightDirection = m_prevLightVal.lightDirection;
-		((LightBufferType*)buffer)->specularColor = m_prevLightVal.specularColor;
-		((LightBufferType*)buffer)->specularPower = m_prevLightVal.specularPower;
-		return;
+		if (prtc_Buffers[i].layout.getUpdateType() == type || type == BufferUpdateType::ALL)
+		{
+			updateBuffer(prtc_Buffers[i]);
+		}
 	}
 }
 

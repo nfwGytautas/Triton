@@ -29,7 +29,7 @@ Triton::EditorScene::EditorScene(PType::Context* context, Core::EventManager* ma
 	//io.ConfigViewportsNoTaskBarIcon = true;
 	//io.ConfigViewportsNoDefaultParent = true;
 	//io.ConfigDockingTabBarOnSingleWindows = true;
-	io.ConfigDockingWithShift = true;
+	io.ConfigDockingWithShift = false;
 	io.ConfigDockingTransparentPayload = true;
 
 	// Setup Dear ImGui style
@@ -75,8 +75,7 @@ void Triton::EditorScene::render()
 	
 	static bool test = true;
 
-	if(m_dockspace)
-		ShowDockSpace(&m_dockspace);
+	ShowDockSpace(&m_dockspace);
 
 	// Viewport
 	ShowViewport(&m_viewport, ViewPort, ViewportSize);

@@ -1,6 +1,7 @@
 #include "Manip.h"
 
 #include <Windows.h>
+#include "TritonPlatform/CrossTypes/Shader.h"
 
 std::wstring Triton::Impl::s2ws(const std::string & s)
 {
@@ -12,4 +13,19 @@ std::wstring Triton::Impl::s2ws(const std::string & s)
 	std::wstring r(buf);
 	delete[] buf;
 	return r;
+}
+
+DXGI_FORMAT Triton::Impl::sdtToDXGIFormat(Triton::PType::ShaderDataType type)
+{
+	switch (type)
+	{
+	case Triton::PType::ShaderDataType::Float4:
+		return DXGI_FORMAT_R32G32B32_FLOAT;
+	case Triton::PType::ShaderDataType::Float3 :
+		return DXGI_FORMAT_R32G32B32_FLOAT;
+	case Triton::PType::ShaderDataType::Float2 :
+		return DXGI_FORMAT_R32G32_FLOAT;
+	}
+
+	return DXGI_FORMAT_UNKNOWN;
 }

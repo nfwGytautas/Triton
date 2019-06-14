@@ -101,38 +101,11 @@ namespace Triton
 
 		class DXShader : public Shader
 		{
-		private:
-			struct MatrixBufferType
-			{
-				DirectX::XMMATRIX worldMatrix;
-				DirectX::XMMATRIX viewMatrix;
-				DirectX::XMMATRIX projectionMatrix;
-			};
-
-			struct LightBufferType
-			{
-				Triton::Vector4 diffuseColor;
-				Triton::Vector4 ambientColor;
-				Triton::Vector4 specularColor;
-				Triton::Vector3 lightDirection;
-				float specularPower;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.
-			};
-
-			struct CameraBufferType
-			{
-				Triton::Vector3 cameraPosition;
-				float padding;
-			};
 		public:
+			DXShader(ShaderLayout* layout);
 			virtual ~DXShader() { }
 
 			// Inherited via Shader
-			virtual void setUniformInt(const std::string & aUniformName, const int & aParameter) override;
-			virtual void setUniformFloat(const std::string & aUniformName, const float & aParameter) override;
-			virtual void setUniformVector2(const std::string & aUniformName, const Vector2 aParameter) override;
-			virtual void setUniformVector3(const std::string & aUniformName, const Vector3 aParameter) override;
-			virtual void setUniformVector4(const std::string & aUniformName, const Vector4 aParameter) override;
-			virtual void setUniformMatrix44(const std::string & aUniformName, const Matrix44& aParameter) override;
 			virtual void enable() override;
 			virtual void disable() override;
 
@@ -146,24 +119,25 @@ namespace Triton
 			{ }
 
 		private:
-			void updateCBufferMatrix(MatrixBufferType* buffer, const std::string& name, const Matrix44& matrix);
-			void updateCBufferFloat(void* buffer, const std::string& name, const float& vector);
-			void updateCBufferVector3(void* buffer, const std::string& name, const Vector3& vector);
-			void updateCBufferVector4(void* buffer, const std::string& name, const Vector4& vector);
+			void updateBuffer(Shader::Buffer& buffer);
+
+			ID3D11Buffer* getBuffer(const std::string& name);
+			void mapBuffer(ID3D11Buffer* buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource);
+			void unmapBuffer(ID3D11Buffer* buffer);
+			void setBuffer(ID3D11Buffer* buffer, const BufferShaderType& type, unsigned int count, unsigned int number);
 		private:
 			ID3D11VertexShader* m_vertexShader;
 			ID3D11PixelShader* m_pixelShader;
 			ID3D11InputLayout* m_layout;
-			ID3D11Buffer* m_matrixBuffer;
-			ID3D11Buffer* m_lightBuffer;
-			ID3D11Buffer* m_cameraBuffer;
 			ID3D11DeviceContext* m_deviceContext;
 			ID3D11SamplerState* m_sampleState;
-			MatrixBufferType m_prevMatrixVal;
-			LightBufferType m_prevLightVal;
-			CameraBufferType m_prevCameraVal;
+
+			std::unordered_map<std::string, ID3D11Buffer*> m_buffers;
 
 			friend DXFactory;
+
+			// Inherited via Shader
+			virtual void updateBuffers(BufferUpdateType type) override;
 		};
 
 		class DXFactory : public Factory

@@ -168,6 +168,7 @@
     <ClInclude Include="src\TritonPlatform\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonPlatform\CrossTypes\Shader.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\Manip.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\Types.cpp" />
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />

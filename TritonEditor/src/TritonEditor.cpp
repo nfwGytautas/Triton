@@ -54,6 +54,48 @@ public:
 		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_lighting.hlsl";
 		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_lighting.hlsl";
 
+		Triton::PType::ShaderLayout shader_layout(
+			{			
+				{"POSITION", Triton::PType::ShaderDataType::Float4},
+				{"TEXCOORD", Triton::PType::ShaderDataType::Float2},
+				{"NORMAL", Triton::PType::ShaderDataType::Float3}
+			},
+			{ 
+				{ 
+					"MatrixBuffer", 
+					Triton::PType::BufferUpdateType::ALL,
+					Triton::PType::BufferShaderType::VERTEX, 
+					{ 
+						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4},
+						{"viewMatrix", Triton::PType::ShaderDataType::Mat4},
+						{"projectionMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+				{
+					"CameraBuffer",
+					Triton::PType::BufferUpdateType::ALL,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"cameraPosition", Triton::PType::ShaderDataType::Float3},
+						{"padding", Triton::PType::ShaderDataType::Float}
+					}
+				},
+				{
+					"LightBuffer",
+					Triton::PType::BufferUpdateType::ALL,
+					Triton::PType::BufferShaderType::PIXEL,
+					{
+						{"ambientColor", Triton::PType::ShaderDataType::Float4},
+						{"diffuseColor", Triton::PType::ShaderDataType::Float4},
+						{"specularColor", Triton::PType::ShaderDataType::Float4},
+						{"lightDirection", Triton::PType::ShaderDataType::Float3},
+						{"specularPower", Triton::PType::ShaderDataType::Float},
+					}
+				},
+			});
+
+		shader_params->layout = &shader_layout;
+
 		auto Shader = dynamic_cast<Triton::PType::Shader*>(Context->factory->createShader(shader_params));
 		m_MainScene->shader = Shader;
 		shader = Shader;
@@ -63,7 +105,7 @@ public:
 
 		Shader->enable();
 		auto proj_mat = Context->renderer->projection();
-		Shader->setUniformMatrix44("projectionMatrix", proj_mat);
+		Shader->setBufferValue("MatrixBuffer","projectionMatrix", &proj_mat);
 
 
 		// Create VAO
@@ -215,9 +257,10 @@ public:
 	virtual void Render() override
 	{
 		shader->enable();
+
 		float fov = 3.141592654f / 4.0f;
 		auto proj_mat = Triton::Core::CreateProjectionMatrix(m_EditorScene->ViewportSize.x, m_EditorScene->ViewportSize.y, fov, 0.1f, 100.0f);
-		shader->setUniformMatrix44("projectionMatrix", proj_mat);
+		shader->setBufferValue("MatrixBuffer" ,"projectionMatrix", &proj_mat);
 
 		m_viewPort->enable();
 		m_viewPort->clear(0.0f, 0.5f, 0.5f, 0.0f);
@@ -227,6 +270,8 @@ public:
 		Context->renderer->default();
 
 		Context->setViewPort(0, 0, 1280, 720);
+
+		TR_TRACE(sizeof(Triton::Matrix44));
 
 		m_EditorScene->render();
 	}
