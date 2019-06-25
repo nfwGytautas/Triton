@@ -1,23 +1,18 @@
-#pragma once
-
-#include "Triton\Logger\Log.h"
-
-#include "Manip.h"
-
-#include "Macros.h"
-#include "Types.h"
+#include "DXFactory.h"
 
 #include "comdef.h"
-
 #include <d3dcompiler.h>
+#include "DXManip.h"
 
-#define NAMESPACE_BEGIN namespace Triton { namespace PType {
-#define NAMESPACE_END } }
+#include "DXShader.h"
+#include "DXTexture.h"
+#include "DXVAO.h"
+#include "DXFramebuffer.h"
+#include "DXBitmap.h"
 
-NAMESPACE_BEGIN
+PLATFORM_NAMESPACE_BEGIN
 
-
-inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams* createParams)
+reference<FactoryObject> Triton::PType::DXFactory::createShader(FactoryCreateParams* createParams)
 {
 	auto shaderCreate = OBJECT_AS(ShaderCreateParams, createParams);
 
@@ -100,18 +95,18 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	for (const ShaderInputVariable& siVariable : layout->getInputLayout())
 	{
 		D3D11_INPUT_ELEMENT_DESC polygonLayout;
-	
+
 		polygonLayout.SemanticName = siVariable.Name.c_str();
 		polygonLayout.SemanticIndex = 0;
 		polygonLayout.Format = Impl::sdtToDXGIFormat(siVariable.Type);
-		polygonLayout.InputSlot = 0;	
-		polygonLayout.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;	
+		polygonLayout.InputSlot = 0;
+		polygonLayout.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 		polygonLayout.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		polygonLayout.InstanceDataStepRate = 0;
-	
+
 		inputDesc.push_back(polygonLayout);
 	}
-	
+
 	// Create the vertex input layout.
 	result = m_device->CreateInputLayout(&inputDesc[0], inputDesc.size(), vertexShaderBuffer->GetBufferPointer(),
 		vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
@@ -180,7 +175,7 @@ inline FactoryObject* Triton::PType::DXFactory::createShader(FactoryCreateParams
 	return shader;
 }
 
-inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* createParams)
+reference<FactoryObject> Triton::PType::DXFactory::createVAO(FactoryCreateParams* createParams)
 {
 	DXVAO* vao = new DXVAO();
 
@@ -191,7 +186,7 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 	HRESULT result;
 
 	auto vaoParams = OBJECT_AS(VAOCreateParams, createParams);
-	
+
 	// Set the number of vertices in the vertex array.
 	unsigned int vertexCount = vaoParams->vertices.size();
 
@@ -263,7 +258,7 @@ inline FactoryObject* Triton::PType::DXFactory::createVAO(FactoryCreateParams* c
 	return vao;
 }
 
-inline FactoryObject* Triton::PType::DXFactory::createTexture(FactoryCreateParams* createParams)
+reference<FactoryObject> Triton::PType::DXFactory::createTexture(FactoryCreateParams* createParams)
 {
 	DXTexture* texture = new DXTexture();
 
@@ -326,9 +321,9 @@ inline FactoryObject* Triton::PType::DXFactory::createTexture(FactoryCreateParam
 	return texture;
 }
 
-inline FactoryObject* DXFactory::createFramebuffer(FactoryCreateParams * createParams)
+reference<FactoryObject> DXFactory::createFramebuffer(FactoryCreateParams* createParams)
 {
-	DXFrameBuffer* frameBuffer = new DXFrameBuffer();
+	DXFramebuffer* frameBuffer = new DXFramebuffer();
 
 	auto textureParams = OBJECT_AS(TextureCreateParams, createParams);
 
@@ -391,13 +386,117 @@ inline FactoryObject* DXFactory::createFramebuffer(FactoryCreateParams * createP
 	return frameBuffer;
 }
 
-inline void Triton::PType::DXFactory::destroyObject(FactoryObject* object, FactoryDestroyParams* destroyParams)
+reference<FactoryObject> Triton::PType::DXFactory::createBitmap(FactoryCreateParams* createParams)
 {
-	object->destroy(destroyParams);
-	delete object;
+	DXBitmap* bitmap = new DXBitmap();
+
+	auto bitmapParams = OBJECT_AS(BitmapCreateParams, createParams);
+
+	// Temp
+	RECT rcClient;
+	GetClientRect(m_hwnd, &rcClient);
+	int width = rcClient.right - rcClient.left;
+	int height = rcClient.bottom - rcClient.top;
+
+	bitmap->prtc_screenWidth = 250;
+	bitmap->prtc_screenHeight = 250;
+
+	bitmap->prtc_bitmapWidth = bitmapParams->width;
+	bitmap->prtc_bitmapHeight = bitmapParams->height;
+
+
+	BitmapVertexType* vertices;
+	unsigned long* indices;
+	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	HRESULT result;
+	int i;
+
+
+	// Set the number of vertices in the vertex array.
+	bitmap->m_vertexCount = 6;
+
+	// Set the number of indices in the index array.
+	bitmap->m_indiceCount = bitmap->m_vertexCount;
+
+	// Create the vertex array.
+	vertices = new BitmapVertexType[bitmap->m_vertexCount];
+
+	// Create the index array.
+	indices = new unsigned long[bitmap->m_indiceCount];
+	if (!indices)
+	{
+		TR_CORE_ERROR("Failed to create bitmap indice array");
+		return nullptr;
+	}
+
+	// Initialize vertex array to zeros at first.
+	memset(vertices, 0, (sizeof(BitmapVertexType) * bitmap->m_vertexCount));
+
+	// Load the index array with data.
+	for (i = 0; i < bitmap->m_indiceCount; i++)
+	{
+		indices[i] = i;
+	}
+
+	// Set up the description of the static vertex buffer.
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(BitmapVertexType) * bitmap->m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	// Give the subresource structure a pointer to the vertex data.
+	vertexData.pSysMem = vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	// Now create the vertex buffer.
+	result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &bitmap->m_vertexBuffer);
+	if (FAILED(result))
+	{
+		TR_CORE_ERROR("Failed to create bitmap vertex buffer");
+		return nullptr;
+	}
+
+	// Set up the description of the static index buffer.
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * bitmap->m_indiceCount;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	// Give the subresource structure a pointer to the index data.
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	// Create the index buffer.
+	result = m_device->CreateBuffer(&indexBufferDesc, &indexData, &bitmap->m_indexBuffer);
+	if (FAILED(result))
+	{
+		TR_CORE_ERROR("Failed to create bitmap indice buffer");
+		return nullptr;
+	}
+
+	// Release the arrays now that the vertex and index buffers have been created and loaded.
+	delete[] vertices;
+	vertices = 0;
+
+	delete[] indices;
+	indices = 0;
+
+	// Create the texture object.
+	bitmap->m_Texture = bitmapParams->texture;
+	bitmap->m_deviceContext = m_deviceContext;
+
+	bitmap->create(createParams);
+	return bitmap;
 }
 
-inline void Triton::PType::DXFactory::OutputShaderErrorMessage(ID3D10Blob * errorMessage, HWND hwnd, WCHAR * shaderFilename)
+void Triton::PType::DXFactory::OutputShaderErrorMessage(ID3D10Blob * errorMessage, HWND hwnd, WCHAR * shaderFilename)
 {
 	char* compileErrors;
 	unsigned long long bufferSize, i;
@@ -436,5 +535,4 @@ inline void Triton::PType::DXFactory::OutputShaderErrorMessage(ID3D10Blob * erro
 	return;
 }
 
-
-NAMESPACE_END
+PLATFORM_NAMESPACE_END

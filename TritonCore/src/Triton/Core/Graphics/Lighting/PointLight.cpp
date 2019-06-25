@@ -11,7 +11,7 @@ Triton::Graphics::PointLight::PointLight(Vector3 aPosition, float aConstant, flo
 {
 }
 
-void Triton::Graphics::PointLight::bind(relay_ptr<PType::Shader> shader)
+void Triton::Graphics::PointLight::bind(reference<PType::Shader>& shader)
 {
 	std::string head = "pointLights[" + std::to_string(Slot) + "]";
 

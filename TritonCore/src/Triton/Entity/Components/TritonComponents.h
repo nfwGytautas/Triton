@@ -8,7 +8,7 @@ namespace Triton
 {
 	namespace Components
 	{
-		//A component which specifies entity transformation inside the world
+		// A component which specifies entity transformation inside the world
 		struct Transform
 		{
 			Vector3 Position;
@@ -26,6 +26,7 @@ namespace Triton
 			{}
 		};
 
+		// Component that represents a model
 		struct Visual
 		{
 			//Mesh of entity, -1 is illegal
@@ -46,6 +47,7 @@ namespace Triton
 			{}
 		};
 
+		// Component specifying that the entity is a light emitter
 		struct LightEmitter
 		{
 			//Id of the light, -1 is illegal
@@ -57,6 +59,21 @@ namespace Triton
 
 			LightEmitter(size_t aLight)
 				: Light(aLight)
+			{}
+		};
+
+		// Component that reprsents an image not to be confused with Visual
+		struct Image
+		{
+			//Bitmap of entity, -1 is illegal
+			size_t Bitmap;
+
+			Image()
+				: Bitmap(-1)
+			{}
+
+			Image(size_t aBitmap)
+				: Bitmap(aBitmap)
 			{}
 		};
 	}

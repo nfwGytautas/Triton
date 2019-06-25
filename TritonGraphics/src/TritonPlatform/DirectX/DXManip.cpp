@@ -1,4 +1,4 @@
-#include "Manip.h"
+#include "DXManip.h"
 
 #include <Windows.h>
 #include "TritonPlatform/CrossTypes/Shader.h"
@@ -21,9 +21,9 @@ DXGI_FORMAT Triton::Impl::sdtToDXGIFormat(Triton::PType::ShaderDataType type)
 	{
 	case Triton::PType::ShaderDataType::Float4:
 		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::PType::ShaderDataType::Float3 :
+	case Triton::PType::ShaderDataType::Float3:
 		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::PType::ShaderDataType::Float2 :
+	case Triton::PType::ShaderDataType::Float2:
 		return DXGI_FORMAT_R32G32_FLOAT;
 	}
 

@@ -13,6 +13,7 @@
 #include "Triton\Serialize\Serialize.h"
 #include "Triton\Core\Wrapers\Material.h"
 #include "Triton\Core\Wrapers\Mesh.h"
+#include "Triton\Core\Wrapers\Image.h"
 
 namespace Triton
 {
@@ -38,8 +39,8 @@ namespace Triton
 
 
 		// Resource management
-		virtual void addLight(std::string type, Triton::Graphics::Light* light);
-		virtual void addAsset(size_t id, Triton::Resource::Asset* asset);
+		virtual void addLight(std::string type, reference<Graphics::Light> light);
+		virtual void addAsset(size_t id, reference<Resource::Asset> asset);
 
 
 		virtual void Prepare();
@@ -49,16 +50,18 @@ namespace Triton
 
 		virtual void destroy() override;
 	public: // Non virtual
-		void UpdateProjection(Triton::Matrix44 aNewProjection);
+		void UpdateProjection(Matrix44 aNewProjection);
+		void UpdateOrthographic(Matrix44 aNewOrthographic);
 	public:
-		Triton::PType::Shader* shader;
+		reference<PType::Shader> model_shader;
+		reference<PType::Shader> image_shader;
 
 		std::unique_ptr<Camera> m_Camera;
 		std::unique_ptr<ECS::Registry> Entities;
 	private:
-		std::unordered_map<size_t, Triton::Resource::Asset*> m_Assets;
+		std::unordered_map<size_t, reference<Resource::Asset>> m_Assets;
 
-		std::vector<Triton::Graphics::Light*> m_Lights;
+		std::vector<reference<Graphics::Light>> m_Lights;
 		std::unordered_map<std::string, unsigned int> m_LightCounts;
 
 	private:

@@ -181,7 +181,6 @@ namespace Triton
 
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
-			virtual void destroy(FactoryDestroyParams* destroyParams) override = 0;
 		protected:
 			Shader()
 			{ }
@@ -204,7 +203,12 @@ namespace Triton
 				void writeData(unsigned char* dst);
 				void editVariable(const std::string& variableName, unsigned char* variable);
 			};
+
+			// Buffers
 			std::vector<Buffer> prtc_Buffers;
+
+
+
 		};
 	}
 }

@@ -13,7 +13,7 @@ Triton::Graphics::SpotLight::SpotLight(Vector3 aPosition, Vector3 aDirection, fl
 
 }
 
-void Triton::Graphics::SpotLight::bind(relay_ptr<PType::Shader> shader)
+void Triton::Graphics::SpotLight::bind(reference<PType::Shader>& shader)
 {
 	std::string head = "spotLights[" + std::to_string(Slot) + "]";
 

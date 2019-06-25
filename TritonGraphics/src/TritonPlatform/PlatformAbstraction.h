@@ -6,7 +6,7 @@
 #ifdef TR_PLATFORM_WINDOWS
 
 #define NOMINMAX
-#include "DirectX/Specific.h"
+#include "DirectX/DXSpecific.h"
 #include <d3d11.h>
 #include <SimpleMath.h>
 

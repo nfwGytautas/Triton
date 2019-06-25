@@ -23,7 +23,7 @@ namespace Triton
 			diffMesh = true;
 		}
 
-		prevVisual = newVisual;
+		//prevVisual = newVisual;
 
 		return { diffMat , diffMesh};
 	}
@@ -49,18 +49,9 @@ Triton::Scene::Scene(Triton::PType::Context* context)
 
 Triton::Scene::~Scene()
 {
-	for (auto pair : m_Assets)
-	{
-		pair.second->destroyAsset(Context, nullptr);
-	}
-
-	for (unsigned int i = 0; i < m_Lights.size(); i++)
-	{
-		delete m_Lights[i];
-	}
 }
 
-void Triton::Scene::addLight(std::string type, Triton::Graphics::Light* light)
+void Triton::Scene::addLight(std::string type, reference<Graphics::Light> light)
 {
 	m_Lights.push_back(light);
 
@@ -77,7 +68,7 @@ void Triton::Scene::addLight(std::string type, Triton::Graphics::Light* light)
 	}
 }
 
-void Triton::Scene::addAsset(size_t id, Triton::Resource::Asset* asset)
+void Triton::Scene::addAsset(size_t id, reference<Resource::Asset> asset)
 {
 	m_Assets[id] = asset;
 }
@@ -89,10 +80,18 @@ void Triton::Scene::Prepare()
 
 void Triton::Scene::render()
 {
-	shader->enable();
+	float fov = 3.141592654f / 4.0f;
+	auto proj_mat = Triton::Core::CreateProjectionMatrix(923, 704, fov, 0.1f, 100.0f);
+	model_shader->setBufferValue("Persistant", "projectionMatrix", &proj_mat);
 
-	//shader->updateBuffers(PType::BufferUpdateType::FRAME);
-	shader->updateBuffers(Triton::PType::BufferUpdateType::ALL);
+	auto ortho_mat = Triton::Core::CreateOrthographicMatrix(923, 704, 0.1f, 100.0f);
+	image_shader->setBufferValue("Persistant", "projectionMatrix", &ortho_mat);
+
+	model_shader->enable();
+
+	model_shader->updateBuffers(PType::BufferUpdateType::FRAME);
+
+	model_shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
 
 	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
 
@@ -100,21 +99,46 @@ void Triton::Scene::render()
 
 		if (changeMat)
 		{
-			static_cast<Data::Material*>(m_Assets[visual.Material])->enable();
+			m_Assets[visual.Material].as<Data::Material>()->enable();
 		}
+
+		reference<Data::Mesh> mesh = m_Assets[visual.Mesh].as<Data::Mesh>();
 
 		if (changeMesh)
 		{
-			static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->enable();
+			mesh->enable();
 		}
 
 		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		shader->setBufferValue("MatrixBuffer", "transformationMatrix", &trans_mat);
+		model_shader->setBufferValue("PerObject", "transformationMatrix", &trans_mat);
 
-		//shader->updateBuffers(PType::BufferUpdateType::OBJECT);
-		shader->updateBuffers(Triton::PType::BufferUpdateType::ALL);
-		Context->renderer->render(static_cast<Data::Mesh*>(m_Assets[visual.Mesh])->object());
+		model_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+		//shader->updateBuffers(PType::BufferUpdateType::ALL);
+		Context->renderer->render(mesh->object().as<PType::Renderable>());
 	});
+
+	Context->depthBufferState(false);
+	
+	image_shader->enable();
+	
+	image_shader->updateBuffers(PType::BufferUpdateType::FRAME);
+
+	image_shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
+
+	Entities->view<Components::Transform, Components::Image>().each([&](auto& transform, auto& imageComp) {
+	
+		reference<Data::Image> image = m_Assets[imageComp.Bitmap].as<Data::Image>();
+	
+		image->enable();
+	
+		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
+		image_shader->setBufferValue("PerObject", "transformationMatrix", &trans_mat);
+	
+		image_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+		Context->renderer->render(image->object().as<PType::Renderable>());
+	});
+	
+	Context->depthBufferState(true);
 }
 
 void Triton::Scene::update(float delta)
@@ -124,22 +148,22 @@ void Triton::Scene::update(float delta)
 	//
 	//shader->setUniformMatrix44("viewMatrix", view);
 
-	shader->enable();
+	model_shader->enable();
 
 	if (m_Camera.get() != nullptr)
 	{
 		m_Camera->OnUpdate();
 
 		auto viewMat = m_Camera->ViewMatrix();
-		shader->setBufferValue("MatrixBuffer", "viewMatrix", &viewMat);
+		model_shader->setBufferValue("PerFrame", "viewMatrix", &viewMat);
 
-		shader->setBufferValue("CameraBuffer", "cameraPosition", &m_Camera->Position);
+		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &m_Camera->Position);
 
 	}
 
 	for (unsigned int i = 0; i < m_Lights.size(); i++)
 	{
-		m_Lights[i]->bind(shader);
+		m_Lights[i]->bind(model_shader);
 	}
 
 	for (auto pair : m_LightCounts)
@@ -170,6 +194,14 @@ void Triton::Scene::update(float delta)
 		return false;
 	});
 	
+
+	image_shader->enable();
+
+	if (m_Camera.get() != nullptr)
+	{
+		auto viewMat = m_Camera->ViewMatrix();
+		image_shader->setBufferValue("PerFrame", "viewMatrix", &viewMat);
+	}
 
 	//m_Materials.ForEach([&] (auto& obj)
 	//{
@@ -206,4 +238,8 @@ void Triton::Scene::UpdateProjection(Triton::Matrix44 aNewProjection)
 			shader->SetUniform("projectionMatrix", aNewProjection);
 			shader->Disable();
 		});*/
+}
+
+void Triton::Scene::UpdateOrthographic(Triton::Matrix44 aNewOrthographic)
+{
 }

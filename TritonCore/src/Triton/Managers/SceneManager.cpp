@@ -18,10 +18,10 @@ namespace Triton
 			cleanUp();
 		}
 
-		relay_ptr<Scene> SceneManager::createScene()
+		reference<Scene> SceneManager::createScene()
 		{
-			Scene* scene = new Scene(m_Context);
-			m_Scenes.push_back(scene);
+			reference<Scene> scene(new Scene(m_Context));
+			m_Scenes.push_back(scene.as<SceneBase>());
 			return scene;
 		}
 
@@ -30,7 +30,6 @@ namespace Triton
 			for (unsigned int i = 0; i < m_Scenes.size(); i++)
 			{
 				m_Scenes[i]->destroy();
-				delete m_Scenes[i];
 			}
 		}
 

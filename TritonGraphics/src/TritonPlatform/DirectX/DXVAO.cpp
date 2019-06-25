@@ -1,15 +1,23 @@
-#pragma once
+#include "DXVAO.h"
 
-#include "Triton\Logger\Log.h"
+PLATFORM_NAMESPACE_BEGIN
 
-#include "Macros.h"
-#include "Types.h"
+DXVAO::~DXVAO()
+{
+	// Release the index buffer.
+	if (m_indexBuffer)
+	{
+		m_indexBuffer->Release();
+		m_indexBuffer = 0;
+	}
 
-#define NAMESPACE_BEGIN namespace Triton { namespace PType {
-#define NAMESPACE_END } }
-
-NAMESPACE_BEGIN
-
+	// Release the vertex buffer.
+	if (m_vertexBuffer)
+	{
+		m_vertexBuffer->Release();
+		m_vertexBuffer = 0;
+	}
+}
 
 void Triton::PType::DXVAO::enable()
 {
@@ -33,33 +41,20 @@ void Triton::PType::DXVAO::enable()
 	return;
 }
 
-inline void Triton::PType::DXVAO::disable()
+void Triton::PType::DXVAO::disable()
 {
 }
 
-inline void Triton::PType::DXVAO::create(FactoryCreateParams* createParams)
+void Triton::PType::DXVAO::create(FactoryCreateParams* createParams)
 {
 	auto glParams = OBJECT_AS(VAOCreateParams, createParams);
 
 	//m_indiceCount = glParams->indices.size();
 }
 
-inline void Triton::PType::DXVAO::destroy(FactoryDestroyParams * destroyParams)
+unsigned int DXVAO::getIndiceCount()
 {
-	// Release the index buffer.
-	if (m_indexBuffer)
-	{
-		m_indexBuffer->Release();
-		m_indexBuffer = 0;
-	}
-
-	// Release the vertex buffer.
-	if (m_vertexBuffer)
-	{
-		m_vertexBuffer->Release();
-		m_vertexBuffer = 0;
-	}
+	return m_indiceCount;
 }
 
-
-NAMESPACE_END
+PLATFORM_NAMESPACE_END

@@ -30,11 +30,13 @@ namespace Triton {
 	Application::~Application()
 	{
 		Impl::destroyContext(Context);
+
+		delete m_SceneManager;
 	}
 
 	void Application::setup()
 	{
-		Context->renderer->recalc_projection();
+		Context->renderer->recalc_matrices();
 		PreExecutionSetup();
 	}
 

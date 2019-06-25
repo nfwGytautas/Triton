@@ -147,6 +147,8 @@
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
+    <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
+    <ClInclude Include="src\TritonTypes\reference.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -199,5 +201,6 @@
       <Filter>Triton\Managers</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
+    <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
   </ItemGroup>
 </Project>

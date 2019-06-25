@@ -14,7 +14,7 @@ namespace Triton
 			Light(Vector3 aAmbient, Vector3 aDiffuse, Vector3 aSpecular);
 			virtual ~Light() { }
 
-			virtual void bind(relay_ptr<PType::Shader> shader) = 0;
+			virtual void bind(reference<PType::Shader>& shader) = 0;
 
 			unsigned int Slot;
 

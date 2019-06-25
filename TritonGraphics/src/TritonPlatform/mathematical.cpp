@@ -73,6 +73,15 @@ Triton::Matrix44 Triton::Core::createViewMatrix(Vector3 position, float pitch, f
 	return XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
 }
 
+Triton::Matrix44 Triton::Core::CreateOrthographicMatrix(float aWindowWidth, float aWindowHeight, float aNearRenderPlane, float aFarRenderPlane)
+{
+	Matrix44 returnMatrix;
+
+	returnMatrix = DirectX::XMMatrixOrthographicLH(aWindowWidth, aWindowHeight, aNearRenderPlane, aFarRenderPlane);
+
+	return returnMatrix;
+}
+
 #else
 
 #define GLM_ENABLE_EXPERIMENTAL

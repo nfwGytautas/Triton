@@ -3,7 +3,7 @@
 
 #ifdef TR_PLATFORM_WINDOWS
 
-#include "DirectX/Types.h"
+#include "DirectX/DXTypes.h"
 
 Triton::PType::Context* Triton::Impl::createContext(const Triton::AppSettings& appSettings)
 {

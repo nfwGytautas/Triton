@@ -28,16 +28,15 @@ namespace Triton
 			unsigned int Slot;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
-			virtual void destroy(FactoryDestroyParams* destroyParams) override = 0;
 		protected:
 			Texture()
 			{ }
 		};
 
-		class FrameBuffer : public FactoryObject
+		class Framebuffer : public FactoryObject
 		{
 		public:
-			virtual ~FrameBuffer() { }
+			virtual ~Framebuffer() { }
 
 			virtual void enable() = 0;
 			virtual void disable() = 0;
@@ -46,9 +45,8 @@ namespace Triton
 			virtual void render() = 0;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
-			virtual void destroy(FactoryDestroyParams* destroyParams) override = 0;
 		protected:
-			FrameBuffer()
+			Framebuffer()
 			{ }
 		};
 	}

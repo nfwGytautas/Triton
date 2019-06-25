@@ -1,36 +1,21 @@
-#pragma once
+#include "DXRenderer.h"
 
-#include "Triton\Logger\Log.h"
+#include "DXVAO.h"
+#include "DXBitmap.h"
 
-#include "Macros.h"
-#include "Types.h"
+PLATFORM_NAMESPACE_BEGIN
 
-#define NAMESPACE_BEGIN namespace Triton { namespace PType {
-#define NAMESPACE_END } }
-
-NAMESPACE_BEGIN
-
-
-inline void DXRenderer::create()
+void DXRenderer::create()
 {
-	
+
 }
 
-inline void Triton::PType::DXRenderer::render(PlatformObject* renderable)
+void Triton::PType::DXRenderer::render(reference<Renderable>& renderable)
 {
-	auto glRenderable = OBJECT_AS(DXVAO, renderable);
-
-	if (glRenderable != nullptr)
-	{
-		m_deviceContext->DrawIndexed(glRenderable->m_indiceCount, 0, 0);
-	}
-	else
-	{
-		TR_CORE_ERROR("Passed PlatformObject is not of type DXRenderable.");
-	}
+	m_deviceContext->DrawIndexed(renderable->getIndiceCount(), 0, 0);
 }
 
-inline void Triton::PType::DXRenderer::default()
+void Triton::PType::DXRenderer::default()
 {
 	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
@@ -40,18 +25,23 @@ inline void Triton::PType::DXRenderer::default()
 	//glDepthFunc(GL_LESS);
 }
 
-inline Matrix44 Triton::PType::DXRenderer::projection()
+Matrix44 Triton::PType::DXRenderer::projection()
 {
 	return m_projectionMatrix;
 }
 
-inline Matrix44 Triton::PType::DXRenderer::recalc_projection()
+Matrix44 Triton::PType::DXRenderer::orthographic()
+{
+	return m_orthographicMatrix;
+}
+
+void Triton::PType::DXRenderer::recalc_matrices()
 {
 	m_projectionMatrix = Triton::Core::CreateProjectionMatrix(m_width, m_height, fov, nearPlane, farPlane);
-	return m_projectionMatrix;
+	m_orthographicMatrix = Triton::Core::CreateOrthographicMatrix(m_width, m_height, nearPlane, farPlane);
 }
 
-inline void Triton::PType::DXRenderer::newFrame(float red, float green, float blue, float alpha)
+void Triton::PType::DXRenderer::newFrame(float red, float green, float blue, float alpha)
 {
 	float color[4];
 
@@ -73,12 +63,11 @@ inline void Triton::PType::DXRenderer::newFrame(float red, float green, float bl
 	return;
 }
 
-inline void Triton::PType::DXRenderer::endFrame()
+void Triton::PType::DXRenderer::endFrame()
 {
-	
+
 
 	return;
 }
 
-
-NAMESPACE_END
+PLATFORM_NAMESPACE_END

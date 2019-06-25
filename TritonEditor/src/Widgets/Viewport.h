@@ -4,12 +4,10 @@
 
 #include "TritonPlatform/PlatformAbstraction.h"
 #include "TritonPlatform/CrossTypes/Texture.h"
-#include "TritonPlatform/DirectX/Types.h"
+#include "TritonPlatform/DirectX/DXTypes.h"
 
-void ShowViewport(bool* p_open, Triton::PType::FrameBuffer* viewport, Triton::Vector2& size)
+void ShowViewport(bool* p_open, Triton::reference<Triton::PType::DXFramebuffer> viewport, Triton::Vector2& size)
 {
-	auto dxFbo = (Triton::PType::DXFrameBuffer*)viewport;
-
 	ImGui::SetNextWindowSize(ImVec2(size.x, size.y), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Viewport");
 
@@ -19,7 +17,7 @@ void ShowViewport(bool* p_open, Triton::PType::FrameBuffer* viewport, Triton::Ve
 	size.y = im_size.y;
 
 	// Get the texture associated to the FBO
-	auto tex = dxFbo->getShaderResourceView();
+	auto tex = viewport->getShaderResourceView();
 
 	ImGui::Image((void *)tex, 
 		ImVec2(im_size.x, im_size.y),

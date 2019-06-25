@@ -12,17 +12,13 @@ namespace Triton
 		class Mesh : public PType::PlatformWraper<PType::VAO>, public Resource::Asset
 		{
 		public:
-			Mesh(PType::VAO* obj);
+			Mesh(reference<PType::VAO> obj);
 
 			virtual ~Mesh()
 			{ }
 
 			// Inherited via PlatformWraper
 			virtual void enable() override;
-
-		private:
-			// Inherited via Asset
-			virtual void destroyFunc(relay_ptr<PType::Context> context, PType::FactoryDestroyParams * params) override;
 		};
 
 	}

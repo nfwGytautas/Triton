@@ -1,50 +1,13 @@
-#pragma once
+#include "DXShader.h"
 
-#include <d3dcompiler.h>
+PLATFORM_NAMESPACE_BEGIN
 
-#include "Triton\Logger\Log.h"
-
-#include "Macros.h"
-#include "Types.h"
-
-#define NAMESPACE_BEGIN namespace Triton { namespace PType {
-#define NAMESPACE_END } }
-
-NAMESPACE_BEGIN
-
-
-inline Triton::PType::DXShader::DXShader(ShaderLayout* layout)
+DXShader::DXShader(ShaderLayout* layout)
 	: Shader(layout)
 {
 }
 
-inline void Triton::PType::DXShader::enable()
-{
-	// Set the vertex input layout.
-	m_deviceContext->IASetInputLayout(m_layout);
-
-	// Set the vertex and pixel shaders that will be used to render this triangle.
-	m_deviceContext->VSSetShader(m_vertexShader, NULL, 0);
-	m_deviceContext->PSSetShader(m_pixelShader, NULL, 0);
-
-	// Set the sampler state in the pixel shader.
-	m_deviceContext->PSSetSamplers(0, 1, &m_sampleState);
-
-	enabled = true;
-}
-
-inline void Triton::PType::DXShader::disable()
-{
-	
-	enabled = false;
-}
-
-inline void Triton::PType::DXShader::create(FactoryCreateParams* createParams)
-{
-	//TR_CORE_INFO("Loading shader complete. ID: {0}", m_shaderID);
-}
-
-inline void Triton::PType::DXShader::destroy(FactoryDestroyParams* destroyParams)
+DXShader::~DXShader()
 {
 	// Release all shader buffers
 	for (auto &[name, buffer] : m_buffers) {
@@ -79,11 +42,35 @@ inline void Triton::PType::DXShader::destroy(FactoryDestroyParams* destroyParams
 		m_vertexShader->Release();
 		m_vertexShader = 0;
 	}
-
-	return;
 }
 
-inline ID3D11Buffer* Triton::PType::DXShader::getBuffer(const std::string& name)
+void DXShader::enable()
+{
+	// Set the vertex input layout.
+	m_deviceContext->IASetInputLayout(m_layout);
+
+	// Set the vertex and pixel shaders that will be used to render this triangle.
+	m_deviceContext->VSSetShader(m_vertexShader, NULL, 0);
+	m_deviceContext->PSSetShader(m_pixelShader, NULL, 0);
+
+	// Set the sampler state in the pixel shader.
+	m_deviceContext->PSSetSamplers(0, 1, &m_sampleState);
+
+	enabled = true;
+}
+
+void DXShader::disable()
+{
+
+	enabled = false;
+}
+
+void DXShader::create(FactoryCreateParams* createParams)
+{
+	//TR_CORE_INFO("Loading shader complete. ID: {0}", m_shaderID);
+}
+
+ID3D11Buffer* DXShader::getBuffer(const std::string& name)
 {
 	ID3D11Buffer* d3dbuffer = m_buffers[name];
 
@@ -91,13 +78,13 @@ inline ID3D11Buffer* Triton::PType::DXShader::getBuffer(const std::string& name)
 	{
 		TR_CORE_ERROR("Buffer of name {0} does not exist.", name);
 		TR_CORE_ASSERT(d3dbuffer, "Buffer does not exist.")
-		return NULL;
+			return NULL;
 	}
 
 	return d3dbuffer;
 }
 
-inline void Triton::PType::DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource)
+void DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource)
 {
 	HRESULT result;
 
@@ -110,13 +97,13 @@ inline void Triton::PType::DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPP
 	}
 }
 
-inline void Triton::PType::DXShader::unmapBuffer(ID3D11Buffer* buffer)
+void DXShader::unmapBuffer(ID3D11Buffer* buffer)
 {
 	// Unlock the constant buffer.
 	m_deviceContext->Unmap(buffer, 0);
 }
 
-inline void Triton::PType::DXShader::setBuffer(ID3D11Buffer* buffer, const BufferShaderType& type, unsigned int count, unsigned int number)
+void DXShader::setBuffer(ID3D11Buffer* buffer, const BufferShaderType& type, unsigned int count, unsigned int number)
 {
 	if (type == BufferShaderType::PIXEL)
 	{
@@ -128,7 +115,7 @@ inline void Triton::PType::DXShader::setBuffer(ID3D11Buffer* buffer, const Buffe
 	}
 }
 
-inline void Triton::PType::DXShader::updateBuffer(Shader::Buffer& buffer)
+void DXShader::updateBuffer(Shader::Buffer& buffer)
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -150,7 +137,7 @@ inline void Triton::PType::DXShader::updateBuffer(Shader::Buffer& buffer)
 	setBuffer(d3dbuffer, buffer.layout.getShaderType(), 1, buffer.layout.getNumber());
 }
 
-inline void Triton::PType::DXShader::updateBuffers(BufferUpdateType type)
+void DXShader::updateBuffers(BufferUpdateType type)
 {
 	for (unsigned int i = 0; i < prtc_Buffers.size(); i++)
 	{
@@ -161,4 +148,4 @@ inline void Triton::PType::DXShader::updateBuffers(BufferUpdateType type)
 	}
 }
 
-NAMESPACE_END
+PLATFORM_NAMESPACE_END

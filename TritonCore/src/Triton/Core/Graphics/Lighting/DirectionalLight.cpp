@@ -6,7 +6,7 @@ Triton::Graphics::DirectionalLight::DirectionalLight(Vector3 aDirection)
 {
 }
 
-void Triton::Graphics::DirectionalLight::bind(relay_ptr<PType::Shader> shader)
+void Triton::Graphics::DirectionalLight::bind(reference<PType::Shader>& shader)
 {
 	std::string head = "dirLights[" + std::to_string(Slot) + "]";
 

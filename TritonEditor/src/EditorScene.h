@@ -33,7 +33,7 @@ namespace Triton
 
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
 
-		Triton::PType::FrameBuffer* ViewPort;
+		reference<Triton::PType::Framebuffer> ViewPort;
 		Triton::Vector2 ViewportSize;
 	private:
 

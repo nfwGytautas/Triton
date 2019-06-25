@@ -1,13 +1,13 @@
 #pragma once
 
-//~----------Application----------~
+// Triton types
+#include "TritonTypes/reference.h"
+
+// Application
 #include "Triton\Application.h"
-//!----------Application----------!
 
-//~----------Logger---------------~
+// Logger
 #include "Triton\Logger\Log.h"
-//!----------Logger---------------!
 
-//~----------Entry point----------~
+// Entry point
 #include "Triton\EntryPoint.h"
-//!----------Entry point----------!

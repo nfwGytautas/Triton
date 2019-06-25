@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TritonTypes/relay_ptr.h"
+#include "TritonTypes/reference.h"
 
 namespace Triton
 {
@@ -13,16 +13,46 @@ namespace Triton
 			virtual ~PlatformObject() { }
 		};
 
+		// Base class for storing factory object creation parameters
+		class FactoryCreateParams
+		{
+		public:
+			virtual ~FactoryCreateParams() { }
+		};
+
+		// Base class for storing factory object destruction parameters
+		class FactoryDestroyParams
+		{
+		public:
+			virtual ~FactoryDestroyParams() { }
+		};
+
+		// Base class for factory objects
+		class FactoryObject : public PlatformObject
+		{
+		public:
+			virtual ~FactoryObject() { }
+
+			virtual void create(FactoryCreateParams* createParams) = 0;
+		};
+
+		// Base class for renderable objects
+		class Renderable : public FactoryObject
+		{
+		public:
+			virtual ~Renderable() { }
+
+			virtual unsigned int getIndiceCount() = 0;
+		};
+
 		// Base wraper object
 		class WraperBase
 		{
 		public:
-			WraperBase(PlatformObject* obj) : _object(obj) { }
+			WraperBase() { }
 			virtual ~WraperBase() { }
 
 			virtual void enable() = 0;
-		protected:
-			PlatformObject* _object;
 		};
 
 		// Wraper around the platform object
@@ -30,16 +60,18 @@ namespace Triton
 		class PlatformWraper : public WraperBase
 		{
 		public:
-			PlatformWraper(T* obj) : WraperBase(obj) { }
+			PlatformWraper(reference<T> obj) : WraperBase(), _object(obj) { }
 			virtual ~PlatformWraper() { }
 
 			// Get the wraped object
-			T* object() const
+			reference<T> object() const
 			{
-				return static_cast<T*>(this->_object);
+				return _object;
 			}
 
 			virtual void enable() override = 0;
+		protected:
+			reference<T> _object;
 		};
 	}
 }

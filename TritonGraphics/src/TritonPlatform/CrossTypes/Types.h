@@ -2,12 +2,12 @@
 
 #include "Triton/Events/EventReceiver.h"
 
-
 #include "Base.h"
 #include "Factory.h"
 #include "Shader.h"
 #include "VAO.h"
 #include "Texture.h"
+#include "Bitmap.h"
 
 namespace Triton
 {
@@ -58,7 +58,7 @@ namespace Triton
 			virtual void endFrame() = 0;
 
 			// Render object
-			virtual void render(PlatformObject* renderable) = 0;
+			virtual void render(reference<Renderable>& renderable) = 0;
 
 			// Set renderer values to default ones
 			virtual void default() = 0;
@@ -66,8 +66,11 @@ namespace Triton
 			// Returns a projection matrix from the values the renderer has
 			virtual Matrix44 projection() = 0;
 
-			// Recalculated the projection matrix
-			virtual Matrix44 recalc_projection() = 0;
+			// Returns orthographic matrix for use in 2D rendering
+			virtual Matrix44 orthographic() = 0;
+
+			// Recalculates the matrices
+			virtual void recalc_matrices() = 0;
 		public:
 			float fov;
 			float nearPlane;
@@ -109,6 +112,9 @@ namespace Triton
 
 			// Fill's packet data
 			virtual void fillPacket(PlatformObject* packet) = 0;
+
+			// Sets depth buffer state
+			virtual void depthBufferState(bool state) = 0;
 		};
 	}
 }

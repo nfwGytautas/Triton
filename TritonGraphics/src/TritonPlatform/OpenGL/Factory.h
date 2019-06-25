@@ -38,7 +38,6 @@ inline FactoryObject* Triton::PType::GLFactory::createTexture(FactoryCreateParam
 inline void Triton::PType::GLFactory::destroyObject(FactoryObject* object, FactoryDestroyParams* destroyParams)
 {
 	object->destroy(destroyParams);
-	delete object;
 }
 
 

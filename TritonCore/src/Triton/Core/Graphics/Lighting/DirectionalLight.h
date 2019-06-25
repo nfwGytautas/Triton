@@ -13,7 +13,7 @@ namespace Triton
 			virtual ~DirectionalLight() { }
 
 			// Inherited via Light
-			virtual void bind(relay_ptr<PType::Shader> shader) override;
+			virtual void bind(reference<PType::Shader>& shader) override;
 		private:
 			Vector3 m_Direction;
 		};

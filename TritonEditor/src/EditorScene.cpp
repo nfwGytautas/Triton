@@ -5,7 +5,7 @@
 #include "Impl/imgui_impl_win32.h"
 #include "Impl/imgui_impl_dx11.h"
 
-#include "TritonPlatform/DirectX/Specific.h"
+#include "TritonPlatform/DirectX/DXSpecific.h"
 
 #include "Widgets/DockSpace.h"
 #include "Widgets/Viewport.h"
@@ -78,7 +78,7 @@ void Triton::EditorScene::render()
 	ShowDockSpace(&m_dockspace);
 
 	// Viewport
-	ShowViewport(&m_viewport, ViewPort, ViewportSize);
+	ShowViewport(&m_viewport, ViewPort.as<PType::DXFramebuffer>(), ViewportSize);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);

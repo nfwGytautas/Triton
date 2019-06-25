@@ -9,11 +9,12 @@ namespace Triton
 
 class UnitTest1 : public Triton::Application
 {
-	Triton::PType::FrameBuffer* m_viewPort;
+	Triton::reference<Triton::PType::Framebuffer> m_viewPort;
 
 
 	size_t m_StallMesh = 1;
 	size_t m_StallMaterial = 2;
+	size_t m_BitmapID = 3;
 
 	size_t Ent;
 
@@ -26,12 +27,14 @@ class UnitTest1 : public Triton::Application
 	double lastY;
 	bool m_firstMouse = true;
 
-	Triton::relay_ptr<Triton::Scene> m_MainScene;
-	Triton::Data::Material* mat;
-	Triton::Data::Mesh* mesh;
-	Triton::PType::Shader* shader;
+	Triton::reference<Triton::Scene> m_MainScene;
+	Triton::reference<Triton::Data::Material> mat;
+	Triton::reference<Triton::Data::Mesh> mesh;
+	Triton::reference<Triton::Data::Image> image;
 
-	Triton::relay_ptr<Triton::EditorScene> m_EditorScene;
+	Triton::reference<Triton::EditorScene> m_EditorScene;
+
+	Triton::reference<Triton::PType::Bitmap> bitmap;
 public:
 	void CreateResources()
 	{
@@ -41,7 +44,7 @@ public:
 		Triton::PType::TextureCreateParams* fbo_params = new Triton::PType::TextureCreateParams();
 		fbo_params->width = 1280;
 		fbo_params->height = 720;
-		m_viewPort = (Triton::PType::FrameBuffer*)Context->factory->createFramebuffer(fbo_params);
+		m_viewPort = Context->factory->createFramebuffer(fbo_params).as<Triton::PType::Framebuffer>();
 		delete fbo_params;
 
 		m_EditorScene->ViewPort = m_viewPort;
@@ -62,18 +65,32 @@ public:
 			},
 			{ 
 				{ 
-					"MatrixBuffer", 
-					Triton::PType::BufferUpdateType::ALL,
+					"Persistant", 
+					Triton::PType::BufferUpdateType::PERSISTANT,
 					Triton::PType::BufferShaderType::VERTEX, 
 					{ 
-						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4},
-						{"viewMatrix", Triton::PType::ShaderDataType::Mat4},
 						{"projectionMatrix", Triton::PType::ShaderDataType::Mat4}
 					}
 				},
 				{
+					"PerFrame",
+					Triton::PType::BufferUpdateType::FRAME,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"viewMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+				{
+					"PerObject",
+					Triton::PType::BufferUpdateType::OBJECT,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+				{
 					"CameraBuffer",
-					Triton::PType::BufferUpdateType::ALL,
+					Triton::PType::BufferUpdateType::FRAME,
 					Triton::PType::BufferShaderType::VERTEX,
 					{
 						{"cameraPosition", Triton::PType::ShaderDataType::Float3},
@@ -82,7 +99,7 @@ public:
 				},
 				{
 					"LightBuffer",
-					Triton::PType::BufferUpdateType::ALL,
+					Triton::PType::BufferUpdateType::FRAME,
 					Triton::PType::BufferShaderType::PIXEL,
 					{
 						{"ambientColor", Triton::PType::ShaderDataType::Float4},
@@ -96,45 +113,105 @@ public:
 
 		shader_params->layout = &shader_layout;
 
-		auto Shader = dynamic_cast<Triton::PType::Shader*>(Context->factory->createShader(shader_params));
-		m_MainScene->shader = Shader;
-		shader = Shader;
+		auto Shader = Context->factory->createShader(shader_params).as<Triton::PType::Shader>();
+		m_MainScene->model_shader = Shader;
 
 		delete shader_params;
 
-
 		Shader->enable();
 		auto proj_mat = Context->renderer->projection();
-		Shader->setBufferValue("MatrixBuffer","projectionMatrix", &proj_mat);
+		Shader->setBufferValue("Persistant", "projectionMatrix", &proj_mat);
+
+
+		// Create bitmap shader
+		Triton::PType::ShaderCreateParams* shader2_params = new Triton::PType::ShaderCreateParams();
+		//shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
+		//shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+
+		shader2_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_texture.hlsl";
+		shader2_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_texture.hlsl";
+
+		Triton::PType::ShaderLayout shader2_layout(
+			{
+				{"POSITION", Triton::PType::ShaderDataType::Float4},
+				{"TEXCOORD", Triton::PType::ShaderDataType::Float2},
+			},
+			{
+				{
+					"Persistant",
+					Triton::PType::BufferUpdateType::PERSISTANT,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"projectionMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+				{
+					"PerFrame",
+					Triton::PType::BufferUpdateType::FRAME,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"viewMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+				{
+					"PerObject",
+					Triton::PType::BufferUpdateType::OBJECT,
+					Triton::PType::BufferShaderType::VERTEX,
+					{
+						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4}
+					}
+				},
+			});
+
+		shader2_params->layout = &shader2_layout;
+
+		auto Shader2 = Context->factory->createShader(shader2_params).as<Triton::PType::Shader>();
+		m_MainScene->image_shader = Shader2;
+
+		delete shader2_params;
 
 
 		// Create VAO
 		Triton::PType::VAOCreateParams* vao_params = new Triton::PType::VAOCreateParams();
 		Triton::Data::File::ReadMesh("D:/Programming/Test files/nfw/stall.obj", vao_params);
 
-		auto vao = dynamic_cast<Triton::PType::VAO*>(Context->factory->createVAO(vao_params));
+		auto vao = Context->factory->createVAO(vao_params).as<Triton::PType::VAO>();
 
 		delete vao_params;
 
 		// Create mesh
-		mesh = new Triton::Data::Mesh(vao);
-		m_MainScene->addAsset(m_StallMesh, mesh);
+		mesh = Triton::reference<Triton::Data::Mesh>(new Triton::Data::Mesh(vao));
+		m_MainScene->addAsset(m_StallMesh, mesh.as<Triton::Resource::Asset>());
 
 
 		// Create texture
 		Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
 		Triton::Data::File::ReadTexture("D:/Programming/Test files/nfw/stallTexture.png", tex_params);
 
-		auto texture = dynamic_cast<Triton::PType::Texture*>(Context->factory->createTexture(tex_params));
+		auto texture = Context->factory->createTexture(tex_params).as<Triton::PType::Texture>();
 
 		delete tex_params;
 
+		Triton::PType::BitmapCreateParams* bitmap_params = new Triton::PType::BitmapCreateParams();
+
+		bitmap_params->height = 100;
+		bitmap_params->width = 100;
+		bitmap_params->texture = texture;
+
+		bitmap = Context->factory->createBitmap(bitmap_params).as<Triton::PType::Bitmap>();
+		bitmap->setPosition(150, 150);
+
+		image = Triton::reference<Triton::Data::Image>(new Triton::Data::Image(bitmap));
+		m_MainScene->addAsset(m_BitmapID, image.as<Triton::Resource::Asset>());
+
+		delete bitmap_params;
+
 		// Create material
-		mat = new Triton::Data::Material(texture);
+		mat = Triton::reference<Triton::Data::Material>(new Triton::Data::Material(texture));
 		mat->Shader = Shader;
 		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
 		mat->Shininess = 32;
-		m_MainScene->addAsset(m_StallMaterial, mat);
+		m_MainScene->addAsset(m_StallMaterial, mat.as<Triton::Resource::Asset>());
 
 		m_MainScene->m_Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);		
 	}
@@ -174,10 +251,22 @@ public:
 			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(Ent);
 
 			transform.Position = Triton::Vector3(0.0, 0.0, 25.0);
-			//transform.Scale = Triton::Vector3(0.5, 0.5, 0.5);
+			//transform.Scale = Triton::Vector3(10, 10, 10);
 			transform.Rotation = Triton::Vector3(0.0, 180.0, 0.0);
 		
 			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
+		}
+
+		for (int i = 0; i < 1; i++)
+		{
+			uint32_t Ent2 = m_MainScene->Entities->create();
+
+			//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(Ent2);
+
+			transform.Position = Triton::Vector3(0.0, 0.0, 15.0);
+
+			m_MainScene->Entities->assign<Triton::Components::Image>(Ent2, m_BitmapID);
 		}
 		
 		//auto Ent1 = prtc_Scene->Registry()->create();
@@ -256,22 +345,14 @@ public:
 
 	virtual void Render() override
 	{
-		shader->enable();
-
-		float fov = 3.141592654f / 4.0f;
-		auto proj_mat = Triton::Core::CreateProjectionMatrix(m_EditorScene->ViewportSize.x, m_EditorScene->ViewportSize.y, fov, 0.1f, 100.0f);
-		shader->setBufferValue("MatrixBuffer" ,"projectionMatrix", &proj_mat);
-
 		m_viewPort->enable();
-		m_viewPort->clear(0.0f, 0.5f, 0.5f, 0.0f);
+		m_viewPort->clear(1.0f, 0.0f, 1.0f, 0.0f);
 
 		m_MainScene->render();
-	
+
 		Context->renderer->default();
 
 		Context->setViewPort(0, 0, 1280, 720);
-
-		TR_TRACE(sizeof(Triton::Matrix44));
 
 		m_EditorScene->render();
 	}

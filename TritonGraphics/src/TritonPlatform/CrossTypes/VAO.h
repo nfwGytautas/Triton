@@ -23,7 +23,7 @@ namespace Triton
 			std::vector<unsigned int> indices;
 		};
 
-		class VAO : public FactoryObject
+		class VAO : public Renderable
 		{
 		public:
 			virtual ~VAO() { }
@@ -31,9 +31,9 @@ namespace Triton
 			virtual void enable() = 0;
 			virtual void disable() = 0;
 
+			virtual unsigned int getIndiceCount() = 0;	
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
-			virtual void destroy(FactoryDestroyParams* destroyParams) override = 0;
 		protected:
 			VAO()
 			{ }
