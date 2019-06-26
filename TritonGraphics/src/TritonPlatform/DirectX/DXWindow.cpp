@@ -226,6 +226,7 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			m_receiver->OnMouseButtonPressed(button);
 			return 0;
 		}
+
 		case WM_LBUTTONUP:
 		case WM_RBUTTONUP:
 		case WM_MBUTTONUP:
@@ -240,25 +241,38 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			m_receiver->OnMouseButtonReleased(button);
 			return 0;
 		}
+
 		case WM_MOUSEWHEEL:
 			m_receiver->OnMouseScrolled((float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA, 0);
 			return 0;
 		case WM_MOUSEHWHEEL:
+
 			m_receiver->OnMouseScrolled(0, (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA);
 			return 0;
+
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
 			if (wParam < 256)
 				m_receiver->OnKeyPressed(wParam, 0, 0, 0);
 			return 0;
+
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
 			if (wParam < 256)
 				m_receiver->OnKeyReleased(wParam, 0, 0);
 			return 0;
+
 		case WM_CHAR:
 			m_receiver->OnKeyInput((unsigned int)wParam);
 			return 0;
+
+		case WM_MOUSEMOVE:
+		{
+			double xPos = GET_X_LPARAM(lParam);
+			double yPos = GET_Y_LPARAM(lParam);
+			m_receiver->OnMouseMoved(xPos, yPos);
+			return 0;
+		}
 
 			// Any other messages send to the default message handler as our application won't make use of them.
 		default:

@@ -55,6 +55,23 @@ Triton::PType::ShaderBufferLayout::ShaderBufferLayout(std::string name, BufferUp
 	m_Stride += padding;
 }
 
+Triton::PType::ShaderBufferLayout::ShaderBufferLayout(std::string name, BufferUpdateType updateType, BufferShaderType shaderType, const std::vector<ShaderVariable>& variables)
+	: m_Elements(variables), m_Name(name), m_UpdateType(updateType), m_ShaderType(shaderType)
+{
+	uint32_t offset = 0;
+	m_Stride = 0;
+	for (auto& element : m_Elements)
+	{
+		element.Offset = offset;
+		offset += element.Size;
+		m_Stride += element.Size;
+	}
+
+	// Make sure that the buffer is a multiple of 16 bytes
+	unsigned int padding = m_Stride % 16;
+	m_Stride += padding;
+}
+
 Triton::PType::ShaderBufferLayout::~ShaderBufferLayout()
 {
 }
@@ -96,7 +113,32 @@ Triton::PType::ShaderLayout::ShaderLayout(const ShaderInputLayout& inputLayout, 
 	}
 }
 
-Triton::PType::ShaderInputLayout::ShaderInputLayout(const std::initializer_list<ShaderInputVariable>& variables)
-	: m_Elements(variables)
+Triton::PType::ShaderLayout::ShaderLayout(const ShaderInputLayout & inputLayout, const std::vector<ShaderBufferLayout>& variables)
+	: m_Buffers(variables), m_InputLayout(inputLayout)
+{
+	std::unordered_map<BufferShaderType, unsigned int> numbers;
+
+	for (ShaderBufferLayout& buffer : m_Buffers)
+	{
+		if (numbers.find(buffer.getShaderType()) == numbers.end())
+		{
+			numbers[buffer.getShaderType()] = 0;
+		}
+		else
+		{
+			numbers[buffer.getShaderType()]++;
+		}
+
+		buffer.setNumber(numbers[buffer.getShaderType()]);
+	}
+}
+
+Triton::PType::ShaderInputLayout::ShaderInputLayout(std::string name, const std::initializer_list<ShaderInputVariable>& variables)
+	: m_Name(name), m_Elements(variables)
+{
+}
+
+Triton::PType::ShaderInputLayout::ShaderInputLayout(std::string name, const std::vector<ShaderInputVariable>& variables)
+	: m_Name(name), m_Elements(variables)
 {
 }

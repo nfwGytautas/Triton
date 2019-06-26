@@ -65,6 +65,9 @@ namespace Triton
 			std::string vertexPath;
 			std::string fragmentPath;
 
+			std::string entryPointVertex;
+			std::string entryPointFragment;
+
 			ShaderLayout* layout;
 		};
 
@@ -85,9 +88,12 @@ namespace Triton
 		class ShaderBufferLayout
 		{
 		public:
-			ShaderBufferLayout(std::string name, BufferUpdateType updateType, BufferShaderType shaderType, const std::initializer_list<ShaderVariable>& variables);
-
+			ShaderBufferLayout() {}
 			~ShaderBufferLayout();
+
+			ShaderBufferLayout(std::string name, BufferUpdateType updateType, BufferShaderType shaderType, const std::initializer_list<ShaderVariable>& variables);
+			ShaderBufferLayout(std::string name, BufferUpdateType updateType, BufferShaderType shaderType, const std::vector<ShaderVariable>& variables);
+
 
 			inline uint32_t getStride() const { return m_Stride; }
 			inline uint32_t getNumber() const { return m_Number; }
@@ -130,10 +136,12 @@ namespace Triton
 			ShaderInputLayout() {}
 			~ShaderInputLayout() {}
 
-			ShaderInputLayout(const std::initializer_list<ShaderInputVariable>& variables);
+			ShaderInputLayout(std::string name, const std::initializer_list<ShaderInputVariable>& variables);
+			ShaderInputLayout(std::string name, const std::vector<ShaderInputVariable>& variables);
 
 			inline const std::vector<ShaderInputVariable>& getElements() const { return m_Elements; }
 			inline unsigned int getVariableCount() const { return m_Elements.size(); }
+			inline const std::string& getName() const { return m_Name; }
 
 			std::vector<ShaderInputVariable>::iterator begin() { return m_Elements.begin(); }
 			std::vector<ShaderInputVariable>::iterator end() { return m_Elements.end(); }
@@ -141,6 +149,7 @@ namespace Triton
 			std::vector<ShaderInputVariable>::const_iterator end() const { return m_Elements.end(); }
 		private:
 			std::vector<ShaderInputVariable> m_Elements;
+			std::string m_Name;
 		};
 
 		class ShaderLayout
@@ -150,6 +159,7 @@ namespace Triton
 			~ShaderLayout() {}
 
 			ShaderLayout(const ShaderInputLayout& inputLayout, const std::initializer_list<ShaderBufferLayout>& variables);
+			ShaderLayout(const ShaderInputLayout& inputLayout, const std::vector<ShaderBufferLayout>& variables);
 
 			inline const std::vector<ShaderBufferLayout>& getBuffers() const { return m_Buffers; }
 			inline const ShaderInputLayout& getInputLayout() const { return m_InputLayout; }

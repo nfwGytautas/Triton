@@ -141,7 +141,9 @@ void DXShader::updateBuffers(BufferUpdateType type)
 {
 	for (unsigned int i = 0; i < prtc_Buffers.size(); i++)
 	{
-		if (prtc_Buffers[i].layout.getUpdateType() == type || type == BufferUpdateType::ALL)
+		if (prtc_Buffers[i].layout.getUpdateType() == type || 
+			type == BufferUpdateType::ALL  || 
+			prtc_Buffers[i].layout.getUpdateType() == BufferUpdateType::ALL)
 		{
 			updateBuffer(prtc_Buffers[i]);
 		}

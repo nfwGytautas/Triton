@@ -82,10 +82,10 @@ void Triton::Scene::render()
 {
 	float fov = 3.141592654f / 4.0f;
 	auto proj_mat = Triton::Core::CreateProjectionMatrix(923, 704, fov, 0.1f, 100.0f);
-	model_shader->setBufferValue("Persistant", "projectionMatrix", &proj_mat);
+	model_shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
 
 	auto ortho_mat = Triton::Core::CreateOrthographicMatrix(923, 704, 0.1f, 100.0f);
-	image_shader->setBufferValue("Persistant", "projectionMatrix", &ortho_mat);
+	image_shader->setBufferValue("persistant_Persistant", "projectionMatrix", &ortho_mat);
 
 	model_shader->enable();
 
@@ -110,7 +110,7 @@ void Triton::Scene::render()
 		}
 
 		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		model_shader->setBufferValue("PerObject", "transformationMatrix", &trans_mat);
+		model_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
 
 		model_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
 		//shader->updateBuffers(PType::BufferUpdateType::ALL);
@@ -132,7 +132,7 @@ void Triton::Scene::render()
 		image->enable();
 	
 		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		image_shader->setBufferValue("PerObject", "transformationMatrix", &trans_mat);
+		image_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
 	
 		image_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
 		Context->renderer->render(image->object().as<PType::Renderable>());
@@ -155,7 +155,7 @@ void Triton::Scene::update(float delta)
 		m_Camera->OnUpdate();
 
 		auto viewMat = m_Camera->ViewMatrix();
-		model_shader->setBufferValue("PerFrame", "viewMatrix", &viewMat);
+		model_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 
 		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &m_Camera->Position);
 
@@ -200,7 +200,7 @@ void Triton::Scene::update(float delta)
 	if (m_Camera.get() != nullptr)
 	{
 		auto viewMat = m_Camera->ViewMatrix();
-		image_shader->setBufferValue("PerFrame", "viewMatrix", &viewMat);
+		image_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 	}
 
 	//m_Materials.ForEach([&] (auto& obj)

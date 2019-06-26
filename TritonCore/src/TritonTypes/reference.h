@@ -99,6 +99,13 @@ namespace Triton
 			return *this;
 		}
 
+		// Compares two references of type T by checking 
+		// if the underlying pointers point to the same memory
+		bool operator==(const reference<T>& other) const
+		{
+			return m_Object == other.m_Object;
+		}
+
 		// Dereference operator
 		T& operator*()
 		{

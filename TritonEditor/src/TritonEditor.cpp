@@ -11,7 +11,6 @@ class UnitTest1 : public Triton::Application
 {
 	Triton::reference<Triton::PType::Framebuffer> m_viewPort;
 
-
 	size_t m_StallMesh = 1;
 	size_t m_StallMaterial = 2;
 	size_t m_BitmapID = 3;
@@ -57,59 +56,10 @@ public:
 		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_lighting.hlsl";
 		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_lighting.hlsl";
 
-		Triton::PType::ShaderLayout shader_layout(
-			{			
-				{"POSITION", Triton::PType::ShaderDataType::Float4},
-				{"TEXCOORD", Triton::PType::ShaderDataType::Float2},
-				{"NORMAL", Triton::PType::ShaderDataType::Float3}
-			},
-			{ 
-				{ 
-					"Persistant", 
-					Triton::PType::BufferUpdateType::PERSISTANT,
-					Triton::PType::BufferShaderType::VERTEX, 
-					{ 
-						{"projectionMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-				{
-					"PerFrame",
-					Triton::PType::BufferUpdateType::FRAME,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"viewMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-				{
-					"PerObject",
-					Triton::PType::BufferUpdateType::OBJECT,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-				{
-					"CameraBuffer",
-					Triton::PType::BufferUpdateType::FRAME,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"cameraPosition", Triton::PType::ShaderDataType::Float3},
-						{"padding", Triton::PType::ShaderDataType::Float}
-					}
-				},
-				{
-					"LightBuffer",
-					Triton::PType::BufferUpdateType::FRAME,
-					Triton::PType::BufferShaderType::PIXEL,
-					{
-						{"ambientColor", Triton::PType::ShaderDataType::Float4},
-						{"diffuseColor", Triton::PType::ShaderDataType::Float4},
-						{"specularColor", Triton::PType::ShaderDataType::Float4},
-						{"lightDirection", Triton::PType::ShaderDataType::Float3},
-						{"specularPower", Triton::PType::ShaderDataType::Float},
-					}
-				},
-			});
+		shader_params->entryPointVertex = "ColorVertexShader";
+		shader_params->entryPointFragment = "ColorPixelShader";
+
+		Triton::PType::ShaderLayout shader_layout = Triton::Data::File::ReadShaderLayout(shader_params);
 
 		shader_params->layout = &shader_layout;
 
@@ -120,7 +70,7 @@ public:
 
 		Shader->enable();
 		auto proj_mat = Context->renderer->projection();
-		Shader->setBufferValue("Persistant", "projectionMatrix", &proj_mat);
+		Shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
 
 
 		// Create bitmap shader
@@ -131,37 +81,10 @@ public:
 		shader2_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_texture.hlsl";
 		shader2_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_texture.hlsl";
 
-		Triton::PType::ShaderLayout shader2_layout(
-			{
-				{"POSITION", Triton::PType::ShaderDataType::Float4},
-				{"TEXCOORD", Triton::PType::ShaderDataType::Float2},
-			},
-			{
-				{
-					"Persistant",
-					Triton::PType::BufferUpdateType::PERSISTANT,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"projectionMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-				{
-					"PerFrame",
-					Triton::PType::BufferUpdateType::FRAME,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"viewMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-				{
-					"PerObject",
-					Triton::PType::BufferUpdateType::OBJECT,
-					Triton::PType::BufferShaderType::VERTEX,
-					{
-						{"transformationMatrix", Triton::PType::ShaderDataType::Mat4}
-					}
-				},
-			});
+		shader2_params->entryPointVertex = "ColorVertexShader";
+		shader2_params->entryPointFragment = "ColorPixelShader";
+
+		Triton::PType::ShaderLayout shader2_layout = Triton::Data::File::ReadShaderLayout(shader2_params);
 
 		shader2_params->layout = &shader2_layout;
 
@@ -269,11 +192,11 @@ public:
 			m_MainScene->Entities->assign<Triton::Components::Image>(Ent2, m_BitmapID);
 		}
 		
-		//auto Ent1 = prtc_Scene->Registry()->create();
-		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
+		//auto Ent1 = m_MainScene->Entities->create();
+		//m_MainScene->Entities->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
 		//
-		//auto Ent2 = prtc_Scene->Registry()->create();
-		//prtc_Scene->Registry()->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
+		//auto Ent2 = m_MainScene->Entities->create();
+		//m_MainScene->Entities->assign<Triton::Components::LightEmitter>(Ent2, m_Light2);
 	}
 
 	void OnUpdate() override
@@ -318,27 +241,27 @@ public:
 	{
 		const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
 
-		double xpos = mme.GetX();
-		double ypos = mme.GetY();
-
-		if (m_firstMouse)
-		{
-			lastX = xpos;
-			lastY = ypos;
-			m_firstMouse = false;
-		}
-
-		float xoffset = xpos - lastX;
-		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-		lastX = xpos;
-		lastY = ypos;
-
-		float sensitivity = 0.1f;
-		xoffset *= sensitivity;
-		yoffset *= sensitivity;
-
-		m_MainScene->m_Camera->Yaw += xoffset;
-		m_MainScene->m_Camera->Pitch += yoffset;
+		//double xpos = mme.GetX();
+		//double ypos = mme.GetY();
+		//
+		//if (m_firstMouse)
+		//{
+		//	lastX = xpos;
+		//	lastY = ypos;
+		//	m_firstMouse = false;
+		//}
+		//
+		//float xoffset = xpos - lastX;
+		//float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+		//lastX = xpos;
+		//lastY = ypos;
+		//
+		//float sensitivity = 0.1f;
+		//xoffset *= sensitivity;
+		//yoffset *= sensitivity;
+		//
+		//m_MainScene->m_Camera->Yaw += xoffset;
+		//m_MainScene->m_Camera->Pitch += yoffset;
 
 		return false;
 	}

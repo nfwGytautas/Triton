@@ -149,6 +149,7 @@
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
+    <ClInclude Include="src\Triton\Utility\Algorithm.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -202,5 +203,6 @@
     </ClCompile>
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
+    <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
   </ItemGroup>
 </Project>

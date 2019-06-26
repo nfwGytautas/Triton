@@ -146,6 +146,7 @@
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
+    <ClInclude Include="src\Triton\Utility\Algorithm.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\AppSettings.h" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
+    <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
