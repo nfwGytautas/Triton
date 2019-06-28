@@ -20,7 +20,8 @@ namespace Triton
 				MESH,
 				MATERIAL,
 				VIEWPORT,
-				IMAGE
+				IMAGE,
+				CUBEMAP
 			} Type = AssetType::NONE;
 
 			// Enum that specifies how the engine will interpret the data
@@ -32,12 +33,11 @@ namespace Triton
 				COPY
 			} Operation = CreationOperation::CREATE;
 
-			// If asset is an external file the engine will take the primary path to load it
+			// If asset is an external file the engine will take the path according to the asset to load it
+			// say if the asset is a mesh or material it will take the path in the [0] index if it's a cube map
+			// it will take [0] ~ [5] paths {right, left, bottom, top, front, back}
 			// else don't specify
-			std::string PrimaryPath;
-
-			// If asset is a shader then the engine will interpret this as shader pixel shader
-			std::string SecondaryPath;
+			std::string Paths[6];
 
 			// For copying the object the already existant asset must be specified
 			// else don't specify

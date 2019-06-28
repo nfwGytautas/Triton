@@ -24,7 +24,9 @@ class UnitTest1 : public Triton::Application
 
 	Triton::reference<Triton::Scene> m_MainScene;
 	Triton::reference<Triton::Data::Material> mat;
+	Triton::reference<Triton::Data::Material> cubeMat;
 	Triton::reference<Triton::Data::Mesh> mesh;
+	Triton::reference<Triton::Data::Mesh> cubeMesh;
 	Triton::reference<Triton::Data::Image> image;
 
 	Triton::reference<Triton::EditorScene> m_EditorScene;
@@ -57,20 +59,36 @@ public:
 		// Mesh creation process
 		Triton::Resource::AssetCreateParams asset_desc;
 		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
-		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stall.obj";
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stall.obj";
 
 		mesh = this->createAsset(asset_desc).as<Triton::Data::Mesh>();
+
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/simple_cube.obj";
+
+		cubeMesh = this->createAsset(asset_desc).as<Triton::Data::Mesh>();
 
 
 		// Material creation process
 		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
-		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stallTexture.png";
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stallTexture.png";
 
 		mat = this->createAsset(asset_desc).as<Triton::Data::Material>();
 
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::CUBEMAP;
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/right.jpg";
+		asset_desc.Paths[1] = "D:/Programming/Test files/nfw/left.jpg";
+		asset_desc.Paths[2] = "D:/Programming/Test files/nfw/bottom.jpg";
+		asset_desc.Paths[3] = "D:/Programming/Test files/nfw/top.jpg";
+		asset_desc.Paths[4] = "D:/Programming/Test files/nfw/front.jpg";
+		asset_desc.Paths[5] = "D:/Programming/Test files/nfw/back.jpg";
+
+		cubeMat = this->createAsset(asset_desc).as<Triton::Data::Material>();
+
 		mat->Shader = Shader;
 		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
+		cubeMat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
 		mat->Shininess = 32;
+		cubeMat->Shininess = 32;
 
 		// Viewport creation process
 		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::VIEWPORT;
@@ -84,7 +102,7 @@ public:
 		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::IMAGE;
 		asset_desc.Width = 100;
 		asset_desc.Height = 100;
-		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stallTexture.png";
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stallTexture.png";
 
 		image = this->createAsset(asset_desc).as<Triton::Data::Image>();
 		image->Bitmap->setPosition(150, 150);
@@ -112,6 +130,29 @@ public:
 		m_MainScene->image_shader = Shader2;
 
 		delete shader2_params;
+
+		// Create shader
+		Triton::PType::ShaderCreateParams* shader3_params = new Triton::PType::ShaderCreateParams();
+		//shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
+		//shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+
+		shader3_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_skybox.hlsl";
+		shader3_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_skybox.hlsl";
+
+		shader3_params->entryPointVertex = "ColorVertexShader";
+		shader3_params->entryPointFragment = "ColorPixelShader";
+
+		Triton::PType::ShaderLayout shader3_layout = Triton::Data::File::ReadShaderLayout(shader3_params);
+
+		shader3_params->layout = &shader3_layout;
+
+		cubeMat->Shader = Context->factory->createShader(shader3_params).as<Triton::PType::Shader>();
+
+		delete shader3_params;
+
+
+		m_MainScene->BackgroundMesh = cubeMesh;
+		m_MainScene->BackgroundMaterial = cubeMat;
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
@@ -154,6 +195,20 @@ public:
 		
 			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, mesh->getAssetID(), mat->getAssetID());
 		}
+
+		//for (int i = 0; i < 2; i++)
+		//{
+		//	auto entity = m_MainScene->Entities->create();
+		//
+		//	//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+		//	auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(entity);
+		//
+		//	transform.Position = Triton::Vector3(-5.0 + -(10 * i), 0.0, 25.0);
+		//	//transform.Scale = Triton::Vector3(10, 10, 10);
+		//	transform.Rotation = Triton::Vector3(0.0, 0.0, 0.0);
+		//
+		//	m_MainScene->Entities->assign<Triton::Components::Visual>(entity, cubeMesh->getAssetID(), cubeMat->getAssetID());
+		//}
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -235,8 +290,8 @@ public:
 		xoffset *= sensitivity;
 		yoffset *= sensitivity;
 		
-		//m_MainScene->Camera->Yaw += xoffset;
-		//m_MainScene->Camera->Pitch += yoffset;
+		m_MainScene->Camera->Yaw += xoffset;
+		m_MainScene->Camera->Pitch += yoffset;
 
 		return false;
 	}

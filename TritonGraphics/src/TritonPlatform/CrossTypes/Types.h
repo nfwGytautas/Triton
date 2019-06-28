@@ -115,6 +115,12 @@ namespace Triton
 
 			// Sets depth buffer state
 			virtual void depthBufferState(bool state) = 0;
+
+			// Sets the culling state false for disabled
+			virtual void cullBufferState(bool state) = 0;
+
+			// Sets cursor position to specified points
+			virtual void setCursorPos(double x, double y) = 0;
 		};
 	}
 }

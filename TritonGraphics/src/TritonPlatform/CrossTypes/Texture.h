@@ -25,11 +25,38 @@ namespace Triton
 			virtual void enable() = 0;
 			virtual void disable() = 0;
 
-			unsigned int Slot;
+			unsigned int Slot = 0;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
 		protected:
 			Texture()
+			{ }
+		};
+
+		class TextureArrayCreateParams : public FactoryCreateParams
+		{
+		public:
+			// All textures have to be same size
+			int width;
+			int height;
+			int BPP;
+
+			unsigned int count;
+			std::vector<reference<TextureCreateParams>> individualTextures;
+		};
+
+		class CubeTexture : public Texture
+		{
+		public:
+			virtual ~CubeTexture() { }
+
+			virtual void enable() = 0;
+			virtual void disable() = 0;
+
+		protected:
+			virtual void create(FactoryCreateParams* createParams) override = 0;
+		protected:
+			CubeTexture()
 			{ }
 		};
 

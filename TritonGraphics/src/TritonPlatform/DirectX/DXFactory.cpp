@@ -12,7 +12,7 @@
 
 PLATFORM_NAMESPACE_BEGIN
 
-reference<FactoryObject> Triton::PType::DXFactory::createShader(FactoryCreateParams* createParams)
+reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createParams)
 {
 	auto shaderCreate = OBJECT_AS(ShaderCreateParams, createParams);
 
@@ -175,7 +175,7 @@ reference<FactoryObject> Triton::PType::DXFactory::createShader(FactoryCreatePar
 	return shader;
 }
 
-reference<FactoryObject> Triton::PType::DXFactory::createVAO(FactoryCreateParams* createParams)
+reference<FactoryObject> DXFactory::createVAO(FactoryCreateParams* createParams)
 {
 	DXVAO* vao = new DXVAO();
 
@@ -258,7 +258,7 @@ reference<FactoryObject> Triton::PType::DXFactory::createVAO(FactoryCreateParams
 	return vao;
 }
 
-reference<FactoryObject> Triton::PType::DXFactory::createTexture(FactoryCreateParams* createParams)
+reference<FactoryObject> DXFactory::createTexture(FactoryCreateParams* createParams)
 {
 	DXTexture* texture = new DXTexture();
 
@@ -314,11 +314,82 @@ reference<FactoryObject> Triton::PType::DXFactory::createTexture(FactoryCreatePa
 	// Generate mipmaps for this texture.
 	m_deviceContext->GenerateMips(texture->m_textureView);
 
-
 	texture->m_deviceContext = m_deviceContext;
 
 	texture->create(createParams);
 	return texture;
+}
+
+reference<FactoryObject> DXFactory::createCubeTexture(FactoryCreateParams* createParams)
+{
+	DXCubeTexture* cubeTexture = new DXCubeTexture();
+
+	auto textureParams = OBJECT_AS(TextureArrayCreateParams, createParams);
+
+	bool result;
+	D3D11_TEXTURE2D_DESC textureDesc;
+	HRESULT hResult;
+	unsigned int rowPitch;
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+
+	// Setup the description of the texture.
+	textureDesc.Height = textureParams->height;
+	textureDesc.Width = textureParams->width;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = textureParams->count;
+	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	// Setup the shader resource view description.
+	srvDesc.Format = textureDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	srvDesc.TextureCube.MipLevels = textureDesc.MipLevels;
+	srvDesc.TextureCube.MostDetailedMip = 0;
+
+	// Set the row pitch of the targa image data.
+	rowPitch = (textureParams->width * 4) * sizeof(unsigned char);
+
+	D3D11_SUBRESOURCE_DATA pData[6];
+	for (int cubeMapFaceIndex = 0; cubeMapFaceIndex < 6; cubeMapFaceIndex++)
+	{	
+		//Pointer to the pixel data
+		pData[cubeMapFaceIndex].pSysMem = textureParams->individualTextures[cubeMapFaceIndex]->buffer.get();
+		//Line width in bytes
+		pData[cubeMapFaceIndex].SysMemPitch = rowPitch;
+		// This is only used for 3d textures.
+		pData[cubeMapFaceIndex].SysMemSlicePitch = 0;
+	}
+
+	//Create the Texture Resource
+	HRESULT hr = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
+	if (hr != S_OK)
+	{
+		TR_CORE_ERROR("Creating cube texture failed");
+		return nullptr;
+	}	
+
+	// Create the shader resource view for the texture.
+	hResult = m_device->CreateShaderResourceView(cubeTexture->m_texture, &srvDesc, &cubeTexture->m_textureView);
+	if (FAILED(hResult))
+	{
+		TR_ERROR("Creating shader resource view failed");
+		return nullptr;
+	}
+
+	// Generate mipmaps for this texture.
+	m_deviceContext->GenerateMips(cubeTexture->m_textureView);
+
+	cubeTexture->m_deviceContext = m_deviceContext;
+
+	cubeTexture->create(createParams);
+
+	return cubeTexture;
 }
 
 reference<FactoryObject> DXFactory::createFramebuffer(FactoryCreateParams* createParams)

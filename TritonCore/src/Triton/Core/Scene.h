@@ -58,6 +58,9 @@ namespace Triton
 		std::unique_ptr<Camera> Camera;
 		std::unique_ptr<ECS::Registry> Entities;
 		std::vector<reference<Graphics::Light>> m_Lights;
+
+		reference<Data::Mesh> BackgroundMesh;
+		reference<Data::Material> BackgroundMaterial;
 	private:
 		std::unordered_map<std::string, unsigned int> m_LightCounts;
 	private:

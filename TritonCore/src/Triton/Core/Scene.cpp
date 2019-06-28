@@ -78,6 +78,7 @@ void Triton::Scene::update(float delta)
 
 		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &Camera->Position);
 
+		BackgroundMaterial->Shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 	}
 
 	for (unsigned int i = 0; i < m_Lights.size(); i++)

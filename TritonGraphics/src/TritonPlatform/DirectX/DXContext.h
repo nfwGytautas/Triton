@@ -27,6 +27,8 @@ public:
 	virtual void setViewPort(int x, int y, int width, int height) override;
 	virtual void fillPacket(PlatformObject* packet) override;
 	virtual void depthBufferState(bool state) override;
+	virtual void cullBufferState(bool state) override;
+	virtual void setCursorPos(double x, double y) override;
 
 private:
 	std::string m_appNameSTD;
@@ -43,6 +45,7 @@ private:
 	ID3D11DepthStencilState* m_depthDisabledStencilState;
 	ID3D11DepthStencilView* m_depthStencilView;
 	ID3D11RasterizerState* m_rasterState;
+	ID3D11RasterizerState* m_disabledCullingState;
 };
 
 PLATFORM_NAMESPACE_END

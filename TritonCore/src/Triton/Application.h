@@ -65,7 +65,15 @@ namespace Triton
 		reference<Resource::Asset> createAsset(Resource::AssetCreateParams& params);
 
 		// Tells the engine to render the specified scene
-		void renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo);
+		void renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO = true);
+
+		// Tells the engine to render independant object
+		void renderObject(
+			reference<Data::Mesh>& mesh,
+			reference<Data::Material>& material,
+			Matrix44 location,
+			reference<Data::Viewport>& renderTo,
+			bool clearFBO = true);
 	protected:
 		virtual void Render() = 0;
 		virtual void PreExecutionSetup() = 0;

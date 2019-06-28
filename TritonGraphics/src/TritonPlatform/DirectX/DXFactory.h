@@ -10,6 +10,7 @@ public:
 	reference<FactoryObject> createShader(FactoryCreateParams* createParams) override;
 	reference<FactoryObject> createVAO(FactoryCreateParams* createParams) override;
 	reference<FactoryObject> createTexture(FactoryCreateParams* createParams) override;
+	reference<FactoryObject> createCubeTexture(FactoryCreateParams* createParams) override;
 	reference<FactoryObject> createFramebuffer(FactoryCreateParams* createParams) override;
 	reference<FactoryObject> createBitmap(FactoryCreateParams* createParams) override;
 private:

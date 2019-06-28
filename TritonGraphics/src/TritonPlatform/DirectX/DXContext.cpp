@@ -277,7 +277,7 @@ bool Triton::PType::DXContext::init_additional()
 	// Set up the description of the stencil state.
 	depthStencilDesc.DepthEnable = true;
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 
 	depthStencilDesc.StencilEnable = true;
 	depthStencilDesc.StencilReadMask = 0xFF;
@@ -338,6 +338,15 @@ bool Triton::PType::DXContext::init_additional()
 
 	// Create the rasterizer state from the description we just filled out.
 	result = m_device->CreateRasterizerState(&rasterDesc, &m_rasterState);
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	rasterDesc.CullMode = D3D11_CULL_NONE;
+
+	// Create the disabled cull mode rasterizer state
+	result = m_device->CreateRasterizerState(&rasterDesc, &m_disabledCullingState);
 	if (FAILED(result))
 	{
 		return false;
@@ -529,6 +538,27 @@ void Triton::PType::DXContext::depthBufferState(bool state)
 	{
 		m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
 	}
+}
+
+void DXContext::cullBufferState(bool state)
+{
+	if (state)
+	{
+		m_deviceContext->RSSetState(m_rasterState);
+	}
+	else
+	{
+		m_deviceContext->RSSetState(m_disabledCullingState);
+	}
+}
+
+void DXContext::setCursorPos(double x, double y)
+{
+	POINT pt;
+	pt.x = x;
+	pt.y = y;
+	ClientToScreen(dx_window()->m_hwnd, &pt);
+	SetCursorPos(pt.x, pt.y);
 }
 
 PLATFORM_NAMESPACE_END

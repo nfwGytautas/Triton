@@ -107,12 +107,15 @@ namespace Triton {
 		// Check this is a create operation
 		if (params.Operation == Resource::AssetCreateParams::CreationOperation::CREATE)
 		{
-			// Check if the asset that we are trying to load isn't already loaded if it is
-			// then we can just use the one we cached
-			if (m_AlreadyLoaded.find(params.PrimaryPath) != m_AlreadyLoaded.end())
+			if (params.Type != Resource::AssetCreateParams::AssetType::CUBEMAP)
 			{
-				alreadyLoaded = true;
-				createdObject = m_ObjectManager->getObject(m_AlreadyLoaded[params.PrimaryPath]).as<PType::FactoryObject>();
+				// Check if the asset that we are trying to load isn't already loaded if it is
+				// then we can just use the one we cached
+				if (m_AlreadyLoaded.find(params.Paths[0]) != m_AlreadyLoaded.end())
+				{
+					alreadyLoaded = true;
+					createdObject = m_ObjectManager->getObject(m_AlreadyLoaded[params.Paths[0]]).as<PType::FactoryObject>();
+				}
 			}
 		}
 
@@ -136,7 +139,7 @@ namespace Triton {
 				// Create VAO object
 				Triton::PType::VAOCreateParams* vao_params = new Triton::PType::VAOCreateParams();
 
-				Triton::Data::File::ReadMesh(params.PrimaryPath, vao_params);
+				Triton::Data::File::ReadMesh(params.Paths[0], vao_params);
 
 				createdObject = Context->factory->createVAO(vao_params);
 
@@ -144,7 +147,7 @@ namespace Triton {
 
 				delete vao_params;
 			
-				m_AlreadyLoaded[params.PrimaryPath] = objectID;
+				m_AlreadyLoaded[params.Paths[0]] = objectID;
 			}
 
 			size_t assetID = m_AssetManager->getNextID();
@@ -175,7 +178,7 @@ namespace Triton {
 			{
 				// Create Texture object
 				Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
-				Triton::Data::File::ReadTexture(params.PrimaryPath, tex_params);
+				Triton::Data::File::ReadTexture(params.Paths[0], tex_params);
 
 				createdObject = Context->factory->createTexture(tex_params);
 
@@ -183,7 +186,7 @@ namespace Triton {
 
 				delete tex_params;
 
-				m_AlreadyLoaded[params.PrimaryPath] = objectID;
+				m_AlreadyLoaded[params.Paths[0]] = objectID;
 			}		
 
 			size_t assetID = m_AssetManager->getNextID();
@@ -223,7 +226,7 @@ namespace Triton {
 
 				delete fbo_params;
 			
-				m_AlreadyLoaded[params.PrimaryPath] = objectID;
+				m_AlreadyLoaded[params.Paths[0]] = objectID;
 			}
 			
 			size_t assetID = m_AssetManager->getNextID();
@@ -254,13 +257,13 @@ namespace Triton {
 			{
 				// Create Texture object
 				Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
-				Triton::Data::File::ReadTexture(params.PrimaryPath, tex_params);
+				Triton::Data::File::ReadTexture(params.Paths[0], tex_params);
 
 				createdObject = Context->factory->createTexture(tex_params);
 
 				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
 
-				m_AlreadyLoaded[params.PrimaryPath] = objectID;
+				m_AlreadyLoaded[params.Paths[0]] = objectID;
 
 				delete tex_params;
 			}
@@ -285,6 +288,58 @@ namespace Triton {
 			return asset.as<Resource::Asset>();
 		}
 
+		// Create cubemap
+		if (params.Type == Resource::AssetCreateParams::AssetType::CUBEMAP)
+		{
+			// Copy the asset
+			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
+			{
+				size_t assetID = m_AssetManager->getNextID();
+
+				auto asset = reference<Data::Material>(new Data::Material(assetID, params.CopyAsset.as<Data::Material>()->Texture)).as<Resource::Asset>();
+
+				m_AssetManager->addObject(assetID, asset);
+
+				return asset;
+			}
+
+			if (!alreadyLoaded || !createdObject.as<PType::Texture>().valid())
+			{
+				// Create Texture object
+				Triton::PType::TextureArrayCreateParams* tex_params = new Triton::PType::TextureArrayCreateParams();
+
+				tex_params->count = 6;
+
+				for (unsigned int i = 0; i < tex_params->count; i++)
+				{
+					Triton::PType::TextureCreateParams* tex_param = new Triton::PType::TextureCreateParams();
+					Triton::Data::File::ReadTexture(params.Paths[i], tex_param);
+
+					tex_params->individualTextures.push_back(tex_param);
+				}
+				
+				tex_params->width = tex_params->individualTextures[0]->width;
+				tex_params->height = tex_params->individualTextures[0]->height;
+				tex_params->BPP = tex_params->individualTextures[0]->BPP;
+
+				createdObject = Context->factory->createCubeTexture(tex_params);
+
+				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
+
+				delete tex_params;
+
+				m_AlreadyLoaded[params.Paths[0]] = objectID;
+			}
+
+			size_t assetID = m_AssetManager->getNextID();
+
+			auto asset = reference<Data::Material>(new Data::Material(assetID, createdObject.as<PType::Texture>()));
+
+			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
+
+			return asset.as<Resource::Asset>();
+		}
+
 		TR_CORE_ERROR("Ivalid asset creation parameters");
 		return reference<Resource::Asset>(nullptr);
 	}
@@ -294,7 +349,7 @@ namespace Triton {
 		Post(aEvent);
 	}
 
-	void Application::renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo)
+	void Application::renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO)
 	{
 		unsigned int width = renderTo->Width;
 		unsigned int height = renderTo->Height;
@@ -302,10 +357,39 @@ namespace Triton {
 		auto& frameBuffer = renderTo->Framebuffer;
 
 		frameBuffer->enable();
-		frameBuffer->clear(1.0f, 0.0f, 1.0f, 0.0f);
+		
+		if (clearFBO)
+		{
+			frameBuffer->clear(1.0f, 0.0f, 1.0f, 0.0f);
+		}
 
 		float fov = 3.141592654f / 4.0f;
 		auto proj_mat = Triton::Core::CreateProjectionMatrix(width, height, fov, 0.1f, 100.0f);
+
+		// Render background first
+		Context->cullBufferState(false);
+
+		scene->BackgroundMaterial->Shader->enable();
+
+		scene->BackgroundMaterial->Shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
+
+
+		scene->BackgroundMaterial->Texture->enable();
+
+		auto trans_mat = Triton::Core::CreateTransformationMatrix(scene->Camera->Position, Vector3(0, 0, 0), Vector3(1, 1, 1));
+
+		scene->BackgroundMaterial->Shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
+
+
+		scene->BackgroundMaterial->Shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
+		scene->BackgroundMaterial->Shader->updateBuffers(PType::BufferUpdateType::FRAME);
+		scene->BackgroundMaterial->Shader->updateBuffers(Triton::PType::BufferUpdateType::OBJECT);
+
+		scene->BackgroundMesh->VAO->enable();
+
+		Context->renderer->render(scene->BackgroundMesh->VAO.as<PType::Renderable>());
+
+		Context->cullBufferState(true);
 
 		reference<PType::Shader> currentShader;
 		scene->m_CurrVisual.Material = -1;
@@ -380,6 +464,53 @@ namespace Triton {
 		Context->depthBufferState(true);
 
 		Context->renderer->default();
+	}
+
+	void Application::renderObject(reference<Data::Mesh>& mesh, reference<Data::Material>& material, Matrix44 location, reference<Data::Viewport>& renderTo, bool clearFBO)
+	{
+		unsigned int width = renderTo->Width;
+		unsigned int height = renderTo->Height;
+
+		auto& frameBuffer = renderTo->Framebuffer;
+
+		frameBuffer->enable();
+		
+		if (clearFBO)
+		{
+			frameBuffer->clear(1.0f, 0.0f, 1.0f, 0.0f);
+		}
+
+		float fov = 3.141592654f / 4.0f;
+		auto proj_mat = Triton::Core::CreateProjectionMatrix(width, height, fov, 0.1f, 100.0f);
+
+		auto& shader = material->Shader;
+
+		shader->enable();
+
+		shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
+		//shader->setBufferValue("LightBuffer", "specularPower", &material->Shininess);
+
+		shader->updateBuffers(PType::BufferUpdateType::FRAME);
+		shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
+
+		auto& texture = material->Texture;
+
+		texture->enable();
+
+		//Shader->setUniformInt("material.matTexture", object()->Slot);
+		//Shader->setUniformVector3("material.ambient", Ambient);
+		//Shader->setUniformVector3("material.diffuse", Diffuse);
+		//Shader->setUniformVector3("material.specular", Specular);
+
+		reference<PType::VAO>& vao = mesh->VAO;
+
+		vao->enable();
+
+		//Matrix44 wvp = location * camView * camProjection;
+		shader->setBufferValue("object_Persistant", "wvp", &location);
+
+		shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+		Context->renderer->render(vao.as<PType::Renderable>());
 	}
 
 	void Application::Restart()

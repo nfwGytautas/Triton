@@ -18,6 +18,8 @@ namespace Triton
 				Vector3 Normal;
 			};
 
+			unsigned int ByteWidth = 0;
+
 			std::vector<Vertex> vertices;
 
 			std::vector<unsigned int> indices;
