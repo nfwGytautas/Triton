@@ -4,11 +4,11 @@
 #include <d3dcompiler.h>
 #include "DXManip.h"
 
-#include "DXShader.h"
-#include "DXTexture.h"
-#include "DXVAO.h"
-#include "DXFramebuffer.h"
-#include "DXBitmap.h"
+#include "BasicTypes\DXShader.h"
+#include "BasicTypes\DXTexture.h"
+#include "BasicTypes\DXVAO.h"
+#include "BasicTypes\DXFramebuffer.h"
+#include "BasicTypes\DXBitmap.h"
 
 PLATFORM_NAMESPACE_BEGIN
 

@@ -40,8 +40,6 @@ namespace Triton
 
 		// Resource management
 		virtual void addLight(std::string type, reference<Graphics::Light> light);
-		virtual void addAsset(size_t id, reference<Resource::Asset> asset);
-
 
 		virtual void Prepare();
 
@@ -53,19 +51,16 @@ namespace Triton
 		void UpdateProjection(Matrix44 aNewProjection);
 		void UpdateOrthographic(Matrix44 aNewOrthographic);
 	public:
+		Components::Visual m_CurrVisual;
 		reference<PType::Shader> model_shader;
 		reference<PType::Shader> image_shader;
 
-		std::unique_ptr<Camera> m_Camera;
+		std::unique_ptr<Camera> Camera;
 		std::unique_ptr<ECS::Registry> Entities;
-	private:
-		std::unordered_map<size_t, reference<Resource::Asset>> m_Assets;
-
 		std::vector<reference<Graphics::Light>> m_Lights;
-		std::unordered_map<std::string, unsigned int> m_LightCounts;
-
 	private:
-		Components::Visual m_CurrVisual;
+		std::unordered_map<std::string, unsigned int> m_LightCounts;
+	private:
 	};
 
 }

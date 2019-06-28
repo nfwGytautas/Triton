@@ -1,12 +1,7 @@
 #include "TRpch.h"
 #include "Image.h"
 
-void Triton::Data::Image::enable()
-{
-	object()->enable();
-}
-
-Triton::Data::Image::Image(reference<PType::Bitmap> obj)
-	: PlatformWraper(obj)
+Triton::Data::Image::Image(size_t assetID, reference<PType::Bitmap> object)
+	: Asset(assetID), Bitmap(object)
 {
 }

@@ -4,6 +4,7 @@
 #include "Triton/Core/Scene.h"
 #include "Triton/Events/EventManager.h"
 #include "Triton/Events/EventInterface.h"
+#include "Triton/Core/Wrapers/Viewport.h"
 #include <imgui.h>
 
 
@@ -33,8 +34,7 @@ namespace Triton
 
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
 
-		reference<Triton::PType::Framebuffer> ViewPort;
-		Triton::Vector2 ViewportSize;
+		reference<Triton::Data::Viewport> ViewPort;
 	private:
 
 		ImGuiIO* m_imguiIO;

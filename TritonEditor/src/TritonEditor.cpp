@@ -9,11 +9,7 @@ namespace Triton
 
 class UnitTest1 : public Triton::Application
 {
-	Triton::reference<Triton::PType::Framebuffer> m_viewPort;
-
-	size_t m_StallMesh = 1;
-	size_t m_StallMaterial = 2;
-	size_t m_BitmapID = 3;
+	Triton::reference<Triton::Data::Viewport> m_viewPort;
 
 	size_t Ent;
 
@@ -32,21 +28,11 @@ class UnitTest1 : public Triton::Application
 	Triton::reference<Triton::Data::Image> image;
 
 	Triton::reference<Triton::EditorScene> m_EditorScene;
-
-	Triton::reference<Triton::PType::Bitmap> bitmap;
 public:
 	void CreateResources()
 	{
 		m_MainScene = SceneManager->createScene();
 		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>((Triton::Core::EventManager*)this);
-
-		Triton::PType::TextureCreateParams* fbo_params = new Triton::PType::TextureCreateParams();
-		fbo_params->width = 1280;
-		fbo_params->height = 720;
-		m_viewPort = Context->factory->createFramebuffer(fbo_params).as<Triton::PType::Framebuffer>();
-		delete fbo_params;
-
-		m_EditorScene->ViewPort = m_viewPort;
 
 		// Create shader
 		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
@@ -68,9 +54,43 @@ public:
 
 		delete shader_params;
 
-		Shader->enable();
-		auto proj_mat = Context->renderer->projection();
-		Shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
+		// Mesh creation process
+		Triton::Resource::AssetCreateParams asset_desc;
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
+		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stall.obj";
+
+		mesh = this->createAsset(asset_desc).as<Triton::Data::Mesh>();
+
+
+		// Material creation process
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
+		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stallTexture.png";
+
+		mat = this->createAsset(asset_desc).as<Triton::Data::Material>();
+
+		mat->Shader = Shader;
+		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
+		mat->Shininess = 32;
+
+		// Viewport creation process
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::VIEWPORT;
+		asset_desc.Width = 1280;
+		asset_desc.Height = 720;
+
+		m_viewPort = this->createAsset(asset_desc).as<Triton::Data::Viewport>();
+		m_EditorScene->ViewPort = m_viewPort;
+
+		// Image creation process
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::IMAGE;
+		asset_desc.Width = 100;
+		asset_desc.Height = 100;
+		asset_desc.PrimaryPath = "D:/Programming/Test files/nfw/stallTexture.png";
+
+		image = this->createAsset(asset_desc).as<Triton::Data::Image>();
+		image->Bitmap->setPosition(150, 150);
+
+
+		m_MainScene->Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);
 
 
 		// Create bitmap shader
@@ -92,51 +112,6 @@ public:
 		m_MainScene->image_shader = Shader2;
 
 		delete shader2_params;
-
-
-		// Create VAO
-		Triton::PType::VAOCreateParams* vao_params = new Triton::PType::VAOCreateParams();
-		Triton::Data::File::ReadMesh("D:/Programming/Test files/nfw/stall.obj", vao_params);
-
-		auto vao = Context->factory->createVAO(vao_params).as<Triton::PType::VAO>();
-
-		delete vao_params;
-
-		// Create mesh
-		mesh = Triton::reference<Triton::Data::Mesh>(new Triton::Data::Mesh(vao));
-		m_MainScene->addAsset(m_StallMesh, mesh.as<Triton::Resource::Asset>());
-
-
-		// Create texture
-		Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
-		Triton::Data::File::ReadTexture("D:/Programming/Test files/nfw/stallTexture.png", tex_params);
-
-		auto texture = Context->factory->createTexture(tex_params).as<Triton::PType::Texture>();
-
-		delete tex_params;
-
-		Triton::PType::BitmapCreateParams* bitmap_params = new Triton::PType::BitmapCreateParams();
-
-		bitmap_params->height = 100;
-		bitmap_params->width = 100;
-		bitmap_params->texture = texture;
-
-		bitmap = Context->factory->createBitmap(bitmap_params).as<Triton::PType::Bitmap>();
-		bitmap->setPosition(150, 150);
-
-		image = Triton::reference<Triton::Data::Image>(new Triton::Data::Image(bitmap));
-		m_MainScene->addAsset(m_BitmapID, image.as<Triton::Resource::Asset>());
-
-		delete bitmap_params;
-
-		// Create material
-		mat = Triton::reference<Triton::Data::Material>(new Triton::Data::Material(texture));
-		mat->Shader = Shader;
-		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
-		mat->Shininess = 32;
-		m_MainScene->addAsset(m_StallMaterial, mat.as<Triton::Resource::Asset>());
-
-		m_MainScene->m_Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);		
 	}
 
 	UnitTest1(const Triton::AppSettings& aSettings)
@@ -166,18 +141,18 @@ public:
 		m_MainScene->addLight("spotlight", new Triton::Graphics::SpotLight(Triton::Vector3(0.0, 0.0, 0.0), Triton::Vector3(0.0f, 0.0f, -1.0f)));
 
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			Ent = m_MainScene->Entities->create();
 		
 			//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
 			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(Ent);
 
-			transform.Position = Triton::Vector3(0.0, 0.0, 25.0);
+			transform.Position = Triton::Vector3(0.0 + (10 * i), 0.0, 25.0);
 			//transform.Scale = Triton::Vector3(10, 10, 10);
 			transform.Rotation = Triton::Vector3(0.0, 180.0, 0.0);
 		
-			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, m_StallMesh, m_StallMaterial);
+			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, mesh->getAssetID(), mat->getAssetID());
 		}
 
 		for (int i = 0; i < 1; i++)
@@ -189,7 +164,7 @@ public:
 
 			transform.Position = Triton::Vector3(0.0, 0.0, 15.0);
 
-			m_MainScene->Entities->assign<Triton::Components::Image>(Ent2, m_BitmapID);
+			m_MainScene->Entities->assign<Triton::Components::Image>(Ent2, image->getAssetID());
 		}
 		
 		//auto Ent1 = m_MainScene->Entities->create();
@@ -241,42 +216,34 @@ public:
 	{
 		const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
 
-		//double xpos = mme.GetX();
-		//double ypos = mme.GetY();
-		//
-		//if (m_firstMouse)
-		//{
-		//	lastX = xpos;
-		//	lastY = ypos;
-		//	m_firstMouse = false;
-		//}
-		//
-		//float xoffset = xpos - lastX;
-		//float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-		//lastX = xpos;
-		//lastY = ypos;
-		//
-		//float sensitivity = 0.1f;
-		//xoffset *= sensitivity;
-		//yoffset *= sensitivity;
-		//
-		//m_MainScene->m_Camera->Yaw += xoffset;
-		//m_MainScene->m_Camera->Pitch += yoffset;
+		double xpos = mme.GetX();
+		double ypos = mme.GetY();
+		
+		if (m_firstMouse)
+		{
+			lastX = xpos;
+			lastY = ypos;
+			m_firstMouse = false;
+		}
+		
+		float xoffset = xpos - lastX;
+		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+		lastX = xpos;
+		lastY = ypos;
+		
+		float sensitivity = 0.1f;
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+		
+		//m_MainScene->Camera->Yaw += xoffset;
+		//m_MainScene->Camera->Pitch += yoffset;
 
 		return false;
 	}
 
 	virtual void Render() override
 	{
-		m_viewPort->enable();
-		m_viewPort->clear(1.0f, 0.0f, 1.0f, 0.0f);
-
-		m_MainScene->render();
-
-		Context->renderer->default();
-
-		Context->setViewPort(0, 0, 1280, 720);
-
+		renderScene(m_MainScene, m_viewPort);
 		m_EditorScene->render();
 	}
 };

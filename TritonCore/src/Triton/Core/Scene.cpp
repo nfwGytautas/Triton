@@ -8,25 +8,7 @@
 
 namespace Triton
 {
-	std::tuple<bool, bool> BindVisual(Components::Visual& prevVisual, Components::Visual& newVisual)
-	{
-		bool diffMat = false;
-		bool diffMesh = false;
-
-		if (prevVisual.Material != newVisual.Material)
-		{
-			diffMat = true;
-		}
-
-		if (prevVisual.Mesh != newVisual.Mesh)
-		{
-			diffMesh = true;
-		}
-
-		//prevVisual = newVisual;
-
-		return { diffMat , diffMesh};
-	}
+	
 
 	SceneBase::SceneBase(Triton::PType::Context* context)
 	{
@@ -39,7 +21,7 @@ Triton::Scene::Scene(Triton::PType::Context* context)
 {
 	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 	
-	m_Camera = std::make_unique<Camera>(Vector3(0.0f, 0.0f, 0.0f));
+	Camera = std::make_unique<Triton::Camera>(Vector3(0.0f, 0.0f, 0.0f));
 
 	//prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
 	//	Core::ShaderSettings(
@@ -68,11 +50,6 @@ void Triton::Scene::addLight(std::string type, reference<Graphics::Light> light)
 	}
 }
 
-void Triton::Scene::addAsset(size_t id, reference<Resource::Asset> asset)
-{
-	m_Assets[id] = asset;
-}
-
 void Triton::Scene::Prepare()
 {
 	
@@ -80,65 +57,7 @@ void Triton::Scene::Prepare()
 
 void Triton::Scene::render()
 {
-	float fov = 3.141592654f / 4.0f;
-	auto proj_mat = Triton::Core::CreateProjectionMatrix(923, 704, fov, 0.1f, 100.0f);
-	model_shader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
-
-	auto ortho_mat = Triton::Core::CreateOrthographicMatrix(923, 704, 0.1f, 100.0f);
-	image_shader->setBufferValue("persistant_Persistant", "projectionMatrix", &ortho_mat);
-
-	model_shader->enable();
-
-	model_shader->updateBuffers(PType::BufferUpdateType::FRAME);
-
-	model_shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
-
-	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
-
-		auto[changeMat, changeMesh] = BindVisual(m_CurrVisual, visual);
-
-		if (changeMat)
-		{
-			m_Assets[visual.Material].as<Data::Material>()->enable();
-		}
-
-		reference<Data::Mesh> mesh = m_Assets[visual.Mesh].as<Data::Mesh>();
-
-		if (changeMesh)
-		{
-			mesh->enable();
-		}
-
-		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		model_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
-
-		model_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
-		//shader->updateBuffers(PType::BufferUpdateType::ALL);
-		Context->renderer->render(mesh->object().as<PType::Renderable>());
-	});
-
-	Context->depthBufferState(false);
 	
-	image_shader->enable();
-	
-	image_shader->updateBuffers(PType::BufferUpdateType::FRAME);
-
-	image_shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
-
-	Entities->view<Components::Transform, Components::Image>().each([&](auto& transform, auto& imageComp) {
-	
-		reference<Data::Image> image = m_Assets[imageComp.Bitmap].as<Data::Image>();
-	
-		image->enable();
-	
-		auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		image_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
-	
-		image_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
-		Context->renderer->render(image->object().as<PType::Renderable>());
-	});
-	
-	Context->depthBufferState(true);
 }
 
 void Triton::Scene::update(float delta)
@@ -150,14 +69,14 @@ void Triton::Scene::update(float delta)
 
 	model_shader->enable();
 
-	if (m_Camera.get() != nullptr)
+	if (Camera.get() != nullptr)
 	{
-		m_Camera->OnUpdate();
+		Camera->OnUpdate();
 
-		auto viewMat = m_Camera->ViewMatrix();
+		auto viewMat = Camera->ViewMatrix();
 		model_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 
-		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &m_Camera->Position);
+		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &Camera->Position);
 
 	}
 
@@ -197,9 +116,9 @@ void Triton::Scene::update(float delta)
 
 	image_shader->enable();
 
-	if (m_Camera.get() != nullptr)
+	if (Camera.get() != nullptr)
 	{
-		auto viewMat = m_Camera->ViewMatrix();
+		auto viewMat = Camera->ViewMatrix();
 		image_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 	}
 

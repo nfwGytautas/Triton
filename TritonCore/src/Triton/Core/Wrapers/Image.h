@@ -9,16 +9,15 @@ namespace Triton
 {
 	namespace Data
 	{
-		class Image : public PType::PlatformWraper<PType::Bitmap>, public Resource::Asset
+		class Image : public Resource::Asset
 		{
 		public:
-			Image(reference<PType::Bitmap> obj);
+			Image(size_t assetID, reference<PType::Bitmap> object);
 
 			virtual ~Image()
 			{ }
 
-			// Inherited via PlatformWraper
-			virtual void enable() override;
+			reference<PType::Bitmap> Bitmap;
 		};
 
 	}

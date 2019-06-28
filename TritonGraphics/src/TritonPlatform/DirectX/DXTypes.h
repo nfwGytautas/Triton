@@ -10,11 +10,11 @@
 #include "DXRenderer.h"
 #include "DXWindow.h"
 
-#include "DXShader.h"
+#include "BasicTypes\DXShader.h"
 
-#include "DXTexture.h"
-#include "DXVAO.h"
-#include "DXBitmap.h"
-#include "DXFramebuffer.h"
+#include "BasicTypes\DXTexture.h"
+#include "BasicTypes\DXVAO.h"
+#include "BasicTypes\DXBitmap.h"
+#include "BasicTypes\DXFramebuffer.h"
 
 #include "DXSpecific.h"

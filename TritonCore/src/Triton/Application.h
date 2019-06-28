@@ -27,7 +27,10 @@
 #include "Entity\Components\TritonComponents.h"
 
 #include "Managers/SceneManager.h"
+#include "Managers/TritonManagers.h"
+
 #include "Core/Wrapers/Material.h"
+#include "Core/Wrapers/Viewport.h"
 
 #include "Core\Scene.h"
 #include "Camera\Camera.h"
@@ -56,6 +59,13 @@ namespace Triton
 
 		// Check if the engine has recieved a command to close
 		bool shouldClose();
+
+		// Creates an asset from the specified parameters and returns the created asset
+		// that can be casted to whatever you want using the as() function of the reference object
+		reference<Resource::Asset> createAsset(Resource::AssetCreateParams& params);
+
+		// Tells the engine to render the specified scene
+		void renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo);
 	protected:
 		virtual void Render() = 0;
 		virtual void PreExecutionSetup() = 0;
@@ -66,15 +76,18 @@ namespace Triton
 	protected:
 		virtual void OnEvent(Event* aEvent) override;
 	protected:
-		float prtc_Delta = 0.0f;
-
-		
+		float prtc_Delta = 0.0f;		
 	protected:
 		relay_ptr<Manager::SceneManager> SceneManager;
 
 		PType::Context* Context;
 	private:
 		Manager::SceneManager* m_SceneManager;
+		Manager::ObjectManager* m_ObjectManager;
+		Manager::AssetManager* m_AssetManager;
+
+		// Map of already loaded objects
+		std::unordered_map<std::string, size_t> m_AlreadyLoaded;
 	};
 
 	Application* CreateApplication(Triton::AppSettings& aSettings);

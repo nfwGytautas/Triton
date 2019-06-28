@@ -9,17 +9,15 @@ namespace Triton
 {
 	namespace Data
 	{
-		class Material : public PType::PlatformWraper<PType::Texture>, public Resource::Asset
+		class Material : public Resource::Asset
 		{
 		public:
-			Material(reference<PType::Texture> obj);
+			Material(size_t assetID, reference<PType::Texture> object);
 
 			virtual ~Material()
 			{ }
 
-			// Inherited via PlatformWraper
-			virtual void enable() override;
-
+			reference<PType::Texture> Texture;
 			reference<PType::Shader> Shader;
 			Vector3 Ambient;
 			Vector3 Diffuse;

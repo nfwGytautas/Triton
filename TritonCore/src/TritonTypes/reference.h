@@ -124,5 +124,11 @@ namespace Triton
 		{
 			return reference<AsType>(dynamic_cast<AsType*>(m_Object), m_ReferenceCount);
 		}
+
+		// Checks if the underlying pointer is valid
+		bool valid() const
+		{
+			return m_Object != nullptr;
+		}
 	};
 }

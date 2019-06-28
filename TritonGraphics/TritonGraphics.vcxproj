@@ -138,16 +138,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\TritonPlatform\DirectX\DXContext.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXFramebuffer.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXBitmap.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXFactory.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXManip.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXRenderer.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXShader.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXSpecific.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXTexture.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXTypes.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXVAO.h" />
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.h" />
     <ClInclude Include="src\TritonPlatform\DirectX\DXWindow.h" />
     <ClInclude Include="src\TritonPlatform\CrossTypes\Base.h" />
     <ClInclude Include="src\TritonPlatform\CrossTypes\Bitmap.h" />
@@ -172,14 +172,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonPlatform\DirectX\DXContext.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXFramebuffer.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXBitmap.cpp" />
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.cpp" />
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\DXFactory.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\DXManip.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\DXRenderer.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXShader.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXTexture.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXVAO.cpp" />
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.cpp" />
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.cpp" />
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.cpp" />
     <ClCompile Include="src\TritonPlatform\DirectX\DXWindow.cpp" />
     <ClCompile Include="src\TritonPlatform\CrossTypes\Shader.cpp" />
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />

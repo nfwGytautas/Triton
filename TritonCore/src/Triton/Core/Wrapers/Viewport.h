@@ -9,15 +9,18 @@ namespace Triton
 {
 	namespace Data
 	{
-		class Mesh : public Resource::Asset
+		class Viewport : public Resource::Asset
 		{
 		public:
-			Mesh(size_t assetID, reference<PType::VAO> object);
+			Viewport(size_t assetID, reference<PType::Framebuffer> object);
 
-			virtual ~Mesh()
+			unsigned int Width;
+			unsigned int Height;
+
+			virtual ~Viewport()
 			{ }
 
-			reference<PType::VAO> VAO;
+			reference<PType::Framebuffer> Framebuffer;
 		};
 
 	}

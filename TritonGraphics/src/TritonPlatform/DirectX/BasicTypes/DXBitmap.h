@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Macros.h"
+#include "TritonPlatform/DirectX/Macros.h"
 
 PLATFORM_NAMESPACE_BEGIN
 

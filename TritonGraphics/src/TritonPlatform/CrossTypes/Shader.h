@@ -216,9 +216,6 @@ namespace Triton
 
 			// Buffers
 			std::vector<Buffer> prtc_Buffers;
-
-
-
 		};
 	}
 }

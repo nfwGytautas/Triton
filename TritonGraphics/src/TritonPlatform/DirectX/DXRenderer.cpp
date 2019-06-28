@@ -1,7 +1,7 @@
 #include "DXRenderer.h"
 
-#include "DXVAO.h"
-#include "DXBitmap.h"
+#include "BasicTypes/DXVAO.h"
+#include "BasicTypes/DXBitmap.h"
 
 PLATFORM_NAMESPACE_BEGIN
 

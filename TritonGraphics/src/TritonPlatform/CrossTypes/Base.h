@@ -44,34 +44,5 @@ namespace Triton
 
 			virtual unsigned int getIndiceCount() = 0;
 		};
-
-		// Base wraper object
-		class WraperBase
-		{
-		public:
-			WraperBase() { }
-			virtual ~WraperBase() { }
-
-			virtual void enable() = 0;
-		};
-
-		// Wraper around the platform object
-		template <class T>
-		class PlatformWraper : public WraperBase
-		{
-		public:
-			PlatformWraper(reference<T> obj) : WraperBase(), _object(obj) { }
-			virtual ~PlatformWraper() { }
-
-			// Get the wraped object
-			reference<T> object() const
-			{
-				return _object;
-			}
-
-			virtual void enable() override = 0;
-		protected:
-			reference<T> _object;
-		};
 	}
 }

@@ -13,7 +13,7 @@
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 Triton::EditorScene::EditorScene(PType::Context* context, Core::EventManager* manager)
-	: SceneBase(context), EventInterface(manager), ViewportSize(500,500)
+	: SceneBase(context), EventInterface(manager)
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
 
@@ -78,7 +78,7 @@ void Triton::EditorScene::render()
 	ShowDockSpace(&m_dockspace);
 
 	// Viewport
-	ShowViewport(&m_viewport, ViewPort.as<PType::DXFramebuffer>(), ViewportSize);
+	ShowViewport(&m_viewport, ViewPort);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);
