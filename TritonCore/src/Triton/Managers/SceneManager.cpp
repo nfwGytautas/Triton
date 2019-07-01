@@ -8,8 +8,8 @@ namespace Triton
 	namespace Manager
 	{
 
-		SceneManager::SceneManager(PType::Context* context)
-			: m_Context(context)
+		SceneManager::SceneManager(PType::Context* context, reference<Core::InputManager> iManager)
+			: m_Context(context), m_iManager(iManager)
 		{
 		}
 
@@ -20,7 +20,7 @@ namespace Triton
 
 		reference<Scene> SceneManager::createScene()
 		{
-			reference<Scene> scene(new Scene(m_Context));
+			reference<Scene> scene(new Scene(m_Context, m_iManager));
 			m_Scenes.push_back(scene.as<SceneBase>());
 			return scene;
 		}

@@ -18,10 +18,6 @@ class UnitTest1 : public Triton::Application
 	size_t m_Light1;
 	size_t m_Light2;
 
-	double lastX;
-	double lastY;
-	bool m_firstMouse = true;
-
 	Triton::reference<Triton::Scene> m_MainScene;
 	Triton::reference<Triton::Data::Material> mat;
 	Triton::reference<Triton::Data::Material> cubeMat;
@@ -269,29 +265,17 @@ public:
 	}
 	bool mouseMoved(const Triton::Event& event)
 	{
-		const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
-
-		double xpos = mme.GetX();
-		double ypos = mme.GetY();
-		
-		if (m_firstMouse)
+		if (Input->getKeyboard()->Keys[(size_t)Triton::Key::KEY_SPACE])
 		{
-			lastX = xpos;
-			lastY = ypos;
-			m_firstMouse = false;
+			const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
+
+			float sensitivity = 0.3f;
+			float xoffset = mme.GetX() * sensitivity;
+			float yoffset = mme.GetY() * sensitivity;
+
+			m_MainScene->Camera->Yaw += xoffset;
+			m_MainScene->Camera->Pitch += yoffset;
 		}
-		
-		float xoffset = xpos - lastX;
-		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-		lastX = xpos;
-		lastY = ypos;
-		
-		float sensitivity = 0.1f;
-		xoffset *= sensitivity;
-		yoffset *= sensitivity;
-		
-		m_MainScene->Camera->Yaw += xoffset;
-		m_MainScene->Camera->Pitch += yoffset;
 
 		return false;
 	}

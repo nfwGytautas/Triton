@@ -9,7 +9,7 @@ namespace Triton
 		class SceneManager
 		{
 		public:
-			SceneManager(PType::Context* context);
+			SceneManager(PType::Context* context, reference<Core::InputManager> iManager);
 			virtual ~SceneManager();
 
 			reference<Scene> createScene();
@@ -17,7 +17,7 @@ namespace Triton
 			template <class T, typename... Args>
 			reference<T> createSceneCustom(Args&&... args)
 			{
-				reference<T> scene(new T(m_Context, std::forward<Args>(args)...));
+				reference<T> scene(new T(m_Context, m_iManager, std::forward<Args>(args)...));
 				m_Scenes.push_back(scene.as<SceneBase>());
 				return scene;
 			}
@@ -25,6 +25,7 @@ namespace Triton
 			void cleanUp();
 		private:
 			PType::Context* m_Context;
+			reference<Core::InputManager> m_iManager;
 
 			std::vector<reference<SceneBase>> m_Scenes;
 		};

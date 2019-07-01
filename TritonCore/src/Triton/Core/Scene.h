@@ -15,13 +15,15 @@
 #include "Triton\Core\Wrapers\Mesh.h"
 #include "Triton\Core\Wrapers\Image.h"
 
+#include "Triton\Core\Input\InputManager.h"
+
 namespace Triton
 {
 	// Base class that allows for multiple types of scenes that can all be managed by a single manager
 	class SceneBase
 	{
 	public:
-		SceneBase(Triton::PType::Context* context);
+		SceneBase(Triton::PType::Context* context, reference<Core::InputManager> iManager);
 		virtual ~SceneBase() { }
 
 		virtual void update(float delta) = 0;
@@ -29,12 +31,13 @@ namespace Triton
 		virtual void destroy() = 0;
 	protected:
 		Triton::PType::Context* Context;
+		reference<Core::InputManager> Input;
 	};
 
 	class Scene : public SceneBase
 	{
 	public:
-		Scene(Triton::PType::Context* context);
+		Scene(Triton::PType::Context* context, reference<Core::InputManager> iManager);
 		virtual ~Scene();
 
 

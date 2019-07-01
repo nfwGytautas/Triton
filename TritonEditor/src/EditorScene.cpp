@@ -12,8 +12,8 @@
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-Triton::EditorScene::EditorScene(PType::Context* context, Core::EventManager* manager)
-	: SceneBase(context), EventInterface(manager)
+Triton::EditorScene::EditorScene(PType::Context* context, reference<Core::InputManager> iManager, Core::EventManager* manager)
+	: SceneBase(context, iManager), EventInterface(manager)
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
 
@@ -137,7 +137,7 @@ bool Triton::EditorScene::OnKeyInput(unsigned int aCharInput)
 bool Triton::EditorScene::OnMouseMoved(double aX, double aY)
 {
 	ImGuiIO& io = ImGui::GetIO();
-	io.MousePos = ImVec2(aX, aY);
+	io.MousePos = ImVec2(Input->getMouse()->X, Input->getMouse()->Y);
 
 	return false;
 }

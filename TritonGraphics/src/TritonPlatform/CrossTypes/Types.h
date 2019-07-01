@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Triton/Events/EventReceiver.h"
+#include "Triton/Core/Input/InputManager.h"
 
 #include "Base.h"
 #include "Factory.h"
@@ -102,7 +102,7 @@ namespace Triton
 			virtual void shutdown() = 0;
 
 			// Set event callbacks
-			virtual void setContextEventCallBacks(Core::EventReceiver* receiver) = 0;
+			virtual void setContextEventCallBacks(Core::InputManager* iManager) = 0;
 
 			// Update the context
 			virtual void update() = 0;

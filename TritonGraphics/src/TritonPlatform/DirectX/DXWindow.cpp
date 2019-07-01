@@ -8,28 +8,7 @@ static Triton::PType::DXWindow* WindowHandle;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
-	switch (umessage)
-	{
-		// Check if the window is being destroyed.
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	// Check if the window is being closed.
-	case WM_CLOSE:
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	// All other messages pass to the message handler in the system class.
-	default:
-	{
-		return WindowHandle->MessageHandler(hwnd, umessage, wparam, lparam);
-	}
-	}
+	return WindowHandle->MessageHandler(hwnd, umessage, wparam, lparam);
 }
 
 PLATFORM_NAMESPACE_BEGIN
@@ -107,15 +86,61 @@ void DXWindow::create(unsigned int width, unsigned height)
 	// Create the window with the screen settings and get the handle to it.
 	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
-		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, NULL);
+		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, this);
 
 	// Bring the window up on the screen and set it as main focus.
 	ShowWindow(m_hwnd, SW_SHOW);
 	SetForegroundWindow(m_hwnd);
 	SetFocus(m_hwnd);
 
-	// Hide the mouse cursor.
-	//ShowCursor(false);
+	// Trap the mouse
+	RECT rect;
+	GetClientRect(m_hwnd, &rect);
+
+	POINT ul;
+	ul.x = rect.left;
+	ul.y = rect.top;
+
+	POINT lr;
+	lr.x = rect.right;
+	lr.y = rect.bottom;
+
+	MapWindowPoints(m_hwnd, nullptr, &ul, 1);
+	MapWindowPoints(m_hwnd, nullptr, &lr, 1);
+
+	rect.left = ul.x;
+	rect.top = ul.y;
+
+	rect.right = lr.x;
+	rect.bottom = lr.y;
+
+	ClipCursor(&rect);
+
+	RAWINPUTDEVICE Rid[2];
+
+	Rid[0].usUsagePage = 0x01;
+	Rid[0].usUsage = 0x02;
+	Rid[0].dwFlags = 0;   // default
+	//Rid[0].dwFlags = RIDEV_NOLEGACY;   // adds HID mouse and also ignores legacy mouse messages
+	Rid[0].hwndTarget = 0;
+
+	Rid[1].usUsagePage = 0x01;
+	Rid[1].usUsage = 0x06;
+	Rid[1].dwFlags = 0;   // default
+	//Rid[1].dwFlags = RIDEV_NOLEGACY;   // adds HID keyboard and also ignores legacy keyboard messages
+	Rid[1].hwndTarget = 0;
+
+	if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE) {
+		TR_CORE_ERROR("RID registration failure");
+		return;
+	}
+
+	POINT p;
+	if (GetCursorPos(&p))
+	{
+		m_iManager->getMouse()->X = p.x;
+		m_iManager->getMouse()->Y = p.y;
+	}
 
 	return;
 }
@@ -212,6 +237,20 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 
 	switch (msg)
 	{
+		// Check if the window is being destroyed.
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
+
+		// Check if the window is being closed.
+		case WM_CLOSE:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
+
 		case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
 		case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
 		case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
@@ -222,11 +261,11 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			if (msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK) { button = 1; }
 			if (msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK) { button = 2; }
 			if (msg == WM_XBUTTONDOWN || msg == WM_XBUTTONDBLCLK) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
-
-			m_receiver->OnMouseButtonPressed(button);
+		
+			m_iManager->mouseKeyInput(Triton::Core::InputType::PRESSED, button);
 			return 0;
 		}
-
+		
 		case WM_LBUTTONUP:
 		case WM_RBUTTONUP:
 		case WM_MBUTTONUP:
@@ -237,44 +276,78 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			if (msg == WM_RBUTTONUP) { button = 1; }
 			if (msg == WM_MBUTTONUP) { button = 2; }
 			if (msg == WM_XBUTTONUP) { button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 3 : 4; }
-
-			m_receiver->OnMouseButtonReleased(button);
+		
+			m_iManager->mouseKeyInput(Triton::Core::InputType::RELEASED, button);
 			return 0;
 		}
-
+		
 		case WM_MOUSEWHEEL:
-			m_receiver->OnMouseScrolled((float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA, 0);
+			m_iManager->mouseScrollInput((float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA, 0);
 			return 0;
-		case WM_MOUSEHWHEEL:
-
-			m_receiver->OnMouseScrolled(0, (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA);
+		case WM_MOUSEHWHEEL:	
+			m_iManager->mouseScrollInput(0, (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA);
 			return 0;
-
+		
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
 			if (wParam < 256)
-				m_receiver->OnKeyPressed(wParam, 0, 0, 0);
+			{
+				m_iManager->keyInput(Triton::Core::InputType::PRESSED, wParam);
+			}
 			return 0;
-
+		
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
 			if (wParam < 256)
-				m_receiver->OnKeyReleased(wParam, 0, 0);
+			{
+				m_iManager->keyInput(Triton::Core::InputType::RELEASED, wParam);
+			}
 			return 0;
-
+		
 		case WM_CHAR:
-			m_receiver->OnKeyInput((unsigned int)wParam);
+			m_iManager->charInput((unsigned int)wParam);
 			return 0;
 
 		case WM_MOUSEMOVE:
+			m_iManager->getMouse()->X = GET_X_LPARAM(lParam);
+			m_iManager->getMouse()->Y = GET_Y_LPARAM(lParam);
+			return 0;
+		
+		case WM_INPUT:
 		{
-			double xPos = GET_X_LPARAM(lParam);
-			double yPos = GET_Y_LPARAM(lParam);
-			m_receiver->OnMouseMoved(xPos, yPos);
+			UINT dwSize;
+
+			GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize,
+				sizeof(RAWINPUTHEADER));
+			LPBYTE lpb = new BYTE[dwSize];
+			if (lpb == NULL)
+			{
+				return 0;
+			}
+
+			if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize,
+				sizeof(RAWINPUTHEADER)) != dwSize)
+			{
+				TR_CORE_ERROR("GetRawInputData does not return correct size!");
+			}
+
+			RAWINPUT* raw = (RAWINPUT*)lpb;
+
+			LPWSTR szTempOutput = LPWSTR(1000);
+
+			// Only handle mouse move events more specifically the mouse delta
+			if (raw->header.dwType == RIM_TYPEMOUSE)
+			{
+				double xPos = raw->data.mouse.lLastX;
+				double yPos = raw->data.mouse.lLastY;
+				m_iManager->mouseMoveInput(xPos, yPos);
+			}
+
+			delete[] lpb;
 			return 0;
 		}
 
-			// Any other messages send to the default message handler as our application won't make use of them.
+		// Any other messages send to the default message handler as our application won't make use of them.
 		default:
 		{
 			return DefWindowProc(hwnd, msg, wParam, lParam);

@@ -491,12 +491,11 @@ void DXContext::shutdown()
 }
 
 // Sets the event receiver for the context
-void DXContext::setContextEventCallBacks(Core::EventReceiver* receiver)
+void DXContext::setContextEventCallBacks(Core::InputManager* iManager)
 {
-	this->receiver = receiver;
 	auto* window = static_cast<Triton::PType::DXWindow*>(this->window);
 
-	window->m_receiver = receiver;
+	window->m_iManager = iManager;
 }
 
 void DXContext::update()

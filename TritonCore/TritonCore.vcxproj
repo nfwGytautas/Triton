@@ -143,7 +143,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
+    <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
+    <ClInclude Include="src\Triton\Core\Input\Mouse.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
@@ -169,7 +172,6 @@
     <ClInclude Include="src\Triton\EntryPoint.h" />
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Triton\Events\EventManager.h" />
-    <ClInclude Include="src\Triton\Events\EventReceiver.h" />
     <ClInclude Include="src\Triton\Events\Events.h" />
     <ClInclude Include="src\Triton\Events\KeyEvent.h" />
     <ClInclude Include="src\Triton\Events\MouseEvent.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
@@ -203,7 +206,6 @@
     <ClCompile Include="src\Triton\Core\Wrapers\Material.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Mesh.cpp" />
     <ClCompile Include="src\Triton\Events\EventManager.cpp" />
-    <ClCompile Include="src\Triton\Events\EventReceiver.cpp" />
     <ClCompile Include="src\Triton\Events\Events.cpp" />
     <ClCompile Include="src\Triton\File\File.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />

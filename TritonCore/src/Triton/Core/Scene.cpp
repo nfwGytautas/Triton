@@ -6,18 +6,14 @@
 
 #define TR_SERIALIZABLE_COMPONENTS Triton::Components::Transform, Triton::Components::Visual, Triton::Components::LightEmitter
 
-namespace Triton
+Triton::SceneBase::SceneBase(Triton::PType::Context* context, reference<Core::InputManager> iManager)
 {
-	
-
-	SceneBase::SceneBase(Triton::PType::Context* context)
-	{
-		Context = context;
-	}
+	Context = context;
+	Input = iManager;
 }
 
-Triton::Scene::Scene(Triton::PType::Context* context)
-	:SceneBase(context)
+Triton::Scene::Scene(Triton::PType::Context* context, reference<Core::InputManager> iManager)
+	:SceneBase(context, iManager)
 {
 	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 	

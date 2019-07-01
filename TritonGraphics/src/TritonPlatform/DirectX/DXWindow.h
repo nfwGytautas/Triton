@@ -19,7 +19,7 @@ public:
 
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 private:
-	Core::EventReceiver* m_receiver;
+	Core::InputManager* m_iManager;
 	bool m_fullscreen = false;
 
 	bool m_hasWindow;

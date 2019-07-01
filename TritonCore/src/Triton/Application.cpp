@@ -34,24 +34,30 @@ namespace Triton {
 	Application::Application(const AppSettings& aSettings)
 		: EventManager(), EventListener(this)
 	{
+		m_iManager = new Core::InputManager();
+		m_iManager->setEventManager(this);
+
 		// Init graphics, create context and set up event callbacks
 		Context = Impl::createContext(aSettings);
 
 		Context->init();
+		Context->setContextEventCallBacks(m_iManager);
 		Context->window->create(aSettings.WindowWidth, aSettings.WindowHeight);
-		Context->setContextEventCallBacks(this);
 		Context->init_additional();
 
-		m_SceneManager = new Manager::SceneManager(Context);
+		m_SceneManager = new Manager::SceneManager(Context, m_iManager);
 		m_ObjectManager = new Manager::ObjectManager();
 		m_AssetManager = new Manager::AssetManager();
 
 		// Set up relay ptrs
 		SceneManager = m_SceneManager;
+		Input = m_iManager;
 	}
 	
 	Application::~Application()
 	{
+		delete m_iManager;
+
 		// Make sure that all resources are freed before freeing the context
 		delete m_SceneManager; // Release the assets from all scenes
 		delete m_AssetManager; // Release all objects from assets
@@ -342,11 +348,6 @@ namespace Triton {
 
 		TR_CORE_ERROR("Ivalid asset creation parameters");
 		return reference<Resource::Asset>(nullptr);
-	}
-
-	void Application::OnEvent(Event* aEvent)
-	{
-		Post(aEvent);
 	}
 
 	void Application::renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO)

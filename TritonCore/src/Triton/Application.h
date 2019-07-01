@@ -10,11 +10,11 @@
 
 #include "File\File.h"
 
+#include "Core\Input\InputManager.h"
 #include "Events\Events.h"
 #include "Events\EventManager.h"
 #include "Events\KeyEvent.h"
 #include "Events\MouseEvent.h"
-#include "Events\EventReceiver.h"
 
 #include "TritonTypes\data_collection.h"
 
@@ -43,7 +43,6 @@ namespace Triton
 
 	//Main class that allows for project creation
 	class Application : 
-		protected Core::EventReceiver,
 		protected Core::EventManager,
 		protected Triton::EventListener
 	{
@@ -82,17 +81,17 @@ namespace Triton
 
 		void Restart();
 	protected:
-		virtual void OnEvent(Event* aEvent) override;
-	protected:
 		float prtc_Delta = 0.0f;		
 	protected:
 		relay_ptr<Manager::SceneManager> SceneManager;
+		relay_ptr<Core::InputManager> Input;
 
 		PType::Context* Context;
 	private:
 		Manager::SceneManager* m_SceneManager;
 		Manager::ObjectManager* m_ObjectManager;
 		Manager::AssetManager* m_AssetManager;
+		Core::InputManager* m_iManager;
 
 		// Map of already loaded objects
 		std::unordered_map<std::string, size_t> m_AlreadyLoaded;

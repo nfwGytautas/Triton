@@ -13,8 +13,6 @@ class DXContext : public Context
 
 	DXFactory* dx_factory();
 public:
-	Core::EventReceiver* receiver;
-public:
 	DXContext(const Triton::AppSettings& appSettings);
 	virtual ~DXContext() { }
 
@@ -22,7 +20,7 @@ public:
 	virtual bool init() override;
 	virtual bool init_additional() override;
 	virtual void shutdown() override;
-	virtual void setContextEventCallBacks(Core::EventReceiver* receiver) override;
+	virtual void setContextEventCallBacks(Core::InputManager* iManager) override;
 	virtual void update() override;
 	virtual void setViewPort(int x, int y, int width, int height) override;
 	virtual void fillPacket(PlatformObject* packet) override;
