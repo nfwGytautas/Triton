@@ -1,5 +1,7 @@
 #include "DXFactory.h"
 
+#include <sstream>
+
 #include "comdef.h"
 #include <d3dcompiler.h>
 #include "DXManip.h"
@@ -77,7 +79,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 	result = m_device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &shader->m_vertexShader);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating vertex shader from buffer failed");
+		TR_SYSTEM_ERROR("Creating vertex shader from buffer failed");
 		return nullptr;
 	}
 
@@ -85,7 +87,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 	result = m_device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &shader->m_pixelShader);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating pixel shader from buffer failed");
+		TR_SYSTEM_ERROR("Creating pixel shader from buffer failed");
 		return false;
 	}
 
@@ -112,9 +114,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 		vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
 	if (FAILED(result))
 	{
-		_com_error err(result);
-		LPCTSTR errMsg = err.ErrorMessage();
-		TR_CORE_ERROR("Creating vertex input layout failed");
+		TR_SYSTEM_ERROR("Creating vertex input layout failed");
 		return nullptr;
 	}
 
@@ -142,7 +142,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 		result = m_device->CreateBuffer(&bufferDesc, NULL, &shader->m_buffers[buffer.getName()]);
 		if (FAILED(result))
 		{
-			TR_ERROR("Creating constant buffer pointer failed");
+			TR_SYSTEM_ERROR("Creating constant buffer pointer failed");
 			return nullptr;
 		}
 	}
@@ -166,7 +166,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 	result = m_device->CreateSamplerState(&samplerDesc, &shader->m_sampleState);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating texture sampler state failed");
+		TR_SYSTEM_ERROR("Creating texture sampler state failed");
 		return nullptr;
 	}
 
@@ -197,7 +197,7 @@ reference<FactoryObject> DXFactory::createVAO(FactoryCreateParams* createParams)
 	vertices = vaoParams->vertices.data();
 	if (!vertices)
 	{
-		TR_ERROR("Creating vertex array failed");
+		TR_SYSTEM_ERROR("Creating vertex array failed");
 		return nullptr;
 	}
 
@@ -205,7 +205,7 @@ reference<FactoryObject> DXFactory::createVAO(FactoryCreateParams* createParams)
 	indices = vaoParams->indices.data();
 	if (!indices)
 	{
-		TR_ERROR("Creating index array failed");
+		TR_SYSTEM_ERROR("Creating index array failed");
 		return nullptr;
 	}
 
@@ -228,7 +228,7 @@ reference<FactoryObject> DXFactory::createVAO(FactoryCreateParams* createParams)
 	result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &vao->m_vertexBuffer);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating vertex buffer failed");
+		TR_SYSTEM_ERROR("Creating vertex buffer failed");
 		return nullptr;
 	}
 
@@ -249,7 +249,7 @@ reference<FactoryObject> DXFactory::createVAO(FactoryCreateParams* createParams)
 	result = m_device->CreateBuffer(&indexBufferDesc, &indexData, &vao->m_indexBuffer);
 	if (FAILED(result))
 	{
-		TR_ERROR("Creating index buffer failed");
+		TR_SYSTEM_ERROR("Creating index buffer failed");
 		return nullptr;
 	}
 
@@ -287,7 +287,7 @@ reference<FactoryObject> DXFactory::createTexture(FactoryCreateParams* createPar
 	hResult = m_device->CreateTexture2D(&textureDesc, NULL, &texture->m_texture);
 	if (FAILED(hResult))
 	{
-		TR_ERROR("Creating empty texture failed");
+		TR_SYSTEM_ERROR("Creating empty texture failed");
 		return nullptr;
 	}
 
@@ -307,7 +307,7 @@ reference<FactoryObject> DXFactory::createTexture(FactoryCreateParams* createPar
 	hResult = m_device->CreateShaderResourceView(texture->m_texture, &srvDesc, &texture->m_textureView);
 	if (FAILED(hResult))
 	{
-		TR_ERROR("Creating shader resource view failed");
+		TR_SYSTEM_ERROR("Creating shader resource view failed");
 		return nullptr;
 	}
 
@@ -370,7 +370,7 @@ reference<FactoryObject> DXFactory::createCubeTexture(FactoryCreateParams* creat
 	HRESULT hr = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
 	if (hr != S_OK)
 	{
-		TR_CORE_ERROR("Creating cube texture failed");
+		TR_SYSTEM_ERROR("Creating cube texture failed");
 		return nullptr;
 	}	
 
@@ -378,7 +378,7 @@ reference<FactoryObject> DXFactory::createCubeTexture(FactoryCreateParams* creat
 	hResult = m_device->CreateShaderResourceView(cubeTexture->m_texture, &srvDesc, &cubeTexture->m_textureView);
 	if (FAILED(hResult))
 	{
-		TR_ERROR("Creating shader resource view failed");
+		TR_SYSTEM_ERROR("Creating shader resource view failed");
 		return nullptr;
 	}
 
@@ -497,7 +497,7 @@ reference<FactoryObject> Triton::PType::DXFactory::createBitmap(FactoryCreatePar
 	indices = new unsigned long[bitmap->m_indiceCount];
 	if (!indices)
 	{
-		TR_CORE_ERROR("Failed to create bitmap indice array");
+		TR_SYSTEM_ERROR("Failed to create bitmap indice array");
 		return nullptr;
 	}
 
@@ -527,7 +527,7 @@ reference<FactoryObject> Triton::PType::DXFactory::createBitmap(FactoryCreatePar
 	result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &bitmap->m_vertexBuffer);
 	if (FAILED(result))
 	{
-		TR_CORE_ERROR("Failed to create bitmap vertex buffer");
+		TR_SYSTEM_ERROR("Failed to create bitmap vertex buffer");
 		return nullptr;
 	}
 
@@ -548,7 +548,7 @@ reference<FactoryObject> Triton::PType::DXFactory::createBitmap(FactoryCreatePar
 	result = m_device->CreateBuffer(&indexBufferDesc, &indexData, &bitmap->m_indexBuffer);
 	if (FAILED(result))
 	{
-		TR_CORE_ERROR("Failed to create bitmap indice buffer");
+		TR_SYSTEM_ERROR("Failed to create bitmap indice buffer");
 		return nullptr;
 	}
 
@@ -571,8 +571,6 @@ void Triton::PType::DXFactory::OutputShaderErrorMessage(ID3D10Blob * errorMessag
 {
 	char* compileErrors;
 	unsigned long long bufferSize, i;
-	std::ofstream fout;
-
 
 	// Get a pointer to the error message text buffer.
 	compileErrors = (char*)(errorMessage->GetBufferPointer());
@@ -580,28 +578,15 @@ void Triton::PType::DXFactory::OutputShaderErrorMessage(ID3D10Blob * errorMessag
 	// Get the length of the message.
 	bufferSize = errorMessage->GetBufferSize();
 
-	// Open a file to write the error message to.
-	fout.open("shader-error.txt");
 	std::stringstream ss;
 
 	// Write out the error message.
 	for (i = 0; i < bufferSize; i++)
 	{
-		fout << compileErrors[i];
 		ss << compileErrors[i];
 	}
 
-	// Close the file.
-	fout.close();
-
 	TR_ERROR("Shader compiling error: {0}", ss.str());
-
-	// Release the error message.
-	errorMessage->Release();
-	errorMessage = 0;
-
-	// Pop a message up on the screen to notify the user to check the text file for compile errors.
-	MessageBox(hwnd, L"Error compiling shader.  Check shader-error.txt for message.", shaderFilename, MB_OK);
 
 	return;
 }

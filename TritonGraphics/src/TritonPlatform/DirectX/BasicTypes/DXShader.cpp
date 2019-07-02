@@ -76,7 +76,7 @@ ID3D11Buffer* DXShader::getBuffer(const std::string& name)
 
 	if (d3dbuffer == nullptr)
 	{
-		TR_CORE_ERROR("Buffer of name {0} does not exist.", name);
+		TR_ERROR("Buffer of name {0} does not exist.", name);
 		TR_CORE_ASSERT(d3dbuffer, "Buffer does not exist.")
 			return NULL;
 	}
@@ -92,7 +92,7 @@ void DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPPED_SUBRESOURCE& mapped
 	result = m_deviceContext->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
-		TR_ERROR("Locking of constant buffer failed!");
+		TR_SYSTEM_ERROR("Locking of constant buffer failed!");
 		return;
 	}
 }

@@ -21,7 +21,8 @@ void Triton::Impl::logErrors()
 	int error = GetLastError();
 	if (error != 0)
 	{
-		TR_CORE_WARN("DirectX/Win32 API error: {0}", error);
+		TR_SYSTEM_WARN("DirectX/Win32 API error: {0}", error);
+		TR_WARN("DirectX/Win32 API error: {0}", error);
 	}
 }
 

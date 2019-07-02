@@ -55,7 +55,7 @@ namespace Triton
 			case ShaderDataType::Bool:     return 1;
 			}
 		
-			TR_CORE_ERROR("Unknown shader type!");
+			TR_ERROR("Unknown shader type!");
 			return 0;
 		}
 		

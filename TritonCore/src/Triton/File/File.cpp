@@ -50,7 +50,7 @@ void Triton::Data::File::ReadMesh(std::string aPath, Triton::PType::VAOCreatePar
 {
 	if (!Valid(aPath))
 	{
-		TR_CORE_ERROR("Invalid path {0}", aPath);
+		TR_ERROR("Invalid path {0}", aPath);
 	}
 
 	LoadMeshData(aPath, params);
@@ -60,7 +60,7 @@ void Triton::Data::File::ReadTexture(std::string aPath, Triton::PType::TextureCr
 {
 	if (!Valid(aPath))
 	{
-		TR_CORE_ERROR("Invalid path {0}", aPath);
+		TR_ERROR("Invalid path {0}", aPath);
 		return;
 	}
 
@@ -145,7 +145,7 @@ bool Triton::Data::File::readShaderStream(std::string& path, PType::BufferShader
 			else
 			{
 				// The update type is not specified or is of wrong format
-				TR_CORE_WARN("Unspecified buffer update type in '{0}' \n\t for buffer '{1}'", path, bufferName);
+				TR_WARN("Unspecified buffer update type in '{0}' for buffer '{1}'", path, bufferName);
 				updateType = PType::BufferUpdateType::ALL;
 			}
 		}
@@ -219,7 +219,7 @@ bool Triton::Data::File::readShaderStream(std::string& path, PType::BufferShader
 			// Check if the parameters can be deduced
 			if (start == std::string::npos && end == std::string::npos)
 			{
-				TR_CORE_ERROR("Parsing shader layout for '{0}' failed because \n\t the entry point '{1}' parameters cannot be deduced",
+				TR_ERROR("Parsing shader layout for '{0}' failed because the entry point '{1}' parameters cannot be deduced",
 					path, entryPoint);
 				return false;
 			}
@@ -267,7 +267,7 @@ Triton::PType::ShaderLayout Triton::Data::File::ReadShaderLayout(Triton::PType::
 	// Check if the index was found
 	if (inputIndex == -1)
 	{
-		TR_CORE_ERROR("Parsing shader layout for '{0}' failed because \n\t '{1}' was either not defined or not found by the parser",
+		TR_ERROR("Parsing shader layout for '{0}' failed because '{1}' was either not defined or not found by the parser",
 			params->vertexPath, entryStruct);
 		return PType::ShaderLayout();
 	}
@@ -300,7 +300,7 @@ void LoadMeshData(std::string& aPath, Triton::PType::VAOCreateParams* params)
 
 	if (!scene)
 	{
-		TR_CORE_ERROR(importer.GetErrorString());
+		TR_ERROR(importer.GetErrorString());
 		TR_CORE_ASSERT(scene, importer.GetErrorString());
 		return;
 	}
@@ -350,7 +350,7 @@ void LoadMeshData(std::string& aPath, Triton::PType::VAOCreateParams* params)
 		}
 		catch (...)
 		{
-			TR_CORE_ERROR("Parsing error!");
+			TR_ERROR("Parsing error!");
 			TR_CORE_ASSERT(0, "Parsing error!");
 			return;
 		}

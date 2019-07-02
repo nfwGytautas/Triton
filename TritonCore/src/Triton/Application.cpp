@@ -346,7 +346,7 @@ namespace Triton {
 			return asset.as<Resource::Asset>();
 		}
 
-		TR_CORE_ERROR("Ivalid asset creation parameters");
+		TR_ERROR("Ivalid asset creation parameters");
 		return reference<Resource::Asset>(nullptr);
 	}
 

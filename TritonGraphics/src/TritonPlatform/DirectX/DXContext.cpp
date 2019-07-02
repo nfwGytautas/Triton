@@ -7,6 +7,8 @@
 
 #include "Triton/AppSettings.h"
 
+#include "Triton/Core/Input/InputManager.h"
+
 PLATFORM_NAMESPACE_BEGIN
 
 DXWindow* DXContext::dx_window()
@@ -148,7 +150,7 @@ bool Triton::PType::DXContext::init_additional()
 
 	char* cardName = new char[128];
 	strcpy_s(cardName, 128, m_videoCardDescription);
-	TR_INFO("DirectX initialized on {0} with {1}MB dedicated video memory", cardName, m_videoCardMemory);
+	TR_SYSTEM_INFO("DirectX initialized on {0} with {1}MB dedicated video memory", cardName, m_videoCardMemory);
 	delete cardName;
 
 	// Release the display mode list.
@@ -391,7 +393,7 @@ bool Triton::PType::DXContext::init_additional()
 	result = m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState);
 	if (FAILED(result))
 	{
-		TR_CORE_ERROR("Failed to create disabled depth stencil");
+		TR_SYSTEM_ERROR("Failed to create disabled depth stencil");
 		return false;
 	}
 

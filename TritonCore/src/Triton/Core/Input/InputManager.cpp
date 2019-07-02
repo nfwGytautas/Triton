@@ -90,3 +90,30 @@ Triton::relay_ptr<Triton::Mouse> Triton::Core::InputManager::getMouse()
 {
 	return m_mouseState;
 }
+
+void Triton::Core::InputManager::gotFocus()
+{
+	m_eManager->Post(new WindowFocusedEvent());
+	m_focus = true;
+}
+
+void Triton::Core::InputManager::lostFocus()
+{
+	m_eManager->Post(new WindowLostFocusEvent());
+	m_focus = false;
+
+	// Disable all mouse keys
+	// Only affects polling
+	for (int i = 0; i < TR_MOUSE_KEY_COUNT; i++)
+	{
+		m_mouseState->Keys[i] = false;
+	}
+
+	// Disable all keyboard keys
+	// Only affects polling
+	for (int i = 0; i < TR_KEYBOARD_KEY_COUNT; i++)
+	{
+		m_keyboardState->Keys[i] = false;
+	}
+}
+

@@ -40,6 +40,21 @@ namespace Triton
 
 			// Returns a relay_ptr to a input managers mouse state
 			relay_ptr<Mouse> getMouse();
+
+			// Notify that the focus has been regained
+			// Sends gained focus event
+			void gotFocus();
+
+			// Notify that the focus has been lost
+			// Sends lost focus event
+			void lostFocus();
+
+			// Returns the state of the engine window
+			// returns [true] if focused
+			inline bool focused() const
+			{
+				return m_focus;
+			}
 		private:
 			reference<Core::EventManager> m_eManager;
 
@@ -48,6 +63,8 @@ namespace Triton
 
 			unsigned int m_keyRepeat = 0;
 			int m_lastLey = 0;
+
+			bool m_focus = true;
 		};
 	}
 }

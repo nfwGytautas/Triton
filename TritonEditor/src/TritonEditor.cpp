@@ -265,7 +265,7 @@ public:
 	}
 	bool mouseMoved(const Triton::Event& event)
 	{
-		if (Input->getKeyboard()->Keys[(size_t)Triton::Key::KEY_SPACE])
+		if (Input->getMouse()->Keys[(size_t)Triton::MouseKey::BUTTON_MIDDLE] && Input->focused())
 		{
 			const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
 

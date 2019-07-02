@@ -1,8 +1,9 @@
 #include "DXWindow.h"
 
-#include "Triton\Logger\Log.h"
-
 #include <windowsx.h>
+
+#include "Triton\Logger\Log.h"
+#include "Triton/Core/Input/InputManager.h"
 
 static Triton::PType::DXWindow* WindowHandle;
 
@@ -21,7 +22,7 @@ void DXWindow::create(unsigned int width, unsigned height)
 		return;
 	}
 
-	TR_CORE_INFO("Creating a WINDOWS display: W:{0} H:{1}", width, height);
+	TR_SYSTEM_INFO("Creating a WINDOWS display: W:{0} H:{1}", width, height);
 
 	// Initialize the message structure.
 	ZeroMemory(&m_msg, sizeof(MSG));
@@ -93,29 +94,6 @@ void DXWindow::create(unsigned int width, unsigned height)
 	SetForegroundWindow(m_hwnd);
 	SetFocus(m_hwnd);
 
-	// Trap the mouse
-	RECT rect;
-	GetClientRect(m_hwnd, &rect);
-
-	POINT ul;
-	ul.x = rect.left;
-	ul.y = rect.top;
-
-	POINT lr;
-	lr.x = rect.right;
-	lr.y = rect.bottom;
-
-	MapWindowPoints(m_hwnd, nullptr, &ul, 1);
-	MapWindowPoints(m_hwnd, nullptr, &lr, 1);
-
-	rect.left = ul.x;
-	rect.top = ul.y;
-
-	rect.right = lr.x;
-	rect.bottom = lr.y;
-
-	ClipCursor(&rect);
-
 	RAWINPUTDEVICE Rid[2];
 
 	Rid[0].usUsagePage = 0x01;
@@ -131,7 +109,7 @@ void DXWindow::create(unsigned int width, unsigned height)
 	Rid[1].hwndTarget = 0;
 
 	if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE) {
-		TR_CORE_ERROR("RID registration failure");
+		TR_SYSTEM_ERROR("RID registration failure");
 		return;
 	}
 
@@ -251,6 +229,20 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			return 0;
 		}
 
+
+		case WM_ACTIVATE:
+		{
+			if (wParam == WA_INACTIVE)
+			{
+				m_iManager->lostFocus();
+			}
+			else
+			{
+				m_iManager->gotFocus();
+			}
+			return 0;
+		}
+
 		case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
 		case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
 		case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
@@ -328,7 +320,7 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize,
 				sizeof(RAWINPUTHEADER)) != dwSize)
 			{
-				TR_CORE_ERROR("GetRawInputData does not return correct size!");
+				TR_SYSTEM_ERROR("GetRawInputData does not return correct size!");
 			}
 
 			RAWINPUT* raw = (RAWINPUT*)lpb;

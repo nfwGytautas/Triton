@@ -40,6 +40,7 @@ namespace Triton
 		ImGuiIO* m_imguiIO;
 		bool m_dockspace = false;
 		bool m_viewport = true;
+		bool m_logWindow = true;
 	};
 
 }

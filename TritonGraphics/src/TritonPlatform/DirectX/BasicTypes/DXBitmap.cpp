@@ -116,7 +116,7 @@ void Triton::PType::DXBitmap::setPosition(unsigned int newX, unsigned int newY)
 	result = m_deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(result))
 	{
-		TR_CORE_ERROR("Failed to map bitmap vertexbuffer");
+		TR_SYSTEM_ERROR("Failed to map bitmap vertexbuffer");
 		return;
 	}
 

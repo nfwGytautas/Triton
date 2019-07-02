@@ -4,6 +4,8 @@
 //"http://www.glfw.org/docs/latest/group__keys.html"
 //========================================================
 
+#include "Triton/Limits.h"
+
 namespace Triton
 {
 	enum class MouseKey : size_t
@@ -48,6 +50,6 @@ namespace Triton
 
 		// Mouse key array that specified if a key is either down or up
 		// to check specific one use MouseKey enum in Triton namespace
-		bool Keys[12];
+		bool Keys[TR_MOUSE_KEY_COUNT];
 	};
 }

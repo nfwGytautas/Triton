@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Triton/Core/Input/InputManager.h"
-
 #include "Base.h"
 #include "Factory.h"
 #include "Shader.h"
@@ -11,6 +9,12 @@
 
 namespace Triton
 {
+	namespace Core
+	{
+		// Forward declaration of the InputManager to speed up build times
+		class InputManager;
+	}
+
 	namespace PType
 	{
 		class Window

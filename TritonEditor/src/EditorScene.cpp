@@ -9,6 +9,7 @@
 
 #include "Widgets/DockSpace.h"
 #include "Widgets/Viewport.h"
+#include "Widgets/LogWindow.h"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -79,6 +80,9 @@ void Triton::EditorScene::render()
 
 	// Viewport
 	ShowViewport(&m_viewport, ViewPort);
+
+	// Log window
+	showLogWindow(&m_logWindow);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);
