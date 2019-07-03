@@ -320,9 +320,18 @@ void LoadMeshData(std::string& aPath, Triton::PType::VAOCreateParams* params)
 				currentVertex.Vertice.y = mesh->mVertices[verticeIdx].y;
 				currentVertex.Vertice.z = mesh->mVertices[verticeIdx].z;
 
-				currentVertex.Normal.x = mesh->mNormals[verticeIdx].x;
-				currentVertex.Normal.y = mesh->mNormals[verticeIdx].y;
-				currentVertex.Normal.z = mesh->mNormals[verticeIdx].z;
+				if (mesh->mNormals)
+				{
+					currentVertex.Normal.x = mesh->mNormals[verticeIdx].x;
+					currentVertex.Normal.y = mesh->mNormals[verticeIdx].y;
+					currentVertex.Normal.z = mesh->mNormals[verticeIdx].z;
+				}
+				else
+				{
+					currentVertex.Normal.x = 1.0f;
+					currentVertex.Normal.y = 1.0f;
+					currentVertex.Normal.z = 1.0f;
+				}	
 
 				if (mesh->mTextureCoords[0])
 				{

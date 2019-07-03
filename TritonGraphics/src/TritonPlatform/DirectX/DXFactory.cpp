@@ -37,7 +37,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 
 	// Compile the vertex shader code.
 	auto vsFilename = Impl::s2ws(shaderCreate->vertexPath);
-	result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, "ColorVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, shaderCreate->entryPointVertex.c_str(), "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 		&vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
@@ -57,7 +57,7 @@ reference<FactoryObject> DXFactory::createShader(FactoryCreateParams* createPara
 
 	// Compile the pixel shader code.
 	auto psFilename = Impl::s2ws(shaderCreate->fragmentPath);
-	result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, "ColorPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+	result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, shaderCreate->entryPointFragment.c_str(), "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 		&pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{

@@ -19,7 +19,7 @@ namespace Triton
 		float Yaw = 0.0f;
 
 		void OnUpdate();
-		const Matrix44& ViewMatrix();
+		Matrix44& ViewMatrix();
 	private:
 		Matrix44 m_ViewMatrix;
 

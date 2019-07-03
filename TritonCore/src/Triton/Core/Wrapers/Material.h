@@ -4,6 +4,7 @@
 
 #include "TritonPlatform/PlatformAbstraction.h"
 #include "Triton/Core/Asset/Asset.h"
+#include "Triton/Core/Wrapers/ShaderProgram.h"
 
 namespace Triton
 {
@@ -18,7 +19,7 @@ namespace Triton
 			{ }
 
 			reference<PType::Texture> Texture;
-			reference<PType::Shader> Shader;
+			reference<Data::ShaderProgram> Shader;
 			Vector3 Ambient;
 			Vector3 Diffuse;
 			Vector3 Specular;

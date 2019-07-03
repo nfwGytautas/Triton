@@ -74,7 +74,7 @@ void Triton::Scene::update(float delta)
 
 		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &Camera->Position);
 
-		BackgroundMaterial->Shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
+		BackgroundMaterial->Shader->Program->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
 	}
 
 	for (unsigned int i = 0; i < m_Lights.size(); i++)
@@ -143,6 +143,15 @@ void Triton::Scene::update(float delta)
 
 void Triton::Scene::destroy()
 {
+}
+
+Triton::Matrix44& Triton::Scene::getViewMatrix() const
+{
+	if (Camera.get() != nullptr)
+	{
+		return Camera->ViewMatrix();
+	}
+	return Matrix44();
 }
 
 void Triton::Scene::UpdateProjection(Triton::Matrix44 aNewProjection)

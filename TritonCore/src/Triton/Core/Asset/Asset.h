@@ -21,7 +21,8 @@ namespace Triton
 				MATERIAL,
 				VIEWPORT,
 				IMAGE,
-				CUBEMAP
+				CUBEMAP,
+				SHADER
 			} Type = AssetType::NONE;
 
 			// Enum that specifies how the engine will interpret the data
@@ -36,8 +37,14 @@ namespace Triton
 			// If asset is an external file the engine will take the path according to the asset to load it
 			// say if the asset is a mesh or material it will take the path in the [0] index if it's a cube map
 			// it will take [0] ~ [5] paths {right, left, bottom, top, front, back}
+			// for shaders it will take [0] ~ [1] {vertex, pixel}
 			// else don't specify
 			std::string Paths[6];
+
+			// If asset requires some special arguments they should be specified here
+			// for shaders it will take the [0] ~ [1] {vertex entry shader point, pixel shader entry point}
+			// else don't specify
+			std::string Arguments[2];
 
 			// For copying the object the already existant asset must be specified
 			// else don't specify

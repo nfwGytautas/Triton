@@ -27,7 +27,7 @@ void Triton::Camera::OnUpdate()
 	m_ViewMatrix = Triton::Core::createViewMatrix(Position, Triton::to_radians(Pitch), Triton::to_radians(Yaw), Triton::to_radians(0.0f));
 }
 
-const Triton::Matrix44& Triton::Camera::ViewMatrix()
+Triton::Matrix44& Triton::Camera::ViewMatrix()
 {
 	return m_ViewMatrix;
 }

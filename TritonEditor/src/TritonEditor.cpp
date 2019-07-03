@@ -26,34 +26,31 @@ class UnitTest1 : public Triton::Application
 	Triton::reference<Triton::Data::Image> image;
 
 	Triton::reference<Triton::EditorScene> m_EditorScene;
+
+	Triton::reference<Triton::Data::Mesh> edtr_3DPOINTER;
+	Triton::reference<Triton::Data::Material> edtr_mat_3DPOINTER;
+
+	size_t edtr_pointer_id;
 public:
 	void CreateResources()
 	{
 		m_MainScene = SceneManager->createScene();
 		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>((Triton::Core::EventManager*)this);
 
-		// Create shader
-		Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
-		//shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
-		//shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+		// Asset creation description
+		Triton::Resource::AssetCreateParams asset_desc;
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::SHADER;
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/shaders/directx/vertex_lighting.hlsl";
+		asset_desc.Paths[1] = "D:/Programming/Test files/nfw/shaders/directx/fragment_lighting.hlsl";
 
-		shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_lighting.hlsl";
-		shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_lighting.hlsl";
+		asset_desc.Arguments[0] = "ColorVertexShader";
+		asset_desc.Arguments[1] = "ColorPixelShader";
 
-		shader_params->entryPointVertex = "ColorVertexShader";
-		shader_params->entryPointFragment = "ColorPixelShader";
-
-		Triton::PType::ShaderLayout shader_layout = Triton::Data::File::ReadShaderLayout(shader_params);
-
-		shader_params->layout = &shader_layout;
-
-		auto Shader = Context->factory->createShader(shader_params).as<Triton::PType::Shader>();
-		m_MainScene->model_shader = Shader;
-
-		delete shader_params;
+		// Shader creation process
+		auto Shader1 = this->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+		m_MainScene->model_shader = Shader1->Program;
 
 		// Mesh creation process
-		Triton::Resource::AssetCreateParams asset_desc;
 		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
 		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stall.obj";
 
@@ -80,7 +77,7 @@ public:
 
 		cubeMat = this->createAsset(asset_desc).as<Triton::Data::Material>();
 
-		mat->Shader = Shader;
+		mat->Shader = Shader1;
 		mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
 		cubeMat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
 		mat->Shininess = 32;
@@ -127,24 +124,11 @@ public:
 
 		delete shader2_params;
 
-		// Create shader
-		Triton::PType::ShaderCreateParams* shader3_params = new Triton::PType::ShaderCreateParams();
-		//shader_params->vertexPath = "D:/Programming/Test files/nfw/shaders/triton/v4.shader";
-		//shader_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/triton/fragment_lighting.shader";
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::SHADER;
+		asset_desc.Paths[0] = "D:/Programming/Test files/nfw/shaders/directx/vertex_skybox.hlsl";
+		asset_desc.Paths[1] = "D:/Programming/Test files/nfw/shaders/directx/fragment_skybox.hlsl";
 
-		shader3_params->vertexPath = "D:/Programming/Test files/nfw/shaders/directx/vertex_skybox.hlsl";
-		shader3_params->fragmentPath = "D:/Programming/Test files/nfw/shaders/directx/fragment_skybox.hlsl";
-
-		shader3_params->entryPointVertex = "ColorVertexShader";
-		shader3_params->entryPointFragment = "ColorPixelShader";
-
-		Triton::PType::ShaderLayout shader3_layout = Triton::Data::File::ReadShaderLayout(shader3_params);
-
-		shader3_params->layout = &shader3_layout;
-
-		cubeMat->Shader = Context->factory->createShader(shader3_params).as<Triton::PType::Shader>();
-
-		delete shader3_params;
+		cubeMat->Shader = this->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
 
 
 		m_MainScene->BackgroundMesh = cubeMesh;
@@ -163,8 +147,35 @@ public:
 
 	}
 
+	void loadEditorResources()
+	{
+		// 3D pointer mesh
+		Triton::Resource::AssetCreateParams asset_desc;
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
+		asset_desc.Paths[0] = "C:/dev/Triton/Models/3dpointer.obj";
+
+		edtr_3DPOINTER = this->createAsset(asset_desc).as<Triton::Data::Mesh>();
+
+		// 3D pointer material
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
+		asset_desc.Paths[0] = "C:/dev/Triton/Models/3dpointer.png";
+
+		edtr_mat_3DPOINTER = this->createAsset(asset_desc).as<Triton::Data::Material>();
+
+		// 3D pointer shader
+		asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::SHADER;
+		asset_desc.Paths[0] = "C:/dev/Triton/Shaders/v_selector.hlsl";
+		asset_desc.Paths[1] = "C:/dev/Triton/Shaders/f_selector.hlsl";
+
+		asset_desc.Arguments[0] = "SelectorVertexShader";
+		asset_desc.Arguments[1] = "SelectorPixelShader";
+
+		edtr_mat_3DPOINTER->Shader = this->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+	}
+
 	void PreExecutionSetup() override
 	{
+		loadEditorResources();
 		CreateResources();	
 
 		Context->window->showCursor(true);
@@ -192,29 +203,29 @@ public:
 			m_MainScene->Entities->assign<Triton::Components::Visual>(Ent, mesh->getAssetID(), mat->getAssetID());
 		}
 
-		//for (int i = 0; i < 2; i++)
-		//{
-		//	auto entity = m_MainScene->Entities->create();
-		//
-		//	//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-		//	auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(entity);
-		//
-		//	transform.Position = Triton::Vector3(-5.0 + -(10 * i), 0.0, 25.0);
-		//	//transform.Scale = Triton::Vector3(10, 10, 10);
-		//	transform.Rotation = Triton::Vector3(0.0, 0.0, 0.0);
-		//
-		//	m_MainScene->Entities->assign<Triton::Components::Visual>(entity, cubeMesh->getAssetID(), cubeMat->getAssetID());
-		//}
+		for (int i = 0; i < 1; i++)
+		{
+			edtr_pointer_id = m_MainScene->Entities->create();
+		
+			//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(edtr_pointer_id);
+		
+			transform.Position = Triton::Vector3(-5.0 + -(10 * i), 0.0, 25.0);
+			transform.Scale = Triton::Vector3(5, 5, 5);
+			transform.Rotation = Triton::Vector3(0.0, 0.0, 0.0);
+		
+			m_MainScene->Entities->assign<Triton::Components::Visual>(edtr_pointer_id, edtr_3DPOINTER->getAssetID(), edtr_mat_3DPOINTER->getAssetID());
+		}
 
 		for (int i = 0; i < 1; i++)
 		{
 			uint32_t Ent2 = m_MainScene->Entities->create();
-
+		
 			//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
 			auto& transform = m_MainScene->Entities->assign<Triton::Components::Transform>(Ent2);
-
+		
 			transform.Position = Triton::Vector3(0.0, 0.0, 15.0);
-
+		
 			m_MainScene->Entities->assign<Triton::Components::Image>(Ent2, image->getAssetID());
 		}
 		
@@ -227,8 +238,25 @@ public:
 
 	void OnUpdate() override
 	{
+		static int movingDir = 1;
+
 		auto& transform = m_MainScene->Entities->get<Triton::Components::Transform>(Ent);
 		transform.Rotation.y += 0.01f;
+
+		transform.Position.y += 0.01f * movingDir;
+
+		if (transform.Position.y > 5)
+		{
+			movingDir = -1;
+		}
+		else if (transform.Position.y < -5)
+		{
+			movingDir = 1;
+		}
+
+		auto& transform_pointer = m_MainScene->Entities->get<Triton::Components::Transform>(edtr_pointer_id);
+		transform_pointer.Position = transform.Position;
+
 		m_MainScene->update(prtc_Delta);
 		m_EditorScene->update(prtc_Delta);
 		Triton::Impl::logErrors();
@@ -268,11 +296,11 @@ public:
 		if (Input->getMouse()->Keys[(size_t)Triton::MouseKey::BUTTON_MIDDLE] && Input->focused())
 		{
 			const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
-
+		
 			float sensitivity = 0.3f;
 			float xoffset = mme.GetX() * sensitivity;
 			float yoffset = mme.GetY() * sensitivity;
-
+		
 			m_MainScene->Camera->Yaw += xoffset;
 			m_MainScene->Camera->Pitch += yoffset;
 		}

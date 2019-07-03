@@ -153,6 +153,7 @@
     <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
     <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
     <ClInclude Include="src\Triton\Core\Input\Mouse.h" />
+    <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -206,5 +207,6 @@
     <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
     <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
+    <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp" />
   </ItemGroup>
 </Project>

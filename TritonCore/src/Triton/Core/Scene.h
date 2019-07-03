@@ -50,6 +50,8 @@ namespace Triton
 		virtual void update(float delta) override;
 
 		virtual void destroy() override;
+
+		virtual Matrix44& getViewMatrix() const;
 	public: // Non virtual
 		void UpdateProjection(Matrix44 aNewProjection);
 		void UpdateOrthographic(Matrix44 aNewOrthographic);

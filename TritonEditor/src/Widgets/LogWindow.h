@@ -11,6 +11,8 @@
 
 void showLogWindow(bool* p_open)
 {
+	static unsigned int prev_count = 0;
+
 	if (*p_open == true)
 	{
 		ImGui::SetNextWindowSize(ImVec2(800, 200), ImGuiCond_FirstUseEver);
@@ -46,7 +48,12 @@ void showLogWindow(bool* p_open)
 			ImGui::PopTextWrapPos();
 		}
 
-		ImGui::SetScrollHere(1.0f);
+
+		if (prev_count < Triton::Log::History.size())
+		{
+			ImGui::SetScrollHere(1.0f);
+			prev_count = Triton::Log::History.size();
+		}
 
 		ImGui::End();
 	}
