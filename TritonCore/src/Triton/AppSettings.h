@@ -10,4 +10,9 @@ namespace Triton {
 		unsigned int WindowHeight = 600;
 		std::string WindowTitle = "Triton display";
 	};
+
+	struct AppState
+	{
+
+	};
 }

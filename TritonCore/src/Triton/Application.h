@@ -1,6 +1,10 @@
 #pragma once
 
+#include "TritonTypes\reference.h"
+#include "TritonTypes\relay_ptr.h"
+
 #include "TritonPlatform\PlatformAbstraction.h"
+#include "Triton\Core\RenderBuffer.h"
 
 #include "TRMacros.h"
 #include "Triton\Config.h"
@@ -51,6 +55,9 @@ namespace Triton
 		Application(const AppSettings& aSettings);
 		virtual ~Application();
 
+		// Run the application automatically called from the EntryPoint.h
+		void Execute();
+
 		// Setup the engine and context
 		void setup();
 
@@ -66,15 +73,28 @@ namespace Triton
 
 		// Tells the engine to render the specified scene
 		void renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO = true);
+
+		// Calls the scene render method with required parameters
+		void renderCustomScene(reference<SceneBase>& scene);
 	protected:
 		virtual void Render() = 0;
+		virtual void RenderOnTop() {}
 		virtual void PreExecutionSetup() = 0;
 		virtual void OnUpdate() = 0;
 		virtual void FixedTimeOnUpdate() {}
 
 		void Restart();
+
+	private:
+		// Update a single frame
+		void updateMT();
+
+		// Render a single frame
+		void renderMT();
 	protected:
-		float prtc_Delta = 0.0f;		
+		float prtc_Delta = 0.0f;	
+		float prtc_UpdateDelta = 0.0f;
+		float prtc_RenderDelta = 0.0f;
 	protected:
 		relay_ptr<Manager::SceneManager> SceneManager;
 		relay_ptr<Core::InputManager> Input;
@@ -86,8 +106,22 @@ namespace Triton
 		Manager::AssetManager* m_AssetManager;
 		Core::InputManager* m_iManager;
 
+
+		// Used for multi-threaded engine execution
+		Core::RenderBuffer* m_RenderBuffer1;
+		Core::RenderBuffer* m_RenderBuffer2;
+
+		Core::RenderBuffer* m_CurrentRenderBuffer;
+		Core::RenderBuffer* m_CurrentUpdateBuffer;
+
+
 		// Map of already loaded objects
 		std::unordered_map<std::string, size_t> m_AlreadyLoaded;
+
+		// Threads
+		std::thread* m_renderThread;
+
+		bool m_doneRendering = true;
 	};
 
 	Application* CreateApplication(Triton::AppSettings& aSettings);

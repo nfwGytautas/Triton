@@ -10,6 +10,7 @@
 #include "Widgets/DockSpace.h"
 #include "Widgets/Viewport.h"
 #include "Widgets/LogWindow.h"
+#include "Widgets/Metrics.h"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -67,7 +68,7 @@ void Triton::EditorScene::update(float delta)
 	}
 }
 
-void Triton::EditorScene::render()
+void Triton::EditorScene::render(Triton::Core::RenderBuffer* renderBuffer)
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
@@ -84,6 +85,9 @@ void Triton::EditorScene::render()
 	// Log window
 	showLogWindow(&m_logWindow);
 
+	// Metrics window
+	showMetrics(&m_metrics, RenderDelta, UpdateDelta);
+
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);
 
@@ -91,8 +95,6 @@ void Triton::EditorScene::render()
 	ImGui::Render();
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-	
 
 	// Update and Render additional Platform Windows
 	if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

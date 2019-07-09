@@ -20,7 +20,7 @@ namespace Triton
 		public:
 			virtual ~GLTexture() { }
 
-			virtual void enable() override;
+			virtual void execute() override;
 			virtual void disable() override;
 		protected:
 			// Inherited via VAO
@@ -38,7 +38,7 @@ namespace Triton
 		public:
 			virtual ~GLVAO() { }
 
-			virtual void enable() override;
+			virtual void execute() override;
 			virtual void disable() override;
 		protected:
 			// Inherited via VAO

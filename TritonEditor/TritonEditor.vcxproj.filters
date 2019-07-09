@@ -16,6 +16,7 @@
     <ClInclude Include="src\Widgets\DockSpace.h" />
     <ClInclude Include="src\Widgets\Viewport.h" />
     <ClInclude Include="src\Widgets\LogWindow.h" />
+    <ClInclude Include="src\Widgets\Metrics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorScene.cpp" />

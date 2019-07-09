@@ -7,6 +7,8 @@
 #include "Triton/Core/Wrapers/Viewport.h"
 #include <imgui.h>
 
+#include "Triton/Core/RenderBuffer.h"
+
 
 namespace Triton
 {
@@ -18,7 +20,7 @@ namespace Triton
 
 		// Inherited via SceneBase
 		virtual void update(float delta) override;
-		virtual void render() override;
+		virtual void render(Core::RenderBuffer* renderBuffer) override;
 		virtual void destroy() override;
 
 
@@ -35,12 +37,15 @@ namespace Triton
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
 
 		reference<Triton::Data::Viewport> ViewPort;
-	private:
 
+		float RenderDelta;
+		float UpdateDelta;
+	private:
 		ImGuiIO* m_imguiIO;
 		bool m_dockspace = false;
 		bool m_viewport = true;
 		bool m_logWindow = true;
+		bool m_metrics = true;
 	};
 
 }

@@ -71,7 +71,7 @@ bool Triton::PType::DXContext::init_additional()
 
 
 	// Store the vsync setting.
-	dx_window()->m_vsync = false;
+	dx_renderer()->m_vsync = false;
 
 	// Create a DirectX graphics interface factory.
 	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -180,7 +180,7 @@ bool Triton::PType::DXContext::init_additional()
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	// Set the refresh rate of the back buffer.
-	if (dx_window()->m_vsync)
+	if (dx_renderer()->m_vsync)
 	{
 		swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
@@ -400,8 +400,8 @@ bool Triton::PType::DXContext::init_additional()
 	auto* rendrr = dx_renderer();
 
 	rendrr->fov = 3.141592654f / 4.0f;
-	rendrr->m_width = width;
-	rendrr->m_height = width;
+	rendrr->width = width;
+	rendrr->height = width;
 	rendrr->nearPlane = 0.1f;
 	rendrr->farPlane = 100.0f;
 
@@ -418,7 +418,7 @@ bool Triton::PType::DXContext::init_additional()
 	dx_factory()->m_hwnd = dx_window()->m_hwnd;
 	dx_factory()->m_depthStencilView = m_depthStencilView;
 
-	dx_window()->m_swapChain = m_swapChain;
+	dx_renderer()->m_swapChain = m_swapChain;
 
 	return true;
 }

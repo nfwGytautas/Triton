@@ -149,25 +149,6 @@ void DXWindow::update()
 		TranslateMessage(&m_msg);
 		DispatchMessage(&m_msg);
 	}
-
-	// Present the back buffer to the screen since rendering is complete.
-	if (m_vsync)
-	{
-		// Lock to screen refresh rate.
-		m_swapChain->Present(1, 0);
-	}
-	else
-	{
-		// Present as fast as possible.
-		m_swapChain->Present(0, 0);
-	}
-}
-
-// Set window vsync property
-void DXWindow::setVsync(bool value)
-{
-	m_vsync = value;
-	//glfwSwapInterval((int)value);
 }
 
 // Set cursor visability

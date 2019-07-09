@@ -21,8 +21,17 @@ void Triton::Impl::logErrors()
 	int error = GetLastError();
 	if (error != 0)
 	{
-		TR_SYSTEM_WARN("DirectX/Win32 API error: {0}", error);
-		TR_WARN("DirectX/Win32 API error: {0}", error);
+
+		wchar_t buf[256];
+		FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			buf, (sizeof(buf) / sizeof(wchar_t)), NULL);
+
+		std::wstring ws(buf);
+		std::string desc(ws.begin(), ws.end());
+
+		TR_SYSTEM_WARN("DirectX/Win32 API error: {0} DESC: {1}", error, desc);
+		TR_WARN("DirectX/Win32 API error: {0} DESC: {1}", error, desc);
 	}
 }
 

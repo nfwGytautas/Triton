@@ -82,6 +82,11 @@ Triton::Matrix44 Triton::Core::CreateOrthographicMatrix(float aWindowWidth, floa
 	return returnMatrix;
 }
 
+Triton::Matrix44 Triton::Core::transpose(Matrix44& mat)
+{
+	return DirectX::XMMatrixTranspose(mat);
+}
+
 #else
 
 #define GLM_ENABLE_EXPERIMENTAL

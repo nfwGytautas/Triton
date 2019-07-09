@@ -49,6 +49,12 @@ namespace Triton {
 		m_ObjectManager = new Manager::ObjectManager();
 		m_AssetManager = new Manager::AssetManager();
 
+		m_RenderBuffer1 = new Core::RenderBuffer();
+		m_RenderBuffer2 = new Core::RenderBuffer();
+
+		m_CurrentUpdateBuffer = m_RenderBuffer1;
+		m_CurrentRenderBuffer = m_RenderBuffer1;
+
 		// Set up relay ptrs
 		SceneManager = m_SceneManager;
 		Input = m_iManager;
@@ -63,8 +69,28 @@ namespace Triton {
 		delete m_AssetManager; // Release all objects from assets
 		delete m_ObjectManager; // Release all objects from Triton
 
+		delete m_renderThread;
+
 		// Clear memory from context
 		Impl::destroyContext(Context);
+	}
+
+	void Application::Execute()
+	{
+#if TR_MT_ENABLED == 1
+		// Create render thread and start executing immediately
+		m_renderThread = new std::thread(std::bind(&Application::renderMT, this));
+
+		// Start update loop
+		updateMT();
+
+		m_renderThread->join();
+#else
+		while (!shouldClose())
+		{
+			frame();
+		}
+#endif
 	}
 
 	void Application::setup()
@@ -80,22 +106,38 @@ namespace Triton {
 		auto start = timer.now();
 
 
-		Context->renderer->newFrame(0.0f, 0.5f, 0.5f, 0.0f);
+		auto updateStart = timer.now();
 
-		Context->renderer->default(); // Reset the renderer to it's default state
-		
+		m_CurrentUpdateBuffer->clear();
+
+		Context->update();
+
 		Dispatch();
-		
-		OnUpdate();	
-		
+
+		OnUpdate();
+
 		Render();
 
-		
+		auto updateStop = timer.now();
+
+		prtc_UpdateDelta = std::chrono::duration_cast<ms>(updateStop - updateStart).count() / 1000.0f;
+
+		auto renderStart = timer.now();
+
+		Context->renderer->newFrame(TR_CLEAR_COLOR);
+		Context->renderer->default(); // Reset the renderer to it's default state
+
+		m_CurrentUpdateBuffer->exec(Context);
+
+		RenderOnTop();
+
 		Context->renderer->endFrame();
-		
-		Context->update();
-		
-		
+
+		auto renderStop = timer.now();
+
+		prtc_RenderDelta = std::chrono::duration_cast<ms>(renderStop - renderStart).count() / 1000.0f;
+
+
 		auto stop = timer.now();
 		prtc_Delta = std::chrono::duration_cast<ms>(stop - start).count() / 1000.0f;
 	}
@@ -400,124 +442,216 @@ namespace Triton {
 
 	void Application::renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO)
 	{
-		unsigned int width = renderTo->Width;
-		unsigned int height = renderTo->Height;
+		// Bind/enable the viewport
+		m_CurrentUpdateBuffer->addCommand<RCommands::PushViewport>(renderTo);
 
-		auto& frameBuffer = renderTo->Framebuffer;
+		// Render the background
 
-		frameBuffer->enable();
-		
-		if (clearFBO)
+		// Disable culling
+		m_CurrentUpdateBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](relay_ptr<PType::Context> context)
 		{
-			frameBuffer->clear(1.0f, 0.0f, 1.0f, 0.0f);
-		}
+			context->cullBufferState(false);
+		});
 
-		float fov = 3.141592654f / 4.0f;
-		auto proj_mat = Triton::Core::CreateProjectionMatrix(width, height, fov, 0.1f, 100.0f);
+		m_CurrentUpdateBuffer->addCommand<RCommands::PushMesh>(scene->BackgroundMesh);
+		m_CurrentUpdateBuffer->addCommand<RCommands::PushMaterial>(scene->BackgroundMaterial);
 
-		// Render background first
-		Context->cullBufferState(false);
+		m_CurrentUpdateBuffer->addCommand<RCommands::UpdateUniformValues>
+		([&](reference<PType::Shader> shader)
+		{
+			auto trans_mat = Triton::Core::CreateTransformationMatrix(scene->Camera->Position, Vector3(0, 0, 0), Vector3(1, 1, 1));
 
-		scene->BackgroundMaterial->Shader->Program->enable();
+			shader->setBufferValue("persistant_Persistant", "projectionMatrix", &Context->renderer->projection());
+			shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
+			shader->setBufferValue("frame_PerFrame", "viewMatrix", &scene->getViewMatrix());
+		});
 
-		scene->BackgroundMaterial->Shader->Program->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
+		// Update shader buffers and render the background
+		m_CurrentUpdateBuffer->addCommand<RCommands::UpdateShaderBuffer>(PType::BufferUpdateType::ALL);
+		m_CurrentUpdateBuffer->addCommand<RCommands::Draw>();
 
+		// Enable culling
+		m_CurrentUpdateBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](relay_ptr<PType::Context> context)
+		{
+			context->cullBufferState(true);
+		});
 
-		scene->BackgroundMaterial->Texture->enable();
-
-		auto trans_mat = Triton::Core::CreateTransformationMatrix(scene->Camera->Position, Vector3(0, 0, 0), Vector3(1, 1, 1));
-
-		scene->BackgroundMaterial->Shader->Program->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
-
-
-		scene->BackgroundMaterial->Shader->Program->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
-		scene->BackgroundMaterial->Shader->Program->updateBuffers(PType::BufferUpdateType::FRAME);
-		scene->BackgroundMaterial->Shader->Program->updateBuffers(Triton::PType::BufferUpdateType::OBJECT);
-
-		scene->BackgroundMesh->VAO->enable();
-
-		Context->renderer->render(scene->BackgroundMesh->VAO.as<PType::Renderable>());
-
-		Context->cullBufferState(true);
-
-		reference<PType::Shader> currentShader;
+		// Render all entities in a scene
 		scene->m_CurrVisual.Material = -1;
 		scene->m_CurrVisual.Mesh = -1;
-
 		scene->Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
 
+			// Check if visual needs to be bound
 			auto[changeMat, changeMesh] = BindVisual(scene->m_CurrVisual, visual);
 
 			if (changeMat)
 			{
+				// Get material used by the entity
 				auto material = m_AssetManager->getObject(visual.Material).as<Triton::Data::Material>();
 
-				currentShader = material->Shader->Program;
+				// Push material
+				m_CurrentUpdateBuffer->addCommand<RCommands::PushMaterial>(material);
 
-				currentShader->enable();
+				// Update uniforms
+				m_CurrentUpdateBuffer->addCommand<RCommands::UpdateUniformValues>
+				(
+					[&](reference<PType::Shader> shader)
+					{
+						shader->setBufferValue("persistant_Persistant", "projectionMatrix", &Context->renderer->projection());
+						shader->setBufferValue("frame_PerFrame", "viewMatrix", &scene->getViewMatrix());
+						shader->setBufferValue("CameraBuffer", "cameraPosition", &scene->Camera->Position);
 
-				currentShader->setBufferValue("persistant_Persistant", "projectionMatrix", &proj_mat);
-				currentShader->setBufferValue("frame_PerFrame", "viewMatrix", &scene->getViewMatrix());
-				currentShader->setBufferValue("LightBuffer", "specularPower", &material->Shininess);
+						// Push lights
+						for (size_t i = 0; i < scene->m_Lights.size(); i++)
+						{
+							scene->m_Lights[i]->bind(shader);
+						}
 
-				currentShader->updateBuffers(PType::BufferUpdateType::FRAME);
-				currentShader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
-
-				auto& texture = material->Texture;
-
-				texture->enable();
-
-				//Shader->setUniformInt("material.matTexture", object()->Slot);
-				//Shader->setUniformVector3("material.ambient", Ambient);
-				//Shader->setUniformVector3("material.diffuse", Diffuse);
-				//Shader->setUniformVector3("material.specular", Specular);
+						shader->updateBuffers(PType::BufferUpdateType::FRAME);
+						shader->updateBuffers(PType::BufferUpdateType::PERSISTANT);
+					}
+				);
 			}
 
-			reference<PType::VAO>& vao = m_AssetManager->getObject(visual.Mesh).as<Data::Mesh>()->VAO;
+			// Get mesh object
+			reference<Data::Mesh>& mesh = m_AssetManager->getObject(visual.Mesh).as<Data::Mesh>();
+			reference<PType::VAO>& vao = mesh->VAO;
 
 			if (changeMesh)
 			{
-				vao->enable();
+				// Push mesh
+				m_CurrentUpdateBuffer->addCommand<RCommands::PushMesh>(mesh);
 			}
 
-			auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-			scene->model_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
+			// Update uniforms
+			m_CurrentUpdateBuffer->addCommand<RCommands::UpdateUniformValues>
+			(
+				[&](reference<PType::Shader> shader)
+				{
+					auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
+					shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
 
-			scene->model_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
-			Context->renderer->render(vao.as<PType::Renderable>());
+					shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+				}
+			);
+
+			// Push render command
+			m_CurrentUpdateBuffer->addCommand<RCommands::Draw>();
 		});
 
-		Context->depthBufferState(false);
-		
-		scene->image_shader->enable();
-		
-		auto ortho_mat = Triton::Core::CreateOrthographicMatrix(width, height, 0.1f, 100.0f);
-		scene->image_shader->setBufferValue("persistant_Persistant", "projectionMatrix", &ortho_mat);
+		// Change context settings
+		m_CurrentUpdateBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](relay_ptr<PType::Context> context)
+		{
+			context->depthBufferState(false);
+		});
 
-		scene->image_shader->updateBuffers(PType::BufferUpdateType::FRAME);
-		
-		scene->image_shader->updateBuffers(Triton::PType::BufferUpdateType::PERSISTANT);
+		// Push image shader
+		m_CurrentUpdateBuffer->addCommand<RCommands::PushShader>(scene->image_shader);
 
+		// Update uniforms
+		m_CurrentUpdateBuffer->addCommand<RCommands::UpdateUniformValues>
+		([&](reference<PType::Shader> shader)
+		{
+			shader->setBufferValue("persistant_Persistant", "projectionMatrix", &Context->renderer->orthographic());
+			shader->setBufferValue("frame_PerFrame", "viewMatrix", &scene->getViewMatrix());
+
+			shader->updateBuffers(PType::BufferUpdateType::FRAME);
+			shader->updateBuffers(PType::BufferUpdateType::PERSISTANT);
+		});
+
+		// Render all images in the scene
 		scene->Entities->view<Components::Transform, Components::Image>().each([&](auto& transform, auto& imageComp) {
-		
+
+			// Get image object
 			reference<Data::Image> image = m_AssetManager->getObject(imageComp.Bitmap).as<Data::Image>();
-		
-			image->Bitmap->enable();
-		
-			auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-			scene->image_shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
-		
-			scene->image_shader->updateBuffers(PType::BufferUpdateType::OBJECT);
-			Context->renderer->render(image->Bitmap.as<PType::Renderable>());
+
+			// Push image
+			m_CurrentUpdateBuffer->addCommand<RCommands::PushImage>(image);
+
+			// Update uniforms
+			m_CurrentUpdateBuffer->addCommand<RCommands::UpdateUniformValues>
+			([&](reference<PType::Shader> shader)
+			{
+				auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
+				shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
+
+				shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+			});
+
+			// Push render command
+			m_CurrentUpdateBuffer->addCommand<RCommands::Draw>();
 		});
 
-		Context->depthBufferState(true);
+		// Change context settings
+		m_CurrentUpdateBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](relay_ptr<PType::Context> context)
+		{
+			context->depthBufferState(true);
+			context->renderer->default();
+		});
+	}
 
-		Context->renderer->default();
+	void Application::renderCustomScene(reference<SceneBase>& scene)
+	{
+		// Pass the render buffer to the scene
+		scene->render(m_CurrentRenderBuffer);
 	}
 
 	void Application::Restart()
 	{
 		PreExecutionSetup();
+	}
+
+	void Application::updateMT()
+	{
+		while (!shouldClose())
+		{
+			static std::chrono::high_resolution_clock timer;
+			using ms = std::chrono::duration<float, std::milli>;
+
+			auto updateStart = timer.now();
+
+			Context->update();
+
+			Dispatch();
+
+			OnUpdate();
+
+			auto updateStop = timer.now();
+
+			prtc_UpdateDelta = std::chrono::duration_cast<ms>(updateStop - updateStart).count() / 1000.0f;
+		}
+	}
+
+	void Application::renderMT()
+	{
+		while (!shouldClose())
+		{
+			static std::chrono::high_resolution_clock timer;
+			using ms = std::chrono::duration<float, std::milli>;
+
+			auto renderStart = timer.now();
+
+			m_CurrentRenderBuffer->clear();
+
+			Render();
+
+			Context->renderer->newFrame(TR_CLEAR_COLOR);
+			Context->renderer->default();
+
+			m_CurrentRenderBuffer->exec(Context);
+
+			RenderOnTop();
+
+			Context->renderer->endFrame();
+
+			auto renderStop = timer.now();
+
+			prtc_RenderDelta = std::chrono::duration_cast<ms>(renderStop - renderStart).count() / 1000.0f;
+
+		}
 	}
 }

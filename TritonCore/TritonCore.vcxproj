@@ -147,6 +147,7 @@
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
     <ClInclude Include="src\Triton\Core\Input\Mouse.h" />
+    <ClInclude Include="src\Triton\Core\RenderBuffer.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
@@ -189,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
+    <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />

@@ -13,7 +13,7 @@
 
 NAMESPACE_BEGIN
 
-inline void Triton::PType::GLTexture::enable()
+inline void Triton::PType::GLTexture::execute()
 {
 	glActiveTexture(GL_TEXTURE0 + Slot);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);

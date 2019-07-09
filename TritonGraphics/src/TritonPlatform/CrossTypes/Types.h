@@ -34,9 +34,6 @@ namespace Triton
 			// Update the window
 			virtual void update() = 0;
 
-			// Set window vsync property
-			virtual void setVsync(bool value) = 0;
-
 			// Set cursor visability
 			virtual void showCursor(bool value) = 0;
 
@@ -64,6 +61,9 @@ namespace Triton
 			// Render object
 			virtual void render(reference<Renderable>& renderable) = 0;
 
+			// Render object using raw data
+			virtual void render(unsigned int indiceCount) = 0;
+
 			// Set renderer values to default ones
 			virtual void default() = 0;
 
@@ -75,13 +75,17 @@ namespace Triton
 
 			// Recalculates the matrices
 			virtual void recalc_matrices() = 0;
+
+			// Set window vsync property
+			virtual void setVsync(bool value) = 0;
 		public:
 			float fov;
 			float nearPlane;
 			float farPlane;
+			unsigned int width;
+			unsigned int height;
 		protected:
-			unsigned int m_width;
-			unsigned int m_height;
+			bool m_vsync;
 		};
 
 		class Context

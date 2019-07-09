@@ -17,6 +17,8 @@
 
 #include "Triton\Core\Input\InputManager.h"
 
+#include "Triton\Core\RenderBuffer.h"
+
 namespace Triton
 {
 	// Base class that allows for multiple types of scenes that can all be managed by a single manager
@@ -27,7 +29,7 @@ namespace Triton
 		virtual ~SceneBase() { }
 
 		virtual void update(float delta) = 0;
-		virtual void render() = 0;
+		virtual void render(Core::RenderBuffer* renderBuffer) = 0;
 		virtual void destroy() = 0;
 	protected:
 		Triton::PType::Context* Context;
@@ -46,7 +48,7 @@ namespace Triton
 
 		virtual void Prepare();
 
-		virtual void render() override;
+		virtual void render(Core::RenderBuffer* renderBuffer) override;
 		virtual void update(float delta) override;
 
 		virtual void destroy() override;

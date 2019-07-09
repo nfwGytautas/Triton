@@ -4,6 +4,8 @@
 #include "TritonPlatform/mathematical.h"
 #include <glm\gtc\matrix_transform.hpp>
 
+#include "Triton\Core\RenderBuffer.h"
+
 #define TR_SERIALIZABLE_COMPONENTS Triton::Components::Transform, Triton::Components::Visual, Triton::Components::LightEmitter
 
 Triton::SceneBase::SceneBase(Triton::PType::Context* context, reference<Core::InputManager> iManager)
@@ -51,7 +53,7 @@ void Triton::Scene::Prepare()
 	
 }
 
-void Triton::Scene::render()
+void Triton::Scene::render(Triton::Core::RenderBuffer* renderBuffer)
 {
 	
 }
@@ -63,28 +65,9 @@ void Triton::Scene::update(float delta)
 	//
 	//shader->setUniformMatrix44("viewMatrix", view);
 
-	model_shader->enable();
-
 	if (Camera.get() != nullptr)
 	{
 		Camera->OnUpdate();
-
-		auto viewMat = Camera->ViewMatrix();
-		model_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
-
-		model_shader->setBufferValue("CameraBuffer", "cameraPosition", &Camera->Position);
-
-		BackgroundMaterial->Shader->Program->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
-	}
-
-	for (unsigned int i = 0; i < m_Lights.size(); i++)
-	{
-		m_Lights[i]->bind(model_shader);
-	}
-
-	for (auto pair : m_LightCounts)
-	{
-		//shader->setBufferValue("num_of_" + pair.first + "s", pair.second + 1);
 	}
 
 	Entities->sort<Components::Visual>([&](const auto &lhs, const auto &rhs) {
@@ -109,15 +92,6 @@ void Triton::Scene::update(float delta)
 	
 		return false;
 	});
-	
-
-	image_shader->enable();
-
-	if (Camera.get() != nullptr)
-	{
-		auto viewMat = Camera->ViewMatrix();
-		image_shader->setBufferValue("frame_PerFrame", "viewMatrix", &viewMat);
-	}
 
 	//m_Materials.ForEach([&] (auto& obj)
 	//{

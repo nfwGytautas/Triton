@@ -19,6 +19,8 @@ namespace Triton
 		Matrix44 CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale);
 		Matrix44 createViewMatrix(Vector3 position, float pitch, float yaw, float roll);
 		Matrix44 CreateOrthographicMatrix(float aWindowWidth, float aWindowHeight, float aNearRenderPlane, float aFarRenderPlane);
+
+		Matrix44 transpose(Matrix44& mat);
 	}
 }
 

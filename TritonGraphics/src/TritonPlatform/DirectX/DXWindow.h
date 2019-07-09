@@ -12,7 +12,6 @@ public:
 	virtual std::tuple<int, int> getWindowSize() override;
 	virtual bool windowClosed() override;
 	virtual void update() override;
-	virtual void setVsync(bool value) override;
 	virtual void showCursor(bool value) override;
 	virtual void clear(float r, float g, float b, float a) override;
 	virtual void destroy() override;
@@ -26,13 +25,10 @@ private:
 
 	LPCWSTR m_applicationName;
 	HINSTANCE m_hinstance;
-	HWND m_hwnd;
-	IDXGISwapChain* m_swapChain;
+	HWND m_hwnd;	
 
 	// Current message from windows
 	MSG m_msg;
-
-	bool m_vsync;
 
 	friend DXContext;
 };

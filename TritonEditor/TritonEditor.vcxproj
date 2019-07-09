@@ -136,6 +136,7 @@
     <ClInclude Include="src\Impl\imgui_impl_win32.h" />
     <ClInclude Include="src\Widgets\DockSpace.h" />
     <ClInclude Include="src\Widgets\LogWindow.h" />
+    <ClInclude Include="src\Widgets\Metrics.h" />
     <ClInclude Include="src\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>

@@ -241,9 +241,9 @@ public:
 		static int movingDir = 1;
 
 		auto& transform = m_MainScene->Entities->get<Triton::Components::Transform>(Ent);
-		transform.Rotation.y += 0.01f;
+		transform.Rotation.y += prtc_UpdateDelta * 15;
 
-		transform.Position.y += 0.01f * movingDir;
+		transform.Position.y += movingDir * prtc_UpdateDelta * 5;
 
 		if (transform.Position.y > 5)
 		{
@@ -260,6 +260,9 @@ public:
 		m_MainScene->update(prtc_Delta);
 		m_EditorScene->update(prtc_Delta);
 		Triton::Impl::logErrors();
+
+		m_EditorScene->RenderDelta = prtc_RenderDelta;
+		m_EditorScene->UpdateDelta = prtc_UpdateDelta;
 	}
 
 	bool keyPressed(const Triton::Event& event)
@@ -311,7 +314,11 @@ public:
 	virtual void Render() override
 	{
 		renderScene(m_MainScene, m_viewPort);
-		m_EditorScene->render();
+	}
+
+	virtual void RenderOnTop() override
+	{
+		renderCustomScene(m_EditorScene.as<Triton::SceneBase>());
 	}
 };
 
@@ -324,8 +331,5 @@ Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
 
 void Triton::Loop(Triton::Application* application)
 {
-	while (!application->shouldClose())
-	{
-		application->frame();
-	}
+	application->Execute();
 }
