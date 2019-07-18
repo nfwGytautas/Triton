@@ -7,6 +7,7 @@
 
 #include "Triton/AppSettings.h"
 
+#include "Triton/Core/TritonClass.h"
 #include "Triton/Core/Input/InputManager.h"
 
 PLATFORM_NAMESPACE_BEGIN
@@ -33,22 +34,15 @@ DXContext::DXContext(const Triton::AppSettings& appSettings)
 	m_appName = std::wstring(m_appNameSTD.begin(), m_appNameSTD.end()).c_str();
 
 	window = new DXWindow();
+
+	dx_window()->m_width = appSettings.WindowWidth;
+	dx_window()->m_height = appSettings.WindowHeight;
+
 	renderer = new DXRenderer();
 	factory = new DXFactory();
 }
 
 bool DXContext::init()
-{
-	//window = new DXWindow();
-	//auto* wnd = static_cast<Triton::PType::DXWindow*>(window);
-	//wnd->m_applicationName = m_appName;
-	//renderer = new DXRenderer();
-	//factory = new DXFactory();
-
-	return true;
-}
-
-bool Triton::PType::DXContext::init_additional()
 {
 	HRESULT result;
 	IDXGIFactory* factory;
@@ -492,14 +486,6 @@ void DXContext::shutdown()
 	delete factory;
 }
 
-// Sets the event receiver for the context
-void DXContext::setContextEventCallBacks(Core::InputManager* iManager)
-{
-	auto* window = static_cast<Triton::PType::DXWindow*>(this->window);
-
-	window->m_iManager = iManager;
-}
-
 void DXContext::update()
 {
 	window->update();
@@ -560,6 +546,16 @@ void DXContext::setCursorPos(double x, double y)
 	pt.y = y;
 	ClientToScreen(dx_window()->m_hwnd, &pt);
 	SetCursorPos(pt.x, pt.y);
+}
+
+void DXContext::onRegistered()
+{
+	// Get input manager
+	auto& inputManager = this->getClassByID((size_t)Triton::Core::TritonClasses::InputManager);
+	dx_window()->m_iManager = inputManager.as<Triton::Core::InputManager>();
+
+	this->window->create();
+	this->init();
 }
 
 PLATFORM_NAMESPACE_END

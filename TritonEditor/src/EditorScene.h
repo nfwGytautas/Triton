@@ -16,7 +16,7 @@ namespace Triton
 	class EditorScene : public SceneBase, Utility::EventInterface
 	{
 	public:
-		EditorScene(PType::Context* context, reference<Core::InputManager> iManager, Core::EventManager* manager);
+		EditorScene(PType::Context* context, reference<Core::InputManager> iManager);
 
 		// Inherited via SceneBase
 		virtual void update(float delta) override;

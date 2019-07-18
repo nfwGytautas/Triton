@@ -2,11 +2,8 @@
 #include "EditorScene.h"
 #include <string>
 
-namespace Triton
-{
 
-}
-
+/*
 class UnitTest1 : public Triton::Application
 {
 	Triton::reference<Triton::Data::Viewport> m_viewPort;
@@ -35,7 +32,7 @@ public:
 	void CreateResources()
 	{
 		m_MainScene = SceneManager->createScene();
-		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>((Triton::Core::EventManager*)this);
+		m_EditorScene = SceneManager->createSceneCustom<Triton::EditorScene>();
 
 		// Asset creation description
 		Triton::Resource::AssetCreateParams asset_desc;
@@ -322,14 +319,23 @@ public:
 	}
 };
 
-Triton::Application* Triton::CreateApplication(Triton::AppSettings& aSettings)
-{
-	aSettings.WindowWidth = 1280;
-	aSettings.WindowHeight = 720;
-	return new UnitTest1(aSettings);
-}
+*/
 
-void Triton::Loop(Triton::Application* application)
+int main(int argc, char** argv)
 {
-	application->Execute();
+	try
+	{
+		Triton::TritonHost* tHost = new Triton::TritonHost();
+
+		Triton::AppSettings appSettings;
+		appSettings.WindowWidth = 1280;
+		appSettings.WindowHeight = 720;
+
+		tHost->init({ appSettings });
+	}
+	catch (...)
+	{
+		TR_ASSERT(0, "Unidentified error");
+		return 1;
+	}
 }

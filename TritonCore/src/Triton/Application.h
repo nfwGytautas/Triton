@@ -31,7 +31,6 @@
 #include "Entity\Components\TritonComponents.h"
 
 #include "Managers/SceneManager.h"
-#include "Managers/TritonManagers.h"
 
 #include "Core/Wrapers/ShaderProgram.h"
 #include "Core/Wrapers/Material.h"
@@ -47,8 +46,7 @@ namespace Triton
 {
 
 	//Main class that allows for project creation
-	class Application : 
-		protected Core::EventManager,
+	class Application :
 		protected Triton::EventListener
 	{
 	public:
@@ -66,10 +64,6 @@ namespace Triton
 
 		// Check if the engine has recieved a command to close
 		bool shouldClose();
-
-		// Creates an asset from the specified parameters and returns the created asset
-		// that can be casted to whatever you want using the as() function of the reference object
-		reference<Resource::Asset> createAsset(Resource::AssetCreateParams& params);
 
 		// Tells the engine to render the specified scene
 		void renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO = true);
@@ -102,8 +96,6 @@ namespace Triton
 		PType::Context* Context;
 	private:
 		Manager::SceneManager* m_SceneManager;
-		Manager::ObjectManager* m_ObjectManager;
-		Manager::AssetManager* m_AssetManager;
 		Core::InputManager* m_iManager;
 
 
@@ -114,16 +106,9 @@ namespace Triton
 		Core::RenderBuffer* m_CurrentRenderBuffer;
 		Core::RenderBuffer* m_CurrentUpdateBuffer;
 
-
-		// Map of already loaded objects
-		std::unordered_map<std::string, size_t> m_AlreadyLoaded;
-
 		// Threads
 		std::thread* m_renderThread;
 
 		bool m_doneRendering = true;
 	};
-
-	Application* CreateApplication(Triton::AppSettings& aSettings);
-	void Loop(Triton::Application* application);
 }

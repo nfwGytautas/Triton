@@ -8,7 +8,7 @@ class DXWindow : public Window
 {
 public:
 	// Inherited via Window
-	virtual void create(unsigned int width, unsigned height) override;
+	virtual void create() override;
 	virtual std::tuple<int, int> getWindowSize() override;
 	virtual bool windowClosed() override;
 	virtual void update() override;
@@ -18,7 +18,7 @@ public:
 
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 private:
-	Core::InputManager* m_iManager;
+	reference<Triton::Core::InputManager> m_iManager;
 	bool m_fullscreen = false;
 
 	bool m_hasWindow;
@@ -29,6 +29,9 @@ private:
 
 	// Current message from windows
 	MSG m_msg;
+
+	unsigned int m_width;
+	unsigned int m_height;
 
 	friend DXContext;
 };

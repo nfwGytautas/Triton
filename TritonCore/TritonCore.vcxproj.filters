@@ -95,9 +95,6 @@
     <ClInclude Include="src\Triton\Entity\Registry.h">
       <Filter>Triton\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\EntryPoint.h">
-      <Filter>Triton</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h">
       <Filter>Triton\Events</Filter>
     </ClInclude>
@@ -148,13 +145,17 @@
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\Triton\Utility\Algorithm.h" />
     <ClInclude Include="src\Triton\Managers\ManagerBase.h" />
-    <ClInclude Include="src\Triton\Managers\TritonManagers.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
     <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
     <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
     <ClInclude Include="src\Triton\Core\Input\Mouse.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h" />
     <ClInclude Include="src\Triton\Core\RenderBuffer.h" />
+    <ClInclude Include="src\Triton\TritonHost.h" />
+    <ClInclude Include="src\Triton\Core\TritonClass.h" />
+    <ClInclude Include="src\Triton\Core\TritonClassParams.h" />
+    <ClInclude Include="src\Triton\Managers\AssetManager.h" />
+    <ClInclude Include="src\Triton\Managers\TritonCache.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -210,5 +211,9 @@
     <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp" />
     <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
+    <ClCompile Include="src\Triton\TritonHost.cpp" />
+    <ClCompile Include="src\Triton\Core\TritonClass.cpp" />
+    <ClCompile Include="src\Triton\Managers\AssetManager.cpp" />
+    <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
   </ItemGroup>
 </Project>

@@ -27,12 +27,12 @@ void Triton::Core::InputManager::keyInput(InputType type, int key)
 	if (type == InputType::PRESSED)
 	{
 		m_keyboardState->Keys[key] = true;
-		m_eManager->Post(new KeyPressedEvent(key, m_keyRepeat));
+		this->Post(new KeyPressedEvent(key, m_keyRepeat));
 	}
 	else
 	{
 		m_keyboardState->Keys[key] = false;
-		m_eManager->Post(new KeyReleasedEvent(key));
+		this->Post(new KeyReleasedEvent(key));
 	}
 
 	m_lastLey = key;
@@ -40,7 +40,7 @@ void Triton::Core::InputManager::keyInput(InputType type, int key)
 
 void Triton::Core::InputManager::charInput(unsigned int chr)
 {
-	m_eManager->Post(new KeyInputEvent(chr));
+	this->Post(new KeyInputEvent(chr));
 }
 
 void Triton::Core::InputManager::mouseKeyInput(InputType type, int key)
@@ -48,12 +48,12 @@ void Triton::Core::InputManager::mouseKeyInput(InputType type, int key)
 	if (type == InputType::PRESSED)
 	{
 		m_mouseState->Keys[key] = true;
-		m_eManager->Post(new MouseButtonPressedEvent(key));
+		this->Post(new MouseButtonPressedEvent(key));
 	}
 	else
 	{
 		m_mouseState->Keys[key] = false;
-		m_eManager->Post(new MouseButtonReleasedEvent(key));
+		this->Post(new MouseButtonReleasedEvent(key));
 	}
 }
 
@@ -62,7 +62,7 @@ void Triton::Core::InputManager::mouseMoveInput(double xdelta, double ydelta)
 	m_mouseState->XPosDelta = xdelta;
 	m_mouseState->YPosDelta = ydelta;
 
-	m_eManager->Post(new MouseMovedEvent(xdelta, ydelta));
+	this->Post(new MouseMovedEvent(xdelta, ydelta));
 }
 
 void Triton::Core::InputManager::mouseScrollInput(double xdelta, double ydelta)
@@ -73,12 +73,7 @@ void Triton::Core::InputManager::mouseScrollInput(double xdelta, double ydelta)
 	m_mouseState->ScrollX += xdelta;
 	m_mouseState->ScrollY += ydelta;
 
-	m_eManager->Post(new MouseScrolledEvent(xdelta, ydelta));
-}
-
-void Triton::Core::InputManager::setEventManager(reference<Core::EventManager> manager)
-{
-	m_eManager = manager;
+	this->Post(new MouseScrolledEvent(xdelta, ydelta));
 }
 
 Triton::relay_ptr<Triton::Keyboard> Triton::Core::InputManager::getKeyboard()
@@ -93,13 +88,13 @@ Triton::relay_ptr<Triton::Mouse> Triton::Core::InputManager::getMouse()
 
 void Triton::Core::InputManager::gotFocus()
 {
-	m_eManager->Post(new WindowFocusedEvent());
+	this->Post(new WindowFocusedEvent());
 	m_focus = true;
 }
 
 void Triton::Core::InputManager::lostFocus()
 {
-	m_eManager->Post(new WindowLostFocusEvent());
+	this->Post(new WindowLostFocusEvent());
 	m_focus = false;
 
 	// Disable all mouse keys
@@ -115,5 +110,13 @@ void Triton::Core::InputManager::lostFocus()
 	{
 		m_keyboardState->Keys[i] = false;
 	}
+}
+
+void Triton::Core::InputManager::onRegistered()
+{
+}
+
+void Triton::Core::InputManager::onUnRegistered()
+{
 }
 

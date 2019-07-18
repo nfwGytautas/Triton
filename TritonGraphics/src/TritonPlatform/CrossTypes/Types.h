@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Triton/Core/TritonClass.h"
+
 #include "Base.h"
 #include "Factory.h"
 #include "Shader.h"
@@ -17,13 +19,15 @@ namespace Triton
 
 	namespace PType
 	{
+		class Context;
+
 		class Window
 		{
 		public:
 			virtual ~Window() { }
 
 			// Create the window
-			virtual void create(unsigned int width, unsigned height) = 0;
+			virtual void create() = 0;
 
 			// Get window size
 			virtual std::tuple<int, int> getWindowSize() = 0;
@@ -88,7 +92,7 @@ namespace Triton
 			bool m_vsync;
 		};
 
-		class Context
+		class Context : public Triton::Core::TritonClass
 		{
 		public:
 			virtual ~Context() { }
@@ -103,14 +107,8 @@ namespace Triton
 			// Init the context
 			virtual bool init() = 0;
 
-			// Additional init if required mostly used by DirectX
-			virtual bool init_additional() { return true; }
-
 			// Shutdown context and free resources
 			virtual void shutdown() = 0;
-
-			// Set event callbacks
-			virtual void setContextEventCallBacks(Core::InputManager* iManager) = 0;
 
 			// Update the context
 			virtual void update() = 0;

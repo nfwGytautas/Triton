@@ -4,6 +4,11 @@
 
 namespace Triton
 {
+	namespace Manager
+	{
+		class AssetManager;
+	}
+
 	namespace Resource
 	{
 		class Asset;
@@ -57,6 +62,12 @@ namespace Triton
 			// Height of created asset used when creating Bitmap or Viewports
 			// else don't specify
 			unsigned int Height;
+
+			// Name of the asset the value is ignored if string representations are disabled
+			std::string Name;
+
+			// Specify if the created asset should be cached
+			bool CacheResult = true;
 		};
 
 		class Asset
@@ -74,11 +85,26 @@ namespace Triton
 			{
 				return m_AssetID;
 			}
+
+#if TR_STRING_REPRESENTATIONS == 1
+			// Get the asset name the method is
+			// hidden if string representations are disabled
+			std::string getName() const
+			{
+				return m_Name;
+			}
+#endif
 		private:
 			bool m_destroyOnUnload = true;
 			bool m_isDestroyed = false;
 
 			size_t m_AssetID;
+			
+#if TR_STRING_REPRESENTATIONS == 1
+			std::string m_Name;
+#endif
+
+			friend Manager::AssetManager;
 		};
 	}
 }

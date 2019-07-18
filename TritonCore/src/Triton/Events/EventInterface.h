@@ -13,6 +13,7 @@ namespace Triton
 		{
 		public:
 			EventInterface(Core::EventManager* manager);
+			EventInterface(reference<Core::EventManager> manager);
 			virtual ~EventInterface();
 		protected:
 			virtual bool OnKeyPressed(int aKeycode, int aRepeatCount, int aScancode, int aMods) = 0;

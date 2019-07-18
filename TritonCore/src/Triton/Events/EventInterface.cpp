@@ -1,6 +1,7 @@
 #include "TRpch.h"
 #include "EventInterface.h"
 
+#include "Triton/Events/EventManager.h"
 #include "Triton/Events/KeyEvent.h"
 #include "Triton/Events/MouseEvent.h"
 #include "Triton/Events/ApplicationEvent.h"
@@ -16,8 +17,28 @@ std::bind(\
 std::placeholders::_1)));
 
 Triton::Utility::EventInterface::EventInterface(Core::EventManager* manager)
-	: EventListener(manager)
+	: EventListener()
 {
+	manager->AddListener(*this);
+
+	listen_to(KeyPressedEvent, OnKeyPressed, kpe.GetKeyCode(), kpe.GetRepeatCount(), 0, kpe.GetKeyMods());
+	listen_to(KeyReleasedEvent, OnKeyReleased, kpe.GetKeyCode(), 0, kpe.GetKeyMods());
+	listen_to(KeyInputEvent, OnKeyInput, kpe.GetKeyCode());
+
+
+	listen_to(MouseMovedEvent, OnMouseMoved, kpe.GetX(), kpe.GetY());
+	listen_to(MouseButtonPressedEvent, OnMouseButtonPressed, kpe.GetMouseButton());
+	listen_to(MouseButtonReleasedEvent, OnMouseButtonReleased, kpe.GetMouseButton());
+	listen_to(MouseScrolledEvent, OnMouseScrolled, kpe.GetXOffset(), kpe.GetYOffset());
+
+	listen_to(WindowResizeEvent, OnWindowResized, kpe.GetWidth(), kpe.GetHeight());
+}
+
+Triton::Utility::EventInterface::EventInterface(reference<Core::EventManager> manager)
+	: EventListener()
+{
+	manager->AddListener(*this);
+
 	listen_to(KeyPressedEvent, OnKeyPressed, kpe.GetKeyCode(), kpe.GetRepeatCount(), 0, kpe.GetKeyMods());
 	listen_to(KeyReleasedEvent, OnKeyReleased, kpe.GetKeyCode(), 0, kpe.GetKeyMods());
 	listen_to(KeyInputEvent, OnKeyInput, kpe.GetKeyCode());

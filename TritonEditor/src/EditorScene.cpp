@@ -14,8 +14,8 @@
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-Triton::EditorScene::EditorScene(PType::Context* context, reference<Core::InputManager> iManager, Core::EventManager* manager)
-	: SceneBase(context, iManager), EventInterface(manager)
+Triton::EditorScene::EditorScene(PType::Context* context, reference<Core::InputManager> iManager)
+	: SceneBase(context, iManager), EventInterface(iManager.as<Core::EventManager>())
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
 

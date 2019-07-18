@@ -62,7 +62,8 @@ namespace Triton
 	class  EventListener
 	{		
 	public:
-		EventListener(Core::EventManager* mManager);
+		EventListener() {}
+		virtual ~EventListener() {}
 
 		template<typename T>
 		void Listen(EventBehavior& behavior)
@@ -78,18 +79,8 @@ namespace Triton
 			m_ListeningTo[(size_t)T::GetStaticType()] = false;
 		}
 
-		bool operator==(const EventListener& rhs) const
-		{
-			return m_ID == rhs.m_ID;
-		}
-		bool operator!=(const EventListener& rhs) const
-		{
-			return !(*this == rhs);
-		}
-
 		void React(Event& event);
 	private:
-		size_t m_ID;
 		std::bitset<MaxEvents> m_ListeningTo;
 		std::array<EventBehavior, MaxEvents> m_RegisteredEvents;
 	};

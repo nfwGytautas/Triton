@@ -15,14 +15,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 PLATFORM_NAMESPACE_BEGIN
 
 // Creates the window
-void DXWindow::create(unsigned int width, unsigned height)
+void DXWindow::create()
 {
 	if (m_hasWindow)
 	{
 		return;
 	}
 
-	TR_SYSTEM_INFO("Creating a WINDOWS display: W:{0} H:{1}", width, height);
+	TR_SYSTEM_INFO("Creating a WINDOWS display: W:{0} H:{1}", m_width, m_height);
 
 	// Initialize the message structure.
 	ZeroMemory(&m_msg, sizeof(MSG));
@@ -76,8 +76,8 @@ void DXWindow::create(unsigned int width, unsigned height)
 	}
 	else
 	{
-		screenWidth = width;
-		screenHeight = height;
+		screenWidth = m_width;
+		screenHeight = m_height;
 
 		// Place the window in the middle of the screen.
 		posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;

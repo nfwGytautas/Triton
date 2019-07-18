@@ -32,22 +32,18 @@ namespace Triton {
 
 
 	Application::Application(const AppSettings& aSettings)
-		: EventManager(), EventListener(this)
+		: EventListener()
 	{
 		m_iManager = new Core::InputManager();
-		m_iManager->setEventManager(this);
+		m_iManager->AddListener(*this);
 
 		// Init graphics, create context and set up event callbacks
 		Context = Impl::createContext(aSettings);
 
+		Context->window->create();
 		Context->init();
-		Context->setContextEventCallBacks(m_iManager);
-		Context->window->create(aSettings.WindowWidth, aSettings.WindowHeight);
-		Context->init_additional();
 
 		m_SceneManager = new Manager::SceneManager(Context, m_iManager);
-		m_ObjectManager = new Manager::ObjectManager();
-		m_AssetManager = new Manager::AssetManager();
 
 		m_RenderBuffer1 = new Core::RenderBuffer();
 		m_RenderBuffer2 = new Core::RenderBuffer();
@@ -66,8 +62,6 @@ namespace Triton {
 
 		// Make sure that all resources are freed before freeing the context
 		delete m_SceneManager; // Release the assets from all scenes
-		delete m_AssetManager; // Release all objects from assets
-		delete m_ObjectManager; // Release all objects from Triton
 
 		delete m_renderThread;
 
@@ -112,7 +106,7 @@ namespace Triton {
 
 		Context->update();
 
-		Dispatch();
+		m_iManager->Dispatch();
 
 		OnUpdate();
 
@@ -147,301 +141,11 @@ namespace Triton {
 		return Context->window->windowClosed();
 	}
 
-	reference<Resource::Asset> Application::createAsset(Resource::AssetCreateParams& params)
-	{
-		bool alreadyLoaded = false;
-		reference<PType::FactoryObject> createdObject;
-
-		// Check this is a create operation
-		if (params.Operation == Resource::AssetCreateParams::CreationOperation::CREATE)
-		{
-			if (params.Type != Resource::AssetCreateParams::AssetType::CUBEMAP && params.Type != Resource::AssetCreateParams::AssetType::SHADER)
-			{
-				// Check if the asset that we are trying to load isn't already loaded if it is
-				// then we can just use the one we cached
-				if (m_AlreadyLoaded.find(params.Paths[0]) != m_AlreadyLoaded.end())
-				{
-					alreadyLoaded = true;
-					createdObject = m_ObjectManager->getObject(m_AlreadyLoaded[params.Paths[0]]).as<PType::FactoryObject>();
-				}
-			}
-		}
-
-		// Create mesh
-		if (params.Type == Resource::AssetCreateParams::AssetType::MESH)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::Mesh>(new Data::Mesh(assetID, params.CopyAsset.as<Data::Mesh>()->VAO)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::VAO>().valid())
-			{
-				// Create VAO object
-				Triton::PType::VAOCreateParams* vao_params = new Triton::PType::VAOCreateParams();
-
-				Triton::Data::File::ReadMesh(params.Paths[0], vao_params);
-
-				createdObject = Context->factory->createVAO(vao_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				delete vao_params;
-			
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-			}
-
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::Mesh>(new Data::Mesh(assetID, createdObject.as<PType::VAO>()));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		// Create material
-		if (params.Type == Resource::AssetCreateParams::AssetType::MATERIAL)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::Material>(new Data::Material(assetID, params.CopyAsset.as<Data::Material>()->Texture)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::Texture>().valid())
-			{
-				// Create Texture object
-				Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
-				Triton::Data::File::ReadTexture(params.Paths[0], tex_params);
-
-				createdObject = Context->factory->createTexture(tex_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				delete tex_params;
-
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-			}		
-
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::Material>(new Data::Material(assetID, createdObject.as<PType::Texture>()));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		// Create viewport
-		if (params.Type == Resource::AssetCreateParams::AssetType::VIEWPORT)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::Viewport>(new Data::Viewport(assetID, params.CopyAsset.as<Data::Viewport>()->Framebuffer)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::Framebuffer>().valid())
-			{
-				// Create framebuffer object
-				Triton::PType::TextureCreateParams* fbo_params = new Triton::PType::TextureCreateParams();
-				fbo_params->width = params.Width;
-				fbo_params->height = params.Height;
-
-				createdObject = Context->factory->createFramebuffer(fbo_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				delete fbo_params;
-			
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-			}
-			
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::Viewport>(new Data::Viewport(assetID, createdObject.as<PType::Framebuffer>()));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		// Create image
-		if (params.Type == Resource::AssetCreateParams::AssetType::IMAGE)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::Image>(new Data::Image(assetID, params.CopyAsset.as<Data::Image>()->Bitmap)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::Texture>().valid())
-			{
-				// Create Texture object
-				Triton::PType::TextureCreateParams* tex_params = new Triton::PType::TextureCreateParams();
-				Triton::Data::File::ReadTexture(params.Paths[0], tex_params);
-
-				createdObject = Context->factory->createTexture(tex_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-
-				delete tex_params;
-			}
-
-			// Create Bitmap object
-			Triton::PType::BitmapCreateParams* bitmap_params = new Triton::PType::BitmapCreateParams();
-
-			bitmap_params->width = params.Width;
-			bitmap_params->height = params.Height;
-			bitmap_params->texture = createdObject.as<PType::Texture>();
-
-			createdObject = Context->factory->createBitmap(bitmap_params);
-
-			auto bitmap = createdObject.as<PType::Bitmap>();
-			
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::Image>(new Data::Image(assetID, bitmap));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		// Create cubemap
-		if (params.Type == Resource::AssetCreateParams::AssetType::CUBEMAP)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::Material>(new Data::Material(assetID, params.CopyAsset.as<Data::Material>()->Texture)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::Texture>().valid())
-			{
-				// Create Texture object
-				Triton::PType::TextureArrayCreateParams* tex_params = new Triton::PType::TextureArrayCreateParams();
-
-				tex_params->count = 6;
-
-				for (unsigned int i = 0; i < tex_params->count; i++)
-				{
-					Triton::PType::TextureCreateParams* tex_param = new Triton::PType::TextureCreateParams();
-					Triton::Data::File::ReadTexture(params.Paths[i], tex_param);
-
-					tex_params->individualTextures.push_back(tex_param);
-				}
-				
-				tex_params->width = tex_params->individualTextures[0]->width;
-				tex_params->height = tex_params->individualTextures[0]->height;
-				tex_params->BPP = tex_params->individualTextures[0]->BPP;
-
-				createdObject = Context->factory->createCubeTexture(tex_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				delete tex_params;
-
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-			}
-
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::Material>(new Data::Material(assetID, createdObject.as<PType::Texture>()));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		// Create shader
-		if (params.Type == Resource::AssetCreateParams::AssetType::SHADER)
-		{
-			// Copy the asset
-			if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
-			{
-				size_t assetID = m_AssetManager->getNextID();
-
-				auto asset = reference<Data::ShaderProgram>(new Data::ShaderProgram(assetID, params.CopyAsset.as<Data::ShaderProgram>()->Program)).as<Resource::Asset>();
-
-				m_AssetManager->addObject(assetID, asset);
-
-				return asset;
-			}
-
-			if (!alreadyLoaded || !createdObject.as<PType::Texture>().valid())
-			{
-				// Create shader
-				Triton::PType::ShaderCreateParams* shader_params = new Triton::PType::ShaderCreateParams();
-
-				shader_params->vertexPath = params.Paths[0];
-				shader_params->fragmentPath = params.Paths[1];
-
-				shader_params->entryPointVertex = params.Arguments[0];
-				shader_params->entryPointFragment = params.Arguments[1];
-
-				Triton::PType::ShaderLayout shader_layout = Triton::Data::File::ReadShaderLayout(shader_params);
-
-				shader_params->layout = &shader_layout;
-
-				createdObject = Context->factory->createShader(shader_params);
-
-				size_t objectID = m_ObjectManager->addObject(createdObject.as<PType::PlatformObject>());
-
-				delete shader_params;
-
-				m_AlreadyLoaded[params.Paths[0]] = objectID;
-			}
-
-			size_t assetID = m_AssetManager->getNextID();
-
-			auto asset = reference<Data::ShaderProgram>(new Data::ShaderProgram(assetID, createdObject.as<PType::Shader>()));
-
-			m_AssetManager->addObject(assetID, asset.as<Resource::Asset>());
-
-			return asset.as<Resource::Asset>();
-		}
-
-		TR_ERROR("Ivalid asset creation parameters");
-		return reference<Resource::Asset>(nullptr);
-	}
+	
 
 	void Application::renderScene(reference<Scene>& scene, reference<Data::Viewport>& renderTo, bool clearFBO)
 	{
+		/*
 		// Bind/enable the viewport
 		m_CurrentUpdateBuffer->addCommand<RCommands::PushViewport>(renderTo);
 
@@ -591,7 +295,7 @@ namespace Triton {
 		{
 			context->depthBufferState(true);
 			context->renderer->default();
-		});
+		});*/
 	}
 
 	void Application::renderCustomScene(reference<SceneBase>& scene)
@@ -616,7 +320,7 @@ namespace Triton {
 
 			Context->update();
 
-			Dispatch();
+			m_iManager->Dispatch();
 
 			OnUpdate();
 

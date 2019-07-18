@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Triton/Core/TritonClass.h"
+
 #include "Triton/Events/EventManager.h"
 #include "Triton/Events/Events.h"
 #include "Triton/Events/KeyEvent.h"
@@ -20,7 +22,7 @@ namespace Triton
 			RELEASED = 1
 		};
 
-		class InputManager
+		class InputManager : public TritonClass, public EventManager
 		{
 		public:
 			InputManager();
@@ -31,9 +33,6 @@ namespace Triton
 			void mouseKeyInput(InputType type, int key);
 			void mouseMoveInput(double xdelta, double ydelta);
 			void mouseScrollInput(double xdelta, double ydelta);
-
-			// Set the EventManager that receives direct changes
-			void setEventManager(reference<Core::EventManager> manager);
 
 			// Returns a relay_ptr to a input managers keyboard state
 			relay_ptr<Keyboard> getKeyboard();
@@ -55,9 +54,11 @@ namespace Triton
 			{
 				return m_focus;
 			}
-		private:
-			reference<Core::EventManager> m_eManager;
 
+			// Inherited via TritonClass
+			virtual void onRegistered() override;
+			virtual void onUnRegistered() override;
+		private:
 			Keyboard* m_keyboardState;
 			Mouse* m_mouseState;
 

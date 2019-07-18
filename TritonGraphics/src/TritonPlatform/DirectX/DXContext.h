@@ -18,9 +18,7 @@ public:
 
 	// Inherited via Context
 	virtual bool init() override;
-	virtual bool init_additional() override;
 	virtual void shutdown() override;
-	virtual void setContextEventCallBacks(Core::InputManager* iManager) override;
 	virtual void update() override;
 	virtual void setViewPort(int x, int y, int width, int height) override;
 	virtual void fillPacket(PlatformObject* packet) override;
@@ -28,6 +26,7 @@ public:
 	virtual void cullBufferState(bool state) override;
 	virtual void setCursorPos(double x, double y) override;
 
+	virtual void onRegistered() override;
 private:
 	std::string m_appNameSTD;
 	LPCWSTR m_appName;
