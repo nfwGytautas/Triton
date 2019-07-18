@@ -56,9 +56,6 @@
     <ClInclude Include="src\Triton\AppSettings.h">
       <Filter>Triton</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Application.h">
-      <Filter>Triton</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Camera\Camera.h">
       <Filter>Triton\Camera</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
     <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Triton\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Managers\SceneManager.h">
-      <Filter>Triton\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="src\Triton\Serialize\Serialize.h">
       <Filter>Triton\Serialize</Filter>
     </ClInclude>
@@ -156,12 +150,12 @@
     <ClInclude Include="src\Triton\Core\TritonClassParams.h" />
     <ClInclude Include="src\Triton\Managers\AssetManager.h" />
     <ClInclude Include="src\Triton\Managers\TritonCache.h" />
+    <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
+    <ClInclude Include="src\Triton\Utility\Utility.h" />
+    <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
-    <ClCompile Include="src\Triton\Application.cpp">
-      <Filter>Triton</Filter>
-    </ClCompile>
     <ClCompile Include="src\Triton\Camera\Camera.cpp">
       <Filter>Triton\Camera</Filter>
     </ClCompile>
@@ -201,9 +195,6 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Managers\SceneManager.cpp">
-      <Filter>Triton\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
     <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
@@ -215,5 +206,7 @@
     <ClCompile Include="src\Triton\Core\TritonClass.cpp" />
     <ClCompile Include="src\Triton\Managers\AssetManager.cpp" />
     <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
+    <ClCompile Include="src\Triton\Managers\ThreadManager.cpp" />
+    <ClCompile Include="src\Triton\Utility\Utility.cpp" />
   </ItemGroup>
 </Project>

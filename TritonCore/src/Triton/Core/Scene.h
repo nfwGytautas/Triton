@@ -22,24 +22,17 @@
 namespace Triton
 {
 	// Base class that allows for multiple types of scenes that can all be managed by a single manager
-	class SceneBase
+	class SceneBase : public Core::TritonClass
 	{
 	public:
-		SceneBase(Triton::PType::Context* context, reference<Core::InputManager> iManager);
+		SceneBase();
 		virtual ~SceneBase() { }
-
-		virtual void update(float delta) = 0;
-		virtual void render(Core::RenderBuffer* renderBuffer) = 0;
-		virtual void destroy() = 0;
-	protected:
-		Triton::PType::Context* Context;
-		reference<Core::InputManager> Input;
 	};
 
 	class Scene : public SceneBase
 	{
 	public:
-		Scene(Triton::PType::Context* context, reference<Core::InputManager> iManager);
+		Scene();
 		virtual ~Scene();
 
 
@@ -48,15 +41,9 @@ namespace Triton
 
 		virtual void Prepare();
 
-		virtual void render(Core::RenderBuffer* renderBuffer) override;
-		virtual void update(float delta) override;
-
-		virtual void destroy() override;
+		virtual void onMessage(size_t message, void* payload) override;
 
 		virtual Matrix44& getViewMatrix() const;
-	public: // Non virtual
-		void UpdateProjection(Matrix44 aNewProjection);
-		void UpdateOrthographic(Matrix44 aNewOrthographic);
 	public:
 		Components::Visual m_CurrVisual;
 		reference<PType::Shader> model_shader;
@@ -69,8 +56,11 @@ namespace Triton
 		reference<Data::Mesh> BackgroundMesh;
 		reference<Data::Material> BackgroundMaterial;
 	private:
-		std::unordered_map<std::string, unsigned int> m_LightCounts;
+		// Updates all the scene contents
+		void onUpdate();
+		void onRender();
 	private:
+		std::unordered_map<std::string, unsigned int> m_LightCounts;
 	};
 
 }

@@ -8,6 +8,7 @@
 #include <imgui.h>
 
 #include "Triton/Core/RenderBuffer.h"
+#include "Triton/Utility/Utility.h"
 
 
 namespace Triton
@@ -16,12 +17,11 @@ namespace Triton
 	class EditorScene : public SceneBase, Utility::EventInterface
 	{
 	public:
-		EditorScene(PType::Context* context, reference<Core::InputManager> iManager);
+		EditorScene();
+		virtual ~EditorScene();
 
 		// Inherited via SceneBase
-		virtual void update(float delta) override;
-		virtual void render(Core::RenderBuffer* renderBuffer) override;
-		virtual void destroy() override;
+		virtual void onMessage(size_t message, void* payload) override;
 
 
 		// Inherited via EventInterface
@@ -35,12 +35,16 @@ namespace Triton
 		virtual bool OnMouseScrolled(double aXOffset, double aYOffset) override;
 
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
-
-		reference<Triton::Data::Viewport> ViewPort;
-
-		float RenderDelta;
-		float UpdateDelta;
 	private:
+		void onRegistered();
+		void onUpdate();
+		void onRender();
+	private:
+		Triton::reference<Triton::Data::Viewport> m_viewPortObject;
+
+		reference<Core::InputManager> m_input;
+		reference<Utility::Timer> m_timer;
+
 		ImGuiIO* m_imguiIO;
 		bool m_dockspace = false;
 		bool m_viewport = true;

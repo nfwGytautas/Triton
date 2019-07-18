@@ -7,8 +7,5 @@
 // Host
 #include "Triton\TritonHost.h"
 
-// Application
-#include "Triton\Application.h"
-
 // Logger
 #include "Triton\Logger\Log.h"

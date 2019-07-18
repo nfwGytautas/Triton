@@ -1,7 +1,111 @@
 #include <Triton.h>
+
+#include <Triton/Utility/ClassGetters.h>
+
 #include "EditorScene.h"
 #include <string>
 
+namespace Triton
+{
+	class TritonEditor :
+		public Core::TritonClass,
+		public EventListener
+	{
+	public:
+		TritonEditor()
+		{
+			this->Listen<KeyPressedEvent>(EventBehavior(std::bind(&TritonEditor::keyPressed, this, std::placeholders::_1)));
+			this->Listen<MouseMovedEvent>(EventBehavior(std::bind(&TritonEditor::mouseMoved, this, std::placeholders::_1)));
+
+
+			m_tHost = new Triton::TritonHost();
+
+			Triton::AppSettings appSettings;
+			appSettings.WindowWidth = 1280;
+			appSettings.WindowHeight = 720;
+
+			m_tHost->init({ appSettings });
+			m_tHost->registerClass(
+				Triton::reference<Triton::TritonEditor>(this).as<Triton::Core::TritonClass>(),
+				Triton::Core::ClassRegisterParams({ false, {}, "editor" }));
+
+			m_tHost->registerClass(
+				Triton::reference<Triton::EditorScene>(new Triton::EditorScene()).as<Triton::Core::TritonClass>(),
+				Triton::Core::ClassRegisterParams({ false, {}, "editor_scene" }));
+		}
+
+		void start()
+		{
+			m_tHost->start();
+		}
+
+		virtual void onMessage(size_t message, void* payload) override
+		{
+			switch (message)
+			{
+			case (size_t)Core::TritonMessageType::ClassRegistered:
+			{
+				TR_GET_CLASS(InputManager);
+
+				InputManager.as<Triton::Core::InputManager>()->AddListener(*this);
+
+				return;
+			}
+			}
+		}
+
+		bool keyPressed(const Event& event)
+		{
+			const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
+
+			int keycode = kpe.GetKeyCode();
+
+			TR_SYSTEM_TRACE("{0}", keycode);
+
+			//float cameraSpeed = 2.5 * prtc_Delta * 10;
+			//if (keycode == (int)'W')
+			//	m_MainScene->m_Camera->Position += cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
+			//if (keycode == (int)'S')
+			//	m_MainScene->m_Camera->Position -= cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
+			//if (keycode == (int)'A')
+			//	m_MainScene->m_Camera->Position -= glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+			//if (keycode == (int)'D')
+			//	m_MainScene->m_Camera->Position += glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
+			//if (keycode == (int)'`')
+			//{
+			//	try
+			//	{
+			//		this->Restart();
+			//	}
+			//	catch (const std::runtime_error &re) {
+			//		OutputDebugStringA(re.what());
+			//		::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
+			//	}
+			//}
+
+			return false;
+		}
+		bool mouseMoved(const Event& event)
+		{
+			//if (Input->getMouse()->Keys[(size_t)Triton::MouseKey::BUTTON_MIDDLE] && Input->focused())
+			//{
+			//	const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
+			//
+			//	float sensitivity = 0.3f;
+			//	float xoffset = mme.GetX() * sensitivity;
+			//	float yoffset = mme.GetY() * sensitivity;
+			//
+			//	m_MainScene->Camera->Yaw += xoffset;
+			//	m_MainScene->Camera->Pitch += yoffset;
+			//}
+
+			return false;
+		}
+
+	private:
+		TritonHost* m_tHost;
+	};
+}
 
 /*
 class UnitTest1 : public Triton::Application
@@ -262,51 +366,7 @@ public:
 		m_EditorScene->UpdateDelta = prtc_UpdateDelta;
 	}
 
-	bool keyPressed(const Triton::Event& event)
-	{
-		const Triton::KeyPressedEvent& kpe = dynamic_cast<const Triton::KeyPressedEvent&>(event);
-
-		int keycode = kpe.GetKeyCode();
-
-		//float cameraSpeed = 2.5 * prtc_Delta * 10;
-		//if (keycode == (int)'W')
-		//	m_MainScene->m_Camera->Position += cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
-		//if (keycode == (int)'S')
-		//	m_MainScene->m_Camera->Position -= cameraSpeed * m_MainScene->m_Camera->GetViewDirection();
-		//if (keycode == (int)'A')
-		//	m_MainScene->m_Camera->Position -= glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
-		//if (keycode == (int)'D')
-		//	m_MainScene->m_Camera->Position += glm::normalize(glm::cross(m_MainScene->m_Camera->GetViewDirection(), Triton::Vector3(0.0f, 1.0f, 0.0f))) * cameraSpeed;
-		//if (keycode == (int)'`')
-		//{
-		//	try
-		//	{
-		//		this->Restart();
-		//	}
-		//	catch (const std::runtime_error &re) {
-		//		OutputDebugStringA(re.what());
-		//		::MessageBoxA(NULL, re.what(), "Error initializing sample", MB_OK);
-		//	}
-		//}
-
-		return false;
-	}
-	bool mouseMoved(const Triton::Event& event)
-	{
-		if (Input->getMouse()->Keys[(size_t)Triton::MouseKey::BUTTON_MIDDLE] && Input->focused())
-		{
-			const Triton::MouseMovedEvent& mme = dynamic_cast<const Triton::MouseMovedEvent&>(event);
-		
-			float sensitivity = 0.3f;
-			float xoffset = mme.GetX() * sensitivity;
-			float yoffset = mme.GetY() * sensitivity;
-		
-			m_MainScene->Camera->Yaw += xoffset;
-			m_MainScene->Camera->Pitch += yoffset;
-		}
-
-		return false;
-	}
+	
 
 	virtual void Render() override
 	{
@@ -325,13 +385,8 @@ int main(int argc, char** argv)
 {
 	try
 	{
-		Triton::TritonHost* tHost = new Triton::TritonHost();
-
-		Triton::AppSettings appSettings;
-		appSettings.WindowWidth = 1280;
-		appSettings.WindowHeight = 720;
-
-		tHost->init({ appSettings });
+		Triton::TritonEditor editor;
+		editor.start();
 	}
 	catch (...)
 	{

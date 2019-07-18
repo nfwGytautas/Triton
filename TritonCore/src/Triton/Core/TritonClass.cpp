@@ -21,6 +21,10 @@ namespace Triton
 		{
 			m_Protected = params.IsProtected;
 			m_Receivers = params.Receivers;
+
+#if TR_STRING_REPRESENTATIONS == 1
+			m_Name = params.Name;
+#endif
 		}
 	}
 }

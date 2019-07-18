@@ -18,7 +18,7 @@ namespace Triton
 
 		reference<PType::Shader> Shader;
 
-		relay_ptr<Triton::PType::Context> Context;
+		reference<Triton::PType::Context> Context;
 	};
 
 	class RenderCommand
@@ -158,7 +158,7 @@ namespace Triton
 		class ChangeContextSetting : public RenderCommand
 		{
 		public:
-			ChangeContextSetting(std::function<void(relay_ptr<PType::Context>)> func)
+			ChangeContextSetting(std::function<void(reference<PType::Context>)> func)
 				: m_Func(func) {}
 
 			// Inherited via RenderCommand
@@ -168,7 +168,7 @@ namespace Triton
 			}
 
 		private:
-			std::function<void(relay_ptr<PType::Context>)> m_Func;
+			std::function<void(reference<PType::Context>)> m_Func;
 		};
 
 		class PushCustomAction : public RenderCommand
@@ -200,10 +200,12 @@ namespace Triton
 	namespace Core
 	{
 
-		class RenderBuffer
+		class RenderBuffer : public TritonClass
 		{
 		public:
 			RenderBuffer();
+
+			void newFrame();
 
 			template <class T, typename... Args>
 			void addCommand(Args&&... args)
@@ -213,8 +215,12 @@ namespace Triton
 
 			void clear();
 
-			void exec(PType::Context* context);
+			void exec();
+
+			virtual void onMessage(size_t message, void* payload) override;
 		private:
+			reference<PType::Context> m_context;
+
 			std::vector<RenderCommand*> m_commands;
 			BufferState m_bufferState;
 		};

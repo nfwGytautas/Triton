@@ -47,11 +47,16 @@ namespace Triton
 
 		void TritonCache::cacheFObject(Resource::AssetCreateParams& assetParams, reference<PType::FactoryObject> object)
 		{
+			if (getAssetPathCount(assetParams) == 0)
+			{
+				return;
+			}
+
 			m_cachedFactoryObjects.push_back(object);
 			m_assetPaths.push_back(std::vector<std::string>(std::begin(assetParams.Paths), std::end(assetParams.Paths)));
 		}
 
-		int TritonCache::getAssetPathCount(Resource::AssetCreateParams & assetParams)
+		int TritonCache::getAssetPathCount(Resource::AssetCreateParams& assetParams)
 		{
 			if (assetParams.Type == Resource::AssetCreateParams::AssetType::VIEWPORT)
 			{

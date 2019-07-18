@@ -29,9 +29,21 @@ namespace Triton
 
 		reference<Manager::AssetManager> assetManager = new Manager::AssetManager();
 		registerClass(assetManager.as<Core::TritonClass>(), Core::AssetManagerRegisterParams);
+
+		reference<Manager::ThreadManager> threadManager = new Manager::ThreadManager();
+		registerClass(threadManager.as<Core::TritonClass>(), Core::ThreadManagerRegisterParams);
+
+		reference<Core::RenderBuffer> mainRenderbuffer = new Core::RenderBuffer();
+		registerClass(mainRenderbuffer.as<Core::TritonClass>(), Core::MainRenderBufferRegisterParams);
+
+		reference<Utility::Timer> timer = new Utility::Timer();
+		registerClass(timer.as<Core::TritonClass>(), Core::TimerRegisterParams);
+
+		m_settings.render = !initParams.CustomRenderFunction;
+		m_settings.updating = !initParams.CustomUpdateFunction;
 	}
 
-	void TritonHost::registerClass(reference<Core::TritonClass>& classToRegister, Core::ClassRegisterParams classRegisterParams)
+	void TritonHost::registerClass(reference<Core::TritonClass> classToRegister, Core::ClassRegisterParams classRegisterParams)
 	{
 		if (!m_initialized)
 		{
@@ -44,8 +56,9 @@ namespace Triton
 		classToRegister->m_ID = m_nextClassId++;
 		classToRegister->takeParams(classRegisterParams);
 		m_IDObjectPairs[classToRegister->m_ID] = classToRegister;
+		m_registeredClasses.push_back(classToRegister);
 
-		classToRegister->onRegistered();
+		classToRegister->onMessage((size_t)Triton::Core::TritonMessageType::ClassRegistered, nullptr);
 	}
 
 	reference<Core::TritonClass> TritonHost::getClassByID(size_t id)
@@ -72,13 +85,21 @@ namespace Triton
 		}
 	}
 
+	void TritonHost::postMessage(size_t message, void* payload)
+	{
+		for (auto& TClass : m_registeredClasses)
+		{
+			TClass->onMessage(message, payload);
+		}
+	}
+
 #if TR_STRING_REPRESENTATIONS == 1
 
 	reference<Core::TritonClass> TritonHost::getClassByName(std::string name)
 	{
 		auto& it = std::find_if(m_registeredClasses.begin(), m_registeredClasses.end(), [&](auto& TClass) {return TClass->m_Name == name; });
 
-		if (it != m_registeredClasses.end())
+		if (it == m_registeredClasses.end())
 		{
 			TR_ERROR("Object '{0}' does not exist!", name);
 			return nullptr;
@@ -96,11 +117,20 @@ namespace Triton
 
 	reference<Core::TritonClass> TritonHost::getClassByName(std::string name, size_t requester)
 	{
-		auto& it = std::find_if(m_registeredClasses.begin(), m_registeredClasses.end(), [&](auto& TClass) {return TClass->m_Name == name; });
+		auto& it = std::find_if(m_registeredClasses.begin(), m_registeredClasses.end(), [&](auto& TClass) 
+		{
+			return TClass->m_Name == name; 
+		});
 
-		if (it != m_registeredClasses.end())
+		if (it == m_registeredClasses.end())
 		{
 			TR_ERROR("Object '{0}' does not exist!", name);
+			return nullptr;
+		}
+
+		if (!it->valid())
+		{
+			TR_ERROR("Object '{0}' is invalid!", name);
 			return nullptr;
 		}
 
@@ -114,19 +144,31 @@ namespace Triton
 		}
 	}
 
-	std::string TritonHost::getClassName(size_t id)
+	void TritonHost::isRendering(bool state)
 	{
-		if (checkReturnability(id, -1))
-		{
-			return m_IDObjectPairs[id]->m_Name;
-		}
-		else
-		{
-			return false;
-		}
+		m_settings.rendering = state;
 	}
 
 #endif
+
+	void TritonHost::isUpdating(bool state)
+	{
+		m_settings.updating = state;
+	}
+
+	void TritonHost::start()
+	{
+		if (m_settings.render)
+		{
+			this->getClassByID((size_t)Core::TritonClasses::ThreadManager).as<Manager::ThreadManager>()->
+				newRenderFunc(std::bind(&TritonHost::renderMT, this));
+		}
+		
+		if (m_settings.update)
+		{
+			updateMT();
+		}
+	}
 
 	bool TritonHost::checkReturnability(size_t id, size_t requester)
 	{
@@ -163,6 +205,31 @@ namespace Triton
 #endif
 				return false;
 			}
+		}
+	}
+
+	void TritonHost::updateMT()
+	{
+		auto& context = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
+
+		while (m_settings.updating)
+		{
+			context->window->update();
+			postMessage((size_t)Core::TritonMessageType::Update, nullptr);
+		}
+	}
+
+	void TritonHost::renderMT()
+	{
+		auto& renderBuffer = this->getClassByID((size_t)Triton::Core::TritonClasses::MainRenderBuffer).as<Triton::Core::RenderBuffer>();
+
+		while (m_settings.rendering)
+		{
+			renderBuffer->newFrame();
+
+			postMessage((size_t)Core::TritonMessageType::Render, nullptr);
+
+			renderBuffer->exec();
 		}
 	}
 

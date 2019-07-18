@@ -26,7 +26,7 @@ public:
 	virtual void cullBufferState(bool state) override;
 	virtual void setCursorPos(double x, double y) override;
 
-	virtual void onRegistered() override;
+	virtual void onMessage(size_t message, void* payload) override;
 private:
 	std::string m_appNameSTD;
 	LPCWSTR m_appName;

@@ -55,9 +55,7 @@ namespace Triton
 				return m_focus;
 			}
 
-			// Inherited via TritonClass
-			virtual void onRegistered() override;
-			virtual void onUnRegistered() override;
+			void onMessage(size_t message, void* payload) override;
 		private:
 			Keyboard* m_keyboardState;
 			Mouse* m_mouseState;

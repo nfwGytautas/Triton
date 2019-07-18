@@ -548,14 +548,22 @@ void DXContext::setCursorPos(double x, double y)
 	SetCursorPos(pt.x, pt.y);
 }
 
-void DXContext::onRegistered()
+void DXContext::onMessage(size_t message, void* payload)
 {
-	// Get input manager
-	auto& inputManager = this->getClassByID((size_t)Triton::Core::TritonClasses::InputManager);
-	dx_window()->m_iManager = inputManager.as<Triton::Core::InputManager>();
+	switch (message)
+	{
+		case (size_t)Triton::Core::TritonMessageType::ClassRegistered:
+		{
+			// Get input manager
+			auto& inputManager = this->getClassByID((size_t)Triton::Core::TritonClasses::InputManager);
+			dx_window()->m_iManager = inputManager.as<Triton::Core::InputManager>();
 
-	this->window->create();
-	this->init();
+			this->window->create();
+			this->init();
+
+			return;
+		}
+	}
 }
 
 PLATFORM_NAMESPACE_END

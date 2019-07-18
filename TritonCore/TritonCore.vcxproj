@@ -156,13 +156,15 @@
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
     <ClInclude Include="src\Triton\Managers\AssetManager.h" />
     <ClInclude Include="src\Triton\Managers\ManagerBase.h" />
+    <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
     <ClInclude Include="src\Triton\Managers\TritonCache.h" />
     <ClInclude Include="src\Triton\TritonHost.h" />
     <ClInclude Include="src\Triton\Utility\Algorithm.h" />
+    <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
+    <ClInclude Include="src\Triton\Utility\Utility.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\AppSettings.h" />
-    <ClInclude Include="src\Triton\Application.h" />
     <ClInclude Include="src\Triton\Camera\Camera.h" />
     <ClInclude Include="src\Triton\Config.h" />
     <ClInclude Include="src\Triton\Core\Asset\Asset.h" />
@@ -183,7 +185,6 @@
     <ClInclude Include="src\Triton\File\File.h" />
     <ClInclude Include="src\Triton\Limits.h" />
     <ClInclude Include="src\Triton\Logger\Log.h" />
-    <ClInclude Include="src\Triton\Managers\SceneManager.h" />
     <ClInclude Include="src\Triton\Serialize\Serialize.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
     <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
@@ -200,13 +201,14 @@
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
     <ClCompile Include="src\Triton\Managers\AssetManager.cpp" />
+    <ClCompile Include="src\Triton\Managers\ThreadManager.cpp" />
     <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
     <ClCompile Include="src\Triton\TritonHost.cpp" />
     <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
+    <ClCompile Include="src\Triton\Utility\Utility.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Triton\Application.cpp" />
     <ClCompile Include="src\Triton\Camera\Camera.cpp" />
     <ClCompile Include="src\Triton\Core\Asset\Asset.cpp" />
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp" />
@@ -220,7 +222,6 @@
     <ClCompile Include="src\Triton\Events\Events.cpp" />
     <ClCompile Include="src\Triton\File\File.cpp" />
     <ClCompile Include="src\Triton\Logger\Log.cpp" />
-    <ClCompile Include="src\Triton\Managers\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TritonGraphics\TritonGraphics.vcxproj">

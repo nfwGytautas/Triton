@@ -20,23 +20,44 @@ namespace Triton
 
 		const Triton::Core::ClassRegisterParams ContextRegisterParams
 		{
-			true, // IsProtected
-			{(size_t)TritonClasses::InputManager, (size_t)TritonClasses::AssetManager}, // Receivers
-			"graphicsContext"
+			false, // IsProtected
+			{(size_t)TritonClasses::InputManager, (size_t)TritonClasses::AssetManager, (size_t)TritonClasses::MainRenderBuffer}, // Receivers
+			"graphicsContext" // Name
 		};
 
 		const Triton::Core::ClassRegisterParams CacheRegisterParams
 		{
 			true, // IsProtected
 			{(size_t)TritonClasses::AssetManager}, // Receivers
-			"cache"
+			"cache" // Name
 		};
 
 		const Triton::Core::ClassRegisterParams AssetManagerRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"assetManager"
+			"assetManager" // Name
+		};
+
+		const Triton::Core::ClassRegisterParams ThreadManagerRegisterParams
+		{
+			false, // IsProtected
+			{}, // Receivers
+			"threadManager" // Name
+		};
+
+		const Triton::Core::ClassRegisterParams MainRenderBufferRegisterParams
+		{
+			false, // IsProtected
+			{}, // Receivers
+			"mainRenderBuffer" // Name
+		};
+
+		const Triton::Core::ClassRegisterParams TimerRegisterParams
+		{
+			false, // IsProtected
+			{}, // Receivers
+			"timer" // Name
 		};
 	}
 }

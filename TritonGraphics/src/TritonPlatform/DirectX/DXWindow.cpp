@@ -120,6 +120,8 @@ void DXWindow::create()
 		m_iManager->getMouse()->Y = p.y;
 	}
 
+	SetCapture(m_hwnd);
+
 	return;
 }
 

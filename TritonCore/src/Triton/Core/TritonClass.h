@@ -19,7 +19,18 @@ namespace Triton
 			InputManager = 0,
 			Context = 1,
 			Cache = 2,
-			AssetManager = 3
+			AssetManager = 3,
+			ThreadManager = 4,
+			MainRenderBuffer = 5,
+			Timer = 6
+		};
+
+		// Enum containing all the inbuilt messages used in the Triton engine
+		enum class TritonMessageType : size_t
+		{
+			ClassRegistered = 0,
+			Render = 1,
+			Update = 2
 		};
 
 		// The params that are pased to Triton host when creating a specific
@@ -57,8 +68,8 @@ namespace Triton
 			}
 #endif
 
-			virtual void onRegistered() {}
-			virtual void onUnRegistered() {}
+			// A Triton class method that allows for communication between classes
+			virtual void onMessage(size_t message, void* payload) { }
 
 		protected:
 			// Returns a reference to class object with specified id
