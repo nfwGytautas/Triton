@@ -70,6 +70,8 @@ namespace Triton
 
 			virtual void clear(float red, float green, float blue, float alpha) = 0;
 			virtual void render() = 0;
+
+			virtual void* getAsTexture() = 0;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
 		protected:

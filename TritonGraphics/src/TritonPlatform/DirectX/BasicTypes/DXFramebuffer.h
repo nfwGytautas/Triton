@@ -16,11 +16,7 @@ public:
 	virtual void clear(float red, float green, float blue, float alpha) override;
 	virtual void render() override;
 
-	ID3D11Texture2D* getTextureData()
-	{
-		return m_renderTargetTexture;
-	}
-	ID3D11ShaderResourceView* getShaderResourceView()
+	virtual void* getAsTexture() override
 	{
 		return m_shaderResourceView;
 	}

@@ -131,18 +131,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\EditorScene.h" />
+    <ClInclude Include="src\Scenes\EditorScene.h" />
     <ClInclude Include="src\Impl\imgui_impl_dx11.h" />
     <ClInclude Include="src\Impl\imgui_impl_win32.h" />
+    <ClInclude Include="src\Scenes\TestScene.h" />
     <ClInclude Include="src\Widgets\DockSpace.h" />
     <ClInclude Include="src\Widgets\LogWindow.h" />
     <ClInclude Include="src\Widgets\Metrics.h" />
     <ClInclude Include="src\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\EditorScene.cpp" />
+    <ClCompile Include="src\Scenes\EditorScene.cpp" />
     <ClCompile Include="src\Impl\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\Impl\imgui_impl_win32.cpp" />
+    <ClCompile Include="src\Scenes\TestScene.cpp" />
     <ClCompile Include="src\TritonEditor.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,8 @@ void Triton::Core::RenderBuffer::exec()
 	}
 
 	m_context->renderer->endFrame();
+
+	clear();
 }
 
 void Triton::Core::RenderBuffer::onMessage(size_t message, void * payload)

@@ -22,7 +22,8 @@ namespace Triton
 			AssetManager = 3,
 			ThreadManager = 4,
 			MainRenderBuffer = 5,
-			Timer = 6
+			Timer = 6,
+			GameWindow = 7
 		};
 
 		// Enum containing all the inbuilt messages used in the Triton engine

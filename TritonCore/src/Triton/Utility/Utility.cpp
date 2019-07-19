@@ -29,6 +29,13 @@ namespace Triton
 
 				return;
 			}
+			case (size_t)Core::TritonMessageType::ClassRegistered:
+			{
+				time now = m_timer.now();
+				m_prevUpdateTime = now;
+				m_prevRenderTime = now;
+				return;
+			}
 			}
 		}
 	}

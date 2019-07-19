@@ -19,6 +19,9 @@
 
 #include "Triton\Core\RenderBuffer.h"
 
+#include "Triton\Managers\AssetManager.h"
+#include "Triton\Core\GameWindow\GameWindow.h"
+
 namespace Triton
 {
 	// Base class that allows for multiple types of scenes that can all be managed by a single manager
@@ -34,7 +37,6 @@ namespace Triton
 	public:
 		Scene();
 		virtual ~Scene();
-
 
 		// Resource management
 		virtual void addLight(std::string type, reference<Graphics::Light> light);
@@ -61,6 +63,11 @@ namespace Triton
 		void onRender();
 	private:
 		std::unordered_map<std::string, unsigned int> m_LightCounts;
+
+		reference<Core::RenderBuffer> m_mainRenderBuffer;
+		reference<PType::Context> m_graphicsContext;
+		reference<Manager::AssetManager> m_assetManager;
+		reference<GameWindow> m_gameWindow;
 	};
 
 }

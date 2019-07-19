@@ -174,14 +174,7 @@ void Triton::EditorScene::onRegistered()
 
 	delete packet;
 
-	// Asset creation description
-	Triton::Resource::AssetCreateParams asset_desc;
-	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::VIEWPORT;
-	asset_desc.Width = 1280;
-	asset_desc.Height = 720;
-
-	TR_GET_CLASS(AssetManager);
-	m_viewPortObject = AssetManager.as<Manager::AssetManager>()->createAsset(asset_desc).as<Triton::Data::Viewport>();
+	m_gameWindow = this->getClassByName("gameWindow").as<GameWindow>();
 
 	m_timer = this->getClassByName("timer").as<Utility::Timer>();
 }
@@ -210,7 +203,7 @@ void Triton::EditorScene::onRender()
 	ShowDockSpace(&m_dockspace);
 
 	// Viewport
-	ShowViewport(&m_viewport, m_viewPortObject);
+	ShowViewport(&m_viewport, m_gameWindow);
 
 	// Log window
 	showLogWindow(&m_logWindow);

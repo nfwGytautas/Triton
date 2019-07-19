@@ -59,5 +59,12 @@ namespace Triton
 			{}, // Receivers
 			"timer" // Name
 		};
+
+		const Triton::Core::ClassRegisterParams GameWindowRegisterParams
+		{
+			false, // IsProtected
+			{}, // Receivers
+			"gameWindow" // Name
+		};
 	}
 }

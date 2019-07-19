@@ -1,14 +1,16 @@
 #pragma once
 
 #include <string>
+#include <imgui.h>
+
 #include "Triton/Core/Scene.h"
 #include "Triton/Events/EventManager.h"
 #include "Triton/Events/EventInterface.h"
 #include "Triton/Core/Wrapers/Viewport.h"
-#include <imgui.h>
 
 #include "Triton/Core/RenderBuffer.h"
 #include "Triton/Utility/Utility.h"
+#include "Triton/Core/GameWindow/GameWindow.h"
 
 
 namespace Triton
@@ -40,7 +42,7 @@ namespace Triton
 		void onUpdate();
 		void onRender();
 	private:
-		Triton::reference<Triton::Data::Viewport> m_viewPortObject;
+		Triton::reference<GameWindow> m_gameWindow;
 
 		reference<Core::InputManager> m_input;
 		reference<Utility::Timer> m_timer;

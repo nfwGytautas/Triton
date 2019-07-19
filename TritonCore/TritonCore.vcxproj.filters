@@ -153,6 +153,7 @@
     <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
     <ClInclude Include="src\Triton\Utility\Utility.h" />
     <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
+    <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -208,5 +209,6 @@
     <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
     <ClCompile Include="src\Triton\Managers\ThreadManager.cpp" />
     <ClCompile Include="src\Triton\Utility\Utility.cpp" />
+    <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,9 @@ namespace Triton
 		reference<Utility::Timer> timer = new Utility::Timer();
 		registerClass(timer.as<Core::TritonClass>(), Core::TimerRegisterParams);
 
+		reference<GameWindow> gWindow = new GameWindow();
+		registerClass(gWindow.as<Core::TritonClass>(), Core::GameWindowRegisterParams);
+
 		m_settings.render = !initParams.CustomRenderFunction;
 		m_settings.updating = !initParams.CustomUpdateFunction;
 	}

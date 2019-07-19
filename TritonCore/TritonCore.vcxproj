@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
     <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp" />
     <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
     <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
     <ClCompile Include="src\Triton\Core\TritonClass.cpp" />

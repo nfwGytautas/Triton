@@ -15,6 +15,7 @@
 #include "Triton\Managers\ThreadManager.h"
 #include "Triton\Core\RenderBuffer.h"
 #include "Triton\Utility\Utility.h"
+#include "Triton\Core\GameWindow\GameWindow.h"
 
 namespace Triton 
 {
