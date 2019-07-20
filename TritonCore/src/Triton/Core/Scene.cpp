@@ -8,7 +8,7 @@
 
 Triton::SceneBase::SceneBase()
 {
-
+	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
 }
 
 std::tuple<bool, bool> BindVisual(Triton::Components::Visual& prevVisual, Triton::Components::Visual& newVisual)
@@ -34,8 +34,6 @@ std::tuple<bool, bool> BindVisual(Triton::Components::Visual& prevVisual, Triton
 Triton::Scene::Scene()
 	: SceneBase()
 {
-	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
-	
 	Camera = std::make_unique<Triton::Camera>(Vector3(0.0f, 0.0f, 0.0f));
 
 	//prtc_Shader = std::shared_ptr<Core::Shader>(Core::Shader::Create(
@@ -163,7 +161,7 @@ void Triton::Scene::onUpdate()
 
 void Triton::Scene::onRender()
 {
-	// Bind/enable the viewport
+	// Bind/enable the view port
 	m_mainRenderBuffer->addCommand<RCommands::PushViewport>(m_gameWindow->getViewport());
 
 	// Render the background

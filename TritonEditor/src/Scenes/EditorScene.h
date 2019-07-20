@@ -41,10 +41,17 @@ namespace Triton
 		void onRegistered();
 		void onUpdate();
 		void onRender();
+
+		void loadResources();
+		void createEntities();
+		void renderEntities();
 	private:
 		Triton::reference<GameWindow> m_gameWindow;
 
+		reference<Core::RenderBuffer> m_mainRenderBuffer;
+		reference<PType::Context> m_graphicsContext;
 		reference<Core::InputManager> m_input;
+		reference<Manager::AssetManager> m_assetManager;
 		reference<Utility::Timer> m_timer;
 
 		ImGuiIO* m_imguiIO;
@@ -52,6 +59,14 @@ namespace Triton
 		bool m_viewport = true;
 		bool m_logWindow = true;
 		bool m_metrics = true;
+
+	private:
+		std::unique_ptr<Camera> edtr_Camera;
+
+		reference<Data::Mesh> edtr_3DPOINTER;
+		reference<Data::Material> edtr_mat_3DPOINTER;
+
+		size_t edtr_pointer_id;
 	};
 
 }

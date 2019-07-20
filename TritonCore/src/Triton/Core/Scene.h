@@ -30,6 +30,8 @@ namespace Triton
 	public:
 		SceneBase();
 		virtual ~SceneBase() { }
+
+		std::unique_ptr<ECS::Registry> Entities;
 	};
 
 	class Scene : public SceneBase
@@ -52,7 +54,6 @@ namespace Triton
 		reference<PType::Shader> image_shader;
 
 		std::unique_ptr<Camera> Camera;
-		std::unique_ptr<ECS::Registry> Entities;
 		std::vector<reference<Graphics::Light>> m_Lights;
 
 		reference<Data::Mesh> BackgroundMesh;

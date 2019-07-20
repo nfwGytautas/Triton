@@ -6,10 +6,12 @@
 
 namespace Triton
 {
-
 	TritonHost::TritonHost()
 	{
-
+		// Fills priority vectors with empty data
+		m_priorities.update.resize(Layers::c_maxLayers);
+		m_priorities.render.resize(Layers::c_maxLayers);
+		m_priorities.preRender.resize(Layers::c_maxLayers);
 	}
 
 	void TritonHost::init(HostInitializationParams initParams)
@@ -55,13 +57,37 @@ namespace Triton
 			return;
 		}
 
+		// Fill class with data
 		classToRegister->m_HostInstance = this;
 		classToRegister->m_ID = m_nextClassId++;
 		classToRegister->takeParams(classRegisterParams);
+
+		// Add class to trackers
 		m_IDObjectPairs[classToRegister->m_ID] = classToRegister;
 		m_registeredClasses.push_back(classToRegister);
 
-		classToRegister->onMessage((size_t)Triton::Core::TritonMessageType::ClassRegistered, nullptr);
+		// Add class to layers
+		if (classToRegister->m_messages & Core::ReceivedMessages::PreRender 
+			&& classToRegister->m_layerSettings.PreRender < Layers::c_maxLayers)
+		{
+			m_priorities.preRender[classToRegister->m_layerSettings.PreRender].push_back(classToRegister);
+		}
+		if (classToRegister->m_messages & Core::ReceivedMessages::Update
+			&& classToRegister->m_layerSettings.Update < Layers::c_maxLayers)
+		{
+			m_priorities.update[classToRegister->m_layerSettings.Update].push_back(classToRegister);
+		}
+		if (classToRegister->m_messages & Core::ReceivedMessages::Render
+			&& classToRegister->m_layerSettings.Render < Layers::c_maxLayers)
+		{
+			m_priorities.render[classToRegister->m_layerSettings.Render].push_back(classToRegister);
+		}
+
+		// Send a registered class message
+		if (classToRegister->m_messages & Core::ReceivedMessages::ClassRegistered)
+		{
+			classToRegister->onMessage((size_t)Triton::Core::TritonMessageType::ClassRegistered, nullptr);
+		}
 	}
 
 	reference<Core::TritonClass> TritonHost::getClassByID(size_t id)
@@ -88,11 +114,51 @@ namespace Triton
 		}
 	}
 
-	void TritonHost::postMessage(size_t message, void* payload)
+	void TritonHost::postMessage(int message, void* payload)
 	{
+		// Check if the message is custom or not
+		bool customMsg = (message & Core::c_BuiltInMessageMask) == 0;
+
 		for (auto& TClass : m_registeredClasses)
 		{
-			TClass->onMessage(message, payload);
+			if (customMsg)
+			{
+				if (TClass->m_messages & Core::ReceivedMessages::Custom)
+				{
+					TClass->onMessage(message, payload);
+				}
+			}
+			else
+			{
+				if (TClass->m_messages & message)
+				{
+					TClass->onMessage(message, payload);
+				}
+			}
+		}
+	}
+
+	void TritonHost::postMessage(int message, std::vector<reference<Core::TritonClass>>& classesToSendTo, void* payload)
+	{
+		// Check if the message is custom or not
+		bool customMsg = (message & Core::c_BuiltInMessageMask) == 0;
+
+		for (auto& TClass : classesToSendTo)
+		{
+			if (customMsg)
+			{
+				if (TClass->m_messages & Core::ReceivedMessages::Custom)
+				{
+					TClass->onMessage(message, payload);
+				}
+			}
+			else
+			{
+				if (TClass->m_messages & message)
+				{
+					TClass->onMessage(message, payload);
+				}
+			}
 		}
 	}
 
@@ -120,9 +186,9 @@ namespace Triton
 
 	reference<Core::TritonClass> TritonHost::getClassByName(std::string name, size_t requester)
 	{
-		auto& it = std::find_if(m_registeredClasses.begin(), m_registeredClasses.end(), [&](auto& TClass) 
+		auto& it = std::find_if(m_registeredClasses.begin(), m_registeredClasses.end(), [&](auto& TClass)
 		{
-			return TClass->m_Name == name; 
+			return TClass->m_Name == name;
 		});
 
 		if (it == m_registeredClasses.end())
@@ -166,7 +232,7 @@ namespace Triton
 			this->getClassByID((size_t)Core::TritonClasses::ThreadManager).as<Manager::ThreadManager>()->
 				newRenderFunc(std::bind(&TritonHost::renderMT, this));
 		}
-		
+
 		if (m_settings.update)
 		{
 			updateMT();
@@ -217,23 +283,26 @@ namespace Triton
 
 		while (m_settings.updating)
 		{
-			context->window->update();
-			postMessage((size_t)Core::TritonMessageType::Update, nullptr);
+			for (int i = 0; i < Layers::c_maxLayers; i++)
+			{
+				postMessage((size_t)Core::TritonMessageType::Update, m_priorities.update[i], nullptr);
+			}
 		}
 	}
 
 	void TritonHost::renderMT()
 	{
-		auto& renderBuffer = this->getClassByID((size_t)Triton::Core::TritonClasses::MainRenderBuffer).as<Triton::Core::RenderBuffer>();
-
 		while (m_settings.rendering)
 		{
-			renderBuffer->newFrame();
+			for (int i = 0; i < Layers::c_maxLayers; i++)
+			{
+				postMessage((size_t)Core::TritonMessageType::PreRender, m_priorities.preRender[i], nullptr);
+			}
 
-			postMessage((size_t)Core::TritonMessageType::Render, nullptr);
-
-			renderBuffer->exec();
+			for (int i = 0; i < Layers::c_maxLayers; i++)
+			{
+				postMessage((size_t)Core::TritonMessageType::Render, m_priorities.render[i], nullptr);
+			}
 		}
 	}
-
 }

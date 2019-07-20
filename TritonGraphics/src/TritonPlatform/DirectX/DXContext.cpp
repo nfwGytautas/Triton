@@ -563,6 +563,11 @@ void DXContext::onMessage(size_t message, void* payload)
 
 			return;
 		}
+		case (size_t)Triton::Core::TritonMessageType::Update:
+		{
+			window->update();
+			return;
+		}
 	}
 }
 

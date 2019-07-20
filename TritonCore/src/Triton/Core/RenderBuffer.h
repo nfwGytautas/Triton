@@ -19,6 +19,8 @@ namespace Triton
 		reference<PType::Shader> Shader;
 
 		reference<Triton::PType::Context> Context;
+
+		reference<PType::Framebuffer> Framebuffer;
 	};
 
 	class RenderCommand
@@ -40,9 +42,9 @@ namespace Triton
 			// Inherited via RenderCommand
 			virtual void execute(BufferState& bufferState) override
 			{
-				m_Viewport->Framebuffer->clear(TR_CLEAR_COLOR);
 				m_Viewport->Framebuffer->enable();
 
+				bufferState.Framebuffer = m_Viewport->Framebuffer;
 				bufferState.Context->renderer->height = m_Viewport->Height;
 				bufferState.Context->renderer->width = m_Viewport->Width;
 				bufferState.Context->renderer->recalc_matrices();
@@ -50,6 +52,18 @@ namespace Triton
 
 		private:
 			reference<Data::Viewport> m_Viewport;
+		};
+
+		class ClearCurrentViewport : public RenderCommand
+		{
+		public:
+			ClearCurrentViewport() {}
+
+			// Inherited via RenderCommand
+			virtual void execute(BufferState& bufferState) override
+			{
+				bufferState.Framebuffer->clear(TR_CLEAR_COLOR);
+			}
 		};
 
 		class PushMesh : public RenderCommand

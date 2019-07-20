@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Triton/Core/TritonClass.h"
-
 #include "Base.h"
 #include "Factory.h"
 #include "Shader.h"
 #include "VAO.h"
 #include "Texture.h"
 #include "Bitmap.h"
+
+#include "Triton/Core/TritonClass.h"
 
 namespace Triton
 {
@@ -38,7 +38,7 @@ namespace Triton
 			// Update the window
 			virtual void update() = 0;
 
-			// Set cursor visability
+			// Set cursor visibility
 			virtual void showCursor(bool value) = 0;
 
 			// Clear the contents of the window
@@ -80,7 +80,7 @@ namespace Triton
 			// Recalculates the matrices
 			virtual void recalc_matrices() = 0;
 
-			// Set window vsync property
+			// Set window v sync property
 			virtual void setVsync(bool value) = 0;
 		public:
 			float fov;
@@ -101,7 +101,7 @@ namespace Triton
 			Window* window;
 			// Renderer object
 			Renderer* renderer;
-			// Factoy object
+			// Factory object
 			Factory* factory;
 
 			// Init the context
@@ -113,7 +113,7 @@ namespace Triton
 			// Update the context
 			virtual void update() = 0;
 
-			// Update viewport
+			// Update view port
 			virtual void setViewPort(int x, int y, int width, int height) = 0;
 
 			// Fill's packet data

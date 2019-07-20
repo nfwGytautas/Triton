@@ -51,7 +51,10 @@ namespace Triton
 		reference<Core::TritonClass> getClassByID(size_t id, size_t requester);
 
 		// Posts a message that is sent to all classes
-		void postMessage(size_t message, void* payload);
+		void postMessage(int message, void* payload);
+
+		// Posts a message that is sent to classes in the specified layer
+		void postMessage(int message, std::vector<reference<Core::TritonClass>>& classesToSendTo, void* payload);
 
 #if TR_STRING_REPRESENTATIONS == 1
 		// Returns a reference to class object with specified name
@@ -99,6 +102,15 @@ namespace Triton
 			// Should host handle updating
 			bool update = true;
 		} m_settings;
+
+		// Struct containing the order of sending messages for
+		// Rendering, Updating, PreRendering
+		struct ClassPriorities
+		{
+			std::vector<std::vector<reference<Core::TritonClass>>> update;
+			std::vector<std::vector<reference<Core::TritonClass>>> render;
+			std::vector<std::vector<reference<Core::TritonClass>>> preRender;
+		} m_priorities;
 
 		// All the classes that registered themselves with the host
 		std::vector<reference<Core::TritonClass>> m_registeredClasses;

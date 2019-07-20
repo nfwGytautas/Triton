@@ -154,6 +154,7 @@
     <ClInclude Include="src\Triton\Utility\Utility.h" />
     <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
     <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Layers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />

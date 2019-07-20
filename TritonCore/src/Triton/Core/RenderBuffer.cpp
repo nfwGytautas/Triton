@@ -43,6 +43,16 @@ void Triton::Core::RenderBuffer::onMessage(size_t message, void * payload)
 
 		return;
 	}
+	case (size_t)TritonMessageType::PreRender:
+	{
+		newFrame();
+		return;
+	}
+	case (size_t)TritonMessageType::Render:
+	{
+		exec();
+		return;
+	}
 	}
 }
 

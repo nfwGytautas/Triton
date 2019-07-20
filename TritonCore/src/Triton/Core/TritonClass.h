@@ -5,6 +5,7 @@
 
 #include "Triton/Config.h"
 #include "TritonTypes/reference.h"
+#include "Triton/Core/Graphics/Layers.h"
 
 namespace Triton
 {
@@ -13,7 +14,7 @@ namespace Triton
 	namespace Core
 	{
 		// Enum containing all ids of Triton classes already defined by the engine
-		// using this enum they can be accesed anywhere without use of names
+		// using this enum they can be accessed anywhere without use of names
 		enum class TritonClasses : size_t
 		{
 			InputManager = 0,
@@ -31,14 +32,49 @@ namespace Triton
 		{
 			ClassRegistered = 0,
 			Render = 1,
-			Update = 2
+			PreRender = 2,
+			Update = 3
 		};
 
-		// The params that are pased to Triton host when creating a specific
+		// Flags that specify what messages should be sent to a Triton class
+		enum class ReceivedMessages : int 
+		{
+			None = 0,
+			ClassRegistered = 1 << (int)TritonMessageType::ClassRegistered,
+			Render			= 1 << (int)TritonMessageType::Render,
+			PreRender		= 1 << (int)TritonMessageType::PreRender,
+			Update			= 1 << (int)TritonMessageType::Update,
+			All				= 1 << (int)TritonMessageType::Update + 1,
+			Custom			= 1 << (int)TritonMessageType::Update + 2,
+		};
+
+		inline constexpr ReceivedMessages operator|(ReceivedMessages a, ReceivedMessages b) {
+			return static_cast<ReceivedMessages> ((int)a | (int)b);
+		}
+		inline constexpr int operator&(ReceivedMessages a, ReceivedMessages b) {
+			return (int)a & (int)b;
+		}
+		inline constexpr int operator&(ReceivedMessages a, int b) {
+			return (int)a & b;
+		}
+		inline constexpr int operator&(int a, ReceivedMessages b) {
+			return a & (int)b;
+		}
+		inline constexpr size_t operator&(ReceivedMessages a, size_t b) {
+			return (size_t)a & b;
+		}
+
+		// The mask of all built in messages in Triton
+		const ReceivedMessages c_BuiltInMessageMask = (ReceivedMessages::ClassRegistered |
+			ReceivedMessages::Update |
+			ReceivedMessages::Render |
+			ReceivedMessages::PreRender);
+
+		// The params that are passed to Triton host when creating a specific
 		// Triton class, this struct specifies how the host should create the class
 		struct ClassRegisterParams
 		{
-			// Marks the created class as protected meaning no other class can recieve the instance of it
+			// Marks the created class as protected meaning no other class can receive the instance of it
 			// unless the id of the receiver is the on specified in the Receivers vector
 			bool IsProtected = false;
 
@@ -48,6 +84,23 @@ namespace Triton
 
 			// Name of the created class
 			std::string Name;
+
+			// Specifies what priority does this class have over others when sending render messages
+			// Messages are sent from the lowest number to the highest number if a class with
+			// the same priority already exists then it will be inserted AFTER said class
+			Layers::Layer UpdatePriority = Layers::c_lastLayer;
+
+			// Same as update priority except for pre render messages
+			Layers::Layer PreRenderPriority = Layers::c_lastLayer;
+
+			// Same as update priority except for render messages, for example a scene can be rendered
+			// in 0 layer and GUI in 1 meaning that the GUI class will receive the render message after
+			// the scene has been rendered
+			Layers::Layer RenderLayer = Layers::c_lastLayer;
+
+			// Messages that the class is receiving, by default all messages will be sent to the class
+			// this is mainly used for minimizing the amount of onMessage calls per update
+			ReceivedMessages MessagesToListenTo = ReceivedMessages::All;
 		};
 
 		// The base class of all objects (User or Engine)
@@ -95,12 +148,23 @@ namespace Triton
 			std::string m_Name;
 #endif
 
+			// The messages the class receives
+			ReceivedMessages m_messages;
+
+			// Struct containing the priorities/positions for messages
+			struct LayerSettings
+			{
+				Layers::Layer Update;
+				Layers::Layer PreRender;
+				Layers::Layer Render;
+			} m_layerSettings;
+
 			// Instance of the host
 			TritonHost* m_HostInstance;
 		private:
 			// Sets private members from create params this method is called after the id and 
 			// host instance is set
-			void takeParams(ClassRegisterParams params);
+			void takeParams(ClassRegisterParams& params);
 
 			friend TritonHost;
 		};

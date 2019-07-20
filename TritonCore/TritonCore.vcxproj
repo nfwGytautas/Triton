@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
+    <ClInclude Include="src\Triton\Core\Graphics\Layers.h" />
     <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />

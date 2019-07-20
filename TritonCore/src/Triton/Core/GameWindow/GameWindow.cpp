@@ -10,6 +10,7 @@ namespace Triton
 		switch (message)
 		{
 		case (size_t)Core::TritonMessageType::ClassRegistered:
+		{
 			auto& assetManager = this->getClassByID((size_t)Core::TritonClasses::AssetManager).as<Manager::AssetManager>();
 
 			// Asset creation description
@@ -21,6 +22,14 @@ namespace Triton
 			m_gameViewport = assetManager->createAsset(asset_desc).as<Triton::Data::Viewport>();
 
 			return;
+		}
+
+		case (size_t)Core::TritonMessageType::PreRender:
+		{
+			m_gameViewport->Framebuffer->clear(TR_CLEAR_COLOR);
+
+			return;
+		}
 		}
 	}
 }

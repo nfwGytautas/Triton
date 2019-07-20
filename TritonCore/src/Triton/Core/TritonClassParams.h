@@ -10,61 +10,115 @@ namespace Triton
 {
 	namespace Core
 	{
-
 		const ClassRegisterParams InputRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"inputManager"
+			"inputManager", // Name
+			Layers::c_eventDispatchLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::ClassRegistered | 
+				ReceivedMessages::Update
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams ContextRegisterParams
 		{
 			false, // IsProtected
 			{(size_t)TritonClasses::InputManager, (size_t)TritonClasses::AssetManager, (size_t)TritonClasses::MainRenderBuffer}, // Receivers
-			"graphicsContext" // Name
+			"graphicsContext", // Name
+			Layers::c_hardwareLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::ClassRegistered |
+				ReceivedMessages::Update
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams CacheRegisterParams
 		{
 			true, // IsProtected
 			{(size_t)TritonClasses::AssetManager}, // Receivers
-			"cache" // Name
+			"cache", // Name
+			Layers::c_nullLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::None
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams AssetManagerRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"assetManager" // Name
+			"assetManager", // Name
+			Layers::c_nullLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::None
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams ThreadManagerRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"threadManager" // Name
+			"threadManager", // Name
+			Layers::c_nullLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::None
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams MainRenderBufferRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"mainRenderBuffer" // Name
+			"mainRenderBuffer", // Name
+			Layers::c_nullLayer, // Update priority
+			Layers::c_prepareRenderBufferLayer, // PreRender priority
+			Layers::c_executeRenderBufferLayer, // Render priority
+			(
+				ReceivedMessages::PreRender |
+				ReceivedMessages::Render |
+				ReceivedMessages::ClassRegistered
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams TimerRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"timer" // Name
+			"timer", // Name
+			Layers::c_deltaLayer, // Update priority
+			Layers::c_nullLayer, // PreRender priority
+			Layers::c_deltaLayer, // Render priority
+			(
+				ReceivedMessages::Update |
+				ReceivedMessages::Render |
+				ReceivedMessages::ClassRegistered
+			) // Received messages
 		};
 
 		const Triton::Core::ClassRegisterParams GameWindowRegisterParams
 		{
 			false, // IsProtected
 			{}, // Receivers
-			"gameWindow" // Name
+			"gameWindow", // Name
+			Layers::c_nullLayer, // Update priority
+			Layers::c_prepareRenderBufferLayer, // PreRender priority
+			Layers::c_nullLayer, // Render priority
+			(
+				ReceivedMessages::ClassRegistered |
+				ReceivedMessages::PreRender
+			) // Received messages
 		};
 	}
 }
