@@ -12,9 +12,26 @@
 #include <Triton/Utility/Utility.h>
 #include <Triton/Core/GameWindow/GameWindow.h>
 
+#include "TritonEditor/Data/EditorState.h"
+#include "TritonEditor/Macros.h"
 
 namespace Triton
 {
+
+	const Triton::Core::ClassRegisterParams c_testSceneRegisterParams =
+	{
+		false,
+		{},
+		"test_scene",
+		Layers::Update::c_layer1,
+		Layers::c_nullLayer,
+		Layers::Render::c_layer1,
+		(
+			Core::ReceivedMessages::ClassRegistered |
+			Core::ReceivedMessages::Update |
+			Core::ReceivedMessages::Render
+		)
+	};
 
 	class TestScene : 
 		public Scene,
@@ -33,6 +50,8 @@ namespace Triton
 		void updateEntities();
 
 	private:
+		TR_EDTR_STATE(m_edtr_state)
+
 		reference<Utility::Timer> m_timer;
 		reference<Core::InputManager> m_input;
 

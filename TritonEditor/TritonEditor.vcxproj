@@ -131,21 +131,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Scenes\EditorScene.h" />
-    <ClInclude Include="src\Impl\imgui_impl_dx11.h" />
-    <ClInclude Include="src\Impl\imgui_impl_win32.h" />
-    <ClInclude Include="src\Scenes\TestScene.h" />
-    <ClInclude Include="src\Widgets\DockSpace.h" />
-    <ClInclude Include="src\Widgets\LogWindow.h" />
-    <ClInclude Include="src\Widgets\Metrics.h" />
-    <ClInclude Include="src\Widgets\Viewport.h" />
+    <ClInclude Include="src\TritonEditor\Data\NameMap.h" />
+    <ClInclude Include="src\TritonEditor\Data\EditorState.h" />
+    <ClInclude Include="src\TritonEditor\Macros.h" />
+    <ClInclude Include="src\TritonEditor\Scenes\EditorScene.h" />
+    <ClInclude Include="src\TritonEditor\Impl\imgui_impl_dx11.h" />
+    <ClInclude Include="src\TritonEditor\Impl\imgui_impl_win32.h" />
+    <ClInclude Include="src\TritonEditor\Scenes\TestScene.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\AssetWindow.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\DockSpace.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\InspectorWindow.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\LogWindow.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\Metrics.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\SceneView.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Scenes\EditorScene.cpp" />
-    <ClCompile Include="src\Impl\imgui_impl_dx11.cpp" />
-    <ClCompile Include="src\Impl\imgui_impl_win32.cpp" />
-    <ClCompile Include="src\Scenes\TestScene.cpp" />
-    <ClCompile Include="src\TritonEditor.cpp" />
+    <ClCompile Include="src\TritonEditor\Data\NameMap.cpp" />
+    <ClCompile Include="src\TritonEditor\Data\EditorState.cpp" />
+    <ClCompile Include="src\TritonEditor\Scenes\EditorScene.cpp" />
+    <ClCompile Include="src\TritonEditor\Impl\imgui_impl_dx11.cpp" />
+    <ClCompile Include="src\TritonEditor\Impl\imgui_impl_win32.cpp" />
+    <ClCompile Include="src\TritonEditor\Scenes\TestScene.cpp" />
+    <ClCompile Include="src\TritonEditor\TritonEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TritonCore\TritonCore.vcxproj">

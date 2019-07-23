@@ -122,6 +122,8 @@ void DXWindow::create()
 
 	SetCapture(m_hwnd);
 
+	m_selfCreated = true;
+
 	return;
 }
 
@@ -159,36 +161,33 @@ void DXWindow::showCursor(bool value)
 	ShowCursor(value);
 }
 
-// Clear window contents
-void Triton::PType::DXWindow::clear(float r, float g, float b, float a)
-{
-
-}
-
 // Destroys the window
  void DXWindow::destroy()
 {
-	// Show the mouse cursor.
-	ShowCursor(true);
+	 if (m_selfCreated)
+	 {
+		 // Show the mouse cursor.
+		 ShowCursor(true);
 
-	// Fix the display settings if leaving full screen mode.
-	if (m_fullscreen)
-	{
-		ChangeDisplaySettings(NULL, 0);
-	}
+		 // Fix the display settings if leaving full screen mode.
+		 if (m_fullscreen)
+		 {
+			 ChangeDisplaySettings(NULL, 0);
+		 }
 
-	// Remove the window.
-	DestroyWindow(m_hwnd);
-	m_hwnd = NULL;
+		 // Remove the window.
+		 DestroyWindow(m_hwnd);
+		 m_hwnd = NULL;
 
-	// Remove the application instance.
-	UnregisterClass(m_applicationName, m_hinstance);
-	m_hinstance = NULL;
+		 // Remove the application instance.
+		 UnregisterClass(m_applicationName, m_hinstance);
+		 m_hinstance = NULL;
 
-	// Release the pointer to this class.
-	WindowHandle = NULL;
+		 // Release the pointer to this class.
+		 WindowHandle = NULL;
 
-	return;
+		 return;
+	 }
 }
 
 LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -231,6 +230,8 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 		case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
 		case WM_XBUTTONDOWN: case WM_XBUTTONDBLCLK:
 		{
+			SetCapture(m_hwnd);
+
 			int button = 0;
 			if (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK) { button = 0; }
 			if (msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK) { button = 1; }
@@ -246,6 +247,8 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 		case WM_MBUTTONUP:
 		case WM_XBUTTONUP:
 		{
+			ReleaseCapture();
+
 			int button = 0;
 			if (msg == WM_LBUTTONUP) { button = 0; }
 			if (msg == WM_RBUTTONUP) { button = 1; }
@@ -288,6 +291,35 @@ LRESULT CALLBACK DXWindow::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LP
 			m_iManager->getMouse()->Y = GET_Y_LPARAM(lParam);
 			return 0;
 		
+		case WM_DROPFILES:
+		{
+			HDROP hDrop = (HDROP)wParam;
+			UINT nCnt = DragQueryFile(hDrop, (UINT)-1, NULL, 0);
+
+			std::vector<std::string> dropedFiles;
+			dropedFiles.reserve(nCnt);
+
+			for (int nIndex = 0; nIndex < nCnt; ++nIndex) {
+				UINT nSize;
+				if (0 == (nSize = DragQueryFile(hDrop, nIndex, NULL, 0)))
+				{
+					continue;
+				}
+
+				TCHAR *pszFileName = new TCHAR[++nSize];
+				if (DragQueryFile(hDrop, nIndex, pszFileName, nSize)) {
+					std::wstring path = std::wstring(pszFileName);
+					dropedFiles.push_back(std::string(path.begin(), path.end()));
+				}
+				delete[] pszFileName;
+			}
+			m_iManager->Post(new Triton::AppDropEvent(dropedFiles));
+
+			DragFinish(hDrop);
+
+			return 0;
+		}
+
 		case WM_INPUT:
 		{
 			UINT dwSize;

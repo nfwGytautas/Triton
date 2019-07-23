@@ -7,7 +7,7 @@
 #include "TritonPlatform/DirectX/DXTypes.h"
 #include "Triton/Core/Wrapers/Viewport.h"
 
-void ShowViewport(bool* p_open, Triton::reference<Triton::GameWindow>& gameWindow)
+void showViewport(bool* p_open, Triton::reference<Triton::GameWindow>& gameWindow)
 {
 	ImGui::SetNextWindowSize(ImVec2(gameWindow->getWidth(), gameWindow->getHeight()), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoTitleBar);
@@ -18,6 +18,23 @@ void ShowViewport(bool* p_open, Triton::reference<Triton::GameWindow>& gameWindo
 	gameWindow->getViewport()->Height = im_size.y;
 
 	ImGui::Image(gameWindow->getTexture(),
+		ImVec2(im_size.x - 20, im_size.y - 40),
+		ImVec2(0, 0), ImVec2(1, 1));
+
+	ImGui::End();
+}
+
+void showViewport(bool* p_open, Triton::reference<Triton::Data::Viewport>& viewPort)
+{
+	ImGui::SetNextWindowSize(ImVec2(viewPort->Width, viewPort->Height), ImGuiCond_FirstUseEver);
+	ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoTitleBar);
+
+	ImVec2 im_size = ImGui::GetWindowSize();
+
+	viewPort->Width = im_size.x;
+	viewPort->Height = im_size.y;
+
+	ImGui::Image(viewPort->Framebuffer->getAsTexture(),
 		ImVec2(im_size.x - 20, im_size.y - 40),
 		ImVec2(0, 0), ImVec2(1, 1));
 

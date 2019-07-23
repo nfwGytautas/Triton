@@ -13,7 +13,6 @@ public:
 	virtual bool windowClosed() override;
 	virtual void update() override;
 	virtual void showCursor(bool value) override;
-	virtual void clear(float r, float g, float b, float a) override;
 	virtual void destroy() override;
 
 	LRESULT CALLBACK MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
@@ -22,6 +21,7 @@ private:
 	bool m_fullscreen = false;
 
 	bool m_hasWindow;
+	bool m_selfCreated = false;
 
 	LPCWSTR m_applicationName;
 	HINSTANCE m_hinstance;

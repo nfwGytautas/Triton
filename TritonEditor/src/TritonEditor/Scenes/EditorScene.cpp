@@ -2,19 +2,24 @@
 #include <string>
 
 #include <imgui.h>
-#include "Impl/imgui_impl_win32.h"
-#include "Impl/imgui_impl_dx11.h"
 
-#include "TritonPlatform/DirectX/DXSpecific.h"
+#include <TritonPlatform/DirectX/DXSpecific.h>
+#include <Triton/Utility/ClassGetters.h>
+#include <Triton/Managers/AssetManager.h>
+#include <Triton/Core/Graphics/Lighting/DirectionalLight.h>
 
-#include "Widgets/DockSpace.h"
-#include "Widgets/Viewport.h"
-#include "Widgets/LogWindow.h"
-#include "Widgets/Metrics.h"
+#include "TritonEditor/Impl/imgui_impl_win32.h"
+#include "TritonEditor/Impl/imgui_impl_dx11.h"
 
-#include "Triton/Utility/ClassGetters.h"
+#include "TritonEditor/Widgets/DockSpace.h"
+#include "TritonEditor/Widgets/Viewport.h"
+#include "TritonEditor/Widgets/LogWindow.h"
+#include "TritonEditor/Widgets/Metrics.h"
+#include "TritonEditor/Widgets/SceneView.h"
+#include "TritonEditor/Widgets/AssetWindow.h"
+#include "TritonEditor/Widgets/InspectorWindow.h"
 
-#include "Triton/Managers/AssetManager.h"
+#include "Triton/File/File.h"
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -22,6 +27,8 @@ Triton::EditorScene::EditorScene()
 	: SceneBase(), EventInterface()
 {
 	edtr_Camera = std::make_unique<Triton::Camera>(Vector3(0.0f, 0.0f, 0.0f));
+	edtr_materialPreviewCamera = std::make_unique<Triton::Camera>(Vector3(0.0f, 0.0f, 0.0f));
+	m_shaderBalls = std::make_unique<ECS::Registry>();
 }
 
 Triton::EditorScene::~EditorScene()
@@ -37,6 +44,8 @@ void Triton::EditorScene::onMessage(size_t message, void * payload)
 	{
 	case (size_t)Triton::Core::TritonMessageType::ClassRegistered:
 	{
+		TR_GET_EDTR_STATE(m_edtr_state);
+
 		TR_GET_CLASS(InputManager);
 		TR_GET_CLASS(AssetManager);
 
@@ -47,6 +56,7 @@ void Triton::EditorScene::onMessage(size_t message, void * payload)
 
 		m_mainRenderBuffer = this->getClassByID((size_t)Core::TritonClasses::MainRenderBuffer).as<Triton::Core::RenderBuffer>();
 		m_graphicsContext = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
+		m_graphicsContext->renderer->setVsync(true);
 
 		onRegistered();
 
@@ -178,6 +188,7 @@ void Triton::EditorScene::onRegistered()
 
 	Context.as<PType::Context>()->fillPacket(packet);
 
+	DragAcceptFiles(packet->hwnd, true);
 	ImGui_ImplWin32_Init(packet->hwnd);
 	ImGui_ImplDX11_Init(packet->device, packet->deviceContext);
 
@@ -190,31 +201,25 @@ void Triton::EditorScene::onRegistered()
 
 void Triton::EditorScene::onUpdate()
 {
-	if (m_imguiIO->KeyShift)
-	{
-		m_dockspace = true;
-	}
-	else
-	{
-		m_dockspace = false;
-	}
 
-	static int movingDir = 1;
-
-	auto& transform = Entities->get<Triton::Components::Transform>(edtr_pointer_id);
-	transform.Position.y += movingDir * m_timer->updateDelta() * 5;
-
-	if (transform.Position.y > 5)
+	// Transform the pointer to be on the selected entity
+	ECS::Entity selectedEntity = m_edtr_state->CurrentEntity;
+	if(m_edtr_state->CurrentScene->Entities->valid(selectedEntity))
 	{
-		movingDir = -1;
-	}
-	else if (transform.Position.y < -5)
-	{
-		movingDir = 1;
+		auto& selectedTransform = m_edtr_state->CurrentScene->Entities->get<Components::Transform>(selectedEntity);
+
+		auto& transform = Entities->get<Triton::Components::Transform>(edtr_pointer_id);
+		transform.Position = selectedTransform.Position;
+		transform.Rotation = selectedTransform.Rotation;
 	}
 
-	//auto& transform_pointer = Entities->get<Triton::Components::Transform>(edtr_pointer_id);
-	//transform_pointer.Position.y += 1 * m_timer->updateDelta();
+	// Check if there are any changes to the loaded materials
+	if (m_prevMatSize < m_edtr_state->AllMaterials.size())
+	{
+		createShaderballs();
+
+		m_prevMatSize = m_edtr_state->AllMaterials.size();
+	}
 }
 
 void Triton::EditorScene::onRender()
@@ -228,16 +233,25 @@ void Triton::EditorScene::onRender()
 
 	static bool test = true;
 
-	ShowDockSpace(&m_dockspace);
+	showDockSpace(&m_dockspace);
 
 	// View port
-	ShowViewport(&m_viewport, m_gameWindow);
+	showViewport(&m_viewport, m_gameWindow);
 
 	// Log window
 	showLogWindow(&m_logWindow);
 
+	// Show asset window
+	showAssetWindow(&m_assetWindow, m_edtr_state);
+
+	// Show inspector
+	showInspector(&m_inspectorWindow, m_edtr_state, m_assetManager);
+
 	// Metrics window
 	showMetrics(&m_metrics, m_timer->renderDelta(), m_timer->updateDelta());
+
+	// Scene view
+	showSceneView(&m_sceneView, "test scene", m_edtr_state);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow(&test);
@@ -279,6 +293,23 @@ void Triton::EditorScene::loadResources()
 	asset_desc.Arguments[1] = "SelectorPixelShader";
 
 	edtr_mat_3DPOINTER->Shader = m_assetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+
+	// Shader ball mesh
+	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
+	asset_desc.Paths[0] = "C:/dev/Triton/Models/shaderBall.obj";
+
+	edtr_shaderBall = m_assetManager->createAsset(asset_desc).as<Triton::Data::Mesh>();
+
+	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::VIEWPORT;
+	asset_desc.Width = 1000;
+	asset_desc.Height = 1000;
+	edtr_materialViewport = m_assetManager->createAsset(asset_desc).as<Triton::Data::Viewport>();
+
+	// Set up the main directional light
+	auto dlight = new Triton::Graphics::DirectionalLight(Triton::Vector3(1.0f, 0.0f, 1.0f));
+	dlight->Ambient = Triton::Vector3(0.15f, 0.15f, 0.15f);
+	dlight->Specular = Triton::Vector3(1.0f, 1.0f, 1.0f);
+	m_mainMaterialPreviewLight = dlight;
 }
 
 void Triton::EditorScene::createEntities()
@@ -294,10 +325,57 @@ void Triton::EditorScene::createEntities()
 	Entities->assign<Triton::Components::Visual>(edtr_pointer_id, edtr_3DPOINTER->getAssetID(), edtr_mat_3DPOINTER->getAssetID());
 }
 
+void Triton::EditorScene::createShaderballs()
+{
+	m_shaderBalls->reset();
+	
+	for (int i = 0; i < m_edtr_state->AllMaterials.size(); i++)
+	{
+		ECS::Entity entity = m_shaderBalls->create();
+
+		auto& transform = m_shaderBalls->assign<Triton::Components::Transform>(entity);
+
+		transform.Position = Triton::Vector3(-10.0, 5.0, 250.0);
+
+		m_shaderBalls->assign<Triton::Components::Visual>(entity, edtr_shaderBall->getAssetID(), m_edtr_state->AllMaterials[i]->getAssetID());
+	}
+
+	m_renderShaderballs = true;
+}
+
+bool Triton::EditorScene::onAppDrop(std::vector<std::string> files)
+{
+	Triton::Resource::AssetCreateParams asset_desc;
+
+	for (std::string& path : files)
+	{
+		auto texParams = Triton::Data::File::tryLoadTexture(path);
+
+		if (texParams != nullptr)
+		{
+			asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::TEXTURE;
+			asset_desc.Name = Triton::Data::File::fileNameFromPath(path);
+			asset_desc.CreateParams = texParams;
+			auto texture = m_assetManager->createAsset(asset_desc);
+			m_edtr_state->AllTextures.push_back(texture.as<Data::PlainTexture>());
+			delete texParams;
+		}
+	}
+
+	return true;
+}
+
 void Triton::EditorScene::renderEntities()
 {
 	// Bind/enable the view port
 	m_mainRenderBuffer->addCommand<RCommands::PushViewport>(m_gameWindow->getViewport());
+
+	// Change context settings
+	m_mainRenderBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](reference<PType::Context> context)
+	{
+		context->depthBufferState(false);
+	});
 
 	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
 
@@ -313,8 +391,7 @@ void Triton::EditorScene::renderEntities()
 				[&](reference<PType::Shader> shader)
 		{
 			shader->setBufferValue("persistant_Persistant", "projectionMatrix", &m_graphicsContext->renderer->projection());
-			shader->setBufferValue("frame_PerFrame", "viewMatrix", &edtr_Camera->ViewMatrix());
-			shader->setBufferValue("CameraBuffer", "cameraPosition", &edtr_Camera->Position);
+			shader->setBufferValue("frame_PerFrame", "viewMatrix", &m_edtr_state->CurrentScene.as<Triton::Scene>()->getViewMatrix());
 
 			shader->updateBuffers(PType::BufferUpdateType::FRAME);
 			shader->updateBuffers(PType::BufferUpdateType::PERSISTANT);
@@ -343,4 +420,67 @@ void Triton::EditorScene::renderEntities()
 		// Push render command
 		m_mainRenderBuffer->addCommand<RCommands::Draw>();
 	});
+
+	// Change context settings
+	m_mainRenderBuffer->addCommand<RCommands::ChangeContextSetting>
+		([&](reference<PType::Context> context)
+	{
+		context->depthBufferState(true);
+		context->renderer->default();
+	});
+
+	// If needed render the shader balls
+	if (m_renderShaderballs)
+	{
+		// Push shader ball view port
+		m_mainRenderBuffer->addCommand<RCommands::PushViewport>(edtr_materialViewport);
+
+		// Clear the view port
+		m_mainRenderBuffer->addCommand<RCommands::ClearCurrentViewport>();
+
+		// Push the shader ball mesh
+		m_mainRenderBuffer->addCommand<RCommands::PushMesh>(edtr_shaderBall);
+
+		m_shaderBalls->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
+
+			// Get material used by the entity
+			auto material = m_assetManager->getAssetByID(visual.Material).as<Triton::Data::Material>();
+
+			// Push material
+			m_mainRenderBuffer->addCommand<RCommands::PushMaterial>(material);
+
+			// Update uniforms
+			m_mainRenderBuffer->addCommand<RCommands::UpdateUniformValues>
+				(
+					[&](reference<PType::Shader> shader)
+			{
+				shader->setBufferValue("persistant_Persistant", "projectionMatrix", &m_graphicsContext->renderer->projection());
+				shader->setBufferValue("frame_PerFrame", "viewMatrix", &edtr_materialPreviewCamera->ViewMatrix());
+				shader->setBufferValue("CameraBuffer", "cameraPosition", &edtr_materialPreviewCamera->Position);
+
+				m_mainMaterialPreviewLight->bind(shader);
+
+				shader->updateBuffers(PType::BufferUpdateType::FRAME);
+				shader->updateBuffers(PType::BufferUpdateType::PERSISTANT);
+			}
+			);
+
+			// Update uniforms
+			m_mainRenderBuffer->addCommand<RCommands::UpdateUniformValues>
+				(
+					[&](reference<PType::Shader> shader)
+			{
+				auto trans_mat = Triton::Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
+				shader->setBufferValue("object_PerObject", "transformationMatrix", &trans_mat);
+
+				shader->updateBuffers(PType::BufferUpdateType::OBJECT);
+			}
+			);
+
+			// Push render command
+			m_mainRenderBuffer->addCommand<RCommands::Draw>();
+		});
+
+		m_renderShaderballs = true;
+	}
 }

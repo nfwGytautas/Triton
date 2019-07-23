@@ -41,9 +41,6 @@ namespace Triton
 			// Set cursor visibility
 			virtual void showCursor(bool value) = 0;
 
-			// Clear the contents of the window
-			virtual void clear(float r, float g, float b, float a) = 0;
-
 			// Destroy the window
 			virtual void destroy() = 0;
 		};
@@ -53,7 +50,7 @@ namespace Triton
 		public:
 			virtual ~Renderer() { }
 
-			// Create the renderer
+			// Create the renderer from a packet
 			virtual void create() = 0;
 
 			// Start new frame

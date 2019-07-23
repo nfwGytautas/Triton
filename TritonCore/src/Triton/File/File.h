@@ -25,6 +25,16 @@ namespace Triton
 			// Checks if the specified string is a shader type
 			static PType::ShaderDataType isShaderVariable(const std::string& str);
 
+			// Used for loading a file that might be a mesh or it might not be one returns
+			// nullptr if loading failed
+			static Triton::PType::VAOCreateParams* tryLoadMesh(const std::string& path);
+
+			// Used for loading a file that might be a texture or it might not be one returns
+			// nullptr if loading failed
+			static Triton::PType::TextureCreateParams* tryLoadTexture(const std::string& path);
+
+			// Returns the file name from a specified path
+			static std::string fileNameFromPath(const std::string& path);
 		private:
 			// Read the path and parse it into buffers and struct
 			// Returns bool that shows if the operation was successful

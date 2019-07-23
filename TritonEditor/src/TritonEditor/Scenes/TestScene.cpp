@@ -21,6 +21,10 @@ void Triton::TestScene::onMessage(size_t message, void* payload)
 	{
 	case (size_t)Core::TritonMessageType::ClassRegistered:
 	{
+		TR_GET_EDTR_STATE(m_edtr_state);
+
+		m_edtr_state->CurrentScene = this;
+
 		TR_GET_CLASS(InputManager);
 
 		m_input = InputManager.as<Triton::Core::InputManager>();
@@ -117,19 +121,22 @@ void Triton::TestScene::createEntities()
 		transform.Rotation = Triton::Vector3(0.0, 180.0, 0.0);
 
 		Entities->assign<Triton::Components::Visual>(Ent, mesh->getAssetID(), mat->getAssetID());
+
+		m_edtr_state->CurrentEntity = Ent;
+		m_edtr_state->NameMap->EntityNames[Ent] = "stall" + std::to_string(i);
 	}
 
-	for (int i = 0; i < 1; i++)
-	{
-		uint32_t Ent2 = Entities->create();
-
-		//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-		auto& transform = Entities->assign<Triton::Components::Transform>(Ent2);
-
-		transform.Position = Triton::Vector3(0.0, 0.0, 15.0);
-
-		Entities->assign<Triton::Components::Image>(Ent2, image->getAssetID());
-	}
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	uint32_t Ent2 = Entities->create();
+	//
+	//	//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
+	//	auto& transform = Entities->assign<Triton::Components::Transform>(Ent2);
+	//
+	//	transform.Position = Triton::Vector3(0.0, 0.0, 15.0);
+	//
+	//	Entities->assign<Triton::Components::Image>(Ent2, image->getAssetID());
+	//}
 
 	//auto Ent1 = m_MainScene->Entities->create();
 	//m_MainScene->Entities->assign<Triton::Components::LightEmitter>(Ent1, m_Light1);
@@ -142,18 +149,21 @@ void Triton::TestScene::updateEntities()
 {
 	static int movingDir = 1;
 
-	auto& transform = Entities->get<Triton::Components::Transform>(Ent);
-	transform.Rotation.y += m_timer->updateDelta() * 15;
-
-	transform.Position.y += movingDir * m_timer->updateDelta() * 5;
-
-	if (transform.Position.y > 5)
+	if(Entities->valid(Ent) && Entities->has<Triton::Components::Transform>(Ent))
 	{
-		movingDir = -1;
-	}
-	else if (transform.Position.y < -5)
-	{
-		movingDir = 1;
+		auto& transform = Entities->get<Triton::Components::Transform>(Ent);
+		transform.Rotation.y += m_timer->updateDelta() * 15;
+
+		transform.Position.y += movingDir * m_timer->updateDelta() * 5;
+
+		if (transform.Position.y > 5)
+		{
+			movingDir = -1;
+		}
+		else if (transform.Position.y < -5)
+		{
+			movingDir = 1;
+		}
 	}
 
 	Triton::Impl::logErrors();
@@ -179,6 +189,7 @@ void Triton::TestScene::loadAssets()
 	// Mesh creation process
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stall.obj";
+	asset_desc.Name = "stall_mesh";
 
 	mesh = AssetManager->createAsset(asset_desc).as<Triton::Data::Mesh>();
 
@@ -190,6 +201,7 @@ void Triton::TestScene::loadAssets()
 	// Material creation process
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stallTexture.png";
+	asset_desc.Name = "stall_mat";
 
 	mat = AssetManager->createAsset(asset_desc).as<Triton::Data::Material>();
 
@@ -214,6 +226,7 @@ void Triton::TestScene::loadAssets()
 	asset_desc.Width = 100;
 	asset_desc.Height = 100;
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/stallTexture.png";
+	asset_desc.Name = "stall_image";
 
 	image = AssetManager->createAsset(asset_desc).as<Triton::Data::Image>();
 	image->Bitmap->setPosition(150, 150);
@@ -239,4 +252,7 @@ void Triton::TestScene::loadAssets()
 
 	BackgroundMesh = cubeMesh;
 	BackgroundMaterial = cubeMat;
+
+	m_edtr_state->AllMaterials.push_back(mat);
+	m_edtr_state->AllMeshes.push_back(mesh);
 }

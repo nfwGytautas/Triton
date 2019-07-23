@@ -31,7 +31,7 @@ namespace Triton
 		SceneBase();
 		virtual ~SceneBase() { }
 
-		std::unique_ptr<ECS::Registry> Entities;
+		reference<ECS::Registry> Entities;
 	};
 
 	class Scene : public SceneBase

@@ -93,4 +93,25 @@ namespace Triton {
 		EVENT_CLASS_TYPE(WindowLostFocus)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
+
+	class AppDropEvent : public Event
+	{
+	public:
+		AppDropEvent(std::vector<std::string> files) : m_files(files) {}
+
+		std::vector<std::string> getFiles() const
+		{
+			return m_files;
+		}
+
+		std::vector<std::string>::iterator begin() { return m_files.begin(); }
+		std::vector<std::string>::iterator end() { return m_files.end(); }
+		std::vector<std::string>::const_iterator begin() const { return m_files.begin(); }
+		std::vector<std::string>::const_iterator end() const { return m_files.end(); }
+
+		EVENT_CLASS_TYPE(AppDrop)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	private:
+		std::vector<std::string> m_files;
+	};
 }

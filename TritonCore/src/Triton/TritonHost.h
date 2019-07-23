@@ -44,6 +44,20 @@ namespace Triton
 		// Register a Triton class with the host with specified register params
 		void registerClass(reference<Core::TritonClass> classToRegister, Core::ClassRegisterParams classRegisterParams);
 
+		// Register a Triton class with the host with specified register params from existing reference object
+		template<typename T>
+		void registerClass(T classToRegister, Core::ClassRegisterParams classRegisterParams)
+		{
+			registerClass(classToRegister.as<Core::TritonClass>(), classRegisterParams);
+		}
+
+		// Register a Triton class with the host with specified register params from a pointer
+		template<typename T>
+		void registerClass(T* classToRegister, Core::ClassRegisterParams classRegisterParams)
+		{
+			registerClass(reference<T>(classToRegister).as<Core::TritonClass>(), classRegisterParams);
+		}
+
 		// Returns a reference to class object with specified id
 		reference<Core::TritonClass> getClassByID(size_t id);
 

@@ -42,7 +42,15 @@ namespace Triton
 					{
 						// Create VAO object
 						Triton::PType::VAOCreateParams vao_params;
-						Triton::Data::File::ReadMesh(params.Paths[0], &vao_params);
+
+						if (params.CreateParams != nullptr)
+						{
+							vao_params = *(Triton::PType::VAOCreateParams*)params.CreateParams;
+						}
+						else
+						{
+							Triton::Data::File::ReadMesh(params.Paths[0], &vao_params);
+						}
 						createdObject = context->factory->createVAO(&vao_params);
 					}
 
@@ -60,10 +68,16 @@ namespace Triton
 				{
 					if (!inCache || !createdObject.as<PType::Texture>().valid())
 					{
-						// Create Texture object
-						Triton::PType::TextureCreateParams tex_params;
-						Triton::Data::File::ReadTexture(params.Paths[0], &tex_params);
-						createdObject = context->factory->createTexture(&tex_params);
+						if (params.CreateParams != nullptr)
+						{
+							createdObject = context->factory->createTexture(params.CreateParams);
+						}
+						else
+						{
+							Triton::PType::TextureCreateParams tex_params;
+							Triton::Data::File::ReadTexture(params.Paths[0], &tex_params);
+							createdObject = context->factory->createTexture(&tex_params);
+						}
 					}
 					result = reference<Data::Material>(new Data::Material(assetID, createdObject.as<PType::Texture>())).as<Resource::Asset>();
 				}
@@ -87,6 +101,8 @@ namespace Triton
 						createdObject = context->factory->createFramebuffer(&fbo_params);
 					}
 					result = reference<Data::Viewport>(new Data::Viewport(assetID, createdObject.as<PType::Framebuffer>())).as<Resource::Asset>();
+					result.as<Data::Viewport>()->Height = params.Height;
+					result.as<Data::Viewport>()->Width = params.Width;
 				}
 			}
 			else if (params.Type == Resource::AssetCreateParams::AssetType::IMAGE) // Create image
@@ -130,7 +146,7 @@ namespace Triton
 				}
 				else
 				{
-					if (!inCache || !createdObject.as<PType::Texture>().valid())
+					if (!inCache || !createdObject.as<PType::CubeTexture>().valid())
 					{
 						// Create Texture object
 						Triton::PType::TextureArrayCreateParams tex_params;
@@ -162,7 +178,7 @@ namespace Triton
 				}
 				else 
 				{
-					if (!inCache || !createdObject.as<PType::Texture>().valid())
+					if (!inCache || !createdObject.as<PType::Shader>().valid())
 					{
 						// Create shader
 						Triton::PType::ShaderCreateParams shader_params;
@@ -182,6 +198,31 @@ namespace Triton
 					result = reference<Data::ShaderProgram>(new Data::ShaderProgram(assetID, createdObject.as<PType::Shader>())).as<Resource::Asset>();
 				}
 			}
+			else if (params.Type == Resource::AssetCreateParams::AssetType::TEXTURE) // Create plain texture
+			{
+				// Copy the asset
+				if (params.Operation == Resource::AssetCreateParams::CreationOperation::COPY)
+				{
+					result = reference<Data::PlainTexture>(new Data::PlainTexture(assetID, params.CopyAsset.as<Data::PlainTexture>()->Texture)).as<Resource::Asset>();
+				}
+				else
+				{
+					if (!inCache || !createdObject.as<PType::Texture>().valid())
+					{
+						if (params.CreateParams != nullptr)
+						{
+							createdObject = context->factory->createTexture(params.CreateParams);
+						}
+						else
+						{
+							Triton::PType::TextureCreateParams tex_params;
+							Triton::Data::File::ReadTexture(params.Paths[0], &tex_params);
+							createdObject = context->factory->createTexture(&tex_params);
+						}
+					}
+					result = reference<Data::PlainTexture>(new Data::PlainTexture(assetID, createdObject.as<PType::Texture>())).as<Resource::Asset>();
+				}
+			}
 
 			if (result.valid())
 			{
@@ -194,10 +235,12 @@ namespace Triton
 
 				result->m_Name = params.Name;
 
+				params.CreateParams = nullptr;
+
 				return result;
 			}
 
-			TR_ERROR("Ivalid asset creation parameters");
+			TR_ERROR("Invalid asset creation parameters");
 			return reference<Resource::Asset>(nullptr);
 		}
 

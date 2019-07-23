@@ -6,7 +6,7 @@ namespace Triton
 {
 	namespace Utility
 	{
-		// Helper class that provides virtual function declarations for a inherited class, aswell as registering itself with a manager
+		// Helper class that provides virtual function declarations for a inherited class, as well as registering itself with a manager
 		// Note: This class should be avoided if performance is a concern since it adds a layer of virtual function calls and 
 		// secondly you might not need all the possible events
 		class EventInterface : public EventListener
@@ -25,6 +25,7 @@ namespace Triton
 			virtual bool OnMouseScrolled(double aXOffset, double aYOffset) = 0;
 
 			virtual bool OnWindowResized(int aWidth, int aHeight) = 0;
+			virtual bool onAppDrop(std::vector<std::string> files) = 0;
 		};
 	}
 }

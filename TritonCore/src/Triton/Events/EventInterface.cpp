@@ -30,6 +30,7 @@ Triton::Utility::EventInterface::EventInterface()
 	listen_to(MouseScrolledEvent, OnMouseScrolled, kpe.GetXOffset(), kpe.GetYOffset());
 
 	listen_to(WindowResizeEvent, OnWindowResized, kpe.GetWidth(), kpe.GetHeight());
+	listen_to(AppDropEvent, onAppDrop, kpe.getFiles());
 }
 
 Triton::Utility::EventInterface::~EventInterface()

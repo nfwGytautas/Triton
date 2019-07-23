@@ -153,6 +153,7 @@
     <ClInclude Include="src\Triton\Core\TritonClass.h" />
     <ClInclude Include="src\Triton\Core\TritonClassParams.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
+    <ClInclude Include="src\Triton\Core\Wrapers\PlainTexture.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
     <ClCompile Include="src\Triton\Core\TritonClass.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
+    <ClCompile Include="src\Triton\Core\Wrapers\PlainTexture.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />

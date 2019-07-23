@@ -180,6 +180,7 @@ project "TritonEditor"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"vendor/spdlog/include",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.entt}",

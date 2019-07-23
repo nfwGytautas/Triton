@@ -27,7 +27,8 @@ namespace Triton
 				VIEWPORT,
 				IMAGE,
 				CUBEMAP,
-				SHADER
+				SHADER,
+				TEXTURE
 			} Type = AssetType::NONE;
 
 			// Enum that specifies how the engine will interpret the data
@@ -68,6 +69,11 @@ namespace Triton
 
 			// Specify if the created asset should be cached
 			bool CacheResult = true;
+
+			// If specified the asset manager will use these params to create the asset
+			// leave as nullptr if you want the asset manager to handle the loading
+			// the params are set to nullptr after creating but NOT deleted
+			Triton::PType::FactoryCreateParams* CreateParams = nullptr;
 		};
 
 		class Asset

@@ -1,6 +1,10 @@
 #include "TRpch.h"
 #include "File.h"
 
+#include <set>
+#include <fstream>
+#include <string>
+
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
@@ -8,8 +12,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include <fstream>
-#include <string>
 
 #include "Triton/Config.h"
 #include "Triton/Utility/Algorithm.h"
@@ -77,6 +79,123 @@ Triton::PType::ShaderDataType Triton::Data::File::isShaderVariable(const std::st
 	{
 		return PType::ShaderDataType::None;
 	}
+}
+
+Triton::PType::VAOCreateParams* Triton::Data::File::tryLoadMesh(const std::string& path)
+{
+	Triton::PType::VAOCreateParams* params = new Triton::PType::VAOCreateParams();
+
+	Assimp::Importer importer;
+
+	const aiScene* scene = importer.ReadFile(
+		path,
+		aiProcess_OptimizeGraph |
+		aiProcess_OptimizeMeshes |
+		aiProcess_Triangulate |
+		aiProcess_GenNormals |
+		aiProcess_JoinIdenticalVertices
+#ifdef TR_PLATFORM_WINDOWS
+		| aiProcess_MakeLeftHanded
+		| aiProcess_FlipWindingOrder
+#endif
+	);
+
+	if (!scene)
+	{
+		TR_ERROR(importer.GetErrorString());
+		return nullptr;
+	}
+
+	for (unsigned int meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
+	{
+		aiMesh* mesh = scene->mMeshes[meshIdx];
+
+		try
+		{
+			params->vertices.reserve(mesh->mNumVertices);
+			for (unsigned int verticeIdx = 0; verticeIdx < mesh->mNumVertices; verticeIdx++)
+			{
+				Triton::PType::VAOCreateParams::Vertex currentVertex;
+
+				currentVertex.Vertice.x = mesh->mVertices[verticeIdx].x;
+				currentVertex.Vertice.y = mesh->mVertices[verticeIdx].y;
+				currentVertex.Vertice.z = mesh->mVertices[verticeIdx].z;
+
+				if (mesh->mNormals)
+				{
+					currentVertex.Normal.x = mesh->mNormals[verticeIdx].x;
+					currentVertex.Normal.y = mesh->mNormals[verticeIdx].y;
+					currentVertex.Normal.z = mesh->mNormals[verticeIdx].z;
+				}
+				else
+				{
+					currentVertex.Normal.x = 1.0f;
+					currentVertex.Normal.y = 1.0f;
+					currentVertex.Normal.z = 1.0f;
+				}
+
+				if (mesh->mTextureCoords[0])
+				{
+					currentVertex.UV.x = mesh->mTextureCoords[0][verticeIdx].x;
+					currentVertex.UV.y = mesh->mTextureCoords[0][verticeIdx].y;
+				}
+				else
+				{
+					currentVertex.UV = Triton::Vector2(0.0f, 0.0f);
+				}
+
+				params->vertices.push_back(currentVertex);
+			}
+
+			for (unsigned int faceIdx = 0; faceIdx < mesh->mNumFaces; faceIdx++)
+			{
+				//Get the face
+				aiFace face = mesh->mFaces[faceIdx];
+				//Add the indices of the face to the vector
+				for (unsigned int indiceIdx = 0; indiceIdx < face.mNumIndices; indiceIdx++)
+				{
+					params->indices.push_back(face.mIndices[indiceIdx]);
+				}
+			}
+		}
+		catch (...)
+		{
+			TR_ERROR("Parsing error!");
+			return nullptr;
+		}
+	}
+}
+
+Triton::PType::TextureCreateParams* Triton::Data::File::tryLoadTexture(const std::string& path)
+{
+#ifdef TR_PLATFORM_WINDOWS
+	stbi_set_flip_vertically_on_load(1);
+#endif
+
+	Triton::PType::TextureCreateParams* params = new Triton::PType::TextureCreateParams();
+
+	params->buffer = std::unique_ptr<unsigned char>(
+		stbi_load(path.c_str(),
+			&params->width,
+			&params->height,
+			&params->BPP,
+			4));
+
+	if (!(params->buffer))
+	{
+		return nullptr;
+	}
+	else
+	{
+		return params;
+	}
+}
+
+std::string Triton::Data::File::fileNameFromPath(const std::string& path)
+{
+	std::string _path = path.substr(path.find_last_of("/\\") + 1);
+	size_t dot_i = _path.find_last_of('.');
+	return _path.substr(0, dot_i);
 }
 
 bool Triton::Data::File::readShaderStream(std::string& path, PType::BufferShaderType shaderType, std::string& entryPoint,
@@ -378,6 +497,6 @@ void LoadTextureData(std::string& aPath, Triton::PType::TextureCreateParams* par
 			&params->height, 
 			&params->BPP,
 			4));
-
+	
 	TR_CORE_ASSERT(params->buffer, stbi_failure_reason());
 }

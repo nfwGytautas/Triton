@@ -2,6 +2,7 @@
 
 #include "BasicTypes/DXVAO.h"
 #include "BasicTypes/DXBitmap.h"
+#include "DXSpecific.h"
 
 PLATFORM_NAMESPACE_BEGIN
 
@@ -86,6 +87,8 @@ void Triton::PType::DXRenderer::endFrame()
 		// Present as fast as possible.
 		m_swapChain->Present(0, 0);
 	}
+
+	m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
 	return;
 }

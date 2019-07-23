@@ -17,7 +17,7 @@ namespace Triton
 	enum class EventType : size_t
 	{
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-		AppTick, AppUpdate, AppRender,
+		AppTick, AppUpdate, AppRender, AppDrop,
 		KeyPressed, KeyReleased, KeyInputEvent,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};

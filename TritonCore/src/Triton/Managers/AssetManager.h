@@ -10,6 +10,7 @@
 #include "Triton/Core/Wrapers/Image.h"
 #include "Triton/Core/Wrapers/ShaderProgram.h"
 #include "Triton/Core/Wrapers/Viewport.h"
+#include "Triton/Core/Wrapers/PlainTexture.h"
 
 namespace Triton
 {
@@ -43,7 +44,7 @@ namespace Triton
 			void freeAssetByName(std::string name);
 #endif
 
-			// Deletes all assets and frees all the asociated memory
+			// Deletes all assets and frees all the associated memory
 			void cleanUp();
 		private:
 			// Checks if an asset of id can be returned safely
@@ -52,7 +53,7 @@ namespace Triton
 			// Adds asset to the created asset vector and to the map
 			void addObject(reference<Resource::Asset>& asset);
 
-			// Returns the next avaivable id for an asset
+			// Returns the next available id for an asset
 			size_t getNextID();
 		private:
 			// Vector containing all the assets that the manager has

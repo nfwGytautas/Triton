@@ -8,7 +8,7 @@
 
 Triton::SceneBase::SceneBase()
 {
-	Entities = std::unique_ptr<ECS::Registry>(new ECS::Registry());
+	Entities = reference<ECS::Registry>(new ECS::Registry());
 }
 
 std::tuple<bool, bool> BindVisual(Triton::Components::Visual& prevVisual, Triton::Components::Visual& newVisual)

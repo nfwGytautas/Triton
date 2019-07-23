@@ -35,9 +35,16 @@ DXContext::DXContext(const Triton::AppSettings& appSettings)
 
 	window = new DXWindow();
 
-	dx_window()->m_width = appSettings.WindowWidth;
-	dx_window()->m_height = appSettings.WindowHeight;
-
+	if (appSettings.ShouldCreateWindow)
+	{
+		dx_window()->m_width = appSettings.WindowWidth;
+		dx_window()->m_height = appSettings.WindowHeight;
+	}
+	else
+	{
+		dx_window()->m_hasWindow = true;
+		dx_window()->m_hwnd = (HWND)appSettings.HWND;
+	}
 	renderer = new DXRenderer();
 	factory = new DXFactory();
 }

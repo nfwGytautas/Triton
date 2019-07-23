@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-void ShowDockSpace(bool* p_open)
+void showDockSpace(bool* p_open)
 {
 	static bool opt_fullscreen_persistant = true;
 	bool opt_fullscreen = opt_fullscreen_persistant;
