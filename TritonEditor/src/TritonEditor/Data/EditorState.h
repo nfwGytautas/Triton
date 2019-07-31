@@ -27,13 +27,26 @@ namespace Triton
 	class EditorState : public Core::TritonClass
 	{
 	public:
+		struct MaterialEditProperties
+		{
+			reference<Triton::PType::Texture> Texture = nullptr;
+			reference<Triton::Data::ShaderProgram> Shader = nullptr;
+			std::string Name = "new material";
+			float Shininess = 0;
+			Vector3 Ambient;
+			Vector3 Diffuse;
+			Vector3 Specular;
+		} CurrentEditMaterial;
+
 		ECS::Entity CurrentEntity;
+		reference<Data::Material> CurrentMaterial;
 		reference<SceneBase> CurrentScene;
 		reference<NameMap> NameMap;
 
 		std::vector<reference<Data::Material>> AllMaterials;
 		std::vector<reference<Data::Mesh>> AllMeshes;
 		std::vector<reference<Data::PlainTexture>> AllTextures;
+		std::vector<reference<Data::ShaderProgram>> AllShaders;
 
 		virtual void onMessage(size_t message, void* payload);
 	};

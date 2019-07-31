@@ -52,7 +52,7 @@ namespace Triton
 
 		void start()
 		{
-			m_tHost->start();
+			m_tHost->startST();
 		}
 
 	private:

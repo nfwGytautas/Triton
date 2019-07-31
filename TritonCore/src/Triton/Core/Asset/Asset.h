@@ -14,7 +14,7 @@ namespace Triton
 		class Asset;
 
 		// Structure that specifies what type of asset should be created
-		// similiar to DirectX API
+		// similar to DirectX API
 		struct AssetCreateParams
 		{
 			// Enum that specifies the asset type
@@ -52,7 +52,7 @@ namespace Triton
 			// else don't specify
 			std::string Arguments[2];
 
-			// For copying the object the already existant asset must be specified
+			// For copying the object the already existent asset must be specified
 			// else don't specify
 			reference<Asset> CopyAsset;
 
@@ -74,6 +74,11 @@ namespace Triton
 			// leave as nullptr if you want the asset manager to handle the loading
 			// the params are set to nullptr after creating but NOT deleted
 			Triton::PType::FactoryCreateParams* CreateParams = nullptr;
+
+			// If specified the asset manager will use this PType object to create the asset
+			// it is up to the user to provide a valid PType else errors might occur
+			// this variable is set to nullptr after creating an asset
+			reference<Triton::PType::PlatformObject> PType = nullptr;
 		};
 
 		class Asset
@@ -95,7 +100,14 @@ namespace Triton
 #if TR_STRING_REPRESENTATIONS == 1
 			// Get the asset name the method is
 			// hidden if string representations are disabled
-			std::string getName() const
+			std::string getName()
+			{
+				return m_Name;
+			}
+
+			// Get the reference to the asset name the method is
+			// hidden if string representations are disabled
+			std::string& getNameRef()
 			{
 				return m_Name;
 			}

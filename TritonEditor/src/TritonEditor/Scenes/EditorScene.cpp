@@ -11,6 +11,7 @@
 #include "TritonEditor/Impl/imgui_impl_win32.h"
 #include "TritonEditor/Impl/imgui_impl_dx11.h"
 
+#include "TritonEditor/Widgets/MainMenuBar.h"
 #include "TritonEditor/Widgets/DockSpace.h"
 #include "TritonEditor/Widgets/Viewport.h"
 #include "TritonEditor/Widgets/LogWindow.h"
@@ -18,6 +19,7 @@
 #include "TritonEditor/Widgets/SceneView.h"
 #include "TritonEditor/Widgets/AssetWindow.h"
 #include "TritonEditor/Widgets/InspectorWindow.h"
+#include "TritonEditor/Widgets/MaterialEditor.h"
 
 #include "Triton/File/File.h"
 
@@ -147,14 +149,14 @@ bool Triton::EditorScene::OnWindowResized(int aWidth, int aHeight)
 	ImGuiIO& io = ImGui::GetIO();
 	io.DisplaySize = ImVec2(aWidth, aHeight);
 	io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-
+	
 	return false;
 }
 
 void Triton::EditorScene::onRegistered()
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
-
+	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	m_imguiIO = &ImGui::GetIO();
@@ -201,16 +203,26 @@ void Triton::EditorScene::onRegistered()
 
 void Triton::EditorScene::onUpdate()
 {
-
 	// Transform the pointer to be on the selected entity
 	ECS::Entity selectedEntity = m_edtr_state->CurrentEntity;
 	if(m_edtr_state->CurrentScene->Entities->valid(selectedEntity))
 	{
-		auto& selectedTransform = m_edtr_state->CurrentScene->Entities->get<Components::Transform>(selectedEntity);
+		if(m_edtr_state->CurrentScene->Entities->has<Components::Transform>(selectedEntity))
+		{
+			auto& selectedTransform = m_edtr_state->CurrentScene->Entities->get<Components::Transform>(selectedEntity);
 
-		auto& transform = Entities->get<Triton::Components::Transform>(edtr_pointer_id);
-		transform.Position = selectedTransform.Position;
-		transform.Rotation = selectedTransform.Rotation;
+			auto& transform = Entities->get<Triton::Components::Transform>(edtr_pointer_id);
+			auto& visual = Entities->get<Triton::Components::Visual>(edtr_pointer_id);
+
+			transform.Position = selectedTransform.Position;
+			transform.Rotation = selectedTransform.Rotation;
+			visual.Visible = true;
+		}
+		else
+		{
+			auto& visual = Entities->get<Triton::Components::Visual>(edtr_pointer_id);
+			visual.Visible = false;
+		}
 	}
 
 	// Check if there are any changes to the loaded materials
@@ -231,30 +243,35 @@ void Triton::EditorScene::onRender()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	static bool test = true;
+	// Dock space enable
+	showDockSpace(&m_isOpen.dockspace);
 
-	showDockSpace(&m_dockspace);
+	// Main menu bar
+	showMainMenuBar(m_isOpen);
 
 	// View port
-	showViewport(&m_viewport, m_gameWindow);
+	showViewport(&m_isOpen.viewport, m_gameWindow);
 
 	// Log window
-	showLogWindow(&m_logWindow);
+	showLogWindow(&m_isOpen.logWindow);
 
 	// Show asset window
-	showAssetWindow(&m_assetWindow, m_edtr_state);
+	showAssetWindow(&m_isOpen.assetWindow, m_edtr_state);
 
 	// Show inspector
-	showInspector(&m_inspectorWindow, m_edtr_state, m_assetManager);
+	showInspector(&m_isOpen.inspectorWindow, m_edtr_state, m_assetManager);
 
 	// Metrics window
-	showMetrics(&m_metrics, m_timer->renderDelta(), m_timer->updateDelta());
+	showMetrics(&m_isOpen.metrics, m_timer->renderDelta(), m_timer->updateDelta());
 
 	// Scene view
-	showSceneView(&m_sceneView, "test scene", m_edtr_state);
+	showSceneView(&m_isOpen.sceneView, "test scene", m_edtr_state);
+
+	// Material editor
+	showMaterialEditor(&m_isOpen.materialViewport, m_edtr_state, m_assetManager);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-	ImGui::ShowDemoWindow(&test);
+	ImGui::ShowDemoWindow();
 
 	// Rendering
 	ImGui::Render();
@@ -360,6 +377,20 @@ bool Triton::EditorScene::onAppDrop(std::vector<std::string> files)
 			m_edtr_state->AllTextures.push_back(texture.as<Data::PlainTexture>());
 			delete texParams;
 		}
+		else
+		{
+			auto vaoParams = Triton::Data::File::tryLoadMesh(path);
+
+			if (vaoParams != nullptr)
+			{
+				asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
+				asset_desc.Name = Triton::Data::File::fileNameFromPath(path);
+				asset_desc.CreateParams = vaoParams;
+				auto vao = m_assetManager->createAsset(asset_desc);
+				m_edtr_state->AllMeshes.push_back(vao.as<Data::Mesh>());
+				delete vaoParams;
+			}
+		}
 	}
 
 	return true;
@@ -378,6 +409,11 @@ void Triton::EditorScene::renderEntities()
 	});
 
 	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
+
+		if (!visual.Visible)
+		{
+			return;
+		}
 
 		// Get material used by the entity
 		auto material = m_assetManager->getAssetByID(visual.Material).as<Triton::Data::Material>();

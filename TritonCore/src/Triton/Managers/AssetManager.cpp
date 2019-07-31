@@ -26,8 +26,13 @@ namespace Triton
 			reference<Core::TritonCache> cache = this->getClassByID((size_t)Core::TritonClasses::Cache).as<Core::TritonCache>();
 			reference<PType::Context> context = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
 
-			bool inCache;
-			auto& createdObject = cache->checkFObject(params, inCache);
+			bool inCache  = true;
+			reference<PType::FactoryObject>& createdObject = params.PType.as<PType::FactoryObject>();
+
+			if (!createdObject.valid())
+			{
+				createdObject = cache->checkFObject(params, inCache);
+			}
 
 			if (params.Type == Resource::AssetCreateParams::AssetType::MESH) // Create mesh
 			{
@@ -233,9 +238,12 @@ namespace Triton
 					cache->cacheFObject(params, createdObject);
 				}
 
+#if TR_STRING_REPRESENTATIONS == 1
 				result->m_Name = params.Name;
+#endif
 
 				params.CreateParams = nullptr;
+				params.PType = nullptr;
 
 				return result;
 			}
@@ -308,6 +316,18 @@ namespace Triton
 			m_createdAssets.clear();
 			m_IDAssetPairs.clear();
 			m_nextAssetID = 0;
+		}
+
+		bool AssetManager::valid(size_t id)
+		{
+			if (m_IDAssetPairs.find(id) == m_IDAssetPairs.end())
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 
 		bool AssetManager::checkReturnability(size_t id)

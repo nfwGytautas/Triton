@@ -46,6 +46,9 @@ namespace Triton
 
 			// Deletes all assets and frees all the associated memory
 			void cleanUp();
+
+			// Checks if an asset is valid, meaning if it's registered in the asset manager
+			bool valid(size_t id);
 		private:
 			// Checks if an asset of id can be returned safely
 			bool checkReturnability(size_t id);

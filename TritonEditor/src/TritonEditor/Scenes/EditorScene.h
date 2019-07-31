@@ -75,14 +75,22 @@ namespace Triton
 		reference<Utility::Timer> m_timer;
 
 		ImGuiIO* m_imguiIO;
-		bool m_dockspace = false;
-		bool m_viewport = true;
-		bool m_logWindow = true;
-		bool m_metrics = true;
-		bool m_sceneView = true;
-		bool m_assetWindow = true;
-		bool m_inspectorWindow = true;
-	private:		
+	public:
+		struct WidgetIsOpen
+		{
+			bool dockspace = false;
+			bool viewport = true;
+			bool logWindow = true;
+			bool metrics = true;
+			bool sceneView = true;
+			bool assetWindow = true;
+			bool inspectorWindow = true;
+			
+			bool materialViewport = false;
+		};
+	private:
+		WidgetIsOpen m_isOpen;
+
 		unsigned int m_prevMatSize = 0;
 		bool m_renderShaderballs = false;
 		std::unique_ptr<ECS::Registry> m_shaderBalls;
@@ -92,7 +100,7 @@ namespace Triton
 		reference<Data::Mesh> edtr_3DPOINTER;
 		reference<Data::Material> edtr_mat_3DPOINTER;
 
-		size_t edtr_pointer_id;
+		ECS::Entity edtr_pointer_id;
 
 		reference<Data::Viewport> edtr_materialViewport;
 		reference<Graphics::Light> m_mainMaterialPreviewLight;

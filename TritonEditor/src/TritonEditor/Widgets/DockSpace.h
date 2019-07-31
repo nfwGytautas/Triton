@@ -17,7 +17,7 @@ void showDockSpace(bool* p_open)
 		ImGui::SetNextWindowPos(viewport->Pos);
 		ImGui::SetNextWindowSize(viewport->Size);
 		ImGui::SetNextWindowViewport(viewport->ID);
-		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 	}
 
@@ -25,7 +25,7 @@ void showDockSpace(bool* p_open)
 	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
 		window_flags |= ImGuiWindowFlags_NoBackground;
 
-	ImGui::Begin("DockSpace Demo", p_open, window_flags);
+	ImGui::Begin("DockSpace", p_open, window_flags);
 
 	// DockSpace
 	ImGuiIO& io = ImGui::GetIO();

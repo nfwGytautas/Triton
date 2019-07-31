@@ -29,6 +29,9 @@ namespace Triton
 		// Component that represents a model
 		struct Visual
 		{
+			// Is entity visible 
+			bool Visible = true;
+
 			//Mesh of entity, -1 is illegal
 			size_t Mesh;
 			//Material of entity, -1 is illegal
@@ -62,7 +65,7 @@ namespace Triton
 			{}
 		};
 
-		// Component that reprsents an image not to be confused with Visual
+		// Component that represents an image not to be confused with Visual
 		struct Image
 		{
 			//Bitmap of entity, -1 is illegal
@@ -82,3 +85,4 @@ namespace Triton
 ENTT_NAMED_TYPE(Triton::Components::Transform)
 ENTT_NAMED_TYPE(Triton::Components::Visual)
 ENTT_NAMED_TYPE(Triton::Components::LightEmitter)
+ENTT_NAMED_TYPE(Triton::Components::Image)

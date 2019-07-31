@@ -5,7 +5,7 @@ Just another game engine that I am coding for fun in my spare time
 
 
 # Features I would like to implement
-* Basic editor
+* ~~Basic editor~~
 * Text rendering
 * Sound engine
 * Shadows

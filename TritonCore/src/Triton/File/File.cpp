@@ -164,6 +164,8 @@ Triton::PType::VAOCreateParams* Triton::Data::File::tryLoadMesh(const std::strin
 			return nullptr;
 		}
 	}
+
+	return params;
 }
 
 Triton::PType::TextureCreateParams* Triton::Data::File::tryLoadTexture(const std::string& path)

@@ -181,6 +181,7 @@ void Triton::TestScene::loadAssets()
 
 	asset_desc.Arguments[0] = "ColorVertexShader";
 	asset_desc.Arguments[1] = "ColorPixelShader";
+	asset_desc.Name = "Shader1";
 
 	// Shader creation process
 	auto Shader1 = AssetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
@@ -255,4 +256,5 @@ void Triton::TestScene::loadAssets()
 
 	m_edtr_state->AllMaterials.push_back(mat);
 	m_edtr_state->AllMeshes.push_back(mesh);
+	m_edtr_state->AllShaders.push_back(Shader1);
 }

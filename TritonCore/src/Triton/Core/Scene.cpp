@@ -200,7 +200,15 @@ void Triton::Scene::onRender()
 	// Render all entities in a scene
 	m_CurrVisual.Material = -1;
 	m_CurrVisual.Mesh = -1;
+
+	// Current VAO
+	reference<PType::VAO> vao = nullptr;
 	Entities->view<Components::Transform, Components::Visual>().each([&](auto& transform, auto& visual) {
+
+		if (!visual.Visible || !m_assetManager->valid(visual.Mesh) || !m_assetManager->valid(visual.Material))
+		{
+			return;
+		}
 
 		// Check if visual needs to be bound
 		auto[changeMat, changeMesh] = BindVisual(m_CurrVisual, visual);
@@ -233,13 +241,12 @@ void Triton::Scene::onRender()
 			}
 			);
 		}
-
-		// Get mesh object
-		reference<Data::Mesh>& mesh = m_assetManager->getAssetByID(visual.Mesh).as<Data::Mesh>();
-		reference<PType::VAO>& vao = mesh->VAO;
-
+			   
 		if (changeMesh)
 		{
+			// Get mesh object
+			reference<Data::Mesh>& mesh = m_assetManager->getAssetByID(visual.Mesh).as<Data::Mesh>();
+			vao = mesh->VAO;
 			// Push mesh
 			m_mainRenderBuffer->addCommand<RCommands::PushMesh>(mesh);
 		}

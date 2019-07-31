@@ -24,6 +24,8 @@
     <ClInclude Include="src\TritonEditor\Data\NameMap.h" />
     <ClInclude Include="src\TritonEditor\Widgets\AssetWindow.h" />
     <ClInclude Include="src\TritonEditor\Widgets\InspectorWindow.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\MainMenuBar.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\MaterialEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonEditor\Data\EditorState.cpp" />

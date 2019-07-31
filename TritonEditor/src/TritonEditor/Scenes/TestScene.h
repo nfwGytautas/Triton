@@ -55,7 +55,7 @@ namespace Triton
 		reference<Utility::Timer> m_timer;
 		reference<Core::InputManager> m_input;
 
-		size_t Ent;
+		ECS::Entity Ent;
 
 		Triton::Matrix44 m_Transformation;
 

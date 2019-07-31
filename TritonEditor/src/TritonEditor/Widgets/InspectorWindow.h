@@ -19,15 +19,59 @@ void showInspector(bool* p_open,
 	const float cFloatInputSensitivity = 0.01f;
 	const float cFloatInputRotationSensitivity = cFloatInputSensitivity * 10;
 
+	const float popupWidth = 150;
+
+	auto& registry = edtr_state->CurrentScene->Entities;
+	auto& entity = edtr_state->CurrentEntity;
+
 	if (*p_open == true)
 	{
-		ImGui::SetNextWindowSize(ImVec2(800, 200), ImGuiCond_FirstUseEver);
-		ImGui::Begin("Inspector", p_open);
+		ImGui::SetNextWindowSize(ImVec2(322, 498));
+		ImGui::Begin("Inspector", p_open, ImGuiWindowFlags_NoResize);
 
 		ImVec2 im_size = ImGui::GetWindowSize();
 
-		auto& registry = edtr_state->CurrentScene->Entities;
-		auto& entity = edtr_state->CurrentEntity;
+		if (ImGui::Button("Add component", ImVec2(im_size.x, 0)))
+		{
+			ImGui::OpenPopup("my_select_popup");
+		}
+
+		ImGui::SameLine();
+
+		ImGui::PushItemWidth(popupWidth);
+		if (ImGui::BeginPopup("my_select_popup"))
+		{
+			ImGui::Text("Component");
+			ImGui::Separator();
+
+			if (!registry->has<Triton::Components::Transform>(entity) && ImGui::Button("Transform", ImVec2(popupWidth, 0)))
+			{
+				registry->assign<Triton::Components::Transform>(entity);
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (!registry->has<Triton::Components::Visual>(entity) && ImGui::Button("Visual", ImVec2(popupWidth, 0)))
+			{
+				registry->assign<Triton::Components::Visual>(entity);
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (!registry->has<Triton::Components::LightEmitter>(entity) && ImGui::Button("Light emitter", ImVec2(popupWidth, 0)))
+			{
+				registry->assign<Triton::Components::LightEmitter>(entity);
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (!registry->has<Triton::Components::Image>(entity) && ImGui::Button("Image", ImVec2(popupWidth, 0)))
+			{
+				registry->assign<Triton::Components::Image>(entity);
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::Spacing();
 
 		// Transformation
 		if (registry->has<Triton::Components::Transform>(entity))
@@ -89,39 +133,82 @@ void showInspector(bool* p_open,
 
 				ImGui::Separator();
 
-				auto& mesh = asset_manager->getAssetByID(visual.Mesh).as<Triton::Data::Mesh>();
-				auto& material = asset_manager->getAssetByID(visual.Material).as<Triton::Data::Material>();
+				ImGui::Checkbox("Visible", &visual.Visible);
 
-				ImGui::Text("Mesh:"); ImGui::SameLine();
+				ImGui::Separator();
 
-				ImGui::Text(mesh->getName().c_str());
-				if (ImGui::BeginDragDropTarget())
+				if (asset_manager->valid(visual.Mesh))
 				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MESH"))
-					{
-						int payload_n = *(const int*)payload->Data;
-						visual.Mesh = edtr_state->AllMeshes[payload_n]->getAssetID();
-					}
+					auto& mesh = asset_manager->getAssetByID(visual.Mesh).as<Triton::Data::Mesh>();
 
-					ImGui::EndDragDropTarget();
+					ImGui::Text("Mesh:"); ImGui::SameLine();
+
+					ImGui::Text(mesh->getName().c_str());
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MESH"))
+						{
+							int payload_n = *(const int*)payload->Data;
+							visual.Mesh = edtr_state->AllMeshes[payload_n]->getAssetID();
+						}
+
+						ImGui::EndDragDropTarget();
+					}
+				}
+				else
+				{
+					ImGui::Text("Mesh:"); ImGui::SameLine();
+
+					ImGui::Text("invalid");
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MESH"))
+						{
+							int payload_n = *(const int*)payload->Data;
+							visual.Mesh = edtr_state->AllMeshes[payload_n]->getAssetID();
+						}
+
+						ImGui::EndDragDropTarget();
+					}
 				}
 
 				ImGui::Separator();
 				ImGui::Spacing();
 				ImGui::Spacing();
 
-				ImGui::Text("Material:");  ImGui::SameLine();
-
-				ImGui::Text(material->getName().c_str());
-				if (ImGui::BeginDragDropTarget())
+				if (asset_manager->valid(visual.Material))
 				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MATERIAL"))
-					{
-						int payload_n = *(const int*)payload->Data;
-						visual.Material = edtr_state->AllMaterials[payload_n]->getAssetID();
-					}
+					auto& material = asset_manager->getAssetByID(visual.Material).as<Triton::Data::Material>();
 
-					ImGui::EndDragDropTarget();
+					ImGui::Text("Material:");  ImGui::SameLine();
+
+					ImGui::Text(material->getName().c_str());
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MATERIAL"))
+						{
+							int payload_n = *(const int*)payload->Data;
+							visual.Material = edtr_state->AllMaterials[payload_n]->getAssetID();
+						}
+
+						ImGui::EndDragDropTarget();
+					}
+				}
+				else
+				{
+					ImGui::Text("Material:");  ImGui::SameLine();
+
+					ImGui::Text("invalid");
+					if (ImGui::BeginDragDropTarget())
+					{
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_MATERIAL"))
+						{
+							int payload_n = *(const int*)payload->Data;
+							visual.Material = edtr_state->AllMaterials[payload_n]->getAssetID();
+						}
+
+						ImGui::EndDragDropTarget();
+					}
 				}
 
 				ImGui::Separator();

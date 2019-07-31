@@ -6,6 +6,7 @@
 #include "Triton/Core/Input/InputManager.h"
 
 static Triton::PType::DXWindow* WindowHandle;
+static bool WindowClosed = false;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
@@ -29,6 +30,8 @@ void DXWindow::create()
 
 	m_applicationName = L"Engine";
 
+	LPCWSTR className = L"WindowClass";
+
 	m_hinstance = GetModuleHandle(NULL);
 
 	WindowHandle = this;
@@ -38,17 +41,17 @@ void DXWindow::create()
 	int posX, posY;
 
 	// Setup the windows class with default settings.
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = WndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = m_hinstance;
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hIconSm = wc.hIcon;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = m_applicationName;
+	wc.lpszClassName = className;
 	wc.cbSize = sizeof(WNDCLASSEX);
 
 	// Register the window class.
@@ -85,9 +88,12 @@ void DXWindow::create()
 	}
 
 	// Create the window with the screen settings and get the handle to it.
-	m_hwnd = CreateWindowEx(WS_EX_APPWINDOW, m_applicationName, m_applicationName,
+	m_hwnd = CreateWindowEx(NULL, className, m_applicationName,
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
-		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, this);
+		//WS_OVERLAPPEDWINDOW,
+		posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance, 
+		NULL);
+		//this);
 
 	// Bring the window up on the screen and set it as main focus.
 	ShowWindow(m_hwnd, SW_SHOW);
@@ -141,15 +147,21 @@ std::tuple<int, int> DXWindow::getWindowSize()
 // Check if the window is closed
 bool DXWindow::windowClosed()
 {
-	return (m_msg.message == WM_QUIT);
+	return WindowClosed;
 }
 
 // Update the context
 void DXWindow::update()
 {
 	// Handle the windows messages.
-	if (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
+	while(PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
 	{
+		if (m_msg.message == WM_QUIT)
+		{
+			WindowClosed = true;
+			return;
+		}
+
 		TranslateMessage(&m_msg);
 		DispatchMessage(&m_msg);
 	}

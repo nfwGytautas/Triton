@@ -93,6 +93,10 @@ namespace Triton
 
 		// Starts the updating and rendering loops if custom loops are not provided
 		void start();
+
+		// Starts the updating and rendering loops if custom loops are not provided
+		// SINGLE-THREADED
+		void startST();
 	private:
 		// Checks if the Triton class with specified id can be accessed
 		bool checkReturnability(size_t id, size_t requester);
@@ -102,6 +106,14 @@ namespace Triton
 
 		// Render function for the engine when a custom function is not given
 		void renderMT();
+
+		// Update function for the engine when a custom function is not given
+		// SINGLE-THREADED
+		void updateST();
+
+		// Render function for the engine when a custom function is not given
+		// SINGLE-THREADED
+		void renderST();
 	private:
 		// Struct containing the current host settings
 		struct HostSettings

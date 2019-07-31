@@ -25,6 +25,7 @@ void showAssetWindow(bool* p_open, Triton::reference<Triton::EditorState>& edtr_
 		int material_count = edtr_state->AllMaterials.size();
 		int mesh_count = edtr_state->AllMeshes.size();
 		int texture_count = edtr_state->AllTextures.size();
+		int shader_count = edtr_state->AllShaders.size();
 
 		float window_visible_x2 = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
 
@@ -38,7 +39,10 @@ void showAssetWindow(bool* p_open, Triton::reference<Triton::EditorState>& edtr_
 				for (int n = 0; n < material_count; n++)
 				{
 					ImGui::PushID(n);
-					ImGui::Button(edtr_state->AllMaterials[n]->getName().c_str(), button_sz);
+					if (ImGui::Button(edtr_state->AllMaterials[n]->getName().c_str(), button_sz))
+					{
+						edtr_state->CurrentMaterial = edtr_state->AllMaterials[n];
+					}
 					float last_button_x2 = ImGui::GetItemRectMax().x;
 					float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
 					if (n + 1 < material_count && next_button_x2 < window_visible_x2)
@@ -69,6 +73,28 @@ void showAssetWindow(bool* p_open, Triton::reference<Triton::EditorState>& edtr_
 					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 					{
 						ImGui::SetDragDropPayload("ASSET_MESH", &n, sizeof(int));
+						ImGui::EndDragDropSource();
+					}
+
+					ImGui::PopID();
+				}
+
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("Shaders"))
+			{
+				for (int n = 0; n < shader_count; n++)
+				{
+					ImGui::PushID(n);
+					ImGui::Button(edtr_state->AllShaders[n]->getName().c_str(), button_sz);
+					float last_button_x2 = ImGui::GetItemRectMax().x;
+					float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
+					if (n + 1 < shader_count && next_button_x2 < window_visible_x2)
+						ImGui::SameLine();
+
+					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+					{
+						ImGui::SetDragDropPayload("ASSET_SHADER", &n, sizeof(int));
 						ImGui::EndDragDropSource();
 					}
 

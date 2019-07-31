@@ -239,6 +239,16 @@ namespace Triton
 		}
 	}
 
+	void TritonHost::startST()
+	{
+		auto& context = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
+		while(!context->window->windowClosed())
+		{
+			updateST();
+			renderST();
+		}
+	}
+
 	bool TritonHost::checkReturnability(size_t id, size_t requester)
 	{
 		auto& TClass = m_IDObjectPairs[id];
@@ -287,6 +297,12 @@ namespace Triton
 			{
 				postMessage((size_t)Core::TritonMessageType::Update, m_priorities.update[i], nullptr);
 			}
+
+			if (context->window->windowClosed())
+			{
+				m_settings.updating = false;
+				m_settings.rendering = false;
+			}
 		}
 	}
 
@@ -303,6 +319,27 @@ namespace Triton
 			{
 				postMessage((size_t)Core::TritonMessageType::Render, m_priorities.render[i], nullptr);
 			}
+		}
+	}
+
+	void TritonHost::updateST()
+	{
+		for (int i = 0; i < Layers::c_maxLayers; i++)
+		{
+			postMessage((size_t)Core::TritonMessageType::Update, m_priorities.update[i], nullptr);
+		}
+	}
+
+	void TritonHost::renderST()
+	{
+		for (int i = 0; i < Layers::c_maxLayers; i++)
+		{
+			postMessage((size_t)Core::TritonMessageType::PreRender, m_priorities.preRender[i], nullptr);
+		}
+
+		for (int i = 0; i < Layers::c_maxLayers; i++)
+		{
+			postMessage((size_t)Core::TritonMessageType::Render, m_priorities.render[i], nullptr);
 		}
 	}
 }

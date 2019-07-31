@@ -17,7 +17,6 @@ public:
 protected:
 	// Inherited via Bitmap
 	virtual void create(FactoryCreateParams * createParams) override;
-
 private:
 	ID3D11DeviceContext* m_deviceContext;
 	ID3D11Buffer* m_vertexBuffer;

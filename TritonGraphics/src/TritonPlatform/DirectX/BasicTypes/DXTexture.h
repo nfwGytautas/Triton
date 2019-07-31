@@ -11,6 +11,11 @@ public:
 
 	virtual void enable() override;
 	virtual void disable() override;
+
+	virtual void* raw_texture() override
+	{
+		return m_textureView;
+	}
 protected:
 	virtual void create(FactoryCreateParams* createParams) override;
 private:
@@ -29,6 +34,11 @@ public:
 
 	virtual void enable() override;
 	virtual void disable() override;
+
+	virtual void* raw_texture() override
+	{
+		return m_textureView;
+	}
 protected:
 	virtual void create(FactoryCreateParams* createParams) override;
 private:

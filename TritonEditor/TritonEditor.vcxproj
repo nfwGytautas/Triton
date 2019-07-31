@@ -142,6 +142,8 @@
     <ClInclude Include="src\TritonEditor\Widgets\DockSpace.h" />
     <ClInclude Include="src\TritonEditor\Widgets\InspectorWindow.h" />
     <ClInclude Include="src\TritonEditor\Widgets\LogWindow.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\MainMenuBar.h" />
+    <ClInclude Include="src\TritonEditor\Widgets\MaterialEditor.h" />
     <ClInclude Include="src\TritonEditor\Widgets\Metrics.h" />
     <ClInclude Include="src\TritonEditor\Widgets\SceneView.h" />
     <ClInclude Include="src\TritonEditor\Widgets\Viewport.h" />

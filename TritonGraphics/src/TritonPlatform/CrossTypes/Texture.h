@@ -26,6 +26,10 @@ namespace Triton
 			virtual void disable() = 0;
 
 			unsigned int Slot = 0;
+
+			// Returns the raw texture specifier
+			// the id for OpenGL and ShaderResourceView* for DirectX
+			virtual void* raw_texture() = 0;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
 		protected:
@@ -53,6 +57,7 @@ namespace Triton
 			virtual void enable() = 0;
 			virtual void disable() = 0;
 
+			virtual void* raw_texture() = 0;
 		protected:
 			virtual void create(FactoryCreateParams* createParams) override = 0;
 		protected:
