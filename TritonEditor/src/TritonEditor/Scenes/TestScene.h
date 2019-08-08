@@ -24,12 +24,13 @@ namespace Triton
 		{},
 		"test_scene",
 		Layers::Update::c_layer1,
-		Layers::c_nullLayer,
+		Layers::PreRender::c_layer1,
 		Layers::Render::c_layer1,
 		(
 			Core::ReceivedMessages::ClassRegistered |
 			Core::ReceivedMessages::Update |
-			Core::ReceivedMessages::Render
+			Core::ReceivedMessages::Render |
+			Core::ReceivedMessages::PreRender
 		)
 	};
 
@@ -41,21 +42,20 @@ namespace Triton
 		TestScene();
 		virtual ~TestScene() {}
 
-		virtual void onMessage(size_t message, void* payload);
+		virtual void relayMessage(size_t message, void* payload);
 		bool keyPressed(const Event& event);
 		bool mouseMoved(const Event& event);
 
 		void loadAssets();
 		void createEntities();
 		void updateEntities();
-
 	private:
 		TR_EDTR_STATE(m_edtr_state)
 
 		reference<Utility::Timer> m_timer;
 		reference<Core::InputManager> m_input;
 
-		ECS::Entity Ent;
+		reference<GameObject> Ent;
 
 		Triton::Matrix44 m_Transformation;
 

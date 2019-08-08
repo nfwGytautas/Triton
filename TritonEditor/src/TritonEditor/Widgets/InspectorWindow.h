@@ -21,8 +21,7 @@ void showInspector(bool* p_open,
 
 	const float popupWidth = 150;
 
-	auto& registry = edtr_state->CurrentScene->Entities;
-	auto& entity = edtr_state->CurrentEntity;
+	auto& entity = edtr_state->CurrentGameObject;
 
 	if (*p_open == true)
 	{
@@ -44,27 +43,27 @@ void showInspector(bool* p_open,
 			ImGui::Text("Component");
 			ImGui::Separator();
 
-			if (!registry->has<Triton::Components::Transform>(entity) && ImGui::Button("Transform", ImVec2(popupWidth, 0)))
+			if (!entity->hasComponent<Triton::Components::Transform>() && ImGui::Button("Transform", ImVec2(popupWidth, 0)))
 			{
-				registry->assign<Triton::Components::Transform>(entity);
+				entity->addComponent<Triton::Components::Transform>();
 				ImGui::CloseCurrentPopup();
 			}
 
-			if (!registry->has<Triton::Components::Visual>(entity) && ImGui::Button("Visual", ImVec2(popupWidth, 0)))
+			if (!entity->hasComponent<Triton::Components::Visual>() && ImGui::Button("Visual", ImVec2(popupWidth, 0)))
 			{
-				registry->assign<Triton::Components::Visual>(entity);
+				entity->addComponent<Triton::Components::Visual>();
 				ImGui::CloseCurrentPopup();
 			}
 
-			if (!registry->has<Triton::Components::LightEmitter>(entity) && ImGui::Button("Light emitter", ImVec2(popupWidth, 0)))
+			if (!entity->hasComponent<Triton::Components::LightEmitter>() && ImGui::Button("Light emitter", ImVec2(popupWidth, 0)))
 			{
-				registry->assign<Triton::Components::LightEmitter>(entity);
+				entity->addComponent<Triton::Components::LightEmitter>();
 				ImGui::CloseCurrentPopup();
 			}
 
-			if (!registry->has<Triton::Components::Image>(entity) && ImGui::Button("Image", ImVec2(popupWidth, 0)))
+			if (!entity->hasComponent<Triton::Components::Image>() && ImGui::Button("Image", ImVec2(popupWidth, 0)))
 			{
-				registry->assign<Triton::Components::Image>(entity);
+				entity->addComponent<Triton::Components::Image>();
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -74,12 +73,12 @@ void showInspector(bool* p_open,
 		ImGui::Spacing();
 
 		// Transformation
-		if (registry->has<Triton::Components::Transform>(entity))
+		if (entity->hasComponent<Triton::Components::Transform>())
 		{
 			ImGui::Spacing();
 			if (ImGui::CollapsingHeader("Transform"))
 			{
-				Triton::Components::Transform& transform = registry->get<Triton::Components::Transform>(entity);
+				Triton::Components::Transform& transform = entity->getComponent<Triton::Components::Transform>();
 
 				ImGui::Separator();
 
@@ -124,12 +123,12 @@ void showInspector(bool* p_open,
 		}
 
 		// Visual
-		if (registry->has<Triton::Components::Visual>(entity))
+		if (entity->hasComponent<Triton::Components::Visual>())
 		{
 			ImGui::Spacing();
 			if (ImGui::CollapsingHeader("Visual"))
 			{
-				Triton::Components::Visual& visual = registry->get<Triton::Components::Visual>(entity);
+				Triton::Components::Visual& visual = entity->getComponent<Triton::Components::Visual>();
 
 				ImGui::Separator();
 

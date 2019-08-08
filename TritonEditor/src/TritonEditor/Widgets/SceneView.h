@@ -7,10 +7,12 @@
 #include "TritonPlatform/DirectX/DXTypes.h"
 #include "Triton/Core/Wrapers/Viewport.h"
 
+#include "Triton/Entity/GameObject.h"
+
 void showSceneView(bool* p_open, std::string sceneName, Triton::reference<Triton::EditorState>& state)
 {
 	static char name[64] = "";
-	static std::string* entity_name = nullptr;
+	static std::string entity_name_copy = "";
 
 	bool contextDefined = false;
 
@@ -30,8 +32,7 @@ void showSceneView(bool* p_open, std::string sceneName, Triton::reference<Triton
 		{
 			if (ImGui::Button("New entity"))
 			{
-				auto id = state->CurrentScene->Entities->create();
-				state->NameMap->EntityNames[id] = "newEntity";
+				state->CurrentScene->newObject();
 			}
 
 			ImGui::EndPopup();
@@ -39,51 +40,53 @@ void showSceneView(bool* p_open, std::string sceneName, Triton::reference<Triton
 
 		static int selection_mask = (1 << 2);
 		int node_clicked = -1;
-		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize() * 3);
+		ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, ImGui::GetFontSize() * 3);\
 
-		state->CurrentScene->Entities->each(
-			[&](Triton::ECS::Entity entity) 
+		auto it = state->CurrentScene->begin();
+		auto end = state->CurrentScene->end();
+
+		for (it; it != end; it++)
+		{
+			Triton::reference<Triton::GameObject> gameObject = *it;
+
+			ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_DefaultOpen;
+
+			if (state->CurrentGameObject == gameObject)
 			{
-				ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_DefaultOpen;
+				node_flags |= ImGuiTreeNodeFlags_Selected;
+			}
+			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
 
-				if (state->CurrentEntity == entity)
+			if (ImGui::TreeNodeEx(gameObject->getName().c_str(), node_flags))
+			{
+				if (!contextDefined)
 				{
-					node_flags |= ImGuiTreeNodeFlags_Selected;
-				}
-				node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-				
-				if (ImGui::TreeNodeEx((void*)(intptr_t)entity, node_flags, "%s", state->NameMap->EntityNames[entity].c_str()))
-				{
-					if (!contextDefined)
+					if (ImGui::BeginPopupContextItem("scene view entity context menu"))
 					{
-						if (ImGui::BeginPopupContextItem("scene view entity context menu"))
-						{
-							ImGui::Text("Edit name:"); ImGui::SameLine();
-							ImGui::InputText("##editName", name, 64, ImGuiInputTextFlags_CharsNoBlank);
+						ImGui::Text("Edit name:"); ImGui::SameLine();
+						ImGui::InputText("##editName", name, 64, ImGuiInputTextFlags_CharsNoBlank);
 
-							if (entity_name != nullptr)
-							{
-								*entity_name = name;
-							}
+						state->CurrentGameObject->setName(std::string(name));
 
-							if (ImGui::Button("Close"))
-								ImGui::CloseCurrentPopup();
-							ImGui::EndPopup();
-						}
-
-						contextDefined = true;
+						if (ImGui::Button("Close"))
+							ImGui::CloseCurrentPopup();
+						ImGui::EndPopup();
 					}
 
-					if (ImGui::OpenPopupOnItemClick("scene view entity context menu", 1))
-					{
-						entity_name = &state->NameMap->EntityNames[entity];
-						std::strcpy(name, entity_name->c_str());
-					}
-
-					if (ImGui::IsItemClicked())
-						state->CurrentEntity = entity;
+					contextDefined = true;
 				}
-			});
+
+				if (ImGui::OpenPopupOnItemClick("scene view entity context menu", 1))
+				{
+					state->CurrentGameObject = gameObject;
+					entity_name_copy = state->CurrentGameObject->getName();
+					std::strcpy(name, entity_name_copy.c_str());
+				}
+
+				if (ImGui::IsItemClicked())
+					state->CurrentGameObject = gameObject;
+			}
+		}
 
 		ImGui::PopStyleVar();
 

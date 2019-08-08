@@ -13,9 +13,9 @@ Triton::TestScene::TestScene()
 	this->Listen<MouseMovedEvent>(EventBehavior(std::bind(&TestScene::mouseMoved, this, std::placeholders::_1)));
 }
 
-void Triton::TestScene::onMessage(size_t message, void* payload)
+void Triton::TestScene::relayMessage(size_t message, void* payload)
 {
-	Scene::onMessage(message, payload);
+	Scene::relayMessage(message, payload);
 
 	switch (message)
 	{
@@ -111,19 +111,19 @@ void Triton::TestScene::createEntities()
 
 	for (int i = 0; i < 2; i++)
 	{
-		Ent = Entities->create();
+		Ent = newObject();
 
 		//m_MainScene->Entities->assign<Triton::Components::Transform>(Ent).Position = Triton::Vector3(0.0, 0.0, -25.0);
-		auto& transform = Entities->assign<Triton::Components::Transform>(Ent);
+		auto& transform = Ent->addComponent<Triton::Components::Transform>();
 
 		transform.Position = Triton::Vector3(0.0 + (10 * i), 0.0, 25.0);
 		//transform.Scale = Triton::Vector3(10, 10, 10);
 		transform.Rotation = Triton::Vector3(0.0, 180.0, 0.0);
 
-		Entities->assign<Triton::Components::Visual>(Ent, mesh->getAssetID(), mat->getAssetID());
+		Ent->addComponent<Triton::Components::Visual>(mesh->getAssetID(), mat->getAssetID());
 
-		m_edtr_state->CurrentEntity = Ent;
-		m_edtr_state->NameMap->EntityNames[Ent] = "stall" + std::to_string(i);
+		m_edtr_state->CurrentGameObject = Ent;
+		Ent->setName("stall" + std::to_string(i));
 	}
 
 	//for (int i = 0; i < 1; i++)
@@ -149,9 +149,9 @@ void Triton::TestScene::updateEntities()
 {
 	static int movingDir = 1;
 
-	if(Entities->valid(Ent) && Entities->has<Triton::Components::Transform>(Ent))
+	if(Ent->hasComponent<Triton::Components::Transform>())
 	{
-		auto& transform = Entities->get<Triton::Components::Transform>(Ent);
+		auto& transform = Ent->getComponent<Triton::Components::Transform>();
 		transform.Rotation.y += m_timer->updateDelta() * 15;
 
 		transform.Position.y += movingDir * m_timer->updateDelta() * 5;

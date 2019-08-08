@@ -131,7 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonEditor\Data\NameMap.h" />
     <ClInclude Include="src\TritonEditor\Data\EditorState.h" />
     <ClInclude Include="src\TritonEditor\Macros.h" />
     <ClInclude Include="src\TritonEditor\Scenes\EditorScene.h" />
@@ -149,7 +148,6 @@
     <ClInclude Include="src\TritonEditor\Widgets\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonEditor\Data\NameMap.cpp" />
     <ClCompile Include="src\TritonEditor\Data\EditorState.cpp" />
     <ClCompile Include="src\TritonEditor\Scenes\EditorScene.cpp" />
     <ClCompile Include="src\TritonEditor\Impl\imgui_impl_dx11.cpp" />

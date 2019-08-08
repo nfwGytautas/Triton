@@ -23,12 +23,13 @@ namespace Triton
 		{},
 		"editor_scene",
 		Layers::Update::c_layer1,
-		Layers::c_nullLayer,
+		Layers::PreRender::c_layer2,
 		Layers::Render::c_layer2,
 		(
 			Core::ReceivedMessages::ClassRegistered |
 			Core::ReceivedMessages::Update |
-			Core::ReceivedMessages::Render
+			Core::ReceivedMessages::Render |
+			Core::ReceivedMessages::PreRender
 		)
 	};
 
@@ -37,10 +38,6 @@ namespace Triton
 	public:
 		EditorScene();
 		virtual ~EditorScene();
-
-		// Inherited via SceneBase
-		virtual void onMessage(size_t message, void* payload) override;
-
 
 		// Inherited via EventInterface
 		virtual bool OnKeyPressed(int aKeycode, int aRepeatCount, int aScancode, int aMods) override;
@@ -54,15 +51,19 @@ namespace Triton
 
 		virtual bool OnWindowResized(int aWidth, int aHeight) override;
 		virtual bool onAppDrop(std::vector<std::string> files) override;
+
+		// Inherited via SceneBase
+		virtual void setupForRendering() override;
+		virtual void setupForObjects() override;
+		virtual void onRenderObject(reference<GameObject>& object, Components::Transform& transform, Components::Visual& visual) override;
+		virtual void relayMessage(size_t message, void * payload) override;
+		virtual void onRenderDone() override;
 	private:
 		void onRegistered();
-		void onUpdate();
-		void onRender();
+		virtual void onUpdate() override;
 
 		void loadResources();
 		void createEntities();
-		void renderEntities();
-		void createShaderballs();
 	private:
 		TR_EDTR_STATE(m_edtr_state)
 
@@ -91,21 +92,12 @@ namespace Triton
 	private:
 		WidgetIsOpen m_isOpen;
 
-		unsigned int m_prevMatSize = 0;
-		bool m_renderShaderballs = false;
-		std::unique_ptr<ECS::Registry> m_shaderBalls;
-
 		std::unique_ptr<Camera> edtr_Camera;
 
 		reference<Data::Mesh> edtr_3DPOINTER;
 		reference<Data::Material> edtr_mat_3DPOINTER;
 
-		ECS::Entity edtr_pointer_id;
-
-		reference<Data::Viewport> edtr_materialViewport;
-		reference<Graphics::Light> m_mainMaterialPreviewLight;
-		reference<Data::Mesh> edtr_shaderBall;
-		std::unique_ptr<Camera> edtr_materialPreviewCamera;
+		reference<GameObject> edtr_pointer;
 	};
 
 }

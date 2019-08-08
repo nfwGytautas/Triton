@@ -335,10 +335,6 @@ namespace Triton
 		for (int i = 0; i < Layers::c_maxLayers; i++)
 		{
 			postMessage((size_t)Core::TritonMessageType::PreRender, m_priorities.preRender[i], nullptr);
-		}
-
-		for (int i = 0; i < Layers::c_maxLayers; i++)
-		{
 			postMessage((size_t)Core::TritonMessageType::Render, m_priorities.render[i], nullptr);
 		}
 	}

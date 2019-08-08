@@ -1,9 +1,11 @@
 #pragma once
 
+#include "TritonTypes/relay_ptr.h"
+
 namespace Triton
 {
-	// A pointer wraper similiar to std::shared_ptr, in that it counts reference count,
-// but it also provides functionality for polymorphism with as() function
+	// A pointer wrapper similar to std::shared_ptr, in that it counts reference count,
+	// but it also provides functionality for polymorphism with as() function
 	template <typename T>
 	class reference
 	{
@@ -129,6 +131,14 @@ namespace Triton
 		bool valid() const
 		{
 			return m_Object != nullptr;
+		}
+
+		// Returns the underlying pointer as a relay_ptr which guarantees that the pointer won't be deleted
+		// but also there won't be any reference counting which means that if the reference is deleted the
+		// relay_ptr will be invalid
+		relay_ptr<T> asRelay() const
+		{
+			return relay_ptr<T>(m_Object);
 		}
 	};
 }

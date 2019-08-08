@@ -14,6 +14,9 @@ Just another game engine that I am coding for fun in my spare time
 * Particle system
 * Picking
 * Physics based rendering
+* OpenGL support
+* Scripting support
+* Serialization
 
 # *Tests projects*
 

@@ -4,8 +4,6 @@
 #include <Triton/Entity/Registry.h>
 #include <Triton/Core/Scene.h>
 
-#include "TritonEditor/Data/NameMap.h"
-
 namespace Triton
 {
 	const Core::ClassRegisterParams c_stateRegisterParams =
@@ -38,10 +36,9 @@ namespace Triton
 			Vector3 Specular;
 		} CurrentEditMaterial;
 
-		ECS::Entity CurrentEntity;
+		reference<GameObject> CurrentGameObject;
 		reference<Data::Material> CurrentMaterial;
 		reference<SceneBase> CurrentScene;
-		reference<NameMap> NameMap;
 
 		std::vector<reference<Data::Material>> AllMaterials;
 		std::vector<reference<Data::Mesh>> AllMeshes;

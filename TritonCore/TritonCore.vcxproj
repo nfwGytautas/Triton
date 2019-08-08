@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton\Entity\GameObject.h" />
     <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Layers.h" />
     <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
     <ClInclude Include="src\Triton\Events\EventInterface.h" />
     <ClInclude Include="src\Triton\Managers\AssetManager.h" />
+    <ClInclude Include="src\Triton\Managers\GameObjectManager.h" />
     <ClInclude Include="src\Triton\Managers\ManagerBase.h" />
     <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
     <ClInclude Include="src\Triton\Managers\TritonCache.h" />
@@ -196,6 +198,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\Entity\GameObject.cpp" />
     <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp" />
     <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
     <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
@@ -206,6 +209,7 @@
     <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
     <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
     <ClCompile Include="src\Triton\Managers\AssetManager.cpp" />
+    <ClCompile Include="src\Triton\Managers\GameObjectManager.cpp" />
     <ClCompile Include="src\Triton\Managers\ThreadManager.cpp" />
     <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
     <ClCompile Include="src\Triton\TritonHost.cpp" />

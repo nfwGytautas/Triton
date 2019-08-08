@@ -156,6 +156,8 @@
     <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
     <ClInclude Include="src\Triton\Core\Graphics\Layers.h" />
     <ClInclude Include="src\Triton\Core\Wrapers\PlainTexture.h" />
+    <ClInclude Include="src\Triton\Entity\GameObject.h" />
+    <ClInclude Include="src\Triton\Managers\GameObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -213,5 +215,7 @@
     <ClCompile Include="src\Triton\Utility\Utility.cpp" />
     <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp" />
     <ClCompile Include="src\Triton\Core\Wrapers\PlainTexture.cpp" />
+    <ClCompile Include="src\Triton\Entity\GameObject.cpp" />
+    <ClCompile Include="src\Triton\Managers\GameObjectManager.cpp" />
   </ItemGroup>
 </Project>

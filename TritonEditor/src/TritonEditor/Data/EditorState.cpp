@@ -8,7 +8,6 @@ namespace Triton
 		{
 		case (size_t)Triton::Core::TritonMessageType::ClassRegistered:
 		{
-			NameMap = this->getClassByName("nameMap").as<Triton::NameMap>();
 			return;
 		}
 		}

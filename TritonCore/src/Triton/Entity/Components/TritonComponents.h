@@ -2,6 +2,8 @@
 #include "TritonPlatform/mathematical.h"
 #include <cereal\archives\binary.hpp>
 
+#include "Triton/Entity/Registry.h"
+
 #define TR_SERIALIZABLE_COMPONENTS Triton::Components::Transform, Triton::Components::Visual, Triton::Components::LightEmitter
 
 namespace Triton

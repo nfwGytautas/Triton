@@ -7,7 +7,6 @@
 #include "TritonEditor/Data/EditorState.h"
 #include "TritonEditor/Scenes/EditorScene.h"
 #include "TritonEditor/Scenes/TestScene.h"
-#include "TritonEditor/Data/NameMap.h"
 
 namespace Triton
 {
@@ -40,14 +39,11 @@ namespace Triton
 
 			m_tHost->registerClass(this, c_tritonEditorRegisterParams);
 
-			m_tHost->registerClass(new Triton::NameMap(), c_nameMapRegisterParams);
-
 			m_tHost->registerClass(new Triton::EditorState(), c_stateRegisterParams);
 
 			m_tHost->registerClass(new Triton::EditorScene(), c_editorRegisterParams);
 
 			m_tHost->registerClass(new Triton::TestScene(), c_testSceneRegisterParams);
-
 		}
 
 		void start()
