@@ -265,3 +265,5 @@ imgui.ini
 
 #tlogs
 [Bb]in-int/
+
+vendor/mono/

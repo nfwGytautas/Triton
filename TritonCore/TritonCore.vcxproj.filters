@@ -13,11 +13,17 @@
     <Filter Include="Triton\Core\Asset">
       <UniqueIdentifier>{CC80D66D-3897-D403-810E-6025ED63A58B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Core\GameWindow">
+      <UniqueIdentifier>{3ED4BB15-2ACE-E467-133B-7B78FFD34AD4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Core\Graphics">
       <UniqueIdentifier>{5D870C00-4916-96C9-F234-AAC4DEA2A66F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Core\Graphics\Lighting">
       <UniqueIdentifier>{82B3D0E8-EECB-B712-B778-47AC23504CAC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Core\Input">
+      <UniqueIdentifier>{3C7C646E-A892-6204-F109-EE255D5F338C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton\Core\Wrapers">
       <UniqueIdentifier>{301266D7-9C73-43E5-25E1-899791417AA4}</UniqueIdentifier>
@@ -40,8 +46,14 @@
     <Filter Include="Triton\Managers">
       <UniqueIdentifier>{82CA5080-EE55-BE44-F766-413963711A45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Script">
+      <UniqueIdentifier>{A9B965BD-157A-E1F3-DEB4-2A714A3426D0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Serialize">
       <UniqueIdentifier>{FC6A853C-E863-A48E-1196-8913FDED839A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton\Utility">
+      <UniqueIdentifier>{48C6172B-3494-0B31-1D28-7C570995E795}</UniqueIdentifier>
     </Filter>
     <Filter Include="TritonTypes">
       <UniqueIdentifier>{3ACCB4B6-A681-2DAC-2F76-27839B2A24B0}</UniqueIdentifier>
@@ -65,6 +77,12 @@
     <ClInclude Include="src\Triton\Core\Asset\Asset.h">
       <Filter>Triton\Core\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h">
+      <Filter>Triton\Core\GameWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Graphics\Layers.h">
+      <Filter>Triton\Core\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.h">
       <Filter>Triton\Core\Graphics\Lighting</Filter>
     </ClInclude>
@@ -77,8 +95,29 @@
     <ClInclude Include="src\Triton\Core\Graphics\Lighting\SpotLight.h">
       <Filter>Triton\Core\Graphics\Lighting</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\Input\InputManager.h">
+      <Filter>Triton\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Input\Keyboard.h">
+      <Filter>Triton\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Input\Mouse.h">
+      <Filter>Triton\Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\RenderBuffer.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Core\Scene.h">
       <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\TritonClass.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\TritonClassParams.h">
+      <Filter>Triton\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\Image.h">
+      <Filter>Triton\Core\Wrapers</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Core\Wrapers\Material.h">
       <Filter>Triton\Core\Wrapers</Filter>
@@ -86,13 +125,28 @@
     <ClInclude Include="src\Triton\Core\Wrapers\Mesh.h">
       <Filter>Triton\Core\Wrapers</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\PlainTexture.h">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Entity\Components\TritonComponents.h">
       <Filter>Triton\Entity\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Entity\GameObject.h">
+      <Filter>Triton\Entity</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Entity\Registry.h">
       <Filter>Triton\Entity</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Events\ApplicationEvent.h">
+      <Filter>Triton\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Events\EventInterface.h">
       <Filter>Triton\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Events\EventManager.h">
@@ -116,11 +170,41 @@
     <ClInclude Include="src\Triton\Logger\Log.h">
       <Filter>Triton\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Managers\AssetManager.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Managers\GameObjectManager.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Managers\ManagerBase.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Managers\ThreadManager.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Managers\TritonCache.h">
+      <Filter>Triton\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\ScriptEngine.h">
+      <Filter>Triton\Script</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Serialize\Serialize.h">
       <Filter>Triton\Serialize</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\TRMacros.h">
       <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\TritonHost.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Utility\Algorithm.h">
+      <Filter>Triton\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Utility\ClassGetters.h">
+      <Filter>Triton\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Utility\Utility.h">
+      <Filter>Triton\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h">
       <Filter>TritonTypes\Interfaces</Filter>
@@ -131,33 +215,16 @@
     <ClInclude Include="src\TritonTypes\data_collection.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonTypes\reference.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Events\EventInterface.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\Image.h" />
-    <ClInclude Include="src\TritonTypes\reference.h" />
-    <ClInclude Include="src\Triton\Utility\Algorithm.h" />
-    <ClInclude Include="src\Triton\Managers\ManagerBase.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\Viewport.h" />
-    <ClInclude Include="src\Triton\Core\Input\InputManager.h" />
-    <ClInclude Include="src\Triton\Core\Input\Keyboard.h" />
-    <ClInclude Include="src\Triton\Core\Input\Mouse.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\ShaderProgram.h" />
-    <ClInclude Include="src\Triton\Core\RenderBuffer.h" />
-    <ClInclude Include="src\Triton\TritonHost.h" />
-    <ClInclude Include="src\Triton\Core\TritonClass.h" />
-    <ClInclude Include="src\Triton\Core\TritonClassParams.h" />
-    <ClInclude Include="src\Triton\Managers\AssetManager.h" />
-    <ClInclude Include="src\Triton\Managers\TritonCache.h" />
-    <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
-    <ClInclude Include="src\Triton\Utility\Utility.h" />
-    <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
-    <ClInclude Include="src\Triton\Core\GameWindow\GameWindow.h" />
-    <ClInclude Include="src\Triton\Core\Graphics\Layers.h" />
-    <ClInclude Include="src\Triton\Core\Wrapers\PlainTexture.h" />
-    <ClInclude Include="src\Triton\Entity\GameObject.h" />
-    <ClInclude Include="src\Triton\Managers\GameObjectManager.h" />
+    <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Object.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -166,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Asset\Asset.cpp">
       <Filter>Triton\Core\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp">
+      <Filter>Triton\Core\GameWindow</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\DirectionalLight.cpp">
       <Filter>Triton\Core\Graphics\Lighting</Filter>
@@ -179,14 +249,41 @@
     <ClCompile Include="src\Triton\Core\Graphics\Lighting\SpotLight.cpp">
       <Filter>Triton\Core\Graphics\Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\Core\Input\InputManager.cpp">
+      <Filter>Triton\Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\RenderBuffer.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Triton\Core\Scene.cpp">
       <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\TritonClass.cpp">
+      <Filter>Triton\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Wrapers\Material.cpp">
       <Filter>Triton\Core\Wrapers</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Core\Wrapers\Mesh.cpp">
       <Filter>Triton\Core\Wrapers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\PlainTexture.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp">
+      <Filter>Triton\Core\Wrapers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Entity\GameObject.cpp">
+      <Filter>Triton\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Events\EventInterface.cpp">
+      <Filter>Triton\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Events\EventManager.cpp">
       <Filter>Triton\Events</Filter>
@@ -200,22 +297,29 @@
     <ClCompile Include="src\Triton\Logger\Log.cpp">
       <Filter>Triton\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\Events\EventInterface.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\Image.cpp" />
-    <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\Viewport.cpp" />
-    <ClCompile Include="src\Triton\Core\Input\InputManager.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\ShaderProgram.cpp" />
-    <ClCompile Include="src\Triton\Core\RenderBuffer.cpp" />
-    <ClCompile Include="src\Triton\TritonHost.cpp" />
-    <ClCompile Include="src\Triton\Core\TritonClass.cpp" />
-    <ClCompile Include="src\Triton\Managers\AssetManager.cpp" />
-    <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
-    <ClCompile Include="src\Triton\Managers\ThreadManager.cpp" />
-    <ClCompile Include="src\Triton\Utility\Utility.cpp" />
-    <ClCompile Include="src\Triton\Core\GameWindow\GameWindow.cpp" />
-    <ClCompile Include="src\Triton\Core\Wrapers\PlainTexture.cpp" />
-    <ClCompile Include="src\Triton\Entity\GameObject.cpp" />
-    <ClCompile Include="src\Triton\Managers\GameObjectManager.cpp" />
+    <ClCompile Include="src\Triton\Managers\AssetManager.cpp">
+      <Filter>Triton\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Managers\GameObjectManager.cpp">
+      <Filter>Triton\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Managers\ThreadManager.cpp">
+      <Filter>Triton\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Managers\TritonCache.cpp">
+      <Filter>Triton\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Script\ScriptEngine.cpp">
+      <Filter>Triton\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\TritonHost.cpp">
+      <Filter>Triton</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Utility\Algorithm.cpp">
+      <Filter>Triton\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton\Utility\Utility.cpp">
+      <Filter>Triton\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

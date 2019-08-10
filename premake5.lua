@@ -23,6 +23,7 @@ IncludeDir["Assimp"] = "vendor/Assimp/include"
 IncludeDir["stb_image"] = "vendor/stb_image"
 IncludeDir["cereal"] = "vendor/cereal/include"
 IncludeDir["XTK"] = "vendor/DirectXTK/Inc"
+IncludeDir["mono"] = "vendor/mono/include/mono-2.0"
 
 include "vendor/GLFW"
 include "vendor/Glad"
@@ -121,18 +122,21 @@ project "TritonCore"
 		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.cereal}",
 		"%{IncludeDir.XTK}",
+		"%{IncludeDir.mono}",
 		"TritonGraphics/src",
 	}
 
 	libdirs
 	{
-		"C:/dev/Triton/vendor/Assimp/lib/Release"
+		"C:/dev/Triton/vendor/Assimp/lib/Release",
+		"C:/dev/Triton/vendor/mono/lib",
 	}
 	
 	links 
 	{ 
 		"TritonGraphics",
 		"assimp-vc140-mt.lib",
+		"mono-2.0-sgen.lib",
 	}
 
 	filter "system:windows"
@@ -227,6 +231,43 @@ project "TritonEditor"
 
 		
 		
+project "TritonEngine"
+	location "TritonEngine"
+	kind "SharedLib"
+	language "C#"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.cs"
+	}
+	
+	postbuildcommands 
+	{
+		("{COPY} %{cfg.buildtarget.relpath} ../bin"),
+	}
+
+	filter "configurations:Debug"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS"
+		}
+		runtime "Debug"
+		symbols "on"
+	
+	filter "configurations:Release"
+		defines "TR_RELEASE"
+		optimize "on"
+		runtime "Release"
+
+	filter "configurations:Dist"
+		defines "TR_DIST"
+		runtime "Release"
+		optimize "on"
+
 project "SandBox"
 	location "SandBox"
 	kind "ConsoleApp"

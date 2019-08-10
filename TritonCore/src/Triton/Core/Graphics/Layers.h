@@ -38,6 +38,8 @@ namespace Triton
 		// Layer that won't be registered
 		const Layer c_nullLayer = c_maxLayers + 1;
 
+		// The layer fro script update
+		const Layer c_scriptUpdateLayer = c_deltaLayer - 1;
 
 		// Empty update layers there can be more than 8 if needed
 		namespace Update

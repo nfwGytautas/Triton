@@ -60,6 +60,13 @@ namespace Triton
 			return *this;
 		}
 
+		// Compares two relay_ptrs of type T by checking 
+		// if the underlying pointers point to the same memory
+		bool operator==(const relay_ptr<T>& other) const
+		{
+			return ptr == other.ptr;
+		}
+
 		// Check if the relay_ptr underlying ptr is valid or not(nullptr)
 		bool valid() const
 		{

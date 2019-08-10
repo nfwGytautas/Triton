@@ -115,7 +115,7 @@ namespace Triton
 		}
 
 		// Member Access operator
-		T* operator->()
+		T* operator->() const
 		{
 			return m_Object;
 		}

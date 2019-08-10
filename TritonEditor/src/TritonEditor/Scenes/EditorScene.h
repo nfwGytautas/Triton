@@ -11,6 +11,7 @@
 #include <Triton/Core/RenderBuffer.h>
 #include <Triton/Utility/Utility.h>
 #include <Triton/Core/GameWindow/GameWindow.h>
+#include <Triton/Script/ScriptEngine.h>
 
 #include "TritonEditor/Data/EditorState.h"
 #include "TritonEditor/Macros.h"
@@ -74,6 +75,7 @@ namespace Triton
 		reference<Core::InputManager> m_input;
 		reference<Manager::AssetManager> m_assetManager;
 		reference<Utility::Timer> m_timer;
+		reference<Script::ScriptEngine> m_scriptEngine;
 
 		ImGuiIO* m_imguiIO;
 	public:

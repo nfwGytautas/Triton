@@ -58,6 +58,8 @@ void Triton::EditorScene::relayMessage(size_t message, void * payload)
 		m_graphicsContext = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
 		m_graphicsContext->renderer->setVsync(true);
 
+		m_scriptEngine = this->getClassByID((size_t)Core::TritonClasses::ScriptEngine).as<Script::ScriptEngine>();
+
 		onRegistered();
 
 		loadResources();
@@ -240,11 +242,16 @@ void Triton::EditorScene::loadResources()
 	asset_desc.Arguments[1] = "SelectorPixelShader";
 
 	edtr_mat_3DPOINTER->Shader = m_assetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+
+
+	m_scriptEngine->loadAssembly("../bin/MonoDLL.dll");
 }
 
 void Triton::EditorScene::createEntities()
 {
 	edtr_pointer = newObject();
+
+	m_scriptEngine->attachScript("Class1", edtr_pointer.asRelay());
 
 	auto& transform = edtr_pointer->addComponent<Triton::Components::Transform>();
 

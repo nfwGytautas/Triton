@@ -7,12 +7,18 @@
     <Filter Include="DirectX">
       <UniqueIdentifier>{D86A6D73-444A-EC0E-4D62-77E5B9C05270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DirectX\BasicTypes">
+      <UniqueIdentifier>{3E078CB2-2AEB-4C08-934B-475B7F4E378A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="OpenGL">
       <UniqueIdentifier>{8A864AC8-7628-759E-5FE3-88F24B24FCEE}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TritonPlatform\CrossTypes\Base.h">
+      <Filter>CrossTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\CrossTypes\Bitmap.h">
       <Filter>CrossTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\CrossTypes\Factory.h">
@@ -29,6 +35,45 @@
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\CrossTypes\VAO.h">
       <Filter>CrossTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.h">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.h">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.h">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.h">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.h">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXContext.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXFactory.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXManip.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXRenderer.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXSpecific.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXTypes.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\DXWindow.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform\DirectX\Macros.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\OpenGL\Factory.h">
       <Filter>OpenGL</Filter>
@@ -62,34 +107,42 @@
     </ClInclude>
     <ClInclude Include="src\TritonPlatform\PlatformAbstraction.h" />
     <ClInclude Include="src\TritonPlatform\mathematical.h" />
-    <ClInclude Include="src\TritonPlatform\CrossTypes\Bitmap.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXFactory.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXManip.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXRenderer.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXSpecific.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXTypes.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXWindow.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\Macros.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\DXContext.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.h" />
-    <ClInclude Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonPlatform\CrossTypes\Shader.cpp">
+      <Filter>CrossTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.cpp">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.cpp">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.cpp">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.cpp">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.cpp">
+      <Filter>DirectX\BasicTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\DXContext.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\DXFactory.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\DXManip.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\DXRenderer.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform\DirectX\DXWindow.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
     <ClCompile Include="src\TritonPlatform\PlatformAbstraction.cpp" />
     <ClCompile Include="src\TritonPlatform\mathematical.cpp" />
-    <ClCompile Include="src\TritonPlatform\CrossTypes\Shader.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXFactory.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXManip.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXRenderer.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXWindow.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\DXContext.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXBitmap.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXFramebuffer.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXShader.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXTexture.cpp" />
-    <ClCompile Include="src\TritonPlatform\DirectX\BasicTypes\DXVAO.cpp" />
   </ItemGroup>
 </Project>

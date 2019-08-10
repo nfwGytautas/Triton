@@ -44,6 +44,9 @@ namespace Triton
 		reference<GameWindow> gWindow = new GameWindow();
 		registerClass(gWindow.as<Core::TritonClass>(), Core::GameWindowRegisterParams);
 
+		reference<Script::ScriptEngine> scriptEngine = new Script::ScriptEngine();
+		registerClass(scriptEngine.as<Core::TritonClass>(), Script::ScriptEngineRegisterParams);
+
 		m_settings.render = !initParams.CustomRenderFunction;
 		m_settings.updating = !initParams.CustomUpdateFunction;
 	}

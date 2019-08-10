@@ -16,6 +16,7 @@
 #include "Triton\Core\RenderBuffer.h"
 #include "Triton\Utility\Utility.h"
 #include "Triton\Core\GameWindow\GameWindow.h"
+#include "Triton\Script\ScriptEngine.h"
 
 namespace Triton 
 {
