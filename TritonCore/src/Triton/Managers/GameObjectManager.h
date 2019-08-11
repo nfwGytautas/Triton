@@ -7,6 +7,7 @@
 
 #include "Triton/Managers/ManagerBase.h"
 #include "Triton/Entity/GameObject.h"
+#include "Triton/Script/ScriptEngine.h"
 
 #include "TritonTypes/reference.h"
 
@@ -14,7 +15,7 @@ namespace Triton
 {
 	namespace Core
 	{
-		class GameObjectManager
+		class GameObjectManager : public Core::TritonClass
 		{
 			const std::string c_baseName = "gObject_";
 		public:
@@ -51,9 +52,21 @@ namespace Triton
 
 			// Returns all game objects with specified name
 			std::vector<reference<GameObject>> byName(std::string name);
+
+			// Attaches a script with given name to the specified object
+			void attachScriptToObject(std::string scriptObj, relay_ptr<GameObject> object);
+
+			// Detaches a script with given name to the specified object
+			void detachScriptToObject(std::string scriptObj, relay_ptr<GameObject> object);
+
+			// Inherited from TritonClass
+			virtual void onMessage(size_t message, void* payload) override;
 		private:
 			// The registry for this manager
 			reference<ECS::Registry> m_registry;
+
+			// Reference to the script engine
+			reference<Script::ScriptEngine> m_scriptEngine;
 
 			// The game objects of this manager
 			std::vector<reference<GameObject>> m_objects;

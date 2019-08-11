@@ -30,6 +30,8 @@
 #include "Triton/File/File.h"
 #include "Triton/Utility/Utility.h"
 
+#include "Impl/ClassDefs.h"
+#include "Impl/Enum.h"
 #include "Impl/Interop.h"
 #include "Impl/Assembly.h"
 #include "Impl/Object.h"
@@ -43,10 +45,11 @@ namespace Triton
 		{
 			const char* c_UpdateMethod = "ObjectScript:OnUpdate(single)";
 		public:
-			ScriptImpl(MonoClass* klass, MonoObject* object, relay_ptr<GameObject> gObject)
+			ScriptImpl(MonoClass* baseClass, MonoClass* klass, MonoObject* object, relay_ptr<GameObject> gObject)
 				: m_klass(klass), m_object(object), m_gObject(gObject)
 			{
-				getMethods();
+				getMethods(baseClass);
+				attachObject();
 			}
 
 			// Calls update method for ObjectScript
@@ -71,13 +74,22 @@ namespace Triton
 				return m_gObject == object;
 			}
 
+			// Get the name of the script class
 			std::string className()
 			{
 				return mono_class_get_name(m_klass);
 			}
+
+			// Attach the specified game object to the object
+			void attachObject()
+			{
+				auto native_handle_field = mono_class_get_field_from_name(m_klass, ScriptClass::c_GameObjectNativeHandle);
+				void* native_handle_value = &m_gObject;
+				mono_field_set_value(m_object, native_handle_field, &native_handle_value);
+			}
 		private:
 			// Get the methods for script
-			void getMethods()
+			void getMethods(MonoClass* baseClass)
 			{
 				m_method_update = Object::getMethod(c_UpdateMethod, m_klass);
 			}
@@ -128,13 +140,7 @@ namespace Triton
 					return false;
 				}
 
-				// Get the object script definition
-				m_scriptClass = m_engineInstance->getObjectScriptDef();
-				if (!m_scriptClass)
-				{
-					TR_SYSTEM_ERROR("Script engine failed to get the 'ObjectScript' definition");
-					return false;
-				}
+				m_engineInstance->getAllEngineObjects(m_tClassMap);
 
 				TR_SYSTEM_INFO("Script engine online");
 				return true;
@@ -147,7 +153,7 @@ namespace Triton
 				std::vector<SharpScriptLayout> scripts;
 
 				// Load the assembly
-				MonoAssembly* assemb = loadAssembly(assembly);
+				MonoAssembly* assemb = Assembly::loadAssembly(m_domain, assembly);
 				if (!assemb)
 				{
 					return scripts;
@@ -155,7 +161,7 @@ namespace Triton
 				m_loadedAssemblies[assembly] = assemb;
 
 				// Load the image
-				MonoImage* image = getImage(assemb);
+				MonoImage* image = Assembly::getImage(assemb);
 				if (!image)
 				{
 					return scripts;
@@ -170,7 +176,7 @@ namespace Triton
 				}
 
 				// Filter out the classes that are not scripts
-				std::vector<MonoClass*> behaviours = Assembly::getAllBehaviorClassesFromList(m_scriptClass, classes);
+				std::vector<MonoClass*> behaviours = Assembly::getAllBehaviorClassesFromList(m_tClassMap[ScriptClass::c_ObjectScript], classes);
 				if (behaviours.size() == 0)
 				{
 					return scripts;
@@ -191,67 +197,19 @@ namespace Triton
 			reference<SharpScript> createScriptInstance(const char* className, relay_ptr<GameObject> object)
 			{
 				auto klass = m_classMap[className];
-				SharpScript* script = new SharpScript(new SharpScript::ScriptImpl(klass, createObject(klass), object));
+				SharpScript* script = new SharpScript(
+					new SharpScript::ScriptImpl(
+						m_tClassMap[ScriptClass::c_ObjectScript], 
+						klass, 
+						Object::createObject(m_domain, klass), 
+						object));
 				return script;
 			}
 		private:
 			// Adds internal calls
 			void injectInternalCalls()
 			{
-				mono_add_internal_call("TritonEngine.Interop::send_trace_Message_Internal", 
-					reinterpret_cast<void*>(Interop::send_trace_Message_Internal));
-
-				mono_add_internal_call("TritonEngine.Interop::send_info_Message_Internal",
-					reinterpret_cast<void*>(Interop::send_info_Message_Internal));
-
-				mono_add_internal_call("TritonEngine.Interop::send_warn_Message_Internal",
-					reinterpret_cast<void*>(Interop::send_warn_Message_Internal));
-
-				mono_add_internal_call("TritonEngine.Interop::send_error_Message_Internal",
-					reinterpret_cast<void*>(Interop::send_error_Message_Internal));
-			}
-
-			// Loads an assembly object
-			MonoAssembly* loadAssembly(const char* assembly)
-			{
-				MonoAssembly* assemblyObj = mono_domain_assembly_open(m_domain, assembly);
-
-				if (!assemblyObj)
-				{
-					TR_SYSTEM_ERROR("Script engine could not open '{0}' assembly ('failed mono_domain_assembly_open')", Data::File::fileNameFromPath(assembly));
-					return nullptr;
-				}
-
-				return assemblyObj;
-			}
-
-			// Gets an image from an assembly
-			MonoImage* getImage(MonoAssembly* assembly)
-			{
-				MonoImage* image = mono_assembly_get_image(assembly);
-				if (!image)
-				{
-					TR_SYSTEM_ERROR("Script engine could not get image from assembly ('failed mono_assembly_get_image')");
-					return nullptr;
-				}
-
-				return image;
-			}
-
-			// Creates a MonoObject from class object
-			MonoObject* createObject(MonoClass* klass)
-			{
-				//Create a instance of the class
-				MonoObject* object = mono_object_new(m_domain, klass);
-				if (!object)
-				{
-					TR_SYSTEM_ERROR("Script engine could not create class instance ('failed mono_object_new')");
-					return nullptr;
-				}
-
-				mono_runtime_object_init(object);
-
-				return object;
+				Interop::addInternals();
 			}
 		private:
 			// For mono JIT
@@ -269,9 +227,9 @@ namespace Triton
 			std::vector<MonoClass*> m_loadedClasses;
 			// Map of class name to MonoClass pointer
 			std::unordered_map<std::string, MonoClass*> m_classMap;
-
-			// The class definition of the ObjectScript class
-			MonoClass* m_scriptClass;
+			
+			// Map of Triton class name to MonoClass pointer
+			std::unordered_map<std::string, MonoClass*> m_tClassMap;
 		};
 
 

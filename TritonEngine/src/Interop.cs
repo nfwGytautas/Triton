@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TritonEngine
 {
-    public class Interop
+    class Interop
     {
         /// <summary>
         /// Send a trace(white) message to the Triton engine 

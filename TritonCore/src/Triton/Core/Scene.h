@@ -28,7 +28,7 @@ namespace Triton
 {
 	// Base class that allows for multiple types of scenes that can all be managed by a single manager
 	//	The name of the scene comes from the triton class
-	class SceneBase : public Core::TritonClass, public Core::GameObjectManager
+	class SceneBase : public Core::GameObjectManager
 	{
 	public:
 		SceneBase();
@@ -56,7 +56,7 @@ namespace Triton
 		virtual void onUpdate() = 0;
 
 		// The messages received go to this method and relevant messages are sent to specific methods
-		virtual void onMessage(size_t message, void* payload) override final;
+		virtual void onMessage(size_t message, void* payload) final;
 
 		// Similar to onMessage but the scene base only sends the messages that aren't handled by itself 
 		virtual void relayMessage(size_t message, void* payload) = 0;

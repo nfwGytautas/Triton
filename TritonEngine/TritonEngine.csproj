@@ -49,13 +49,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="src\BasicTypes.cs" />
+    <Compile Include="src\ECS.cs" />
+    <Compile Include="src\GameObject.cs" />
     <Compile Include="src\Interop.cs" />
     <Compile Include="src\Debug.cs" />
     <Compile Include="src\TritonEngine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

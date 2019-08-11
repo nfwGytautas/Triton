@@ -126,6 +126,8 @@ void Triton::TestScene::createEntities()
 		Ent->setName("stall" + std::to_string(i));
 	}
 
+	Ent->attachScript("Class1");
+
 	//for (int i = 0; i < 1; i++)
 	//{
 	//	uint32_t Ent2 = Entities->create();
@@ -147,24 +149,24 @@ void Triton::TestScene::createEntities()
 
 void Triton::TestScene::updateEntities()
 {
-	static int movingDir = 1;
-
-	if(Ent->hasComponent<Triton::Components::Transform>())
-	{
-		auto& transform = Ent->getComponent<Triton::Components::Transform>();
-		transform.Rotation.y += m_timer->updateDelta() * 15;
-
-		transform.Position.y += movingDir * m_timer->updateDelta() * 5;
-
-		if (transform.Position.y > 5)
-		{
-			movingDir = -1;
-		}
-		else if (transform.Position.y < -5)
-		{
-			movingDir = 1;
-		}
-	}
+	//static int movingDir = 1;
+	//
+	//if(Ent->hasComponent<Triton::Components::Transform>())
+	//{
+	//	auto& transform = Ent->getComponent<Triton::Components::Transform>();
+	//	transform.Rotation.y += m_timer->updateDelta() * 15;
+	//
+	//	transform.Position.y += movingDir * m_timer->updateDelta() * 5;
+	//
+	//	if (transform.Position.y > 5)
+	//	{
+	//		movingDir = -1;
+	//	}
+	//	else if (transform.Position.y < -5)
+	//	{
+	//		movingDir = 1;
+	//	}
+	//}
 
 	Triton::Impl::logErrors();
 }

@@ -83,6 +83,27 @@ namespace Triton
 
 				return ptrToSet;
 			}
+
+			// Gets the 'ObjectScript' class definition from engine image
+			MonoClass* getEngineObjectDef(std::string objectName, std::string nspace = "TritonEngine")
+			{
+				MonoClass* ptrToSet = mono_class_from_name(m_engineImage, nspace.c_str(), objectName.c_str());
+				if (!ptrToSet)
+				{
+					TR_SYSTEM_ERROR("Script engine could not get '{0}' class ('failed mono_class_from_name')", objectName);
+					return nullptr;
+				}
+
+				return ptrToSet;
+			}
+
+			void getAllEngineObjects(std::unordered_map<std::string, MonoClass*>& map)
+			{
+				for (auto klass : Assembly::getAllTritonClassesFromImage(m_engineImage))
+				{
+					map[mono_class_get_name(klass)] = klass;
+				}
+			}
 		private:
 			bool getMethods()
 			{

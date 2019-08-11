@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
+    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Enum.h" />
     <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
     <ClInclude Include="src\Triton\Script\Impl\Object.h" />
     <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />

@@ -225,6 +225,8 @@
     <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
     <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
     <ClInclude Include="src\Triton\Script\Impl\Object.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Enum.h" />
+    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />

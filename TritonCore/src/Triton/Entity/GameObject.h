@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Triton/Entity/Registry.h"
+#include "Triton/TRMacros.h"
 
 #include "TritonTypes/relay_ptr.h"
 #include "TritonTypes/reference.h"
@@ -18,6 +19,9 @@ namespace Triton
 	class GameObject
 	{
 	public:
+		// Empty game object constructor
+		GameObject() {}
+
 		// Game object constructor
 		//	Internally creates an entity ID
 		GameObject(relay_ptr<ECS::Registry> registry, relay_ptr<Core::GameObjectManager> manager);
@@ -97,6 +101,12 @@ namespace Triton
 
 		// Get the object's name
 		std::string getName() const;
+
+		// Attach a script to this game object
+		void attachScript(std::string scriptName);
+
+		// Detach a script from this game object
+		void detachScript(std::string scriptName);
 	private:
 		// ENTT Registry instance that is used by the object
 		relay_ptr<ECS::Registry> m_registry;

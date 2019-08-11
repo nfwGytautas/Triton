@@ -3,11 +3,7 @@
 namespace Triton
 {
 
-	// Simple pointer wraper that doesn't allow the deletion of the underlying pointer.
-	// Note 1: This wraper doesn't count any references or enforce uniqueness,
-	// if such functionality is needed use the standard smart pointers.
-	// Note 2: This wraper could be compared to a reference except for the fact
-	// that it doesn't require to be set during construction of object
+	// Simple pointer wrapper that doesn't allow the deletion of the underlying pointer.
 	template <typename T>
 	class relay_ptr
 	{

@@ -56,7 +56,7 @@ void Triton::EditorScene::relayMessage(size_t message, void * payload)
 
 		m_mainRenderBuffer = this->getClassByID((size_t)Core::TritonClasses::MainRenderBuffer).as<Triton::Core::RenderBuffer>();
 		m_graphicsContext = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();
-		m_graphicsContext->renderer->setVsync(true);
+		m_graphicsContext->renderer->setVsync(false);
 
 		m_scriptEngine = this->getClassByID((size_t)Core::TritonClasses::ScriptEngine).as<Script::ScriptEngine>();
 
@@ -200,7 +200,7 @@ void Triton::EditorScene::onUpdate()
 	// Transform the pointer to be on the selected entity
 	auto object = m_edtr_state->CurrentGameObject;
 
-	if(object->hasComponent<Components::Transform>())
+	if(object.valid() && object->hasComponent<Components::Transform>())
 	{
 		auto& selectedTransform = object->getComponent<Components::Transform>();
 
@@ -250,8 +250,6 @@ void Triton::EditorScene::loadResources()
 void Triton::EditorScene::createEntities()
 {
 	edtr_pointer = newObject();
-
-	m_scriptEngine->attachScript("Class1", edtr_pointer.asRelay());
 
 	auto& transform = edtr_pointer->addComponent<Triton::Components::Transform>();
 

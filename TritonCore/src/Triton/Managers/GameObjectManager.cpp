@@ -87,5 +87,25 @@ namespace Triton
 
 			return result;
 		}
+
+		void GameObjectManager::attachScriptToObject(std::string scriptObj, relay_ptr<GameObject> object)
+		{
+			m_scriptEngine->attachScript(scriptObj, object);
+		}
+
+		void GameObjectManager::detachScriptToObject(std::string scriptObj, relay_ptr<GameObject> object)
+		{
+			m_scriptEngine->detachScript(scriptObj, object);
+		}
+
+		void GameObjectManager::onMessage(size_t message, void* payload)
+		{
+			switch (message)
+			{
+			case (size_t)Core::TritonMessageType::ClassRegistered:
+				// Get the instance to the script engine
+				m_scriptEngine = this->getClassByID((size_t)Core::TritonClasses::ScriptEngine).as<Script::ScriptEngine>();
+			}
+		}
 	}
 }

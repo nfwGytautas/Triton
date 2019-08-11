@@ -9,7 +9,7 @@ namespace TritonEngine
     /// <summary>
     /// Class inherited by all scripts
     /// </summary>
-    public class ObjectScript
+    public class ObjectScript : GameObject
     {
         /// <summary>
         /// Update is called every frame, with the delta between this and previous frame

@@ -80,4 +80,14 @@ namespace Triton
 	{
 		return m_name;
 	}
+
+	void GameObject::attachScript(std::string scriptName)
+	{
+		m_manager->attachScriptToObject(scriptName, this);
+	}
+
+	void GameObject::detachScript(std::string scriptName)
+	{
+		m_manager->detachScriptToObject(scriptName, this);
+	}
 }

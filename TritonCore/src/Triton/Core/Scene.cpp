@@ -14,6 +14,8 @@ Triton::SceneBase::SceneBase()
 
 void Triton::SceneBase::onMessage(size_t message, void* payload)
 {
+	GameObjectManager::onMessage(message, payload);
+
 	switch (message)
 	{
 	case (size_t)Core::TritonMessageType::Render:
@@ -26,7 +28,9 @@ void Triton::SceneBase::onMessage(size_t message, void* payload)
 		setupForRendering();
 		return;
 	}
-
+	case (size_t)Core::TritonMessageType::ClassRegistered:
+		relayMessage(message, payload);
+		return;
 	default:
 	{
 		relayMessage(message, payload);
