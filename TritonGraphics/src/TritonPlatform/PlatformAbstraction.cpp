@@ -3,6 +3,9 @@
 
 #ifdef TR_PLATFORM_WINDOWS
 
+#include <d3d11.h>
+#include <SimpleMath.h>
+
 #include "DirectX/DXTypes.h"
 
 Triton::PType::Context* Triton::Impl::createContext(const Triton::AppSettings& appSettings)

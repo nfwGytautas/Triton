@@ -59,11 +59,7 @@ namespace Triton
 				mono_runtime_object_init(m_instance);
 
 				// Get all class methods
-				if (!getMethods())
-				{
-					TR_SYSTEM_ERROR("Failed to get 'TritonEngine' methods");
-					return false;
-				}
+				getMethods();
 
 				// C# setup
 				mono_runtime_invoke(m_method_setup, m_instance, nullptr, nullptr);
@@ -105,26 +101,11 @@ namespace Triton
 				}
 			}
 		private:
-			bool getMethods()
+			void getMethods()
 			{
 				TR_SYSTEM_TRACE("Acquiring class methods");
 
-				//Build a method description object
-				MonoMethodDesc* setupMethodDesc;
-				setupMethodDesc = mono_method_desc_new(c_setupMethodDescStr, NULL);
-				if (!setupMethodDesc)
-				{
-					TR_SYSTEM_ERROR("Script engine could not get 'TritonEngine' method description for '{0}' ('failed mono_method_desc_new')", c_setupMethodDescStr);
-					return false;
-				}
-
-				//Search the method in the image
-				m_method_setup = mono_method_desc_search_in_image(setupMethodDesc, m_engineImage);
-				if (!m_method_setup)
-				{
-					TR_SYSTEM_ERROR("Script engine could not find 'TritonEngine' method '{0}' ('failed mono_method_desc_search_in_image')", c_setupMethodDescStr);
-					return false;
-				}
+				m_method_setup = Object::getMethod(c_setupMethodDescStr, m_class);
 
 				TR_SYSTEM_INFO("Methods for 'TritonEngine' acquired");
 			}

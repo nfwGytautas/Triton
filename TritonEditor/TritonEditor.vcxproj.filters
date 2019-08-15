@@ -34,6 +34,9 @@
     <ClInclude Include="src\TritonEditor\Widgets\AssetWindow.h">
       <Filter>Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonEditor\Widgets\Dialog.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonEditor\Widgets\DockSpace.h">
       <Filter>Widgets</Filter>
     </ClInclude>
@@ -50,6 +53,9 @@
       <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonEditor\Widgets\Metrics.h">
+      <Filter>Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonEditor\Widgets\Popup.h">
       <Filter>Widgets</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonEditor\Widgets\SceneView.h">

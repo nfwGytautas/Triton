@@ -229,8 +229,6 @@ project "TritonEditor"
 		runtime "Release"
 		optimize "on"
 
-		
-		
 project "TritonEngine"
 	location "TritonEngine"
 	kind "SharedLib"
@@ -242,6 +240,11 @@ project "TritonEngine"
 	files
 	{
 		"%{prj.name}/src/**.cs"
+	}
+
+	links
+	{
+		"System",
 	}
 	
 	postbuildcommands 
@@ -267,6 +270,51 @@ project "TritonEngine"
 		defines "TR_DIST"
 		runtime "Release"
 		optimize "on"
+
+project "TritonEditorExtension"
+	location "TritonEditorExtension"
+	kind "SharedLib"
+	language "C#"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	links
+	{
+		"System",
+		"TritonEngine"
+	}
+
+	files
+	{
+		"%{prj.name}/src/**.cs"
+	}
+	
+	postbuildcommands 
+	{
+		("{COPY} %{cfg.buildtarget.relpath} ../"),
+	}
+
+	filter "configurations:Debug"
+		defines 
+		{
+			"TR_DEBUG",
+			"TR_ENABLE_ASSERTS"
+		}
+		runtime "Debug"
+		symbols "on"
+	
+	filter "configurations:Release"
+		defines "TR_RELEASE"
+		optimize "on"
+		runtime "Release"
+
+	filter "configurations:Dist"
+		defines "TR_DIST"
+		runtime "Release"
+		optimize "on"
+
+
 
 project "SandBox"
 	location "SandBox"

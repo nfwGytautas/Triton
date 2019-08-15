@@ -3,6 +3,8 @@
 #include <iterator>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
+#include <functional>
 
 namespace Triton
 {
@@ -34,6 +36,24 @@ namespace Triton
 		
 		// trim from both ends of string (right then left)
 		std::string& trim(std::string& s, const char* t);
+
+		// Removes all entries from map that satisfy the predicate
+		template<typename Key, typename Value>
+		void map_remove_of(std::unordered_map<Key, Value>& map, std::function<bool(Value)> pred)
+		{
+			for (auto it = std::begin(map); it != std::end(map);)
+			{
+				if (pred(it->second))
+				{
+					it = map.erase(it);
+				}
+				else
+				{
+					++it;
+				}
+			}
+		}
+
 
 	}
 }

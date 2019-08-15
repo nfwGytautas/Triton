@@ -54,7 +54,7 @@ namespace Triton
 
 			// For copying the object the already existent asset must be specified
 			// else don't specify
-			reference<Asset> CopyAsset;
+			reference<Asset> CopyAsset = nullptr;
 
 			// Width of created asset used when creating Bitmap or Viewports
 			// else don't specify
@@ -79,6 +79,11 @@ namespace Triton
 			// it is up to the user to provide a valid PType else errors might occur
 			// this variable is set to nullptr after creating an asset
 			reference<Triton::PType::PlatformObject> PType = nullptr;
+
+			// The id of the asset leave as -1 to create a new one
+			// Other wise the asset will have the specified ID, conflicting assets will 
+			// be DELETED
+			size_t ID = -1;
 		};
 
 		class Asset

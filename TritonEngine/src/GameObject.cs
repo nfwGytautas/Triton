@@ -8,6 +8,18 @@ using System.Threading.Tasks;
 namespace TritonEngine
 {
     /// <summary>
+    /// Class inherited by all scripts
+    /// </summary>
+    public class ObjectScript : GameObject
+    {
+        /// <summary>
+        /// Update is called every frame, with the delta between this and previous frame
+        /// </summary>
+        /// <param name="Delta">Time elapsed between the previous frame and this frame</param>
+        public virtual void OnUpdate(float Delta) { }
+    }
+
+    /// <summary>
     /// The game object class allows provides functionality for manipulating
     /// an entity from scripts
     /// </summary>
@@ -18,7 +30,7 @@ namespace TritonEngine
         /// </summary>
         /// <typeparam name="T">The component you want to get</typeparam>
         /// <returns>Component</returns>
-        public T GetComponent<T>()
+        public T GetComponent<T>() where T : class
         {
             Type serviceInterface = typeof(T);
             if (serviceInterface.Equals(typeof(ECS.Transform)))
@@ -26,7 +38,7 @@ namespace TritonEngine
                 return (T)(object)new ECS.Transform(_object_handle);
             }
 
-            return default(T);
+            return null;
         }
 
         /// <summary>

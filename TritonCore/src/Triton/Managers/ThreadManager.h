@@ -1,7 +1,5 @@
 #pragma once
 
-#include <thread>
-
 #include "Triton/Core/TritonClass.h"
 
 namespace Triton
@@ -19,7 +17,8 @@ namespace Triton
 			// Stops the rendering thread
 			void stopRendering();
 		private:
-			std::thread* m_renderThread;
+			class Impl;
+			Impl* m_impl;
 		};
 	}
 }

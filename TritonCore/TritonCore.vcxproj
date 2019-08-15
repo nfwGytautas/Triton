@@ -143,12 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
-    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Enum.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Object.h" />
-    <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />
+    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h" />
+    <ClInclude Include="src\Triton\TritonProj.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\AppSettings.h" />
@@ -191,6 +187,12 @@
     <ClInclude Include="src\Triton\Managers\ManagerBase.h" />
     <ClInclude Include="src\Triton\Managers\ThreadManager.h" />
     <ClInclude Include="src\Triton\Managers\TritonCache.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
+    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Enum.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
+    <ClInclude Include="src\Triton\Script\Impl\Object.h" />
+    <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />
     <ClInclude Include="src\Triton\Script\ScriptEngine.h" />
     <ClInclude Include="src\Triton\Serialize\Serialize.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
@@ -205,6 +207,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton\TritonProj.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

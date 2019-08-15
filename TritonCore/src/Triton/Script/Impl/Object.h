@@ -61,6 +61,17 @@ namespace Triton
 				}
 			}
 
+			// Fills the specified map with all methods inside the class
+			void getAllClassMethods(MonoClass* klass, std::unordered_map<std::string, MonoMethod*>& methods)
+			{
+				void* iter = NULL;
+				MonoMethod* method;
+				while (method = mono_class_get_methods(klass, &iter))
+				{
+					methods[mono_method_get_name(method)] = method;
+				}
+			}
+
 			// Helper method for printing out all interfaces of a class
 			void getAllInterfaces(MonoClass* klass)
 			{
@@ -70,6 +81,12 @@ namespace Triton
 				{
 					TR_SYSTEM_TRACE("Class: {0}", mono_class_get_name(klc));
 				}
+			}
+
+			// Checks if the object is a subclass of another object
+			bool isBaseOf(MonoClass* base, MonoClass* other)
+			{
+				return mono_class_is_subclass_of(other, base, NULL);
 			}
 		}
 	}

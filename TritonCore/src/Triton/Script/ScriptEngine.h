@@ -7,6 +7,52 @@ namespace Triton
 {
 	namespace Script
 	{
+		// C# method invoke parameters
+		// Used when creating the necessary parameters for DSS(DynamicSharpScript)
+		// method calls
+		// For example if the method signature is
+		// (string[], string, string) 
+		// then to build this method params one just needs to call 
+		// (addStringParam_arr, addStringParam, addStringParam)
+		class MethodParams
+		{
+		public:
+			MethodParams();
+			~MethodParams();
+
+			// Adds a string to the params and increments the parameter size
+			void addStringParam(std::string str);
+
+			// Adds a string array to the params and increments the parameter size
+			void addStringParam_arr(std::vector<std::string> strArr);
+
+			// Convert the specified MethodParams class into a continuous vector that
+			// can be passed to the invoke method
+			std::vector<void*>& toArgs() const;
+		private:
+			// PImpl idiom
+			class MethodParamsImpl;
+			MethodParamsImpl* m_impl;
+		};
+
+		// Dynamic C# script object
+		// This class contains a map of methods inside the C# script
+		// and some helper methods for invoking them, can't be attached to game object
+		class DynamicSharpScript
+		{
+		public:
+			// PImpl idiom
+			class DynamicScriptImpl;
+
+			DynamicSharpScript(DynamicScriptImpl* impl);
+			virtual ~DynamicSharpScript();
+
+			// Invokes a method of specified name and with given arguments
+			void* invokeMethod(const std::string& methodName, std::vector<void*>& args);
+		private:
+			DynamicScriptImpl* m_impl;
+		};
+
 		// C# script object
 		// This class acts like a bridge between engine and C# 'ObjectScript' class
 		class SharpScript
@@ -38,11 +84,14 @@ namespace Triton
 		// It's used to create an instance of SharpScript
 		struct SharpScriptLayout
 		{
-			// The class name of the script
-			std::string ClassName;
-
 			// The path to the assembly where the script is found
 			std::string Assembly;
+
+			// The namespace where the class is defined in
+			std::string Namespace;
+
+			// The class name of the script
+			std::string ClassName;
 		};
 
 		// Script engine register params
@@ -71,12 +120,14 @@ namespace Triton
 			// Loads all scripts from the specified assembly
 			std::vector<SharpScriptLayout> loadAssembly(std::string assemblyPath);
 
+			// Returns a dynamic script of the specified type
+			reference<DynamicSharpScript> getDynamicScript(const std::string& className);
+
 			// Attaches a script to a game object
 			void attachScript(std::string className, relay_ptr<GameObject> object);
 
 			// Detaches a script from the specified game object
 			void detachScript(std::string className, relay_ptr<GameObject> object);
-
 
 			// Message handler from TritonClass
 			virtual void onMessage(size_t message, void* payload) override;

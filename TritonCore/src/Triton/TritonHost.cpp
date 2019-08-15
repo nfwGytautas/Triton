@@ -341,4 +341,16 @@ namespace Triton
 			postMessage((size_t)Core::TritonMessageType::Render, m_priorities.render[i], nullptr);
 		}
 	}
+
+	void TritonHost::proj(reference<TritonProject> project)
+	{
+		auto assetManager = getClassByID((size_t)Triton::Core::TritonClasses::AssetManager).as<Manager::AssetManager>();
+
+		m_project = project;
+
+		for (auto asset : m_project->getAssetsToLoad())
+		{
+			assetManager->createAsset(asset);
+		}
+	}
 }

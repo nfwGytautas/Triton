@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include "Triton/Logger/Log.h"
+
 Triton::PType::Shader::Shader(ShaderLayout* layout)
 {
 	for (ShaderBufferLayout& bLayout : *layout)
@@ -141,4 +143,24 @@ Triton::PType::ShaderInputLayout::ShaderInputLayout(std::string name, const std:
 Triton::PType::ShaderInputLayout::ShaderInputLayout(std::string name, const std::vector<ShaderInputVariable>& variables)
 	: m_Name(name), m_Elements(variables)
 {
+}
+
+uint32_t Triton::PType::ShaderDataTypeSize(ShaderDataType type)
+{
+	switch (type)
+	{
+	case ShaderDataType::Float:    return 4;
+	case ShaderDataType::Float2:   return 4 * 2;
+	case ShaderDataType::Float3:   return 4 * 3;
+	case ShaderDataType::Float4:   return 4 * 4;
+	case ShaderDataType::Mat4:     return 4 * 4 * 4;
+	case ShaderDataType::Int:      return 4;
+	case ShaderDataType::Int2:     return 4 * 2;
+	case ShaderDataType::Int3:     return 4 * 3;
+	case ShaderDataType::Int4:     return 4 * 4;
+	case ShaderDataType::Bool:     return 1;
+	}
+
+	TR_ERROR("Unknown shader type!");
+	return 0;
 }

@@ -1,9 +1,6 @@
 #pragma once
 #include "TritonPlatform/CrossTypes/Base.h"
 
-#include <Windows.h>
-#include <d3d11.h>
-
 namespace Triton
 {
 	namespace PType
@@ -14,13 +11,13 @@ namespace Triton
 		{
 		public:
 			// The hwnd of Triton's created window
-			HWND hwnd;
+			void* hwnd;
 
 			// The device that is currently used by the engine
-			ID3D11Device* device;
+			void* device;
 
 			// The device context
-			ID3D11DeviceContext* deviceContext;
+			void* deviceContext;
 		};
 	}
 }

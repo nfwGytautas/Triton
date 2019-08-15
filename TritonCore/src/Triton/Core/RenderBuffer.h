@@ -74,8 +74,11 @@ namespace Triton
 			// Inherited via RenderCommand
 			virtual void execute(BufferState& bufferState) override
 			{
-				m_Mesh->VAO->enable();
-				bufferState.VAOIndiceCount = m_Mesh->VAO->getIndiceCount();
+				if(m_Mesh.valid())
+				{
+					m_Mesh->VAO->enable();
+					bufferState.VAOIndiceCount = m_Mesh->VAO->getIndiceCount();
+				}
 			}
 
 		private:
@@ -106,16 +109,19 @@ namespace Triton
 			// Inherited via RenderCommand
 			virtual void execute(BufferState& bufferState) override
 			{
-				m_Material->Shader->Program->enable();
-				m_Material->Texture->enable();
-				bufferState.Shader = m_Material->Shader->Program;
+				if(m_Material.valid())
+				{
+					m_Material->Shader->Program->enable();
+					m_Material->Texture->enable();
+					bufferState.Shader = m_Material->Shader->Program;
 
-				bufferState.Shader->setBufferValue("LightBuffer", "specularPower", &m_Material->Shininess);
+					bufferState.Shader->setBufferValue("LightBuffer", "specularPower", &m_Material->Shininess);
 
-				//Shader->setUniformInt("material.matTexture", object()->Slot);
-				//Shader->setUniformVector3("material.ambient", Ambient);
-				//Shader->setUniformVector3("material.diffuse", Diffuse);
-				//Shader->setUniformVector3("material.specular", Specular);
+					//Shader->setUniformInt("material.matTexture", object()->Slot);
+					//Shader->setUniformVector3("material.ambient", Ambient);
+					//Shader->setUniformVector3("material.diffuse", Diffuse);
+					//Shader->setUniformVector3("material.specular", Specular);
+				}
 			}
 
 		private:

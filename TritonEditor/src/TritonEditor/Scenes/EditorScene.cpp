@@ -1,5 +1,6 @@
 #include "EditorScene.h"
 #include <string>
+#include <filesystem>
 
 #include <imgui.h>
 
@@ -11,6 +12,8 @@
 #include "TritonEditor/Impl/imgui_impl_win32.h"
 #include "TritonEditor/Impl/imgui_impl_dx11.h"
 
+#include "Triton/TritonProj.h"
+
 #include "TritonEditor/Widgets/MainMenuBar.h"
 #include "TritonEditor/Widgets/DockSpace.h"
 #include "TritonEditor/Widgets/Viewport.h"
@@ -20,8 +23,10 @@
 #include "TritonEditor/Widgets/AssetWindow.h"
 #include "TritonEditor/Widgets/InspectorWindow.h"
 #include "TritonEditor/Widgets/MaterialEditor.h"
+#include "TritonEditor/Widgets/Popup.h"
 
 #include "Triton/File/File.h"
+
 
 IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -36,6 +41,8 @@ Triton::EditorScene::~EditorScene()
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
+
+	CoUninitialize();
 }
 
 void Triton::EditorScene::relayMessage(size_t message, void * payload)
@@ -184,15 +191,39 @@ void Triton::EditorScene::onRegistered()
 
 	Context.as<PType::Context>()->fillPacket(packet);
 
-	DragAcceptFiles(packet->hwnd, true);
+	DragAcceptFiles((HWND)packet->hwnd, true);
 	ImGui_ImplWin32_Init(packet->hwnd);
-	ImGui_ImplDX11_Init(packet->device, packet->deviceContext);
+	ImGui_ImplDX11_Init((ID3D11Device*)packet->device, (ID3D11DeviceContext*)packet->deviceContext);
 
 	delete packet;
 
 	m_gameWindow = this->getClassByName("gameWindow").as<GameWindow>();
 
 	m_timer = this->getClassByName("timer").as<Utility::Timer>();
+
+
+	// Load extension library
+	m_scriptEngine->loadAssembly("../bin/TritonEditorExtension.dll");
+
+	m_codeExtension = m_scriptEngine->getDynamicScript("TritonEditorExtension:TritonEditorExtension:CodeExtension");
+	m_dialogExtension = m_scriptEngine->getDynamicScript("TritonEditorExtension:TritonEditorExtension:DialogExtension");
+
+	Callbacks.CompileScripts = [&]() {
+		Script::MethodParams params;
+		params.addStringParam_arr(m_edtr_state->AllScripts);
+		params.addStringParam("Assembly");
+		params.addStringParam("GameScript.dll");
+		m_codeExtension->invokeMethod("CompileCode", params.toArgs());
+	};
+
+	Callbacks.ShowMessage = [&](std::string content) {
+		messageBox(content);
+	};
+
+	if (!SUCCEEDED(CoInitializeEx(NULL, COINIT_MULTITHREADED)))
+	{
+		TR_SYSTEM_ERROR("Failed to initialize Co");
+	}
 }
 
 void Triton::EditorScene::onUpdate()
@@ -226,12 +257,14 @@ void Triton::EditorScene::loadResources()
 	asset_desc.Paths[0] = "C:/dev/Triton/Models/3dpointer.obj";
 
 	edtr_3DPOINTER = m_assetManager->createAsset(asset_desc).as<Triton::Data::Mesh>();
+	asset_desc.ID = -1;
 
 	// 3D pointer material
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
 	asset_desc.Paths[0] = "C:/dev/Triton/Models/3dpointer.png";
 
 	edtr_mat_3DPOINTER = m_assetManager->createAsset(asset_desc).as<Triton::Data::Material>();
+	asset_desc.ID = -1;
 
 	// 3D pointer shader
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::SHADER;
@@ -242,9 +275,9 @@ void Triton::EditorScene::loadResources()
 	asset_desc.Arguments[1] = "SelectorPixelShader";
 
 	edtr_mat_3DPOINTER->Shader = m_assetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+	asset_desc.ID = -1;
 
-
-	m_scriptEngine->loadAssembly("../bin/MonoDLL.dll");
+	m_scriptEngine->loadAssembly("../bin/GameScript.dll");
 }
 
 void Triton::EditorScene::createEntities()
@@ -258,6 +291,12 @@ void Triton::EditorScene::createEntities()
 	transform.Rotation = Triton::Vector3(0.0, 0.0, 0.0);
 
 	edtr_pointer->addComponent<Triton::Components::Visual>(edtr_3DPOINTER->getAssetID(), edtr_mat_3DPOINTER->getAssetID());
+}
+
+void Triton::EditorScene::messageBox(std::string content)
+{
+	m_edtr_state->ShowBox = true;
+	m_edtr_state->BoxContent = content;
 }
 
 void Triton::EditorScene::setupForRendering()
@@ -346,7 +385,7 @@ void Triton::EditorScene::onRenderDone()
 	showDockSpace(&m_isOpen.dockspace);
 
 	// Main menu bar
-	showMainMenuBar(m_isOpen);
+	showMainMenuBar(m_isOpen, Callbacks, m_edtr_state);
 
 	// View port
 	showViewport(&m_isOpen.viewport, m_gameWindow);
@@ -368,6 +407,9 @@ void Triton::EditorScene::onRenderDone()
 
 	// Material editor
 	showMaterialEditor(&m_isOpen.materialViewport, m_edtr_state, m_assetManager);
+
+	// Modal
+	showPopup(m_edtr_state);
 
 	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 	ImGui::ShowDemoWindow();
@@ -391,6 +433,18 @@ bool Triton::EditorScene::onAppDrop(std::vector<std::string> files)
 
 	for (std::string& path : files)
 	{
+		const std::string ext = Data::File::getFileExt(path);
+
+		// Script file
+		if (ext == ".cs")
+		{
+			// Add the script to the script vector
+			m_edtr_state->AllScripts.push_back(path);
+
+			// Continue to next file
+			continue;
+		}
+
 		auto texParams = Triton::Data::File::tryLoadTexture(path);
 
 		if (texParams != nullptr)
@@ -398,7 +452,13 @@ bool Triton::EditorScene::onAppDrop(std::vector<std::string> files)
 			asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::TEXTURE;
 			asset_desc.Name = Triton::Data::File::fileNameFromPath(path);
 			asset_desc.CreateParams = texParams;
+
 			auto texture = m_assetManager->createAsset(asset_desc);
+
+			asset_desc.Paths[0] = path;
+			auto proj = m_edtr_state->_Project;
+			proj->addAsset(asset_desc);
+
 			m_edtr_state->AllTextures.push_back(texture.as<Data::PlainTexture>());
 			delete texParams;
 		}

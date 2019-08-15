@@ -30,7 +30,6 @@ namespace Triton {
 		// System logger logs messages to console rather than the GUI log
 		static std::shared_ptr<spdlog::logger> s_SystemLogger;
 	};
-
 }
 
 // System log macros

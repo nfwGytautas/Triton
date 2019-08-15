@@ -21,8 +21,3 @@
 
 #include "TritonTypes/relay_ptr.h"
 #include "TritonTypes/reference.h"
-
-#ifdef TR_PLATFORM_WINDOWS
-	#define NOMINMAX
-	#include <Windows.h>
-#endif

@@ -15,6 +15,7 @@
 
 #include "Triton/Config.h"
 #include "Triton/Utility/Algorithm.h"
+#include "Triton/Logger/Log.h"
 
 std::unordered_map<std::string, Triton::PType::ShaderDataType> Triton::Data::File::m_typeMap = 
 { 
@@ -198,6 +199,13 @@ std::string Triton::Data::File::fileNameFromPath(const std::string& path)
 	std::string _path = path.substr(path.find_last_of("/\\") + 1);
 	size_t dot_i = _path.find_last_of('.');
 	return _path.substr(0, dot_i);
+}
+
+std::string Triton::Data::File::getFileExt(const std::string & path)
+{
+	std::string _path = path.substr(path.find_last_of("/\\") + 1);
+	size_t dot_i = _path.find_last_of('.');
+	return _path.substr(dot_i, path.length());
 }
 
 bool Triton::Data::File::readShaderStream(std::string& path, PType::BufferShaderType shaderType, std::string& entryPoint,

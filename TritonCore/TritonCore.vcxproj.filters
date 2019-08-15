@@ -49,6 +49,9 @@
     <Filter Include="Triton\Script">
       <UniqueIdentifier>{A9B965BD-157A-E1F3-DEB4-2A714A3426D0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Script\Impl">
+      <UniqueIdentifier>{2A9195FC-1675-5652-7FD5-50A56BD840D4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Serialize">
       <UniqueIdentifier>{FC6A853C-E863-A48E-1196-8913FDED839A}</UniqueIdentifier>
     </Filter>
@@ -185,6 +188,24 @@
     <ClInclude Include="src\Triton\Managers\TritonCache.h">
       <Filter>Triton\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\Assembly.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\Enum.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\Interop.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\Object.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h">
+      <Filter>Triton\Script\Impl</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Script\ScriptEngine.h">
       <Filter>Triton\Script</Filter>
     </ClInclude>
@@ -221,12 +242,8 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Interop.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Assembly.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Object.h" />
-    <ClInclude Include="src\Triton\Script\Impl\Enum.h" />
-    <ClInclude Include="src\Triton\Script\Impl\ClassDefs.h" />
+    <ClInclude Include="src\Triton\TritonProj.h" />
+    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -323,5 +340,6 @@
     <ClCompile Include="src\Triton\Utility\Utility.cpp">
       <Filter>Triton\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\TritonProj.cpp" />
   </ItemGroup>
 </Project>

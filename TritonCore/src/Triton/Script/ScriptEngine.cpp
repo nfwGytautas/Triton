@@ -27,6 +27,9 @@
 #define TR_MONO_LIB STRINGIFY(M_CONC(TR_MONO_ROOT, lib))
 #define TR_MONO_ETC STRINGIFY(M_CONC(TR_MONO_ROOT, etc))
 
+#include <sstream>
+
+#include "Triton/Logger/Log.h"
 #include "Triton/File/File.h"
 #include "Triton/Utility/Utility.h"
 
@@ -41,6 +44,107 @@ namespace Triton
 {
 	namespace Script
 	{
+		// For mono JIT
+		MonoDomain* s_domain;
+
+		class MethodParams::MethodParamsImpl
+		{
+		public:
+			// Add string
+			void addString(const std::string& str)
+			{
+				MonoString* pA = mono_string_new(s_domain, str.c_str());
+				args.push_back((void*)pA);
+			}
+
+			// Add string array
+			void addString_arr(const std::vector<std::string>& str)
+			{
+				MonoArray* pArray = mono_array_new(s_domain, mono_get_string_class(), str.size());
+
+				for (uint32_t i = 0; i < str.size(); ++i)
+				{
+					MonoString* obj = mono_string_new(s_domain, str[i].c_str());
+					mono_array_set(pArray, MonoString*, i, obj);
+				}
+
+				args.push_back((void*)pArray);
+			}
+
+			// The computed arguments
+			std::vector<void*> args;
+		};
+
+		MethodParams::MethodParams()
+		{
+			m_impl = new MethodParamsImpl();
+		}
+
+		MethodParams::~MethodParams()
+		{
+			delete m_impl;
+		}
+
+		void Triton::Script::MethodParams::addStringParam(std::string str)
+		{
+			m_impl->addString(str);
+		}
+
+		void MethodParams::addStringParam_arr(std::vector<std::string> strArr)
+		{
+			m_impl->addString_arr(strArr);
+		}
+
+		std::vector<void*>& MethodParams::toArgs() const
+		{
+			return m_impl->args;
+		}
+
+		class DynamicSharpScript::DynamicScriptImpl
+		{
+			const char* c_UpdateMethod = "ObjectScript:OnUpdate(single)";
+		public:
+			DynamicScriptImpl(MonoClass* baseClass, MonoClass* klass, MonoObject* object)
+				: m_klass(klass), m_object(object)
+			{
+				getMethods(baseClass);
+			}
+
+			// Invokes a method
+			void* invoke(const std::string& methodName, std::vector<void*>& args)
+			{
+				if (m_methods.find(methodName) == m_methods.end())
+				{
+					TR_ERROR("Method with name: {0} doesn't exist", methodName);
+					return nullptr;
+				}
+
+				MonoObject* res = mono_runtime_invoke(m_methods[methodName], m_object, args.data(), nullptr);
+				if (mono_class_is_valuetype(mono_object_get_class(res)))
+				{
+					return mono_object_unbox(res);
+				}
+				else
+				{
+					return (void*)res;
+				}
+			}
+		private:
+			// Get the methods for script
+			void getMethods(MonoClass* baseClass)
+			{
+				Object::getAllClassMethods(m_klass, m_methods);
+			}
+		private:
+			// The class definition
+			MonoClass* m_klass;
+			// Instance of the ObjectScript object
+			MonoObject* m_object;
+
+			std::unordered_map<std::string, MonoMethod*> m_methods;
+		};
+
+
 		class SharpScript::ScriptImpl
 		{
 			const char* c_UpdateMethod = "ObjectScript:OnUpdate(single)";
@@ -87,6 +191,7 @@ namespace Triton
 				void* native_handle_value = &m_gObject;
 				mono_field_set_value(m_object, native_handle_field, &native_handle_value);
 			}
+
 		private:
 			// Get the methods for script
 			void getMethods(MonoClass* baseClass)
@@ -123,8 +228,8 @@ namespace Triton
 					TR_MONO_ETC);
 
 				// Create domain
-				m_domain = mono_jit_init("MonoScript");
-				if (!m_domain)
+				s_domain = mono_jit_init("MonoScript");
+				if (!s_domain)
 				{
 					TR_SYSTEM_ERROR("Script engine could not create mono domain ('failed mono_jit_init')");
 					return false;
@@ -134,7 +239,7 @@ namespace Triton
 				injectInternalCalls();
 
 				// Setup the engine instance
-				if (!m_engineInstance->setup(m_domain))
+				if (!m_engineInstance->setup(s_domain))
 				{
 					TR_SYSTEM_ERROR("Script engine failed to setup the 'TritonEngine' instance");
 					return false;
@@ -147,13 +252,13 @@ namespace Triton
 			}
 
 			// Creates a new SharpScript objects from specified assembly file
-			std::vector<SharpScriptLayout> scriptsFromAssembly(const char* assembly)
+			std::vector<SharpScriptLayout> loadAssembly(const char* assembly)
 			{
 				// The result vector
 				std::vector<SharpScriptLayout> scripts;
 
 				// Load the assembly
-				MonoAssembly* assemb = Assembly::loadAssembly(m_domain, assembly);
+				MonoAssembly* assemb = Assembly::loadAssembly(s_domain, assembly);
 				if (!assemb)
 				{
 					return scripts;
@@ -175,19 +280,26 @@ namespace Triton
 					return scripts;
 				}
 
-				// Filter out the classes that are not scripts
-				std::vector<MonoClass*> behaviours = Assembly::getAllBehaviorClassesFromList(m_tClassMap[ScriptClass::c_ObjectScript], classes);
-				if (behaviours.size() == 0)
-				{
-					return scripts;
-				}
+				// Handle all the class that have been found
+				std::string nAssemb = mono_assembly_name_get_name(mono_assembly_get_name(assemb));
 
-				// Add the classes to the list
-				for (MonoClass* klass : behaviours)
+				auto objectScript = m_tClassMap[ScriptClass::c_ObjectScript];
+				for (MonoClass* klass : classes)
 				{
-					m_loadedClasses.push_back(klass);
-					m_classMap[mono_class_get_name(klass)] = klass;
-					scripts.push_back({ mono_class_get_name(klass), assembly });
+					std::string nSpace = mono_class_get_namespace(klass);
+					std::string name = mono_class_get_name(klass);
+
+					std::stringstream ss;
+					ss << nAssemb << ":" << nSpace << ":" << name;
+
+					m_allClasses[ss.str()] = klass;
+
+					if (Object::isBaseOf(objectScript, klass))
+					{
+						m_behaviourClasses[ss.str()] = klass;
+					}
+
+					scripts.push_back({ nAssemb, nSpace, name});
 				}
 
 				return scripts;
@@ -196,14 +308,58 @@ namespace Triton
 			// Creates an instance of SharpScript from the name of the class and the game object
 			reference<SharpScript> createScriptInstance(const char* className, relay_ptr<GameObject> object)
 			{
-				auto klass = m_classMap[className];
+				if (m_behaviourClasses.find(className) == m_behaviourClasses.end())
+				{
+					TR_WARN("Class with name: {0}, doesn't exist make sure you included the assembly and the namespace", className);
+					return nullptr;
+				}
+
+				auto klass = m_behaviourClasses[className];
 				SharpScript* script = new SharpScript(
 					new SharpScript::ScriptImpl(
 						m_tClassMap[ScriptClass::c_ObjectScript], 
 						klass, 
-						Object::createObject(m_domain, klass), 
+						Object::createObject(s_domain, klass),
 						object));
 				return script;
+			}
+
+			// Creates an instance of DynamicSharpScript from the name of the class
+			reference<DynamicSharpScript> createDynamicScriptInstance(const char* className)
+			{
+				if (m_allClasses.find(className) == m_allClasses.end())
+				{
+					TR_WARN("Class with name: {0}, doesn't exist make sure you included the assembly and the namespace", className);
+					return nullptr;
+				}
+
+				auto klass = m_allClasses[className];
+				DynamicSharpScript* script = new DynamicSharpScript(
+					new DynamicSharpScript::DynamicScriptImpl(
+						m_tClassMap[ScriptClass::c_ObjectScript],
+						klass,
+						Object::createObject(s_domain, klass)));
+
+				return script;
+			}
+
+			// Gets the engine relay_ptr
+			relay_ptr<TritonEngine> engine()
+			{
+				return m_engineInstance;
+			}
+
+			// Validates all the maps
+			// Checks if any entries point to NULL and deletes them
+			void validate()
+			{
+				Utility::map_remove_of<std::string, MonoClass*>(m_behaviourClasses, [](MonoClass* ptr) -> bool {return (ptr == nullptr || ptr == NULL); });
+				Utility::map_remove_of<std::string, MonoClass*>(m_allClasses, [](MonoClass* ptr) -> bool {return (ptr == nullptr || ptr == NULL); });
+				Utility::map_remove_of<std::string, MonoClass*>(m_tClassMap, [](MonoClass* ptr) -> bool {return (ptr == nullptr || ptr == NULL); });
+
+				Utility::map_remove_of<std::string, MonoAssembly*>(m_loadedAssemblies, [](MonoAssembly* ptr) -> bool {return (ptr == nullptr || ptr == NULL); });
+
+				Utility::map_remove_of<std::string, MonoImage*>(m_loadedImages, [](MonoImage* ptr) -> bool {return (ptr == nullptr || ptr == NULL); });
 			}
 		private:
 			// Adds internal calls
@@ -212,21 +368,21 @@ namespace Triton
 				Interop::addInternals();
 			}
 		private:
-			// For mono JIT
-			MonoDomain* m_domain;
-
 			// Pointer to the instance of the engine
 			TritonEngine* m_engineInstance;
+
+			// Map of all behavior classes
+			// Assembly:Namespace:ClassName
+			std::unordered_map<std::string, MonoClass*> m_behaviourClasses;
+
+			// Map of all classes
+			// Assembly:Namespace:ClassName
+			std::unordered_map<std::string, MonoClass*> m_allClasses;
 
 			// A map of assembly path and object
 			std::unordered_map<std::string, MonoAssembly*> m_loadedAssemblies;
 			// A map of images from loaded from assembly paths
 			std::unordered_map<std::string, MonoImage*> m_loadedImages;
-
-			// A vector of all loaded MonoClass pointers
-			std::vector<MonoClass*> m_loadedClasses;
-			// Map of class name to MonoClass pointer
-			std::unordered_map<std::string, MonoClass*> m_classMap;
 			
 			// Map of Triton class name to MonoClass pointer
 			std::unordered_map<std::string, MonoClass*> m_tClassMap;
@@ -245,7 +401,7 @@ namespace Triton
 
 		std::vector<SharpScriptLayout> ScriptEngine::loadAssembly(std::string assemblyPath)
 		{
-			auto layouts = m_impl->scriptsFromAssembly(assemblyPath.c_str());
+			auto layouts = m_impl->loadAssembly(assemblyPath.c_str());
 
 			for (auto& layout : layouts)
 			{
@@ -253,6 +409,11 @@ namespace Triton
 			}
 
 			return layouts;
+		}
+
+		reference<DynamicSharpScript> ScriptEngine::getDynamicScript(const std::string & className)
+		{
+			return m_impl->createDynamicScriptInstance(className.c_str());
 		}
 
 		void ScriptEngine::attachScript(std::string className, relay_ptr<GameObject> object)
@@ -360,5 +521,20 @@ namespace Triton
 		{
 			return m_impl->attachedTo(object);
 		}
-	}
+
+		Triton::Script::DynamicSharpScript::DynamicSharpScript(DynamicScriptImpl* impl)
+			: m_impl(impl)
+		{
+		}
+
+		Triton::Script::DynamicSharpScript::~DynamicSharpScript()
+		{
+			delete m_impl;
+		}
+
+		void* DynamicSharpScript::invokeMethod(const std::string& methodName, std::vector<void*>& args)
+		{
+			return m_impl->invoke(methodName, args);
+		}
+}
 }

@@ -7,8 +7,6 @@
 
 #define NOMINMAX
 #include "DirectX/DXSpecific.h"
-#include <d3d11.h>
-#include <SimpleMath.h>
 
 #else
 

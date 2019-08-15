@@ -35,6 +35,9 @@ namespace Triton
 
 			// Returns the file name from a specified path
 			static std::string fileNameFromPath(const std::string& path);
+
+			// Returns the extension of the specified path
+			static std::string getFileExt(const std::string& path);
 		private:
 			// Read the path and parse it into buffers and struct
 			// Returns bool that shows if the operation was successful

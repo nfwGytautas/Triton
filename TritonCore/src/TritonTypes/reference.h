@@ -78,7 +78,10 @@ namespace Triton
 			: m_Object{ other.m_Object }
 			, m_ReferenceCount{ other.m_ReferenceCount }
 		{
-			increment();
+			if (m_ReferenceCount)
+			{
+				increment();
+			}
 		}
 
 		// Overloaded Assignment Operator

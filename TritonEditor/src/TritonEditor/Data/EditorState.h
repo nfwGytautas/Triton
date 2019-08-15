@@ -4,6 +4,8 @@
 #include <Triton/Entity/Registry.h>
 #include <Triton/Core/Scene.h>
 
+#include <Triton/TritonProj.h>
+
 namespace Triton
 {
 	const Core::ClassRegisterParams c_stateRegisterParams =
@@ -25,6 +27,7 @@ namespace Triton
 	class EditorState : public Core::TritonClass
 	{
 	public:
+		// Current material edit properties
 		struct MaterialEditProperties
 		{
 			reference<Triton::PType::Texture> Texture = nullptr;
@@ -36,6 +39,17 @@ namespace Triton
 			Vector3 Specular;
 		} CurrentEditMaterial;
 
+		// Temperate project data
+		struct Project
+		{
+			bool Created = false;
+			std::string Name = "";
+			std::string Directory = "";
+		} Proj;
+
+		// Current project data
+		reference<TritonProject> _Project;
+
 		reference<GameObject> CurrentGameObject;
 		reference<Data::Material> CurrentMaterial;
 		reference<SceneBase> CurrentScene;
@@ -44,6 +58,13 @@ namespace Triton
 		std::vector<reference<Data::Mesh>> AllMeshes;
 		std::vector<reference<Data::PlainTexture>> AllTextures;
 		std::vector<reference<Data::ShaderProgram>> AllShaders;
+		std::vector<std::string> AllScripts;
+
+		bool ShowTextModal = false;
+		std::function<void(std::string)> TextInputCallback;
+
+		bool ShowBox = false;
+		std::string BoxContent = "";
 
 		virtual void onMessage(size_t message, void* payload);
 	};

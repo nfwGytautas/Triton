@@ -18,6 +18,8 @@
 #include "Triton\Core\GameWindow\GameWindow.h"
 #include "Triton\Script\ScriptEngine.h"
 
+#include "TritonProj.h"
+
 namespace Triton 
 {
 	// Specifies how the Triton host should be initialized
@@ -39,6 +41,9 @@ namespace Triton
 	public:
 		TritonHost();
 		
+		// Sets the project for the Host
+		void proj(reference<TritonProject> project);
+
 		// Initializes the host and all the necessary classes for the engine
 		void init(HostInitializationParams initParams);
 
@@ -116,6 +121,9 @@ namespace Triton
 		// SINGLE-THREADED
 		void renderST();
 	private:
+		// The instance of the project
+		reference<TritonProject> m_project;
+
 		// Struct containing the current host settings
 		struct HostSettings
 		{

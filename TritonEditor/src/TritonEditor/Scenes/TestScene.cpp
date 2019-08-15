@@ -7,6 +7,8 @@
 #include <Triton/Core/Graphics/Lighting/PointLight.h>
 #include <Triton/Core/Graphics/Lighting/SpotLight.h>
 
+#include <Triton/Logger/Log.h>
+
 Triton::TestScene::TestScene()
 {
 	this->Listen<KeyPressedEvent>(EventBehavior(std::bind(&TestScene::keyPressed, this, std::placeholders::_1)));
@@ -126,7 +128,7 @@ void Triton::TestScene::createEntities()
 		Ent->setName("stall" + std::to_string(i));
 	}
 
-	Ent->attachScript("Class1");
+	Ent->attachScript("GameScript:MonoDLL:Class1");
 
 	//for (int i = 0; i < 1; i++)
 	//{
@@ -188,6 +190,7 @@ void Triton::TestScene::loadAssets()
 	// Shader creation process
 	auto Shader1 = AssetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
 	model_shader = Shader1->Program;
+	asset_desc.ID = -1;
 
 	// Mesh creation process
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MESH;
@@ -195,11 +198,12 @@ void Triton::TestScene::loadAssets()
 	asset_desc.Name = "stall_mesh";
 
 	mesh = AssetManager->createAsset(asset_desc).as<Triton::Data::Mesh>();
+	asset_desc.ID = -1;
 
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/simple_cube.obj";
 
 	cubeMesh = AssetManager->createAsset(asset_desc).as<Triton::Data::Mesh>();
-
+	asset_desc.ID = -1;
 
 	// Material creation process
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::MATERIAL;
@@ -207,6 +211,7 @@ void Triton::TestScene::loadAssets()
 	asset_desc.Name = "stall_mat";
 
 	mat = AssetManager->createAsset(asset_desc).as<Triton::Data::Material>();
+	asset_desc.ID = -1;
 
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::CUBEMAP;
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/right.jpg";
@@ -217,6 +222,7 @@ void Triton::TestScene::loadAssets()
 	asset_desc.Paths[5] = "D:/Programming/Test files/nfw/back.jpg";
 
 	cubeMat = AssetManager->createAsset(asset_desc).as<Triton::Data::Material>();
+	asset_desc.ID = -1;
 
 	mat->Shader = Shader1;
 	mat->Ambient = Triton::Vector3(0.5f, 0.5f, 0.5f);
@@ -233,7 +239,7 @@ void Triton::TestScene::loadAssets()
 
 	image = AssetManager->createAsset(asset_desc).as<Triton::Data::Image>();
 	image->Bitmap->setPosition(150, 150);
-
+	asset_desc.ID = -1;
 
 	Camera->Position = Triton::Vector3(0.0f, 0.0f, -5.0f);
 
@@ -245,12 +251,14 @@ void Triton::TestScene::loadAssets()
 
 
 	image_shader = AssetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>()->Program;
+	asset_desc.ID = -1;
 
 	asset_desc.Type = Triton::Resource::AssetCreateParams::AssetType::SHADER;
 	asset_desc.Paths[0] = "D:/Programming/Test files/nfw/shaders/directx/vertex_skybox.hlsl";
 	asset_desc.Paths[1] = "D:/Programming/Test files/nfw/shaders/directx/fragment_skybox.hlsl";
 
 	cubeMat->Shader = AssetManager->createAsset(asset_desc).as<Triton::Data::ShaderProgram>();
+	asset_desc.ID = -1;
 
 
 	BackgroundMesh = cubeMesh;

@@ -65,6 +65,8 @@ namespace Triton
 
 		void loadResources();
 		void createEntities();
+
+		void messageBox(std::string content);
 	private:
 		TR_EDTR_STATE(m_edtr_state)
 
@@ -76,6 +78,9 @@ namespace Triton
 		reference<Manager::AssetManager> m_assetManager;
 		reference<Utility::Timer> m_timer;
 		reference<Script::ScriptEngine> m_scriptEngine;
+
+		reference<Script::DynamicSharpScript> m_codeExtension;
+		reference<Script::DynamicSharpScript> m_dialogExtension;
 
 		ImGuiIO* m_imguiIO;
 	public:
@@ -91,6 +96,15 @@ namespace Triton
 			
 			bool materialViewport = false;
 		};
+
+		struct _Callbacks
+		{
+			std::function<void()> CompileScripts;
+			std::function<void(std::string)> NewProject;
+			std::function<void()> SaveProject;
+			std::function<void()> OpenProject;
+			std::function<void(std::string)> ShowMessage;
+		} Callbacks;
 	private:
 		WidgetIsOpen m_isOpen;
 

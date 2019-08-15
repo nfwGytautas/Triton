@@ -105,6 +105,18 @@ void showInspector(bool* p_open,
 				ImGui::Text("Y:"); ImGui::SameLine(); ImGui::PushItemWidth(cFloatInputWidth); ImGui::DragFloat("##rotY", &rot.y, cFloatInputRotationSensitivity);
 				ImGui::SameLine();
 				ImGui::Text("Z:"); ImGui::SameLine(); ImGui::PushItemWidth(cFloatInputWidth); ImGui::DragFloat("##rotZ", &rot.z, cFloatInputRotationSensitivity);
+				if (rot.x > 360)
+				{
+					rot.x = rot.x - 360;
+				}
+				if (rot.y > 360)
+				{
+					rot.y = rot.y - 360;
+				}
+				if (rot.z > 360)
+				{
+					rot.z = rot.z - 360;
+				}
 				ImGui::Separator();
 
 

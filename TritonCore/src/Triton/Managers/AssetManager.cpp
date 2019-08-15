@@ -4,6 +4,7 @@
 #include "TritonPlatform/PlatformAbstraction.h"
 #include "Triton/File/File.h"
 #include "Triton/Managers/TritonCache.h"
+#include "Triton/Logger/Log.h"
 
 namespace Triton
 {
@@ -21,7 +22,23 @@ namespace Triton
 		reference<Resource::Asset> AssetManager::createAsset(Resource::AssetCreateParams& params)
 		{
 			reference<Resource::Asset> result;
-			size_t assetID = getNextID();
+
+			size_t assetID = -1;
+			if (params.ID != -1)
+			{
+				assetID = params.ID;
+
+				if (assetID > m_nextAssetID)
+				{
+					m_nextAssetID = assetID + 1;
+				}
+			}
+			else
+			{
+				assetID = getNextID();
+				params.ID = assetID;
+			}
+			
 
 			reference<Core::TritonCache> cache = this->getClassByID((size_t)Core::TritonClasses::Cache).as<Core::TritonCache>();
 			reference<PType::Context> context = this->getClassByID((size_t)Core::TritonClasses::Context).as<PType::Context>();

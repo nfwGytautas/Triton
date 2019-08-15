@@ -125,6 +125,29 @@ void showAssetWindow(bool* p_open, Triton::reference<Triton::EditorState>& edtr_
 
 				ImGui::EndTabItem();
 			}
+			if (ImGui::BeginTabItem("Scripts"))
+			{
+				const int size = edtr_state->AllScripts.size();
+				for (int n = 0; n < size; n++)
+				{
+					ImGui::PushID(n);
+					ImGui::Button(Triton::Data::File::fileNameFromPath(edtr_state->AllScripts[n]).c_str(), button_sz);
+					float last_button_x2 = ImGui::GetItemRectMax().x;
+					float next_button_x2 = last_button_x2 + style.ItemSpacing.x + button_sz.x; // Expected position if next button was on same line
+					if (n + 1 < texture_count && next_button_x2 < window_visible_x2)
+						ImGui::SameLine();
+
+					if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+					{
+						ImGui::SetDragDropPayload("ASSET_SCRIPT", &n, sizeof(int));
+						ImGui::EndDragDropSource();
+					}
+
+					ImGui::PopID();
+				}
+
+				ImGui::EndTabItem();
+			}
 			ImGui::EndTabBar();
 		}
 
