@@ -1,9 +1,11 @@
 #include "TRpch.h"
 #include "TritonProj.h"
 
-#include <Triton/Serialize/Serialize.h>
-
 #include <filesystem>
+
+#include "Triton/Serialize/Serialize.h""
+#include "Triton/Utility/Utility.h"
+
 
 namespace Triton
 {
@@ -12,12 +14,21 @@ namespace Triton
 
 #define PATHS \
 	/*Main directory*/ fs::path dir_main = dir;\
+	/*Res directory*/ fs::path dir_res = dir_main / c_DirRes;\
+	/*Data directory*/ fs::path dir_data = dir_main / c_DirData;\
+	/*Main path*/ fs::path pth_main = dir_main / c_ProjFile;\
+	/*Asset path*/ fs::path pth_asset = dir_data / c_AssetFile
+
+#define PROJ_PATHS \
+	/*Main directory*/ fs::path dir_main = m_projDir;\
+	/*Res directory*/ fs::path dir_res = dir_main / c_DirRes;\
 	/*Data directory*/ fs::path dir_data = dir_main / c_DirData;\
 	/*Main path*/ fs::path pth_main = dir_main / c_ProjFile;\
 	/*Asset path*/ fs::path pth_asset = dir_data / c_AssetFile
 
 #pragma region Constants
 	const char* TritonProject::c_DirData = "Data/";
+	const char* TritonProject::c_DirRes = "Res/";
 	const char* TritonProject::c_GeneralFile = "GameDat0.dat";
 	const char* TritonProject::c_AssetFile = "GameDat1.dat";
 	const char* TritonProject::c_SceneFile = "GameDat2.dat";
@@ -38,6 +49,9 @@ namespace Triton
 		// Create new instance of TritonProject
 		reference<TritonProject> proj = new TritonProject();
 
+		// The dir of project
+		proj->m_projDir = dir;
+
 		// Load project data
 		proj->loadProjFile(pth_main.string());
 
@@ -54,6 +68,9 @@ namespace Triton
 		// Assure directories exist
 		fs::create_directory(dir_main);
 		fs::create_directory(dir_data);
+
+		// Set project directory
+		proj->m_projDir = dir;
 
 		// Saves project data
 		proj->saveProjFile(pth_main.string());
@@ -91,6 +108,33 @@ namespace Triton
 		return m_assets;
 	}
 
+	void TritonProject::moveAssets()
+	{
+		PROJ_PATHS;
+
+		// Create the resource directory
+		fs::create_directory(dir_res);
+
+		// Copy all assets and change all paths
+		for (auto& asset : m_assets)
+		{
+			int cnt = Utility::getAssetPathCount(asset);
+
+			for (int i = 0; i < cnt; i++)
+			{
+				fs::path pth(asset.Paths[i]);
+				fs::path to(dir_res / pth.filename());
+
+				if (!fs::exists(to))
+				{
+					fs::copy_file(pth, to);
+				}
+
+				asset.Paths[i] = (to).string();
+			}
+		}
+	}
+
 	TritonProject::TritonProject()
 	{
 
@@ -119,6 +163,7 @@ namespace Triton
 		std::ofstream os(path, std::ios::binary);
 		cereal::BinaryOutputArchive archive(os);
 
+		moveAssets();
 		archive(m_assets);
 	}
 	void TritonProject::loadAssetFile(const std::string & path)

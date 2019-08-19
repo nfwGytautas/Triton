@@ -15,8 +15,11 @@ namespace Triton
 	{
 	private:
 #pragma region Constants
-		// The directory to game data files
+		// The directory for game data files
 		static const char* c_DirData;
+
+		// The directory for resource files
+		static const char* c_DirRes;
 
 		// The file where general game data is stored
 		static const char* c_GeneralFile;
@@ -54,6 +57,9 @@ namespace Triton
 	private:
 		// Name of the project
 		std::string m_projName;
+
+		// Directory for the project
+		std::string m_projDir;
 #pragma endregion
 		
 #pragma region Asset
@@ -69,6 +75,10 @@ namespace Triton
 
 		// Returns the vector to the assets that are used by the project
 		std::vector<Resource::AssetCreateParams>& getAssetsToLoad();
+
+	private:
+		// Moves all the assets into the resource folder
+		void moveAssets();
 	private:
 		// Assets used by the project
 		std::vector<Resource::AssetCreateParams> m_assets;
