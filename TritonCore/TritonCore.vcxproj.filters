@@ -55,8 +55,20 @@
     <Filter Include="Triton\Serialize">
       <UniqueIdentifier>{FC6A853C-E863-A48E-1196-8913FDED839A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton\Serialize\Impl">
+      <UniqueIdentifier>{5D0EC869-C97A-8364-926E-1BC2FE99A5CC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton\Utility">
       <UniqueIdentifier>{48C6172B-3494-0B31-1D28-7C570995E795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton2">
+      <UniqueIdentifier>{D7337557-4313-F4F2-4C2B-7FC9B8895A54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton2\File">
+      <UniqueIdentifier>{66E1AC38-5244-3CDD-FBC9-7493E70B0860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton2\Utility">
+      <UniqueIdentifier>{1AD9E6A0-8664-5465-8F75-D759FB7FB065}</UniqueIdentifier>
     </Filter>
     <Filter Include="TritonTypes">
       <UniqueIdentifier>{3ACCB4B6-A681-2DAC-2F76-27839B2A24B0}</UniqueIdentifier>
@@ -209,6 +221,12 @@
     <ClInclude Include="src\Triton\Script\ScriptEngine.h">
       <Filter>Triton\Script</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h">
+      <Filter>Triton\Serialize\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\Serialize\Impl\Math.h">
+      <Filter>Triton\Serialize\Impl</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton\Serialize\Serialize.h">
       <Filter>Triton\Serialize</Filter>
     </ClInclude>
@@ -216,6 +234,9 @@
       <Filter>Triton</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\TritonHost.h">
+      <Filter>Triton</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton\TritonProj.h">
       <Filter>Triton</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton\Utility\Algorithm.h">
@@ -226,6 +247,18 @@
     </ClInclude>
     <ClInclude Include="src\Triton\Utility\Utility.h">
       <Filter>Triton\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\File\File.h">
+      <Filter>Triton2\File</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Utility\Algorithm.h">
+      <Filter>Triton2\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Utility\Utility.h">
+      <Filter>Triton2\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonTypes\IO.h">
+      <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h">
       <Filter>TritonTypes\Interfaces</Filter>
@@ -242,8 +275,8 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton\TritonProj.h" />
-    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h" />
+    <ClInclude Include="src\Triton2\Triton.h" />
+    <ClInclude Include="src\Triton2\Utility\Log.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -334,12 +367,24 @@
     <ClCompile Include="src\Triton\TritonHost.cpp">
       <Filter>Triton</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton\TritonProj.cpp">
+      <Filter>Triton</Filter>
+    </ClCompile>
     <ClCompile Include="src\Triton\Utility\Algorithm.cpp">
       <Filter>Triton\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton\Utility\Utility.cpp">
       <Filter>Triton\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton\TritonProj.cpp" />
+    <ClCompile Include="src\Triton2\File\File.cpp">
+      <Filter>Triton2\File</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Utility\Algorithm.cpp">
+      <Filter>Triton2\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Utility\Utility.cpp">
+      <Filter>Triton2\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Utility\Log.cpp" />
   </ItemGroup>
 </Project>

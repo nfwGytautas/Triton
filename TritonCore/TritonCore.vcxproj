@@ -143,8 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h" />
-    <ClInclude Include="src\Triton\TritonProj.h" />
+    <ClInclude Include="src\Triton2\Triton.h" />
+    <ClInclude Include="src\Triton2\Utility\Log.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton\AppSettings.h" />
@@ -194,12 +194,19 @@
     <ClInclude Include="src\Triton\Script\Impl\Object.h" />
     <ClInclude Include="src\Triton\Script\Impl\TritonEngine.h" />
     <ClInclude Include="src\Triton\Script\ScriptEngine.h" />
+    <ClInclude Include="src\Triton\Serialize\Impl\Asset.h" />
+    <ClInclude Include="src\Triton\Serialize\Impl\Math.h" />
     <ClInclude Include="src\Triton\Serialize\Serialize.h" />
     <ClInclude Include="src\Triton\TRMacros.h" />
     <ClInclude Include="src\Triton\TritonHost.h" />
+    <ClInclude Include="src\Triton\TritonProj.h" />
     <ClInclude Include="src\Triton\Utility\Algorithm.h" />
     <ClInclude Include="src\Triton\Utility\ClassGetters.h" />
     <ClInclude Include="src\Triton\Utility\Utility.h" />
+    <ClInclude Include="src\Triton2\File\File.h" />
+    <ClInclude Include="src\Triton2\Utility\Algorithm.h" />
+    <ClInclude Include="src\Triton2\Utility\Utility.h" />
+    <ClInclude Include="src\TritonTypes\IO.h" />
     <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
     <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
     <ClInclude Include="src\TritonTypes\data_collection.h" />
@@ -207,7 +214,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton\TritonProj.cpp" />
+    <ClCompile Include="src\Triton2\Utility\Log.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -240,8 +247,18 @@
     <ClCompile Include="src\Triton\Managers\TritonCache.cpp" />
     <ClCompile Include="src\Triton\Script\ScriptEngine.cpp" />
     <ClCompile Include="src\Triton\TritonHost.cpp" />
+    <ClCompile Include="src\Triton\TritonProj.cpp" />
     <ClCompile Include="src\Triton\Utility\Algorithm.cpp" />
     <ClCompile Include="src\Triton\Utility\Utility.cpp" />
+    <ClCompile Include="src\Triton2\File\File.cpp">
+      <ObjectFileName>$(IntDir)\File1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Utility\Algorithm.cpp">
+      <ObjectFileName>$(IntDir)\Algorithm1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Utility\Utility.cpp">
+      <ObjectFileName>$(IntDir)\Utility1.obj</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TritonGraphics\TritonGraphics.vcxproj">

@@ -134,3 +134,9 @@ Triton::Matrix44 Triton::Core::CreateTransformationMatrix(Vector3 translation, V
 }
 
 #endif
+
+
+float Triton::to_radians(float degrees)
+{
+	return degrees * 3.14159 / 180;
+}

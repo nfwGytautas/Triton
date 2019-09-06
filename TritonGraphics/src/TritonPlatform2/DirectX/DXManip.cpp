@@ -1,0 +1,31 @@
+#include "DXManip.h"
+
+#include <Windows.h>
+#include "TritonPlatform2/CrossTypes/Shader.h"
+
+std::wstring Triton::Impl::s2ws(const std::string & s)
+{
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
+}
+
+DXGI_FORMAT Triton::Impl::sdtToDXGIFormat(Triton::Graphics::ShaderDataType type)
+{
+	switch (type)
+	{
+	case Triton::Graphics::ShaderDataType::Float4:
+		return DXGI_FORMAT_R32G32B32_FLOAT;
+	case Triton::Graphics::ShaderDataType::Float3:
+		return DXGI_FORMAT_R32G32B32_FLOAT;
+	case Triton::Graphics::ShaderDataType::Float2:
+		return DXGI_FORMAT_R32G32_FLOAT;
+	}
+
+	return DXGI_FORMAT_UNKNOWN;
+}

@@ -118,20 +118,20 @@ namespace Triton
 		// Copy all assets and change all paths
 		for (auto& asset : m_assets)
 		{
-			int cnt = Utility::getAssetPathCount(asset);
-
-			for (int i = 0; i < cnt; i++)
-			{
-				fs::path pth(asset.Paths[i]);
-				fs::path to(dir_res / pth.filename());
-
-				if (!fs::exists(to))
-				{
-					fs::copy_file(pth, to);
-				}
-
-				asset.Paths[i] = (to).string();
-			}
+			//int cnt = Utility::getAssetPathCount(asset);
+			//
+			//for (int i = 0; i < cnt; i++)
+			//{
+			//	fs::path pth(asset.Paths[i]);
+			//	fs::path to(dir_res / pth.filename());
+			//
+			//	if (!fs::exists(to))
+			//	{
+			//		fs::copy_file(pth, to);
+			//	}
+			//
+			//	asset.Paths[i] = (to).string();
+			//}
 		}
 	}
 

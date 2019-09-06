@@ -9,7 +9,7 @@
 
 // Triton classes included in the order they are registered in the host
 #include "Triton\Core\Input\InputManager.h"
-#include "TritonPlatform\PlatformAbstraction.h"
+#include "TritonGraphicsAbstraction.h"
 #include "Triton\Managers\TritonCache.h"
 #include "Triton\Managers\AssetManager.h"
 #include "Triton\Managers\ThreadManager.h"

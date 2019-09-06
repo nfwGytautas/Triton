@@ -28,16 +28,16 @@ void showMaterialEditor(bool* p_open,
 
 	if (valid)
 	{
-		if (material->Texture.valid())
-		{
-			hasTexture = true;
-			texture = material->Texture;
-		}
-
-		if (material->Shader.valid())
-		{
-			edtr_state->CurrentEditMaterial.Shader = material->Shader;
-		}
+		//if (material->Texture.valid())
+		//{
+		//	hasTexture = true;
+		//	texture = asset_manager->getAssetByID(material->TexID).as<Triton::Data::PlainTexture>()->Texture;
+		//}
+		//
+		//if (material->Shader.valid())
+		//{
+		//	edtr_state->CurrentEditMaterial.Shader = asset_manager->getAssetByID(material->ShaderID).as<Triton::Data::ShaderProgram>();
+		//}
 
 		edtr_state->CurrentEditMaterial.Ambient = material->Ambient;
 		edtr_state->CurrentEditMaterial.Diffuse = material->Diffuse;
@@ -98,7 +98,7 @@ void showMaterialEditor(bool* p_open,
 
 				auto mat = asset_manager->createAsset(asset_desc).as<Triton::Data::Material>();
 
-				mat->Shader = edtr_state->CurrentEditMaterial.Shader;
+				//mat->Shader = edtr_state->CurrentEditMaterial.Shader;
 
 				mat->Ambient = edtr_state->CurrentEditMaterial.Ambient;
 				mat->Diffuse = edtr_state->CurrentEditMaterial.Diffuse;
