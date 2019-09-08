@@ -10,13 +10,6 @@ class DXContext;
 
 class DXVAO : public VAO
 {
-private:
-	struct VertexType
-	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT2 texture;
-		DirectX::XMFLOAT3 normal;
-	};
 public:
 	virtual ~DXVAO();
 

@@ -68,7 +68,7 @@ namespace Triton
 			 * @param createParams The parameters of the shader
 			 * @return reference to the newly created shader
 			 */
-			virtual reference<Shader> newShader(const ShaderCreateParams& createParams) = 0;
+			virtual Shader* newShader(const IO::ShaderData& createParams) = 0;
 
 			/**
 			 * Create a new VAO from specified params
@@ -76,7 +76,7 @@ namespace Triton
 			 * @param createParams The parameters of the VAO not this is a single Mesh of MeshData not entire mesh data structure
 			 * @return reference to the newly created VAO
 			 */
-			virtual reference<VAO> newVAO(const IO::MeshData::Mesh& createParams) = 0;
+			virtual VAO* newVAO(const IO::MeshData::Mesh& createParams) = 0;
 
 			/**
 			 * Create a new texture from the specified params
@@ -84,7 +84,7 @@ namespace Triton
 			 * @param createParams The parameters of the image
 			 * @return reference to the newly created texture
 			 */
-			virtual reference<Texture> newTexture(const IO::ImageData& createParams) = 0;
+			virtual Texture* newTexture(const IO::ImageData& createParams) = 0;
 
 			/**
 			 * Create a new CubeTexture from the create params
@@ -92,7 +92,7 @@ namespace Triton
 			 * @param createParams The parameters of the cube texture
 			 * @return reference to the newly created cube texture
 			 */
-			virtual reference<CubeTexture> newCubeTexture(const IO::ImageArrayData& createParams) = 0;
+			virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) = 0;
 
 			/**
 			 * Create a new frame buffer
@@ -101,7 +101,7 @@ namespace Triton
 			 * @param height The height of the new frame buffer
 			 * @return reference to the newly created frame buffer
 			 */
-			virtual reference<Framebuffer> newFramebuffer(unsigned int width, unsigned int height) = 0;
+			virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) = 0;
 
 			/**
 			 * Create a new bitmap from the create params
@@ -109,7 +109,7 @@ namespace Triton
 			 * @param createParams The parameters of the bitmap
 			 * @return reference to the newly created bitmap
 			 */
-			virtual reference<Bitmap> newBitmap(const BitmapCreateParams& createParams) = 0;
+			virtual Bitmap* newBitmap(const BitmapCreateParams& createParams) = 0;
 
 			/**
 			 * Returns the keyboard state of the context

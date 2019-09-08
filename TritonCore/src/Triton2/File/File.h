@@ -44,6 +44,15 @@ namespace Triton
 		bool fileValid(const std::string& pathToFile);
 
 		/**
+		 * Read all the text inside a file
+		 *
+		 * @param pathToFile The path to the file that you want to be loaded
+		 * @param objectToStoreIn The structure where the function should store the loaded data
+		 * @return The status of the specified operation
+		 */
+		IOStatus readFileFromDisk(const std::string& pathToFile, std::string* objectToStoreIn);
+
+		/**
 		 * Load an image file from disk and store the data inside the specified object
 		 *
 		 * @param pathToFile The path to the file that you want to be loaded

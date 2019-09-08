@@ -20,12 +20,12 @@ public:
 	virtual bool init() override;
 	virtual void shutdown() override;
 
-	virtual reference<Shader> newShader(const ShaderCreateParams & createParams) override;
-	virtual reference<VAO> newVAO(const IO::MeshData::Mesh & createParams) override;
-	virtual reference<Texture> newTexture(const IO::ImageData & createParams) override;
-	virtual reference<CubeTexture> newCubeTexture(const IO::ImageArrayData & createParams) override;
-	virtual reference<Framebuffer> newFramebuffer(unsigned int width, unsigned int height) override;
-	virtual reference<Bitmap> newBitmap(const BitmapCreateParams & createParams) override;
+	virtual Shader* newShader(const IO::ShaderData& createParams) override;
+	virtual VAO* newVAO(const IO::MeshData::Mesh& createParams) override;
+	virtual Texture* newTexture(const IO::ImageData& createParams) override;
+	virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) override;
+	virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) override;
+	virtual Bitmap* newBitmap(const BitmapCreateParams& createParams) override;
 private:
 	ID3D11Device* m_device;
 	ID3D11DeviceContext* m_deviceContext;

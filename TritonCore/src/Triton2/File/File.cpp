@@ -30,6 +30,26 @@ namespace Triton
 			return fs::exists(pathToFile);
 		}
 
+		IOStatus readFileFromDisk(const std::string & pathToFile, std::string* objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+			std::ifstream file{ pathToFile };
+			*objectToStoreIn = std::string({ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() });
+
+			status.status = IOStatus::IO_OK;
+			return status;
+		}
+
 		IOStatus loadImageFromDisk(const std::string& pathToFile, ImageData* objectToStoreIn)
 		{
 			// The function status
@@ -113,7 +133,7 @@ namespace Triton
 			status.status = IOStatus::IO_OK;
 
 			// Start filling the data
-			objectToStoreIn->meshes.reserve(scene->mNumMeshes);
+			objectToStoreIn->meshes.resize(scene->mNumMeshes);
 			for (unsigned int meshIdx = 0; meshIdx < scene->mNumMeshes; meshIdx++)
 			{
 				aiMesh* mesh = scene->mMeshes[meshIdx];
@@ -180,6 +200,5 @@ namespace Triton
 			// Return the status of the operation
 			return status;
 		}
-
 	}
 }

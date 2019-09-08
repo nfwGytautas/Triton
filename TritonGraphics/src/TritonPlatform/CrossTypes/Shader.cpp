@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include "Triton/Logger/Log.h"
+#include "..\..\TritonPlatform2\CrossTypes\Shader.h"
 
 Triton::PType::Shader::Shader(ShaderLayout* layout)
 {

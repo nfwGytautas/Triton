@@ -16,3 +16,11 @@
 // Include all shared types between all platforms.
 #include "CrossTypes/Core/Context.h"
 #include "mathematical.h"
+
+namespace Triton
+{
+	namespace Graphics
+	{
+		void logErrors();
+	}
+}

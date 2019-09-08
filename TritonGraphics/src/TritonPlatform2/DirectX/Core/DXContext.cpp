@@ -5,36 +5,6 @@
 #include "comdef.h"
 #include <d3dcompiler.h>
 
-//#include "TritonPlatform2/DirectX/DXManip.h"
-
-std::wstring s2ws(const std::string & s)
-{
-	int len;
-	int slength = (int)s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete[] buf;
-	return r;
-}
-
-DXGI_FORMAT sdtToDXGIFormat(Triton::Graphics::ShaderDataType type)
-{
-	switch (type)
-	{
-	case Triton::Graphics::ShaderDataType::Float4:
-		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::Graphics::ShaderDataType::Float3:
-		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::Graphics::ShaderDataType::Float2:
-		return DXGI_FORMAT_R32G32_FLOAT;
-	}
-
-	return DXGI_FORMAT_UNKNOWN;
-}
-
-
 #include "DXWindow.h"
 #include "DXRenderer.h"
 
@@ -48,6 +18,18 @@ DXGI_FORMAT sdtToDXGIFormat(Triton::Graphics::ShaderDataType type)
 #include "TritonPlatform2/DirectX/BasicTypes/DXTexture.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXFramebuffer.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXBitmap.h"
+
+std::wstring s2ws(const std::string & s)
+{
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
+}
 
 namespace Triton
 {
@@ -163,9 +145,9 @@ namespace Triton
 			}
 
 			// Create a list to hold all the possible display modes for this monitor/video card combination.
-			m_displayModeList.reserve(numModes);
+			m_displayModeList.resize(numModes);
 
-			// Now fill the display mode list structures.
+			// Get display mode list
 			result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, m_displayModeList.data());
 			if (FAILED(result))
 			{
@@ -229,19 +211,26 @@ namespace Triton
 			delete m_mouseState;
 		}
 
-		reference<Shader> DXContext::newShader(const ShaderCreateParams& createParams)
+		Shader* DXContext::newShader(const IO::ShaderData& createParams)
 		{
-			auto layout = createParams.layout;
-
-			DXShader* shader = new DXShader(layout);
+			DXShader* shader = new DXShader();
 
 			HRESULT result;
 			ID3D10Blob* errorMessage;
 			ID3D10Blob* vertexShaderBuffer;
 			ID3D10Blob* pixelShaderBuffer;
-			std::vector<D3D11_INPUT_ELEMENT_DESC> inputDesc;
 			D3D11_SAMPLER_DESC samplerDesc;
 
+			int descCount = 3;
+			D3D11_INPUT_ELEMENT_DESC iaDescExtended[] =
+			{
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+				0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+				0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+				0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
 
 			// Initialize the pointers this function will use to null.
 			errorMessage = 0;
@@ -249,8 +238,8 @@ namespace Triton
 			pixelShaderBuffer = 0;
 
 			// Compile the vertex shader code.
-			auto vsFilename = s2ws(createParams.vertexPath);
-			result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, createParams.entryPointVertex.c_str(), "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+			auto vsFilename = s2ws(createParams.pathToSource);
+			result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, createParams.vertexEntry.c_str(), "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 				&vertexShaderBuffer, &errorMessage);
 			if (FAILED(result))
 			{
@@ -269,8 +258,8 @@ namespace Triton
 			}
 
 			// Compile the pixel shader code.
-			auto psFilename = s2ws(createParams.fragmentPath);
-			result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, createParams.entryPointFragment.c_str(), "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
+			auto psFilename = s2ws(createParams.pathToSource);
+			result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, createParams.pixelEntry.c_str(), "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
 				&pixelShaderBuffer, &errorMessage);
 			if (FAILED(result))
 			{
@@ -301,29 +290,11 @@ namespace Triton
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Creating pixel shader from buffer failed");
-				return false;
-			}
-
-
-			inputDesc.reserve(layout->getInputLayout().getVariableCount());
-			// Create the vertex input layout description.
-			for (const ShaderInputVariable& siVariable : layout->getInputLayout())
-			{
-				D3D11_INPUT_ELEMENT_DESC polygonLayout;
-
-				polygonLayout.SemanticName = siVariable.Name.c_str();
-				polygonLayout.SemanticIndex = 0;
-				polygonLayout.Format = sdtToDXGIFormat(siVariable.Type);
-				polygonLayout.InputSlot = 0;
-				polygonLayout.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-				polygonLayout.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-				polygonLayout.InstanceDataStepRate = 0;
-
-				inputDesc.push_back(polygonLayout);
+				return nullptr;
 			}
 
 			// Create the vertex input layout.
-			result = m_device->CreateInputLayout(&inputDesc[0], inputDesc.size(), vertexShaderBuffer->GetBufferPointer(),
+			result = m_device->CreateInputLayout(iaDescExtended, descCount, vertexShaderBuffer->GetBufferPointer(),
 				vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
 			if (FAILED(result))
 			{
@@ -339,25 +310,21 @@ namespace Triton
 			pixelShaderBuffer->Release();
 			pixelShaderBuffer = 0;
 
+			// Matrix buffer
+			D3D11_BUFFER_DESC bufferDesc;
+			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			bufferDesc.ByteWidth = sizeof(MatrixBuffer);
+			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			bufferDesc.MiscFlags = 0;
+			bufferDesc.StructureByteStride = 0;
 
-			for (ShaderBufferLayout& buffer : *layout)
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&bufferDesc, NULL, &shader->m_matrixBuffer);
+			if (FAILED(result))
 			{
-				D3D11_BUFFER_DESC bufferDesc;
-
-				bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-				bufferDesc.ByteWidth = buffer.getStride();
-				bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-				bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-				bufferDesc.MiscFlags = 0;
-				bufferDesc.StructureByteStride = 0;
-
-				// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-				result = m_device->CreateBuffer(&bufferDesc, NULL, &shader->m_buffers[buffer.getName()]);
-				if (FAILED(result))
-				{
-					TR_SYSTEM_ERROR("Creating constant buffer pointer failed");
-					return nullptr;
-				}
+				TR_SYSTEM_ERROR("Creating matrix buffer failed");
+				return nullptr;
 			}
 
 			// Create a texture sampler state description.
@@ -385,11 +352,9 @@ namespace Triton
 
 			shader->m_deviceContext = m_deviceContext;
 			return shader;
-
-			return reference<Shader>();
 		}
 
-		reference<VAO> DXContext::newVAO(const IO::MeshData::Mesh& createParams)
+		VAO* DXContext::newVAO(const IO::MeshData::Mesh& createParams)
 		{
 			DXVAO* vao = new DXVAO();
 
@@ -469,7 +434,7 @@ namespace Triton
 			return vao;
 		}
 
-		reference<Texture> DXContext::newTexture(const IO::ImageData& createParams)
+		Texture* DXContext::newTexture(const IO::ImageData& createParams)
 		{
 			DXTexture* texture = new DXTexture();
 
@@ -527,7 +492,7 @@ namespace Triton
 			return texture;
 		}
 
-		reference<CubeTexture> DXContext::newCubeTexture(const IO::ImageArrayData& createParams)
+		CubeTexture* DXContext::newCubeTexture(const IO::ImageArrayData& createParams)
 		{
 			DXCubeTexture* cubeTexture = new DXCubeTexture();
 
@@ -572,8 +537,8 @@ namespace Triton
 			}
 
 			//Create the Texture Resource
-			HRESULT hr = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
-			if (hr != S_OK)
+			hResult = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
+			if (FAILED(hResult))
 			{
 				TR_SYSTEM_ERROR("Creating cube texture failed");
 				return nullptr;
@@ -595,7 +560,7 @@ namespace Triton
 			return cubeTexture;
 		}
 
-		reference<Framebuffer> DXContext::newFramebuffer(unsigned int width, unsigned int height)
+		Framebuffer* DXContext::newFramebuffer(unsigned int width, unsigned int height)
 		{
 			DXFramebuffer* frameBuffer = new DXFramebuffer();
 
@@ -624,6 +589,7 @@ namespace Triton
 			result = m_device->CreateTexture2D(&textureDesc, NULL, &frameBuffer->m_renderTargetTexture);
 			if (FAILED(result))
 			{
+				TR_SYSTEM_ERROR("Failed to create 2D texture");
 				return nullptr;
 			}
 
@@ -636,6 +602,7 @@ namespace Triton
 			result = m_device->CreateRenderTargetView(frameBuffer->m_renderTargetTexture, &renderTargetViewDesc, &frameBuffer->m_renderTargetView);
 			if (FAILED(result))
 			{
+				TR_SYSTEM_ERROR("Failed to create render target view");
 				return nullptr;
 			}
 
@@ -649,6 +616,7 @@ namespace Triton
 			result = m_device->CreateShaderResourceView(frameBuffer->m_renderTargetTexture, &shaderResourceViewDesc, &frameBuffer->m_shaderResourceView);
 			if (FAILED(result))
 			{
+				TR_SYSTEM_ERROR("Failed to create shader resource view");
 				return nullptr;
 			}
 
@@ -668,7 +636,7 @@ namespace Triton
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil view");
-				return false;
+				return nullptr;
 			}
 
 			frameBuffer->m_deviceContext = m_deviceContext;
@@ -676,7 +644,7 @@ namespace Triton
 			return frameBuffer;
 		}
 
-		reference<Bitmap> DXContext::newBitmap(const BitmapCreateParams& createParams)
+		Bitmap* DXContext::newBitmap(const BitmapCreateParams& createParams)
 		{
 			DXBitmap* bitmap = new DXBitmap();
 			

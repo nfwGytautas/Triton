@@ -2,17 +2,16 @@
 
 PLATFORM_NAMESPACE_BEGIN
 
-DXShader::DXShader(ShaderLayout* layout)
-	: Shader(layout)
+DXShader::DXShader()
 {
 }
 
 DXShader::~DXShader()
 {
-	// Release all shader buffers
-	for (auto &[name, buffer] : m_buffers) {
-		buffer->Release();
-		buffer = 0;
+	if (m_matrixBuffer)
+	{
+		m_matrixBuffer->Release();
+		m_matrixBuffer = 0;
 	}
 
 	// Release the sampler state.
@@ -65,21 +64,7 @@ void DXShader::disable()
 	enabled = false;
 }
 
-ID3D11Buffer* DXShader::getBuffer(const std::string& name)
-{
-	ID3D11Buffer* d3dbuffer = m_buffers[name];
-
-	if (d3dbuffer == nullptr)
-	{
-		TR_ERROR("Buffer of name {0} does not exist.", name);
-		TR_CORE_ASSERT(d3dbuffer, "Buffer does not exist.")
-			return NULL;
-	}
-
-	return d3dbuffer;
-}
-
-void DXShader::mapBuffer(ID3D11Buffer * buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource)
+void DXShader::mapBuffer(ID3D11Buffer* buffer, D3D11_MAPPED_SUBRESOURCE& mappedResource)
 {
 	HRESULT result;
 
@@ -98,51 +83,23 @@ void DXShader::unmapBuffer(ID3D11Buffer* buffer)
 	m_deviceContext->Unmap(buffer, 0);
 }
 
-void DXShader::setBuffer(ID3D11Buffer* buffer, const BufferShaderType& type, unsigned int count, unsigned int number)
-{
-	if (type == BufferShaderType::PIXEL)
-	{
-		m_deviceContext->PSSetConstantBuffers(number, count, &buffer);
-	}
-	else if (type == BufferShaderType::VERTEX)
-	{
-		m_deviceContext->VSSetConstantBuffers(number, count, &buffer);
-	}
-}
-
-void DXShader::updateBuffer(Shader::Buffer& buffer)
+void DXShader::update_matrices()
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	unsigned char* dataPtr;
+	MatrixBuffer* dataPtr;
 
-	ID3D11Buffer* d3dbuffer = getBuffer(buffer.layout.getName());
-
-	mapBuffer(d3dbuffer, mappedResource);
+	mapBuffer(m_matrixBuffer, mappedResource);
 
 	// Get a pointer to the data in the constant buffer.
-	dataPtr = static_cast<unsigned char*>(mappedResource.pData);
+	dataPtr = static_cast<MatrixBuffer*>(mappedResource.pData);
 
-	// Copy the lighting variables into the constant buffer.
-	buffer.writeData(dataPtr);
+	// Copy the matrices into the constant buffer.
+	*dataPtr = prtc_Matrices;
 
-	unmapBuffer(d3dbuffer);
+	unmapBuffer(m_matrixBuffer);
 
-	// Finally set the light constant buffer in the pixel shader with the updated values.
-	setBuffer(d3dbuffer, buffer.layout.getShaderType(), 1, buffer.layout.getNumber());
-}
-
-void DXShader::updateBuffers(BufferUpdateType type)
-{
-	for (unsigned int i = 0; i < prtc_Buffers.size(); i++)
-	{
-		if (prtc_Buffers[i].layout.getUpdateType() == type || 
-			type == BufferUpdateType::ALL  || 
-			prtc_Buffers[i].layout.getUpdateType() == BufferUpdateType::ALL)
-		{
-			updateBuffer(prtc_Buffers[i]);
-		}
-	}
+	m_deviceContext->VSSetConstantBuffers(c_MatrixBufferSlot, 1, &m_matrixBuffer);
 }
 
 PLATFORM_NAMESPACE_END

@@ -1,4 +1,5 @@
 #include "DXShader.h"
+#include "..\..\..\TritonPlatform\DirectX\BasicTypes\DXShader.h"
 
 PLATFORM_NAMESPACE_BEGIN
 

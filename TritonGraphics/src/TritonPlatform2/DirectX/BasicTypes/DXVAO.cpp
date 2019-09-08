@@ -1,4 +1,5 @@
 #include "DXVAO.h"
+#include "TritonTypes/IO.h"
 
 PLATFORM_NAMESPACE_BEGIN
 
@@ -26,7 +27,7 @@ void DXVAO::enable()
 
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(VertexType);
+	stride = sizeof(IO::MeshData::Mesh::Vertex);
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.

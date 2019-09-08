@@ -1,6 +1,7 @@
 #pragma once
 
-#include "TritonPlatform/mathematical.h"
+#include "TritonPlatform2/mathematical.h"
+#include "TritonPlatform2/CrossTypes/Shader.h"
 
 namespace Triton
 {
@@ -63,6 +64,21 @@ namespace Triton
 
 			/// The vector containing all loaded meshes
 			std::vector<Mesh> meshes;
+		};
+
+		/**
+		 * Struct used to store the data from IO operation
+		 */
+		struct ShaderData
+		{
+			/// The path to the source of the shader file
+			std::string pathToSource;
+
+			/// The vertex main entry function name
+			std::string vertexEntry;
+
+			/// The pixel/fragment main entry function name
+			std::string pixelEntry;
 		};
 	}
 }
