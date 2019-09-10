@@ -138,12 +138,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\TritonGraphicsAbstraction.h" />
-    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h" />
-    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Base.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Bitmap.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Context.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Renderer.h" />
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h" />
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Window.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Shader.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Texture.h" />
@@ -156,16 +156,17 @@
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXContext.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXRenderer.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXWindow.h" />
+    <ClInclude Include="src\TritonPlatform2\DirectX\DXManip.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\DXTypes.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\Macros.h" />
     <ClInclude Include="src\TritonPlatform2\PlatformAbstraction.h" />
     <ClInclude Include="src\TritonPlatform2\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp" />
-    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Context.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Renderer.cpp" />
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp" />
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Window.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp">
       <ObjectFileName>$(IntDir)\Shader1.obj</ObjectFileName>
@@ -193,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp">
       <ObjectFileName>$(IntDir)\DXWindow1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp">
+      <ObjectFileName>$(IntDir)\DXManip1.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp">
       <ObjectFileName>$(IntDir)\PlatformAbstraction1.obj</ObjectFileName>

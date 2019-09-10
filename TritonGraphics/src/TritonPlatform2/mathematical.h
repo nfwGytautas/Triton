@@ -5,6 +5,34 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <SimpleMath.h>
+
+namespace DirectX
+{
+	namespace SimpleMath
+	{
+		template<class Archive>
+		void serialize(Archive& archive,
+			Vector2& m)
+		{
+			archive(m.x, m.y);
+		}
+
+		template<class Archive>
+		void serialize(Archive& archive,
+			Vector3& m)
+		{
+			archive(m.x, m.y, m.z);
+		}
+
+		template<class Archive>
+		void serialize(Archive& archive,
+			Vector4& m)
+		{
+			archive(m.x, m.y, m.z, m.w);
+		}
+	}
+}
+
 namespace Triton
 {
 	typedef DirectX::SimpleMath::Vector2 Vector2;

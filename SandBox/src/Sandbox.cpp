@@ -17,6 +17,19 @@ int main()
 	context = Graphics::Context::create();
 	context->init();
 
+	Core::AssetManager* assets = new Core::AssetManager(context);
+
+	IO::IntermediateAsset intAsset;
+	intAsset.Version = IO::Version::c_Version_Latest;
+	intAsset.Name = "stallMesh";
+	intAsset.Type = IO::Version::v_latest::c_MeshType;
+	intAsset.Data = new IO::MeshData();
+	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", (IO::MeshData*)intAsset.Data);
+
+	IO::saveAssetToDisk("stall.asset", &intAsset);
+
+	assets->loadAsset("stall.asset");
+
 	window = context->newWindow();
 	window->initNew(1280, 720);
 
@@ -33,10 +46,7 @@ int main()
 
 	shader->enable();
 
-	IO::MeshData mData;
-	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", &mData);
-
-	model = context->newVAO(mData.meshes[0]);
+	model = (*assets)["stallMesh"].as<MeshAsset>()->VAO();
 
 	model->enable();
 

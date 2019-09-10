@@ -1,0 +1,84 @@
+\hypertarget{class_triton_1_1_i_o_1_1_keyboard}{}\doxysection{Triton\+::IO\+::Keyboard Class Reference}
+\label{class_triton_1_1_i_o_1_1_keyboard}\index{Triton::IO::Keyboard@{Triton::IO::Keyboard}}
+
+
+{\ttfamily \#include $<$Keyboard.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard_a43645f98e3da000522828662335f37be}{is\+Key\+Down}} (Key key) const
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard_a1fa2ec718aeee4b29ad2da624ba857a8}{set\+Key}} (Key key, bool state)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard_ad139a29c224bdfe275e887ce955e4964}{char\+Input}} (char input) const
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard_a83215e1613c941fab64e74e8b59cedc1}{char\+Input\+Callback}} (std\+::function$<$ void(char)$>$ callback)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct that represents the current state of the keyboard 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_keyboard_ad139a29c224bdfe275e887ce955e4964}\label{class_triton_1_1_i_o_1_1_keyboard_ad139a29c224bdfe275e887ce955e4964}} 
+\index{Triton::IO::Keyboard@{Triton::IO::Keyboard}!charInput@{charInput}}
+\index{charInput@{charInput}!Triton::IO::Keyboard@{Triton::IO::Keyboard}}
+\doxysubsubsection{\texorpdfstring{charInput()}{charInput()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Keyboard\+::char\+Input (\begin{DoxyParamCaption}\item[{char}]{input }\end{DoxyParamCaption}) const}
+
+Calls the callback for char input
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The parameter for the callback \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_keyboard_a83215e1613c941fab64e74e8b59cedc1}\label{class_triton_1_1_i_o_1_1_keyboard_a83215e1613c941fab64e74e8b59cedc1}} 
+\index{Triton::IO::Keyboard@{Triton::IO::Keyboard}!charInputCallback@{charInputCallback}}
+\index{charInputCallback@{charInputCallback}!Triton::IO::Keyboard@{Triton::IO::Keyboard}}
+\doxysubsubsection{\texorpdfstring{charInputCallback()}{charInputCallback()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Keyboard\+::char\+Input\+Callback (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(char)$>$}]{callback }\end{DoxyParamCaption})}
+
+Set the callback for char input
+
+
+\begin{DoxyParams}{Parameters}
+{\em callback} & The function to be called on char input \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_keyboard_a43645f98e3da000522828662335f37be}\label{class_triton_1_1_i_o_1_1_keyboard_a43645f98e3da000522828662335f37be}} 
+\index{Triton::IO::Keyboard@{Triton::IO::Keyboard}!isKeyDown@{isKeyDown}}
+\index{isKeyDown@{isKeyDown}!Triton::IO::Keyboard@{Triton::IO::Keyboard}}
+\doxysubsubsection{\texorpdfstring{isKeyDown()}{isKeyDown()}}
+{\footnotesize\ttfamily bool Triton\+::\+I\+O\+::\+Keyboard\+::is\+Key\+Down (\begin{DoxyParamCaption}\item[{Key}]{key }\end{DoxyParamCaption}) const}
+
+Poll for the state of the key
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key you want to poll for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Is key down 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_keyboard_a1fa2ec718aeee4b29ad2da624ba857a8}\label{class_triton_1_1_i_o_1_1_keyboard_a1fa2ec718aeee4b29ad2da624ba857a8}} 
+\index{Triton::IO::Keyboard@{Triton::IO::Keyboard}!setKey@{setKey}}
+\index{setKey@{setKey}!Triton::IO::Keyboard@{Triton::IO::Keyboard}}
+\doxysubsubsection{\texorpdfstring{setKey()}{setKey()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Keyboard\+::set\+Key (\begin{DoxyParamCaption}\item[{Key}]{key,  }\item[{bool}]{state }\end{DoxyParamCaption})}
+
+Sets the state for a key
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to set @prama state The new state for the key \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/\+State/Keyboard.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/\+State/Keyboard.\+cpp\end{DoxyCompactItemize}

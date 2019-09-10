@@ -14,18 +14,3 @@ std::wstring Triton::Impl::s2ws(const std::string & s)
 	delete[] buf;
 	return r;
 }
-
-DXGI_FORMAT Triton::Impl::sdtToDXGIFormat(Triton::Graphics::ShaderDataType type)
-{
-	switch (type)
-	{
-	case Triton::Graphics::ShaderDataType::Float4:
-		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::Graphics::ShaderDataType::Float3:
-		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case Triton::Graphics::ShaderDataType::Float2:
-		return DXGI_FORMAT_R32G32_FLOAT;
-	}
-
-	return DXGI_FORMAT_UNKNOWN;
-}

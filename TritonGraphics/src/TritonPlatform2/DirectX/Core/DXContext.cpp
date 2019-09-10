@@ -8,11 +8,6 @@
 #include "DXWindow.h"
 #include "DXRenderer.h"
 
-#include "Triton/AppSettings.h"
-
-#include "Triton/Core/TritonClass.h"
-#include "Triton/Core/Input/InputManager.h"
-
 #include "TritonPlatform2/DirectX/BasicTypes/DXShader.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXVAO.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXTexture.h"
@@ -354,21 +349,21 @@ namespace Triton
 			return shader;
 		}
 
-		VAO* DXContext::newVAO(const IO::MeshData::Mesh& createParams)
+		VAO* DXContext::newVAO(const IO::Mesh& createParams)
 		{
 			DXVAO* vao = new DXVAO();
 
-			const IO::MeshData::Mesh::Vertex* vertices;
+			const IO::Vertex* vertices;
 			const unsigned int* indices;
 			D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 			D3D11_SUBRESOURCE_DATA vertexData, indexData;
 			HRESULT result;
 
 			// Set the number of vertices in the vertex array.
-			unsigned int vertexCount = createParams.vertices.size();
+			unsigned int vertexCount = (unsigned int)createParams.vertices.size();
 
 			// Set the number of indices in the index array.
-			unsigned int indexCount = createParams.indices.size();
+			unsigned int indexCount = (unsigned int)createParams.indices.size();
 
 			// Create the vertex array.
 			vertices = createParams.vertices.data();
@@ -390,7 +385,7 @@ namespace Triton
 
 			// Set up the description of the static vertex buffer.
 			vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			vertexBufferDesc.ByteWidth = sizeof(IO::MeshData::Mesh::Vertex) * vertexCount;
+			vertexBufferDesc.ByteWidth = sizeof(IO::Vertex) * vertexCount;
 			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			vertexBufferDesc.CPUAccessFlags = 0;
 			vertexBufferDesc.MiscFlags = 0;
@@ -438,7 +433,6 @@ namespace Triton
 		{
 			DXTexture* texture = new DXTexture();
 
-			bool result;
 			D3D11_TEXTURE2D_DESC textureDesc;
 			HRESULT hResult;
 			unsigned int rowPitch;
@@ -496,7 +490,6 @@ namespace Triton
 		{
 			DXCubeTexture* cubeTexture = new DXCubeTexture();
 
-			bool result;
 			D3D11_TEXTURE2D_DESC textureDesc;
 			HRESULT hResult;
 			unsigned int rowPitch;
@@ -660,7 +653,7 @@ namespace Triton
 			D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 			D3D11_SUBRESOURCE_DATA vertexData, indexData;
 			HRESULT result;
-			int i;
+			unsigned int i;
 
 
 			// Set the number of vertices in the vertex array.

@@ -1,0 +1,271 @@
+\hypertarget{class_triton_1_1_graphics_1_1_renderer}{}\doxysection{Triton\+::Graphics\+::Renderer Class Reference}
+\label{class_triton_1_1_graphics_1_1_renderer}\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+
+
+{\ttfamily \#include $<$Renderer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_aa69987f6414e01c1749252e919ba8222}{destroy}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a954f799c50801ba8dd44fa3f3a5838ea}{new\+Frame}} (float red, float green, float blue, float alpha)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_ad857cfb09ac490c794354e80f79b2d1b}{end\+Frame}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a5b726075a2fb5c156de57d23d2e950c7}{default}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a65e1cd45f1e8c5eff0099ce2a3890268}{set\+View\+Port}} (int x, int y, int width, int height)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a596b247d6e30e4937de8f473c79d2a81}{depth\+Buffer\+State}} (bool state)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a4360a2be7a8de3970401070909dccea2}{cull\+Buffer\+State}} (bool state)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a6bb5b87671e5adb2c3215331bde9c747}{render}} (reference$<$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderable}{Renderable}} $>$ \&renderable)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_aaada4a40680044d84687291d33a20cc4}{render}} (unsigned int indice\+Count)=0
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a8fa774e3f5f57e1044451844b863016c}{vsync}} (bool value)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a639af17a7422c6fd0f1964091793b2d7}{fov}} (float value)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a94a9e4586c8b4a40b557d8e739d43c08}{near\+Plane}} (float value)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a5c6023aede1b66020557a3c57427fe1a}{far\+Plane}} (float value)
+\item 
+Matrix44 \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a608ea82887dad3c0c7b8ad6728effe33}{projection}} ()
+\item 
+Matrix44 \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a7047e00d5fdd1346e44ce5a3ce9992e5}{orthographic}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a177125b5b246ae8b9dd0a7d3beeb2dda}{recalc\+Matrices}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a5e13878feddf016b8f59add419f3a27e}\label{class_triton_1_1_graphics_1_1_renderer_a5e13878feddf016b8f59add419f3a27e}} 
+\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a5e13878feddf016b8f59add419f3a27e}{m\+\_\+rendering\+To}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} that the renderer is rendering to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_aed4e7f241543ddff6b97cb717bdf2bf9}\label{class_triton_1_1_graphics_1_1_renderer_aed4e7f241543ddff6b97cb717bdf2bf9}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_aed4e7f241543ddff6b97cb717bdf2bf9}{m\+\_\+vsync}} = false
+\begin{DoxyCompactList}\small\item\em Variable used to keep track if the renderer should present the content synced up or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a0e19c0f441f3fae92141504af9bb96ae}\label{class_triton_1_1_graphics_1_1_renderer_a0e19c0f441f3fae92141504af9bb96ae}} 
+float \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a0e19c0f441f3fae92141504af9bb96ae}{m\+\_\+fov}} = 3.\+141592654f / 4.\+0f
+\begin{DoxyCompactList}\small\item\em F\+OV of the renderer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a9ecf9014ddcff25645ed45738ced056b}\label{class_triton_1_1_graphics_1_1_renderer_a9ecf9014ddcff25645ed45738ced056b}} 
+float \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a9ecf9014ddcff25645ed45738ced056b}{m\+\_\+near\+Plane}} = 0.\+1f
+\begin{DoxyCompactList}\small\item\em The near plane where renderer starts culling objects. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_ac939469cc41f5784fcec770652e79a4d}\label{class_triton_1_1_graphics_1_1_renderer_ac939469cc41f5784fcec770652e79a4d}} 
+float \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_ac939469cc41f5784fcec770652e79a4d}{m\+\_\+far\+Plane}} = 100.\+0f
+\begin{DoxyCompactList}\small\item\em The far plane where renderer starts culling objects. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a75d16427b72629187705cc5335b048e2}\label{class_triton_1_1_graphics_1_1_renderer_a75d16427b72629187705cc5335b048e2}} 
+Matrix44 \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_a75d16427b72629187705cc5335b048e2}{m\+\_\+projection\+Matrix}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}} calculated projection matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_ab7ce6876e5a2c109f6574e4245ddf73c}\label{class_triton_1_1_graphics_1_1_renderer_ab7ce6876e5a2c109f6574e4245ddf73c}} 
+Matrix44 \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_ab7ce6876e5a2c109f6574e4245ddf73c}{m\+\_\+orthographic\+Matrix}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}} calculated orthographic matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_adf637b6b8b54c0a47d5bffc0ed2ebc40}\label{class_triton_1_1_graphics_1_1_renderer_adf637b6b8b54c0a47d5bffc0ed2ebc40}} 
+Matrix44 \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer_adf637b6b8b54c0a47d5bffc0ed2ebc40}{m\+\_\+world\+Matrix}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}} calculated world matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The renderer is similar to the context in that each A\+PI has a specific way to render the renderer is created using the context and requires a valid window so that the render could know where to render to 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a4360a2be7a8de3970401070909dccea2}\label{class_triton_1_1_graphics_1_1_renderer_a4360a2be7a8de3970401070909dccea2}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!cullBufferState@{cullBufferState}}
+\index{cullBufferState@{cullBufferState}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{cullBufferState()}{cullBufferState()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::cull\+Buffer\+State (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Set cull buffer state
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & if false then the back face culling will not be active \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a5b726075a2fb5c156de57d23d2e950c7}\label{class_triton_1_1_graphics_1_1_renderer_a5b726075a2fb5c156de57d23d2e950c7}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!default@{default}}
+\index{default@{default}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{default()}{default()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Restore the renderer to it\textquotesingle{}s default state \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a596b247d6e30e4937de8f473c79d2a81}\label{class_triton_1_1_graphics_1_1_renderer_a596b247d6e30e4937de8f473c79d2a81}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!depthBufferState@{depthBufferState}}
+\index{depthBufferState@{depthBufferState}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{depthBufferState()}{depthBufferState()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::depth\+Buffer\+State (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Set depth buffer state
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & if false then the depth will not be calculate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_aa69987f6414e01c1749252e919ba8222}\label{class_triton_1_1_graphics_1_1_renderer_aa69987f6414e01c1749252e919ba8222}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!destroy@{destroy}}
+\index{destroy@{destroy}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Destroys the renderer \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_ad857cfb09ac490c794354e80f79b2d1b}\label{class_triton_1_1_graphics_1_1_renderer_ad857cfb09ac490c794354e80f79b2d1b}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!endFrame@{endFrame}}
+\index{endFrame@{endFrame}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{endFrame()}{endFrame()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::end\+Frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+End the frame and flush the contents \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a5c6023aede1b66020557a3c57427fe1a}\label{class_triton_1_1_graphics_1_1_renderer_a5c6023aede1b66020557a3c57427fe1a}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!farPlane@{farPlane}}
+\index{farPlane@{farPlane}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{farPlane()}{farPlane()}}
+{\footnotesize\ttfamily void Renderer\+::far\+Plane (\begin{DoxyParamCaption}\item[{float}]{value }\end{DoxyParamCaption})}
+
+Set the renderer far clipping plane
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & New v sync value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a639af17a7422c6fd0f1964091793b2d7}\label{class_triton_1_1_graphics_1_1_renderer_a639af17a7422c6fd0f1964091793b2d7}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!fov@{fov}}
+\index{fov@{fov}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{fov()}{fov()}}
+{\footnotesize\ttfamily void Renderer\+::fov (\begin{DoxyParamCaption}\item[{float}]{value }\end{DoxyParamCaption})}
+
+Set the renderer field of vision
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & New v sync value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a94a9e4586c8b4a40b557d8e739d43c08}\label{class_triton_1_1_graphics_1_1_renderer_a94a9e4586c8b4a40b557d8e739d43c08}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!nearPlane@{nearPlane}}
+\index{nearPlane@{nearPlane}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{nearPlane()}{nearPlane()}}
+{\footnotesize\ttfamily void Renderer\+::near\+Plane (\begin{DoxyParamCaption}\item[{float}]{value }\end{DoxyParamCaption})}
+
+Set the renderer near clipping plane
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & New v sync value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a954f799c50801ba8dd44fa3f3a5838ea}\label{class_triton_1_1_graphics_1_1_renderer_a954f799c50801ba8dd44fa3f3a5838ea}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!newFrame@{newFrame}}
+\index{newFrame@{newFrame}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{newFrame()}{newFrame()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::new\+Frame (\begin{DoxyParamCaption}\item[{float}]{red,  }\item[{float}]{green,  }\item[{float}]{blue,  }\item[{float}]{alpha }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Starts a new frame for the renderer with specified pixel color
+
+
+\begin{DoxyParams}{Parameters}
+{\em red} & color value for the red pixel color \\
+\hline
+{\em green} & color value for the green pixel color \\
+\hline
+{\em blue} & color value for the blue pixel color \\
+\hline
+{\em alpha} & color value for the alpha pixel color \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a7047e00d5fdd1346e44ce5a3ce9992e5}\label{class_triton_1_1_graphics_1_1_renderer_a7047e00d5fdd1346e44ce5a3ce9992e5}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!orthographic@{orthographic}}
+\index{orthographic@{orthographic}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{orthographic()}{orthographic()}}
+{\footnotesize\ttfamily Matrix44 Renderer\+::orthographic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the orthographic matrix
+
+\begin{DoxyReturn}{Returns}
+Orthographic matrix value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a608ea82887dad3c0c7b8ad6728effe33}\label{class_triton_1_1_graphics_1_1_renderer_a608ea82887dad3c0c7b8ad6728effe33}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!projection@{projection}}
+\index{projection@{projection}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{projection()}{projection()}}
+{\footnotesize\ttfamily Matrix44 Renderer\+::projection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the projection matrix
+
+\begin{DoxyReturn}{Returns}
+Projection matrix value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a177125b5b246ae8b9dd0a7d3beeb2dda}\label{class_triton_1_1_graphics_1_1_renderer_a177125b5b246ae8b9dd0a7d3beeb2dda}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!recalcMatrices@{recalcMatrices}}
+\index{recalcMatrices@{recalcMatrices}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{recalcMatrices()}{recalcMatrices()}}
+{\footnotesize\ttfamily void Renderer\+::recalc\+Matrices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Recalculates the matrices for the renderer \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a6bb5b87671e5adb2c3215331bde9c747}\label{class_triton_1_1_graphics_1_1_renderer_a6bb5b87671e5adb2c3215331bde9c747}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!render@{render}}
+\index{render@{render}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::render (\begin{DoxyParamCaption}\item[{reference$<$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderable}{Renderable}} $>$ \&}]{renderable }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Render a renderable
+
+
+\begin{DoxyParams}{Parameters}
+{\em renderable} & the renderable to render \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_aaada4a40680044d84687291d33a20cc4}\label{class_triton_1_1_graphics_1_1_renderer_aaada4a40680044d84687291d33a20cc4}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!render@{render}}
+\index{render@{render}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::render (\begin{DoxyParamCaption}\item[{unsigned int}]{indice\+Count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Render the current bound vertex array with specified index count
+
+
+\begin{DoxyParams}{Parameters}
+{\em indice\+Count} & The amount of indices to render \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a65e1cd45f1e8c5eff0099ce2a3890268}\label{class_triton_1_1_graphics_1_1_renderer_a65e1cd45f1e8c5eff0099ce2a3890268}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!setViewPort@{setViewPort}}
+\index{setViewPort@{setViewPort}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{setViewPort()}{setViewPort()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Renderer\+::set\+View\+Port (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Set the view port for rendering
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & start horizontal coordinate \\
+\hline
+{\em y} & start vertical coordinate \\
+\hline
+{\em width} & the width of new view port \\
+\hline
+{\em height} & the height of new view port \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_renderer_a8fa774e3f5f57e1044451844b863016c}\label{class_triton_1_1_graphics_1_1_renderer_a8fa774e3f5f57e1044451844b863016c}} 
+\index{Triton::Graphics::Renderer@{Triton::Graphics::Renderer}!vsync@{vsync}}
+\index{vsync@{vsync}!Triton::Graphics::Renderer@{Triton::Graphics::Renderer}}
+\doxysubsubsection{\texorpdfstring{vsync()}{vsync()}}
+{\footnotesize\ttfamily void Renderer\+::vsync (\begin{DoxyParamCaption}\item[{bool}]{value }\end{DoxyParamCaption})}
+
+Set the renderer vertical sync variable
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & New v sync value \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Renderer.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Renderer.\+cpp\end{DoxyCompactItemize}

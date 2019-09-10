@@ -1,0 +1,60 @@
+\hypertarget{class_triton_1_1_graphics_1_1_shader}{}\doxysection{Triton\+::Graphics\+::Shader Class Reference}
+\label{class_triton_1_1_graphics_1_1_shader}\index{Triton::Graphics::Shader@{Triton::Graphics::Shader}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_aeb3e126ecdaed4188df04841b49fc09c}{enable}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_a4ed2e0868235f9a7343131ee1ed45b63}{disable}} ()=0
+\item 
+Matrix\+Buffer \& \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_abe1d3f6dbd45b8dd09c1997d701c75c0}{buffer\+\_\+matrices}} ()
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_ad4b87d2ef7e495d040a60acd1c682c29}{update\+\_\+matrices}} ()=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_a901c5fe824fd5b3eb58038b446097d90}\label{class_triton_1_1_graphics_1_1_shader_a901c5fe824fd5b3eb58038b446097d90}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_a901c5fe824fd5b3eb58038b446097d90}{enabled}} = false
+\begin{DoxyCompactList}\small\item\em Variable to keep track if the shader is bound or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_aea0b3034c0dc1e1ee2f63e97f42fc2fb}\label{class_triton_1_1_graphics_1_1_shader_aea0b3034c0dc1e1ee2f63e97f42fc2fb}} 
+Matrix\+Buffer \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader_aea0b3034c0dc1e1ee2f63e97f42fc2fb}{prtc\+\_\+\+Matrices}}
+\begin{DoxyCompactList}\small\item\em Buffer containing the matrices used in shader calculations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_abe1d3f6dbd45b8dd09c1997d701c75c0}\label{class_triton_1_1_graphics_1_1_shader_abe1d3f6dbd45b8dd09c1997d701c75c0}} 
+\index{Triton::Graphics::Shader@{Triton::Graphics::Shader}!buffer\_matrices@{buffer\_matrices}}
+\index{buffer\_matrices@{buffer\_matrices}!Triton::Graphics::Shader@{Triton::Graphics::Shader}}
+\doxysubsubsection{\texorpdfstring{buffer\_matrices()}{buffer\_matrices()}}
+{\footnotesize\ttfamily Matrix\+Buffer \& Shader\+::buffer\+\_\+matrices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the matrix buffer instance of this shader
+
+\begin{DoxyReturn}{Returns}
+The matrix buffer instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_a4ed2e0868235f9a7343131ee1ed45b63}\label{class_triton_1_1_graphics_1_1_shader_a4ed2e0868235f9a7343131ee1ed45b63}} 
+\index{Triton::Graphics::Shader@{Triton::Graphics::Shader}!disable@{disable}}
+\index{disable@{disable}!Triton::Graphics::Shader@{Triton::Graphics::Shader}}
+\doxysubsubsection{\texorpdfstring{disable()}{disable()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Shader\+::disable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Disables/unbinds the shader mainly used for debugging \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_aeb3e126ecdaed4188df04841b49fc09c}\label{class_triton_1_1_graphics_1_1_shader_aeb3e126ecdaed4188df04841b49fc09c}} 
+\index{Triton::Graphics::Shader@{Triton::Graphics::Shader}!enable@{enable}}
+\index{enable@{enable}!Triton::Graphics::Shader@{Triton::Graphics::Shader}}
+\doxysubsubsection{\texorpdfstring{enable()}{enable()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Shader\+::enable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Enables/binds the shader \mbox{\Hypertarget{class_triton_1_1_graphics_1_1_shader_ad4b87d2ef7e495d040a60acd1c682c29}\label{class_triton_1_1_graphics_1_1_shader_ad4b87d2ef7e495d040a60acd1c682c29}} 
+\index{Triton::Graphics::Shader@{Triton::Graphics::Shader}!update\_matrices@{update\_matrices}}
+\index{update\_matrices@{update\_matrices}!Triton::Graphics::Shader@{Triton::Graphics::Shader}}
+\doxysubsubsection{\texorpdfstring{update\_matrices()}{update\_matrices()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Shader\+::update\+\_\+matrices (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Updates the matrices buffer uniforms 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/Shader.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/Shader.\+cpp\end{DoxyCompactItemize}

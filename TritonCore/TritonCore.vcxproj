@@ -76,7 +76,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;NOMINMAX;TR_DEBUG;TR_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\vendor\DirectXTK\Inc;..\vendor\mono\include\mono-2.0;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -97,7 +97,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;NOMINMAX;TR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\vendor\DirectXTK\Inc;..\vendor\mono\include\mono-2.0;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -122,7 +122,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>TRpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TR_PLATFORM_WINDOWS;NOMINMAX;TR_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\vendor\spdlog\include;..\vendor\glm;..\vendor\entt\src;..\vendor\stb_image;..\vendor\Assimp\include;..\vendor\cereal\include;..\vendor\DirectXTK\Inc;..\vendor\mono\include\mono-2.0;..\TritonGraphics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -143,25 +143,29 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton2\Triton.h" />
-    <ClInclude Include="src\Triton2\Utility\Log.h" />
-    <ClInclude Include="src\TritonTypes\ShaderBuffers.h" />
+    <ClInclude Include="src\Triton2\Limits.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
+    <ClInclude Include="src\Triton2\Assert.h" />
+    <ClInclude Include="src\Triton2\Core\AssetManager.h" />
     <ClInclude Include="src\Triton2\File\File.h" />
+    <ClInclude Include="src\Triton2\File\Serialize.h" />
+    <ClInclude Include="src\Triton2\Triton.h" />
     <ClInclude Include="src\Triton2\Utility\Algorithm.h" />
-    <ClInclude Include="src\Triton2\Utility\Utility.h" />
+    <ClInclude Include="src\Triton2\Utility\Log.h" />
+    <ClInclude Include="src\TritonTypes\Asset.h" />
     <ClInclude Include="src\TritonTypes\IO.h" />
-    <ClInclude Include="src\TritonTypes\Interfaces\ISerializable.h" />
-    <ClInclude Include="src\TritonTypes\Interfaces\IStateChanger.h" />
+    <ClInclude Include="src\TritonTypes\ShaderBuffers.h" />
     <ClInclude Include="src\TritonTypes\data_collection.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton2\Utility\Log.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Core\AssetManager.cpp">
+      <ObjectFileName>$(IntDir)\AssetManager1.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\Triton2\File\File.cpp">
       <ObjectFileName>$(IntDir)\File1.obj</ObjectFileName>
@@ -169,8 +173,11 @@
     <ClCompile Include="src\Triton2\Utility\Algorithm.cpp">
       <ObjectFileName>$(IntDir)\Algorithm1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="src\Triton2\Utility\Utility.cpp">
-      <ObjectFileName>$(IntDir)\Utility1.obj</ObjectFileName>
+    <ClCompile Include="src\Triton2\Utility\Log.cpp">
+      <ObjectFileName>$(IntDir)\Log1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\TritonTypes\Asset.cpp">
+      <ObjectFileName>$(IntDir)\Asset1.obj</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,4 +7,7 @@
 #include "TritonGraphicsAbstraction.h"
 
 /// The IO operations provided by the engine
-#include "File/File.h"
+#include "Triton2/File/File.h"
+
+/// Asset manager
+#include "Triton2/Core/AssetManager.h"

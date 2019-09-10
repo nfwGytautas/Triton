@@ -1,7 +1,7 @@
 #include "DXRenderer.h"
 
-#include "TritonPlatform/CrossTypes/Base.h"
-#include "TritonPlatform/mathematical.h"
+#include "TritonPlatform2/CrossTypes/Base.h"
+#include "TritonPlatform2/mathematical.h"
 
 namespace Triton
 {

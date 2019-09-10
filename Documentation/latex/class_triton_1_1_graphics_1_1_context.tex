@@ -1,0 +1,237 @@
+\hypertarget{class_triton_1_1_graphics_1_1_context}{}\doxysection{Triton\+::Graphics\+::Context Class Reference}
+\label{class_triton_1_1_graphics_1_1_context}\index{Triton::Graphics::Context@{Triton::Graphics::Context}}
+
+
+{\ttfamily \#include $<$Context.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ac6177ae517896b0d1816f39198dea776}{new\+Window}} ()=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a43f25b7b78f1762ee76d2a472f1175f7}{new\+Renderer}} (\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} $\ast$window)=0
+\item 
+virtual bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_afed8a72620784e1f865dba24c70f3c57}{init}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a28c006418160128e4e7db71a9147a5de}{shutdown}} ()=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader}{Shader}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ab5ee350ba7b385742c3f767e378f5464}{new\+Shader}} (const I\+O\+::\+Shader\+Data \&create\+Params)=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_v_a_o}{V\+AO}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a117f8d1c1814b461b83e926bf01952c0}{new\+V\+AO}} (const I\+O\+::\+Mesh\+Data\+::\+Mesh \&create\+Params)=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_texture}{Texture}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ad3a3411a466f25329fbe00380415f190}{new\+Texture}} (const I\+O\+::\+Image\+Data \&create\+Params)=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_cube_texture}{Cube\+Texture}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ae305b448e2b47702156dd018daa0d93d}{new\+Cube\+Texture}} (const I\+O\+::\+Image\+Array\+Data \&create\+Params)=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_framebuffer}{Framebuffer}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_add49b09cbfa5208a880520fe4ce25fbf}{new\+Framebuffer}} (unsigned int width, unsigned int height)=0
+\item 
+virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_bitmap}{Bitmap}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a4ceed49972a3758be81730239292d5ea}{new\+Bitmap}} (const \mbox{\hyperlink{class_triton_1_1_graphics_1_1_bitmap_create_params}{Bitmap\+Create\+Params}} \&create\+Params)=0
+\item 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} \& \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a621b33996ce4c76b9dd47ed8b117f053}{keyboard}} () const
+\item 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} \& \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_aa0f0a62d401f06af90383f3b96982df3}{mouse}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_a4e61d3108faf7a0531f89daf511a487b}{create}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ac22e82eaa77b12bbcc2ddae84c1849f9}\label{class_triton_1_1_graphics_1_1_context_ac22e82eaa77b12bbcc2ddae84c1849f9}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ac22e82eaa77b12bbcc2ddae84c1849f9}{m\+\_\+initialized}} = false
+\begin{DoxyCompactList}\small\item\em Variable to track if the context has been initialized or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ae74aabefa10a3b1bb72105fa713e75ae}\label{class_triton_1_1_graphics_1_1_context_ae74aabefa10a3b1bb72105fa713e75ae}} 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_ae74aabefa10a3b1bb72105fa713e75ae}{m\+\_\+keyboard\+State}}
+\begin{DoxyCompactList}\small\item\em Variable used to track the keyboard state, all windows share a single keyboard state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_abf38bc3a7bdabf09de233b24ed0c7644}\label{class_triton_1_1_graphics_1_1_context_abf38bc3a7bdabf09de233b24ed0c7644}} 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context_abf38bc3a7bdabf09de233b24ed0c7644}{m\+\_\+mouse\+State}}
+\begin{DoxyCompactList}\small\item\em Variable used to track the mouse state, all windows share a single mouse state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The context used by most A\+P\+Is, each A\+PI implements it\textquotesingle{}s own instance of the \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} the correct one can be created using static \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} method create 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a4e61d3108faf7a0531f89daf511a487b}\label{class_triton_1_1_graphics_1_1_context_a4e61d3108faf7a0531f89daf511a487b}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!create@{create}}
+\index{create@{create}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{create()}{create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} $\ast$ Context\+::create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Create a context
+
+\begin{DoxyReturn}{Returns}
+The A\+PI specific context cast to \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} base class 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_afed8a72620784e1f865dba24c70f3c57}\label{class_triton_1_1_graphics_1_1_context_afed8a72620784e1f865dba24c70f3c57}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!init@{init}}
+\index{init@{init}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual bool Triton\+::\+Graphics\+::\+Context\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Initialize the \mbox{\hyperlink{class_triton_1_1_graphics_1_1_context}{Context}} class
+
+\begin{DoxyReturn}{Returns}
+Boolean that specifies if the initialization was successful 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a621b33996ce4c76b9dd47ed8b117f053}\label{class_triton_1_1_graphics_1_1_context_a621b33996ce4c76b9dd47ed8b117f053}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!keyboard@{keyboard}}
+\index{keyboard@{keyboard}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{keyboard()}{keyboard()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} \& Context\+::keyboard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the keyboard state of the context
+
+\begin{DoxyReturn}{Returns}
+keyboard state associated with current context 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_aa0f0a62d401f06af90383f3b96982df3}\label{class_triton_1_1_graphics_1_1_context_aa0f0a62d401f06af90383f3b96982df3}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!mouse@{mouse}}
+\index{mouse@{mouse}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{mouse()}{mouse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} \& Context\+::mouse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the mouse state of the context
+
+\begin{DoxyReturn}{Returns}
+mouse state associated with current context 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a4ceed49972a3758be81730239292d5ea}\label{class_triton_1_1_graphics_1_1_context_a4ceed49972a3758be81730239292d5ea}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newBitmap@{newBitmap}}
+\index{newBitmap@{newBitmap}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newBitmap()}{newBitmap()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_bitmap}{Bitmap}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Bitmap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_triton_1_1_graphics_1_1_bitmap_create_params}{Bitmap\+Create\+Params}} \&}]{create\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new bitmap from the create params
+
+
+\begin{DoxyParams}{Parameters}
+{\em create\+Params} & The parameters of the bitmap \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created bitmap 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ae305b448e2b47702156dd018daa0d93d}\label{class_triton_1_1_graphics_1_1_context_ae305b448e2b47702156dd018daa0d93d}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newCubeTexture@{newCubeTexture}}
+\index{newCubeTexture@{newCubeTexture}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newCubeTexture()}{newCubeTexture()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_cube_texture}{Cube\+Texture}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Cube\+Texture (\begin{DoxyParamCaption}\item[{const I\+O\+::\+Image\+Array\+Data \&}]{create\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new \mbox{\hyperlink{class_triton_1_1_graphics_1_1_cube_texture}{Cube\+Texture}} from the create params
+
+
+\begin{DoxyParams}{Parameters}
+{\em create\+Params} & The parameters of the cube texture \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created cube texture 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_add49b09cbfa5208a880520fe4ce25fbf}\label{class_triton_1_1_graphics_1_1_context_add49b09cbfa5208a880520fe4ce25fbf}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newFramebuffer@{newFramebuffer}}
+\index{newFramebuffer@{newFramebuffer}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newFramebuffer()}{newFramebuffer()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_framebuffer}{Framebuffer}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Framebuffer (\begin{DoxyParamCaption}\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new frame buffer
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & The width of the new frame buffer \\
+\hline
+{\em height} & The height of the new frame buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created frame buffer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a43f25b7b78f1762ee76d2a472f1175f7}\label{class_triton_1_1_graphics_1_1_context_a43f25b7b78f1762ee76d2a472f1175f7}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newRenderer@{newRenderer}}
+\index{newRenderer@{newRenderer}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newRenderer()}{newRenderer()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Renderer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} $\ast$}]{window }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new renderer from a window
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & The window to create the renderer for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+New A\+PI specific renderer cast to \mbox{\hyperlink{class_triton_1_1_graphics_1_1_renderer}{Renderer}} base class 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ab5ee350ba7b385742c3f767e378f5464}\label{class_triton_1_1_graphics_1_1_context_ab5ee350ba7b385742c3f767e378f5464}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newShader@{newShader}}
+\index{newShader@{newShader}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newShader()}{newShader()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_shader}{Shader}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Shader (\begin{DoxyParamCaption}\item[{const I\+O\+::\+Shader\+Data \&}]{create\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new shader from the create params
+
+
+\begin{DoxyParams}{Parameters}
+{\em create\+Params} & The parameters of the shader \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created shader 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ad3a3411a466f25329fbe00380415f190}\label{class_triton_1_1_graphics_1_1_context_ad3a3411a466f25329fbe00380415f190}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newTexture@{newTexture}}
+\index{newTexture@{newTexture}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newTexture()}{newTexture()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_texture}{Texture}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Texture (\begin{DoxyParamCaption}\item[{const I\+O\+::\+Image\+Data \&}]{create\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new texture from the specified params
+
+
+\begin{DoxyParams}{Parameters}
+{\em create\+Params} & The parameters of the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created texture 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a117f8d1c1814b461b83e926bf01952c0}\label{class_triton_1_1_graphics_1_1_context_a117f8d1c1814b461b83e926bf01952c0}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newVAO@{newVAO}}
+\index{newVAO@{newVAO}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newVAO()}{newVAO()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_v_a_o}{V\+AO}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+V\+AO (\begin{DoxyParamCaption}\item[{const I\+O\+::\+Mesh\+Data\+::\+Mesh \&}]{create\+Params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new \mbox{\hyperlink{class_triton_1_1_graphics_1_1_v_a_o}{V\+AO}} from specified params
+
+
+\begin{DoxyParams}{Parameters}
+{\em create\+Params} & The parameters of the \mbox{\hyperlink{class_triton_1_1_graphics_1_1_v_a_o}{V\+AO}} not this is a single Mesh of Mesh\+Data not entire mesh data structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to the newly created \mbox{\hyperlink{class_triton_1_1_graphics_1_1_v_a_o}{V\+AO}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_ac6177ae517896b0d1816f39198dea776}\label{class_triton_1_1_graphics_1_1_context_ac6177ae517896b0d1816f39198dea776}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!newWindow@{newWindow}}
+\index{newWindow@{newWindow}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{newWindow()}{newWindow()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}}$\ast$ Triton\+::\+Graphics\+::\+Context\+::new\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new empty window
+
+\begin{DoxyReturn}{Returns}
+New A\+PI specific window cast to \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} base class 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_context_a28c006418160128e4e7db71a9147a5de}\label{class_triton_1_1_graphics_1_1_context_a28c006418160128e4e7db71a9147a5de}} 
+\index{Triton::Graphics::Context@{Triton::Graphics::Context}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!Triton::Graphics::Context@{Triton::Graphics::Context}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Context\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Shutdown the context and clean all the resources 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Context.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Context.\+cpp\end{DoxyCompactItemize}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TritonPlatform/mathematical.h"
+#include "TritonPlatform2/mathematical.h"
 
 #include "TritonTypes/reference.h"
 #include "TritonTypes/ShaderBuffers.h"

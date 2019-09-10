@@ -76,7 +76,7 @@ namespace Triton
 			 * @param createParams The parameters of the VAO not this is a single Mesh of MeshData not entire mesh data structure
 			 * @return reference to the newly created VAO
 			 */
-			virtual VAO* newVAO(const IO::MeshData::Mesh& createParams) = 0;
+			virtual VAO* newVAO(const IO::Mesh& createParams) = 0;
 
 			/**
 			 * Create a new texture from the specified params

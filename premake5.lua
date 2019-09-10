@@ -92,7 +92,6 @@ project "TritonGraphics"
 		optimize "on"
 		runtime "Release"
 
-
 project "TritonCore"
 	location "TritonCore"
 	kind "StaticLib"
@@ -145,6 +144,7 @@ project "TritonCore"
 		defines
 		{
 			"TR_PLATFORM_WINDOWS",
+			"NOMINMAX",
 		}
 
 	filter "configurations:Debug"
@@ -313,8 +313,6 @@ project "TritonEditorExtension"
 		defines "TR_DIST"
 		runtime "Release"
 		optimize "on"
-
-
 
 project "SandBox"
 	location "SandBox"

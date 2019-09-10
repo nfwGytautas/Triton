@@ -25,6 +25,9 @@
     <Filter Include="TritonPlatform2\CrossTypes\Core">
       <UniqueIdentifier>{623F5168-CE22-60A8-D725-8EE4438826F9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TritonPlatform2\CrossTypes\Core\State">
+      <UniqueIdentifier>{32709121-9E34-9011-679A-C0DBD31D2C47}</UniqueIdentifier>
+    </Filter>
     <Filter Include="TritonPlatform2\DirectX">
       <UniqueIdentifier>{5EE9D4F6-CA20-1D8E-D32A-81B13FE14387}</UniqueIdentifier>
     </Filter>
@@ -36,6 +39,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\TritonGraphicsAbstraction.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Base.h">
       <Filter>TritonPlatform2\CrossTypes</Filter>
     </ClInclude>
@@ -47,6 +51,12 @@
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Renderer.h">
       <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h">
+      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.h">
+      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Window.h">
       <Filter>TritonPlatform2\CrossTypes\Core</Filter>
@@ -84,6 +94,9 @@
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXWindow.h">
       <Filter>TritonPlatform2\DirectX\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\DirectX\DXManip.h">
+      <Filter>TritonPlatform2\DirectX</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\DXTypes.h">
       <Filter>TritonPlatform2\DirectX</Filter>
     </ClInclude>
@@ -96,9 +109,6 @@
     <ClInclude Include="src\TritonPlatform2\mathematical.h">
       <Filter>TritonPlatform2</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonGraphicsAbstraction.h" />
-    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.h" />
-    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Context.cpp">
@@ -106,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Renderer.cpp">
       <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp">
+      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp">
+      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Window.cpp">
       <Filter>TritonPlatform2\CrossTypes\Core</Filter>
@@ -137,13 +153,14 @@
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp">
       <Filter>TritonPlatform2\DirectX\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp">
+      <Filter>TritonPlatform2\DirectX</Filter>
+    </ClCompile>
     <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp">
       <Filter>TritonPlatform2</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\mathematical.cpp">
       <Filter>TritonPlatform2</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp" />
-    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp" />
   </ItemGroup>
 </Project>

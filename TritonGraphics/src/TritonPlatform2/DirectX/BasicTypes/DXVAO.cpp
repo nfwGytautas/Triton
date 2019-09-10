@@ -27,7 +27,7 @@ void DXVAO::enable()
 
 
 	// Set vertex buffer stride and offset.
-	stride = sizeof(IO::MeshData::Mesh::Vertex);
+	stride = sizeof(IO::Vertex);
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.

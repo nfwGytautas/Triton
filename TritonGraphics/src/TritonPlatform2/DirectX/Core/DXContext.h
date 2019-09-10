@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Triton/AppSettings.h"
-
 #include "TritonPlatform2/DirectX/Macros.h"
 #include "TritonPlatform2/CrossTypes/Core/Context.h"
 
@@ -21,7 +19,7 @@ public:
 	virtual void shutdown() override;
 
 	virtual Shader* newShader(const IO::ShaderData& createParams) override;
-	virtual VAO* newVAO(const IO::MeshData::Mesh& createParams) override;
+	virtual VAO* newVAO(const IO::Mesh& createParams) override;
 	virtual Texture* newTexture(const IO::ImageData& createParams) override;
 	virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) override;
 	virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) override;

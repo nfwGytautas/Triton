@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Triton\Logger\Log.h"
+#include "Triton2\Utility\Log.h"
 
 #include <d3d11.h>
 

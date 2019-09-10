@@ -85,7 +85,6 @@ void DXShader::unmapBuffer(ID3D11Buffer* buffer)
 
 void DXShader::update_matrices()
 {
-	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	MatrixBuffer* dataPtr;
 

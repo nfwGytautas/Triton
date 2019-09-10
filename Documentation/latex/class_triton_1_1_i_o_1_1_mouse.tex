@@ -1,0 +1,196 @@
+\hypertarget{class_triton_1_1_i_o_1_1_mouse}{}\doxysection{Triton\+::IO\+::Mouse Class Reference}
+\label{class_triton_1_1_i_o_1_1_mouse}\index{Triton::IO::Mouse@{Triton::IO::Mouse}}
+
+
+{\ttfamily \#include $<$Mouse.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::tuple$<$ double, double $>$ \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_abd3c3958004b851ec4f9b34aeedf604a}{scroll}} () const
+\item 
+std\+::tuple$<$ double, double $>$ \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_accb1e982f260c379983fed22a45b1823}{delta\+Scroll}} () const
+\item 
+std\+::tuple$<$ double, double $>$ \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a3bb3b20cb2ff55d30f88e538944f10de}{position}} () const
+\item 
+std\+::tuple$<$ double, double $>$ \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_ac83d0390d8001ae91145e187a8338128}{delta\+Position}} () const
+\item 
+bool \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a4f56eff9d9ccac423744847125bdf931}{is\+Key\+Down}} (Mouse\+Key key) const
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_aae9677b31d7c843bb774f1a9a8701a07}{add\+X\+Scroll\+Delta}} (double delta)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_aefc64e7cb135a840215dd3576fbbe7d3}{add\+Y\+Scroll\+Delta}} (double delta)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a9e916afa64dd873a341543896e410f99}{set\+PosX}} (double new\+Val)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a13810f9d3edeea95da7398b24922e049}{set\+PosY}} (double new\+Val)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a40212ae4f44e8de1fb9c3e5d249c8755}{add\+X\+Pos\+Delta}} (double delta)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_adaf5fdd07e0258e86f6303af1aa3dc2d}{add\+Y\+Pos\+Delta}} (double delta)
+\item 
+void \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse_a7979b3defc9ecac81cbe21d79920b0b0}{set\+Key}} (Mouse\+Key key, bool state)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Struct that represents the current state of the mouse 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a40212ae4f44e8de1fb9c3e5d249c8755}\label{class_triton_1_1_i_o_1_1_mouse_a40212ae4f44e8de1fb9c3e5d249c8755}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!addXPosDelta@{addXPosDelta}}
+\index{addXPosDelta@{addXPosDelta}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{addXPosDelta()}{addXPosDelta()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::add\+X\+Pos\+Delta (\begin{DoxyParamCaption}\item[{double}]{delta }\end{DoxyParamCaption})}
+
+Add delta to position x value
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & The delta to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_aae9677b31d7c843bb774f1a9a8701a07}\label{class_triton_1_1_i_o_1_1_mouse_aae9677b31d7c843bb774f1a9a8701a07}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!addXScrollDelta@{addXScrollDelta}}
+\index{addXScrollDelta@{addXScrollDelta}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{addXScrollDelta()}{addXScrollDelta()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::add\+X\+Scroll\+Delta (\begin{DoxyParamCaption}\item[{double}]{delta }\end{DoxyParamCaption})}
+
+Add delta to scroll x value
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & The delta to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_adaf5fdd07e0258e86f6303af1aa3dc2d}\label{class_triton_1_1_i_o_1_1_mouse_adaf5fdd07e0258e86f6303af1aa3dc2d}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!addYPosDelta@{addYPosDelta}}
+\index{addYPosDelta@{addYPosDelta}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{addYPosDelta()}{addYPosDelta()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::add\+Y\+Pos\+Delta (\begin{DoxyParamCaption}\item[{double}]{delta }\end{DoxyParamCaption})}
+
+Add delta to position y value
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & The delta to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_aefc64e7cb135a840215dd3576fbbe7d3}\label{class_triton_1_1_i_o_1_1_mouse_aefc64e7cb135a840215dd3576fbbe7d3}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!addYScrollDelta@{addYScrollDelta}}
+\index{addYScrollDelta@{addYScrollDelta}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{addYScrollDelta()}{addYScrollDelta()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::add\+Y\+Scroll\+Delta (\begin{DoxyParamCaption}\item[{double}]{delta }\end{DoxyParamCaption})}
+
+Add delta to scroll y value
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & The delta to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_ac83d0390d8001ae91145e187a8338128}\label{class_triton_1_1_i_o_1_1_mouse_ac83d0390d8001ae91145e187a8338128}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!deltaPosition@{deltaPosition}}
+\index{deltaPosition@{deltaPosition}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{deltaPosition()}{deltaPosition()}}
+{\footnotesize\ttfamily std\+::tuple$<$ double, double $>$ Triton\+::\+I\+O\+::\+Mouse\+::delta\+Position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Poll for the delta of the mouse position
+
+\begin{DoxyReturn}{Returns}
+tuple of x and y deltas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_accb1e982f260c379983fed22a45b1823}\label{class_triton_1_1_i_o_1_1_mouse_accb1e982f260c379983fed22a45b1823}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!deltaScroll@{deltaScroll}}
+\index{deltaScroll@{deltaScroll}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{deltaScroll()}{deltaScroll()}}
+{\footnotesize\ttfamily std\+::tuple$<$ double, double $>$ Triton\+::\+I\+O\+::\+Mouse\+::delta\+Scroll (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Poll for the delta of the mouse scroll
+
+\begin{DoxyReturn}{Returns}
+tuple of x and y deltas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a4f56eff9d9ccac423744847125bdf931}\label{class_triton_1_1_i_o_1_1_mouse_a4f56eff9d9ccac423744847125bdf931}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!isKeyDown@{isKeyDown}}
+\index{isKeyDown@{isKeyDown}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{isKeyDown()}{isKeyDown()}}
+{\footnotesize\ttfamily bool Triton\+::\+I\+O\+::\+Mouse\+::is\+Key\+Down (\begin{DoxyParamCaption}\item[{Mouse\+Key}]{key }\end{DoxyParamCaption}) const}
+
+Poll for the state of the key
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key you want to poll for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Is key down 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a3bb3b20cb2ff55d30f88e538944f10de}\label{class_triton_1_1_i_o_1_1_mouse_a3bb3b20cb2ff55d30f88e538944f10de}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!position@{position}}
+\index{position@{position}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily std\+::tuple$<$ double, double $>$ Triton\+::\+I\+O\+::\+Mouse\+::position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Poll for the position of the mouse
+
+\begin{DoxyReturn}{Returns}
+tuple of x and y values 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_abd3c3958004b851ec4f9b34aeedf604a}\label{class_triton_1_1_i_o_1_1_mouse_abd3c3958004b851ec4f9b34aeedf604a}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!scroll@{scroll}}
+\index{scroll@{scroll}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{scroll()}{scroll()}}
+{\footnotesize\ttfamily std\+::tuple$<$ double, double $>$ Triton\+::\+I\+O\+::\+Mouse\+::scroll (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Poll for the scroll of the mouse
+
+\begin{DoxyReturn}{Returns}
+tuple of x and y values 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a7979b3defc9ecac81cbe21d79920b0b0}\label{class_triton_1_1_i_o_1_1_mouse_a7979b3defc9ecac81cbe21d79920b0b0}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!setKey@{setKey}}
+\index{setKey@{setKey}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{setKey()}{setKey()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::set\+Key (\begin{DoxyParamCaption}\item[{Mouse\+Key}]{key,  }\item[{bool}]{state }\end{DoxyParamCaption})}
+
+Sets the state for a key
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to set @prama state The new state for the key \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a9e916afa64dd873a341543896e410f99}\label{class_triton_1_1_i_o_1_1_mouse_a9e916afa64dd873a341543896e410f99}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!setPosX@{setPosX}}
+\index{setPosX@{setPosX}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{setPosX()}{setPosX()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::set\+PosX (\begin{DoxyParamCaption}\item[{double}]{new\+Val }\end{DoxyParamCaption})}
+
+Set position x value
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Val} & New x value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_i_o_1_1_mouse_a13810f9d3edeea95da7398b24922e049}\label{class_triton_1_1_i_o_1_1_mouse_a13810f9d3edeea95da7398b24922e049}} 
+\index{Triton::IO::Mouse@{Triton::IO::Mouse}!setPosY@{setPosY}}
+\index{setPosY@{setPosY}!Triton::IO::Mouse@{Triton::IO::Mouse}}
+\doxysubsubsection{\texorpdfstring{setPosY()}{setPosY()}}
+{\footnotesize\ttfamily void Triton\+::\+I\+O\+::\+Mouse\+::set\+PosY (\begin{DoxyParamCaption}\item[{double}]{new\+Val }\end{DoxyParamCaption})}
+
+Set position y value
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Val} & New y value \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/\+State/Mouse.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/\+State/Mouse.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,179 @@
+\hypertarget{class_triton_1_1_graphics_1_1_d_x_window}{}\doxysection{Triton\+::Graphics\+::D\+X\+Window Class Reference}
+\label{class_triton_1_1_graphics_1_1_d_x_window}\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+Inheritance diagram for Triton\+::Graphics\+::D\+X\+Window\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_triton_1_1_graphics_1_1_d_x_window}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a1dd9fc915026beec0c4874e9b2376ea9}\label{class_triton_1_1_graphics_1_1_d_x_window_a1dd9fc915026beec0c4874e9b2376ea9}} 
+L\+R\+E\+S\+U\+LT C\+A\+L\+L\+B\+A\+CK {\bfseries Message\+Handler} (H\+W\+ND hwnd, U\+I\+NT umsg, W\+P\+A\+R\+AM wparam, L\+P\+A\+R\+AM lparam)
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a573b8bd6b2e404091bb2ea91f2f0895a}\label{class_triton_1_1_graphics_1_1_d_x_window_a573b8bd6b2e404091bb2ea91f2f0895a}} 
+{\bfseries D\+X\+Window} (\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} $\ast$k\+Board, \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} $\ast$\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a2d4a37e681896f00baedffe0ce2316b9}{mouse}})
+\item 
+virtual bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a7f9a4d412cf07ba1a0ce7a014d1ddc5c}{init\+New}} (float starting\+Width, float starting\+Height) override
+\item 
+virtual bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_ae05ebac183fb52044c01befff3112358}{init\+From\+Created}} (std\+::vector$<$ void $\ast$ $>$ params) override
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a6eec0f076bb1db69ef97b2af4b780efc}{update}} () override
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a09d10f50b982504e55ddba74389e5aa9}{destroy}} () override
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_ab9c8185e0cadbd275316c04c210fd9df}{set\+Cursor\+Pos}} (double x, double y) override
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a6a88cc5ac26b9c6ded21a01b7173f203}{show\+Cursor}} (bool value) override
+\item 
+virtual std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a8c59d9ed529f99f854b28c38ccb8e992}{size}} () override
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a5c7fea5aed16d090d3fb9a9f121868e8}{make\+Current}} () override
+\item 
+H\+W\+ND \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_ab5cf72495e9d9bf46eacb1b2ca4d53ba}{native\+Handle}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a09d10f50b982504e55ddba74389e5aa9}\label{class_triton_1_1_graphics_1_1_d_x_window_a09d10f50b982504e55ddba74389e5aa9}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!destroy@{destroy}}
+\index{destroy@{destroy}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+D\+X\+Window\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Destroys the window 
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab6f7ed60ed424a24b6ff62b1686ec9a6}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_ae05ebac183fb52044c01befff3112358}\label{class_triton_1_1_graphics_1_1_d_x_window_ae05ebac183fb52044c01befff3112358}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!initFromCreated@{initFromCreated}}
+\index{initFromCreated@{initFromCreated}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{initFromCreated()}{initFromCreated()}}
+{\footnotesize\ttfamily bool Triton\+::\+Graphics\+::\+D\+X\+Window\+::init\+From\+Created (\begin{DoxyParamCaption}\item[{std\+::vector$<$ void $\ast$ $>$}]{params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Create a new window from an already existing native window
+
+
+\begin{DoxyParams}{Parameters}
+{\em params} & The parameters needed to create the window (Windows\+: H\+W\+ND) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Did the window succeeded in creating and initializing 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a259b75e3c895f191a07bda632859ee21}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a7f9a4d412cf07ba1a0ce7a014d1ddc5c}\label{class_triton_1_1_graphics_1_1_d_x_window_a7f9a4d412cf07ba1a0ce7a014d1ddc5c}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!initNew@{initNew}}
+\index{initNew@{initNew}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{initNew()}{initNew()}}
+{\footnotesize\ttfamily bool Triton\+::\+Graphics\+::\+D\+X\+Window\+::init\+New (\begin{DoxyParamCaption}\item[{float}]{starting\+Width,  }\item[{float}]{starting\+Height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Create a new window and initialize it
+
+
+\begin{DoxyParams}{Parameters}
+{\em starting\+Width} & The starting width of the window \\
+\hline
+{\em starting\+Height} & The starting height of the window \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Did the window succeeded in creating and initializing 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a14625b24407ed6f4c63c412ec6079003}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a5c7fea5aed16d090d3fb9a9f121868e8}\label{class_triton_1_1_graphics_1_1_d_x_window_a5c7fea5aed16d090d3fb9a9f121868e8}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!makeCurrent@{makeCurrent}}
+\index{makeCurrent@{makeCurrent}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{makeCurrent()}{makeCurrent()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+D\+X\+Window\+::make\+Current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Sets the window to be the current one 
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a95306b916296571d6fd40288eb7e0e16}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_ab5cf72495e9d9bf46eacb1b2ca4d53ba}\label{class_triton_1_1_graphics_1_1_d_x_window_ab5cf72495e9d9bf46eacb1b2ca4d53ba}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!nativeHandle@{nativeHandle}}
+\index{nativeHandle@{nativeHandle}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{nativeHandle()}{nativeHandle()}}
+{\footnotesize\ttfamily H\+W\+ND Triton\+::\+Graphics\+::\+D\+X\+Window\+::native\+Handle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the native handle to the window
+
+\begin{DoxyReturn}{Returns}
+The H\+W\+ND of the window 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_ab9c8185e0cadbd275316c04c210fd9df}\label{class_triton_1_1_graphics_1_1_d_x_window_ab9c8185e0cadbd275316c04c210fd9df}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!setCursorPos@{setCursorPos}}
+\index{setCursorPos@{setCursorPos}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{setCursorPos()}{setCursorPos()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+D\+X\+Window\+::set\+Cursor\+Pos (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Set the mouse cursor position
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & new X coordinate of the cursor \\
+\hline
+{\em y} & new Y coordinate of the cursor \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab88af202b4f1f2aa03ec0b0a4c7ee3b8}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a6a88cc5ac26b9c6ded21a01b7173f203}\label{class_triton_1_1_graphics_1_1_d_x_window_a6a88cc5ac26b9c6ded21a01b7173f203}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!showCursor@{showCursor}}
+\index{showCursor@{showCursor}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{showCursor()}{showCursor()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+D\+X\+Window\+::show\+Cursor (\begin{DoxyParamCaption}\item[{bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Hide or show cursor
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & To hide cursor false to make cursor visible true \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a7b77e489b2a3c8e4dcc57b3b900f31de}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a8c59d9ed529f99f854b28c38ccb8e992}\label{class_triton_1_1_graphics_1_1_d_x_window_a8c59d9ed529f99f854b28c38ccb8e992}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!size@{size}}
+\index{size@{size}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily std\+::tuple$<$ int, int $>$ Triton\+::\+Graphics\+::\+D\+X\+Window\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Get the size of the window
+
+\begin{DoxyReturn}{Returns}
+tuple of the size first is width second is height 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_aa9cd1bfeb86115ba3c20fc904c5e25ad}{Triton\+::\+Graphics\+::\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_d_x_window_a6eec0f076bb1db69ef97b2af4b780efc}\label{class_triton_1_1_graphics_1_1_d_x_window_a6eec0f076bb1db69ef97b2af4b780efc}} 
+\index{Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}!update@{update}}
+\index{update@{update}!Triton::Graphics::DXWindow@{Triton::Graphics::DXWindow}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+D\+X\+Window\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Update the window getting the inputs from the window 
+
+Implements \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab970bd887ee3a8113497a5470c3f3046}{Triton\+::\+Graphics\+::\+Window}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Direct\+X/\+Core/D\+X\+Window.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Direct\+X/\+Core/D\+X\+Window.\+cpp\end{DoxyCompactItemize}

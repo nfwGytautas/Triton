@@ -9,6 +9,5 @@ namespace Triton
 	namespace Impl
 	{
 		std::wstring s2ws(const std::string& s);
-		DXGI_FORMAT sdtToDXGIFormat(Triton::Graphics::ShaderDataType type);
 	}
 }

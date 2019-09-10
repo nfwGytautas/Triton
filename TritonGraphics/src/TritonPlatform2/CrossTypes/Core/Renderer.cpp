@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-#include "TritonPlatform/mathematical.h"
+#include "TritonPlatform2/mathematical.h"
 
 namespace Triton
 {

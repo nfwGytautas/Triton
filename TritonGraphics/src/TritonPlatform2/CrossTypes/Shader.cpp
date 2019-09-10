@@ -1,7 +1,5 @@
 #include "Shader.h"
 
-#include "Triton/Logger/Log.h"
-
 namespace Triton
 {
 	namespace Graphics

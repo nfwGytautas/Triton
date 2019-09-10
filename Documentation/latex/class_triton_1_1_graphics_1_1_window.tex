@@ -1,0 +1,272 @@
+\hypertarget{class_triton_1_1_graphics_1_1_window}{}\doxysection{Triton\+::Graphics\+::Window Class Reference}
+\label{class_triton_1_1_graphics_1_1_window}\index{Triton::Graphics::Window@{Triton::Graphics::Window}}
+
+
+{\ttfamily \#include $<$Window.\+h$>$}
+
+Inheritance diagram for Triton\+::Graphics\+::Window\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_triton_1_1_graphics_1_1_window}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a12ee8a9760a4f89a679e74cd882fd50b}\label{class_triton_1_1_graphics_1_1_window_a12ee8a9760a4f89a679e74cd882fd50b}} 
+{\bfseries Window} (\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} $\ast$k\+Board, \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} $\ast$\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a2d4a37e681896f00baedffe0ce2316b9}{mouse}})
+\item 
+virtual bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a14625b24407ed6f4c63c412ec6079003}{init\+New}} (float starting\+Width, float starting\+Height)=0
+\item 
+virtual bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a259b75e3c895f191a07bda632859ee21}{init\+From\+Created}} (std\+::vector$<$ void $\ast$ $>$ params)=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab970bd887ee3a8113497a5470c3f3046}{update}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab6f7ed60ed424a24b6ff62b1686ec9a6}{destroy}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ab88af202b4f1f2aa03ec0b0a4c7ee3b8}{set\+Cursor\+Pos}} (double x, double y)=0
+\item 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a75a2b2899b8c3e94093d86623b335837}{is\+Closed}} ()
+\item 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ac83378886186dd93d83dc86e34ae6bcb}{is\+Fullscreen}} ()
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a7b77e489b2a3c8e4dcc57b3b900f31de}{show\+Cursor}} (bool value)=0
+\item 
+virtual std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_aa9cd1bfeb86115ba3c20fc904c5e25ad}{size}} ()=0
+\item 
+virtual void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a95306b916296571d6fd40288eb7e0e16}{make\+Current}} ()=0
+\item 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a27aba2039f4c6a3e6d583b9c24fb0398}{is\+Focused}} () const
+\item 
+void \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ac5cbaa2daafbaada012db0fb0b476b62}{set\+Drop\+Callback}} (std\+::function$<$ void(std\+::vector$<$ std\+::string $>$)$>$ callback)
+\item 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} \& \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_ad1c4b55fc72a5819efcb423b0f0a8712}{keyboard}} () const
+\item 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} \& \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a2d4a37e681896f00baedffe0ce2316b9}{mouse}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a67440e17fcf317d22f2cfbe6a4ff231a}\label{class_triton_1_1_graphics_1_1_window_a67440e17fcf317d22f2cfbe6a4ff231a}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a67440e17fcf317d22f2cfbe6a4ff231a}{m\+\_\+initialized}} = false
+\begin{DoxyCompactList}\small\item\em Variable to keep track if the window is initialized. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a466098a665716fe2052d4b605a4d867a}\label{class_triton_1_1_graphics_1_1_window_a466098a665716fe2052d4b605a4d867a}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a466098a665716fe2052d4b605a4d867a}{m\+\_\+fullscreen}} = false
+\begin{DoxyCompactList}\small\item\em Variable that keeps track if the window is full screen or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_aab88fe27d36e76f27d3bd36bab521d49}\label{class_triton_1_1_graphics_1_1_window_aab88fe27d36e76f27d3bd36bab521d49}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_aab88fe27d36e76f27d3bd36bab521d49}{m\+\_\+self\+Created}} = false
+\begin{DoxyCompactList}\small\item\em Variable that is used to keep track if the window was created from already existing native one or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a00d2ce3e961626ee6fb80328fb545d3a}\label{class_triton_1_1_graphics_1_1_window_a00d2ce3e961626ee6fb80328fb545d3a}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a00d2ce3e961626ee6fb80328fb545d3a}{m\+\_\+closed}} = false
+\begin{DoxyCompactList}\small\item\em Variable that is used to keep track if the window was closed or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a63b41e71a3204d9cfb9683bd05b810bb}\label{class_triton_1_1_graphics_1_1_window_a63b41e71a3204d9cfb9683bd05b810bb}} 
+bool \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a63b41e71a3204d9cfb9683bd05b810bb}{m\+\_\+focused}} = true
+\begin{DoxyCompactList}\small\item\em Variable that is used to keep track if the window is currently focused or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a29097cc2d47e46f2b95dc0b1a7c583dc}\label{class_triton_1_1_graphics_1_1_window_a29097cc2d47e46f2b95dc0b1a7c583dc}} 
+std\+::function$<$ void(std\+::vector$<$ std\+::string $>$)$>$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a29097cc2d47e46f2b95dc0b1a7c583dc}{m\+\_\+drag\+Drop\+Callback}}
+\begin{DoxyCompactList}\small\item\em Variable that is used to keep track of the assigned callback for drag drop operations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a2dc523b059f3980d78a0293544dc9b9d}\label{class_triton_1_1_graphics_1_1_window_a2dc523b059f3980d78a0293544dc9b9d}} 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a2dc523b059f3980d78a0293544dc9b9d}{m\+\_\+keyboard\+State}}
+\begin{DoxyCompactList}\small\item\em Variable used to track the keyboard state, all windows share a single keyboard state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a5f6c30cda447508036e533217546ca0c}\label{class_triton_1_1_graphics_1_1_window_a5f6c30cda447508036e533217546ca0c}} 
+\mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} $\ast$ \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window_a5f6c30cda447508036e533217546ca0c}{m\+\_\+mouse\+State}}
+\begin{DoxyCompactList}\small\item\em Variable used to track the mouse state, all windows share a single mouse state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The window is similar to the context in that each A\+PI has a specific way to create a window the \mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} is created using the context 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ab6f7ed60ed424a24b6ff62b1686ec9a6}\label{class_triton_1_1_graphics_1_1_window_ab6f7ed60ed424a24b6ff62b1686ec9a6}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!destroy@{destroy}}
+\index{destroy@{destroy}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Window\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Destroys the window 
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a09d10f50b982504e55ddba74389e5aa9}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a259b75e3c895f191a07bda632859ee21}\label{class_triton_1_1_graphics_1_1_window_a259b75e3c895f191a07bda632859ee21}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!initFromCreated@{initFromCreated}}
+\index{initFromCreated@{initFromCreated}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{initFromCreated()}{initFromCreated()}}
+{\footnotesize\ttfamily virtual bool Triton\+::\+Graphics\+::\+Window\+::init\+From\+Created (\begin{DoxyParamCaption}\item[{std\+::vector$<$ void $\ast$ $>$}]{params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new window from an already existing native window
+
+
+\begin{DoxyParams}{Parameters}
+{\em params} & The parameters needed to create the window (Windows\+: H\+W\+ND) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Did the window succeeded in creating and initializing 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_ae05ebac183fb52044c01befff3112358}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a14625b24407ed6f4c63c412ec6079003}\label{class_triton_1_1_graphics_1_1_window_a14625b24407ed6f4c63c412ec6079003}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!initNew@{initNew}}
+\index{initNew@{initNew}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{initNew()}{initNew()}}
+{\footnotesize\ttfamily virtual bool Triton\+::\+Graphics\+::\+Window\+::init\+New (\begin{DoxyParamCaption}\item[{float}]{starting\+Width,  }\item[{float}]{starting\+Height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Create a new window and initialize it
+
+
+\begin{DoxyParams}{Parameters}
+{\em starting\+Width} & The starting width of the window \\
+\hline
+{\em starting\+Height} & The starting height of the window \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Did the window succeeded in creating and initializing 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a7f9a4d412cf07ba1a0ce7a014d1ddc5c}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a75a2b2899b8c3e94093d86623b335837}\label{class_triton_1_1_graphics_1_1_window_a75a2b2899b8c3e94093d86623b335837}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!isClosed@{isClosed}}
+\index{isClosed@{isClosed}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{isClosed()}{isClosed()}}
+{\footnotesize\ttfamily bool Triton\+::\+Graphics\+::\+Window\+::is\+Closed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Check if the window has been closed \begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} closed or not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a27aba2039f4c6a3e6d583b9c24fb0398}\label{class_triton_1_1_graphics_1_1_window_a27aba2039f4c6a3e6d583b9c24fb0398}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!isFocused@{isFocused}}
+\index{isFocused@{isFocused}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{isFocused()}{isFocused()}}
+{\footnotesize\ttfamily bool Triton\+::\+Graphics\+::\+Window\+::is\+Focused (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Check if the window is currently focused
+
+\begin{DoxyReturn}{Returns}
+True if focused false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ac83378886186dd93d83dc86e34ae6bcb}\label{class_triton_1_1_graphics_1_1_window_ac83378886186dd93d83dc86e34ae6bcb}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!isFullscreen@{isFullscreen}}
+\index{isFullscreen@{isFullscreen}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{isFullscreen()}{isFullscreen()}}
+{\footnotesize\ttfamily bool Triton\+::\+Graphics\+::\+Window\+::is\+Fullscreen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Check if the window is currently full screen \begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_triton_1_1_graphics_1_1_window}{Window}} full screen status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ad1c4b55fc72a5819efcb423b0f0a8712}\label{class_triton_1_1_graphics_1_1_window_ad1c4b55fc72a5819efcb423b0f0a8712}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!keyboard@{keyboard}}
+\index{keyboard@{keyboard}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{keyboard()}{keyboard()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_triton_1_1_i_o_1_1_keyboard}{I\+O\+::\+Keyboard}} \& Triton\+::\+Graphics\+::\+Window\+::keyboard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Convenience function for getting the keyboard state of the context from a window
+
+\begin{DoxyReturn}{Returns}
+keyboard state associated with current context 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a95306b916296571d6fd40288eb7e0e16}\label{class_triton_1_1_graphics_1_1_window_a95306b916296571d6fd40288eb7e0e16}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!makeCurrent@{makeCurrent}}
+\index{makeCurrent@{makeCurrent}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{makeCurrent()}{makeCurrent()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Window\+::make\+Current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Sets the window to be the current one 
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a5c7fea5aed16d090d3fb9a9f121868e8}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a2d4a37e681896f00baedffe0ce2316b9}\label{class_triton_1_1_graphics_1_1_window_a2d4a37e681896f00baedffe0ce2316b9}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!mouse@{mouse}}
+\index{mouse@{mouse}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{mouse()}{mouse()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_triton_1_1_i_o_1_1_mouse}{I\+O\+::\+Mouse}} \& Triton\+::\+Graphics\+::\+Window\+::mouse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Convenience function for getting the mouse state of the context from a window
+
+\begin{DoxyReturn}{Returns}
+mouse state associated with current context 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ab88af202b4f1f2aa03ec0b0a4c7ee3b8}\label{class_triton_1_1_graphics_1_1_window_ab88af202b4f1f2aa03ec0b0a4c7ee3b8}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!setCursorPos@{setCursorPos}}
+\index{setCursorPos@{setCursorPos}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{setCursorPos()}{setCursorPos()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Window\+::set\+Cursor\+Pos (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Set the mouse cursor position
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & new X coordinate of the cursor \\
+\hline
+{\em y} & new Y coordinate of the cursor \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_ab9c8185e0cadbd275316c04c210fd9df}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ac5cbaa2daafbaada012db0fb0b476b62}\label{class_triton_1_1_graphics_1_1_window_ac5cbaa2daafbaada012db0fb0b476b62}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!setDropCallback@{setDropCallback}}
+\index{setDropCallback@{setDropCallback}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{setDropCallback()}{setDropCallback()}}
+{\footnotesize\ttfamily void Triton\+::\+Graphics\+::\+Window\+::set\+Drop\+Callback (\begin{DoxyParamCaption}\item[{std\+::function$<$ void(std\+::vector$<$ std\+::string $>$}]{ }\end{DoxyParamCaption})}
+
+Set the callback for drag drop files
+
+
+\begin{DoxyParams}{Parameters}
+{\em callback} & The function to be called on drag and drop operation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_a7b77e489b2a3c8e4dcc57b3b900f31de}\label{class_triton_1_1_graphics_1_1_window_a7b77e489b2a3c8e4dcc57b3b900f31de}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!showCursor@{showCursor}}
+\index{showCursor@{showCursor}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{showCursor()}{showCursor()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Window\+::show\+Cursor (\begin{DoxyParamCaption}\item[{bool}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Hide or show cursor
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & To hide cursor false to make cursor visible true \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a6a88cc5ac26b9c6ded21a01b7173f203}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_aa9cd1bfeb86115ba3c20fc904c5e25ad}\label{class_triton_1_1_graphics_1_1_window_aa9cd1bfeb86115ba3c20fc904c5e25ad}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!size@{size}}
+\index{size@{size}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily virtual std\+::tuple$<$int, int$>$ Triton\+::\+Graphics\+::\+Window\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Get the size of the window
+
+\begin{DoxyReturn}{Returns}
+tuple of the size first is width second is height 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a8c59d9ed529f99f854b28c38ccb8e992}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+\mbox{\Hypertarget{class_triton_1_1_graphics_1_1_window_ab970bd887ee3a8113497a5470c3f3046}\label{class_triton_1_1_graphics_1_1_window_ab970bd887ee3a8113497a5470c3f3046}} 
+\index{Triton::Graphics::Window@{Triton::Graphics::Window}!update@{update}}
+\index{update@{update}!Triton::Graphics::Window@{Triton::Graphics::Window}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily virtual void Triton\+::\+Graphics\+::\+Window\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+Update the window getting the inputs from the window 
+
+Implemented in \mbox{\hyperlink{class_triton_1_1_graphics_1_1_d_x_window_a6eec0f076bb1db69ef97b2af4b780efc}{Triton\+::\+Graphics\+::\+D\+X\+Window}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Window.\+h\item 
+C\+:/dev/\+Triton/\+Triton\+Graphics/src/\+Triton\+Platform2/\+Cross\+Types/\+Core/Window.\+cpp\end{DoxyCompactItemize}

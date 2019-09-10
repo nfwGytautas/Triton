@@ -3,8 +3,7 @@
 #include <windowsx.h>
 #include <shellapi.h>
 
-#include "Triton\Logger\Log.h"
-#include "Triton/Core/Input/InputManager.h"
+#include "Triton2\Utility\Log.h"
 
 static Triton::Graphics::DXWindow* WindowHandle;
 static int WindowIndex = 0;
@@ -134,7 +133,7 @@ namespace Triton
 				std::vector<std::string> dropedFiles;
 				dropedFiles.reserve(nCnt);
 
-				for (int nIndex = 0; nIndex < nCnt; ++nIndex) {
+				for (unsigned int nIndex = 0; nIndex < nCnt; ++nIndex) {
 					UINT nSize;
 					if (0 == (nSize = DragQueryFile(hDrop, nIndex, NULL, 0)))
 					{
@@ -267,8 +266,8 @@ namespace Triton
 			}
 			else
 			{
-				screenWidth = startingWidth;
-				screenHeight = startingHeight;
+				screenWidth = (int)startingWidth;
+				screenHeight = (int)startingHeight;
 
 				// Place the window in the middle of the screen.
 				posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
@@ -403,8 +402,8 @@ namespace Triton
 		void DXWindow::setCursorPos(double x, double y)
 		{
 			POINT pt;
-			pt.x = x;
-			pt.y = y;
+			pt.x = (LONG)x;
+			pt.y = (LONG)y;
 			ClientToScreen(m_hwnd, &pt);
 			SetCursorPos(pt.x, pt.y);
 		}

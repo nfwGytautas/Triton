@@ -4,7 +4,7 @@
 //"http://www.glfw.org/docs/latest/group__keys.html"
 //========================================================
 
-#include "Triton/Limits.h"
+#include "Triton2/Limits.h"
 
 #include <functional>
 namespace Triton
