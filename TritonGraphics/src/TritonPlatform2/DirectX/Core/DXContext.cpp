@@ -232,10 +232,20 @@ namespace Triton
 			vertexShaderBuffer = 0;
 			pixelShaderBuffer = 0;
 
-			// Compile the vertex shader code.
-			auto vsFilename = s2ws(createParams.pathToSource);
-			result = D3DCompileFromFile(vsFilename.c_str(), NULL, NULL, createParams.vertexEntry.c_str(), "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
-				&vertexShaderBuffer, &errorMessage);
+			// Vertex shader
+			result = D3DCompile(
+				createParams.source.c_str(),
+				createParams.source.length(),
+				nullptr,
+				nullptr,
+				nullptr,
+				createParams.vertexEntry.c_str(),
+				"vs_5_0",
+				D3DCOMPILE_ENABLE_STRICTNESS, 
+				0,
+				&vertexShaderBuffer,
+				&errorMessage);
+
 			if (FAILED(result))
 			{
 				// If the shader failed to compile it should have written something to the error message.
@@ -252,10 +262,20 @@ namespace Triton
 				return nullptr;
 			}
 
-			// Compile the pixel shader code.
-			auto psFilename = s2ws(createParams.pathToSource);
-			result = D3DCompileFromFile(psFilename.c_str(), NULL, NULL, createParams.pixelEntry.c_str(), "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
-				&pixelShaderBuffer, &errorMessage);
+			// Pixxel shader
+			result = D3DCompile(
+				createParams.source.c_str(),
+				createParams.source.length(),
+				nullptr,
+				nullptr,
+				nullptr,
+				createParams.pixelEntry.c_str(),
+				"ps_5_0",
+				D3DCOMPILE_ENABLE_STRICTNESS,
+				0,
+				&pixelShaderBuffer,
+				&errorMessage);
+
 			if (FAILED(result))
 			{
 				// If the shader failed to compile it should have written something to the error message.

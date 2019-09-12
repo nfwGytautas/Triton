@@ -52,16 +52,28 @@ namespace Triton
 		 */
 		struct ImageData
 		{
-			/// The width of the loaded image
+			/**
+			 * The width of the loaded image
+			 * Since 00_00_00
+			 */
 			int width;
 
-			/// The height of the loaded image
+			/**
+			 * The height of the loaded image
+			 * Since 00_00_00
+			 */
 			int height;
 
-			/// The bits per pixel of the loaded image
+			/**
+			 * The bits per pixel of the loaded image
+			 * Since 00_00_00
+			 */
 			int BPP;
 
-			/// The buffer of the loaded image
+			/**
+			 * The buffer of the loaded image
+			 * Since 00_00_00
+			 */
 			std::unique_ptr<unsigned char> buffer;
 		};
 
@@ -90,10 +102,16 @@ namespace Triton
 		 */
 		struct Mesh
 		{
-			/// The vector containing the vertices of the mesh
+			/**
+			 * The vector containing the vertices of the mesh
+			 * Since 00_00_00
+			 */
 			std::vector<Vertex> vertices;
 
-			/// The vector containing the indices of the mesh
+			/**
+			 * The vector containing the indices of the mesh
+			 * Since 00_00_00
+			 */
 			std::vector<unsigned int> indices;
 		};
 
@@ -102,7 +120,10 @@ namespace Triton
 		 */
 		struct MeshData
 		{
-			/// The vector containing all loaded meshes
+			/**
+			 * The vector containing all loaded meshes
+			 * Since 00_00_00
+			 */
 			std::vector<Mesh> meshes;
 		};
 
@@ -111,13 +132,22 @@ namespace Triton
 		 */
 		struct ShaderData
 		{
-			/// The path to the source of the shader file
-			std::string pathToSource;
+			/**
+			 * The source of the shader
+			 * Since 00_00_00
+			 */
+			std::string source;
 
-			/// The vertex main entry function name
+			/**
+			 * The vertex main entry function name
+			 * Since 00_00_00
+			 */
 			std::string vertexEntry;
 
-			/// The pixel/fragment main entry function name
+			/**
+			 * The pixel/fragment main entry function name
+			 * Since 00_00_00
+			 */
 			std::string pixelEntry;
 		};
 
@@ -143,9 +173,12 @@ namespace Triton
 			std::string Type;
 			/**
 			 * Raw data of the asset cast to a void*
+			 * unique_ptr to make sure there wouldn't be a memory leek here
+			 * since intermediate assets should be loaded by the asset manager
+			 * after being saved into the file
 			 * Since 00_00_00
 			 */
-			void* Data;
+			std::shared_ptr<void> Data;
 		};
 	}
 }

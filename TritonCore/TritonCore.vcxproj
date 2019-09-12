@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton2\Scene\Camera.h" />
     <ClInclude Include="src\Triton2\Limits.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton2\Scene\Camera.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

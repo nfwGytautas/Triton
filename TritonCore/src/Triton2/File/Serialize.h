@@ -25,41 +25,6 @@ namespace Triton
 	{
 		archive(m.x, m.y, m.z, m.w);
 	}
-
-	namespace IO
-	{
-		template<class Archive>
-		void serialize(Archive& archive,
-			MeshData& m)
-		{
-			archive(m.meshes);
-		}
-
-		template<class Archive>
-		void serialize(Archive& archive,
-			Mesh& m)
-		{
-			archive(m.vertices, m.indices);
-		}
-
-		template<class Archive>
-		void serialize(Archive& archive,
-			Vertex& m)
-		{
-			archive(m.Vertice, m.UV, m.Normal);
-		}
-
-		template<class Archive>
-		void serialize(Archive& archive,
-			ImageData& m)
-		{
-			archive(
-				m.width,
-				m.height,
-				m.BPP,
-				m.buffer);
-		}
-	}
 }
 
 #include <cereal/archives/binary.hpp>

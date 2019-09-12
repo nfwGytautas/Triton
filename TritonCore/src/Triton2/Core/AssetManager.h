@@ -69,8 +69,6 @@ namespace Triton
 			 * [Convenience] 
 			 * Same as calling IO::loadAssetFromDisk() and then addAsset() with the loaded asset
 			 *
-			 * Load a file from disk and 
-			 *
 			 * @param file File to the asset
 			 * @return Reference to a loaded asset
 			 */

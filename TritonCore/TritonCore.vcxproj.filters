@@ -120,6 +120,7 @@
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton2\Limits.h" />
+    <ClInclude Include="src\Triton2\Scene\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -138,5 +139,6 @@
     <ClCompile Include="src\TritonTypes\Asset.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton2\Scene\Camera.cpp" />
   </ItemGroup>
 </Project>

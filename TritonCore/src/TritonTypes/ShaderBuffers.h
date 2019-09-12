@@ -11,7 +11,9 @@ namespace Triton
 		 */
 		struct MatrixBuffer
 		{
-			Matrix44 Transformation;
+			Matrix44 Projection;
+			Matrix44 View;
+			Matrix44 Model;
 		};
 
 		/**

@@ -88,12 +88,14 @@ namespace Triton
 			{
 				extern const char* c_MeshType;
 				extern const char* c_ImageType;
+				extern const char* c_ShaderType;
 			}
 
 			namespace v_00_00_00
 			{
 				extern const char* c_MeshType;
 				extern const char* c_ImageType;
+				extern const char* c_ShaderType;
 
 				/**
 				 * Loads an asset whose format is 00_00_00
@@ -132,6 +134,15 @@ namespace Triton
 				IOStatus loadMeshFromArchive_00_00_00(cereal::BinaryInputArchive& archive, MeshData* objectToStoreIn);
 
 				/**
+				 * Load a shader from an asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param objectToStoreIn UNINITIALIZED pointer to a ShaderData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus loadShaderFromArchive_00_00_00(cereal::BinaryInputArchive& archive, ShaderData* objectToStoreIn);
+
+				/**
 				 * Save a mesh to a asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
@@ -148,6 +159,15 @@ namespace Triton
 				 * @return The status of the specified operation
 				 */
 				IOStatus saveImageToArchive_00_00_00(cereal::BinaryOutputArchive& archive, ImageData* rawData);
+
+				/**
+				 * Save a shader to a asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param rawData INITIALIZED pointer to ShaderData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus saveShaderToArchive_00_00_00(cereal::BinaryOutputArchive& archive, ShaderData* rawData);
 			}
 		}
 	}

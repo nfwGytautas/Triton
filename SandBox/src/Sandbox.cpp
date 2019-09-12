@@ -1,58 +1,106 @@
 #include <iostream>
 #include "Triton2/Triton.h"
 
+Triton::Graphics::Context* context;
+Triton::Graphics::Window* window;
+Triton::Graphics::Renderer* renderer;
+Triton::Core::AssetManager* assets;
+
+void createAssets()
+{
+	using namespace Triton;
+
+	IO::IntermediateAsset meshAsset;
+	meshAsset.Version = IO::Version::c_Version_Latest;
+	meshAsset.Name = "stallMesh";
+	meshAsset.Type = IO::Version::v_latest::c_MeshType;
+	meshAsset.Data = std::make_shared<IO::MeshData>();
+
+	// This is a model for the asset could be anything
+	// These models can be found in the Assets folder
+	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", (IO::MeshData*)meshAsset.Data.get());
+
+	IO::saveAssetToDisk("../Assets/stall.asset", &meshAsset);
+
+
+	IO::IntermediateAsset shaderAsset;
+	shaderAsset.Version = IO::Version::c_Version_Latest;
+	shaderAsset.Name = "simpleShader";
+	shaderAsset.Type = IO::Version::v_latest::c_ShaderType;
+	shaderAsset.Data = std::make_shared<IO::ShaderData>();
+
+	auto sDatap = (IO::ShaderData*)shaderAsset.Data.get();
+	// This is the shader for the asset could be anything
+	// This shader can be found in the Assets folder
+	IO::readFileFromDisk("C:\\dev\\Triton\\Shaders\\Simple.hlsl", &sDatap->source);
+	sDatap->vertexEntry = "vertex_Simple";
+	sDatap->pixelEntry = "pixel_Simple";
+
+	IO::saveAssetToDisk("../Assets/shader.asset", &shaderAsset);
+}
+
+void loadAssets()
+{
+	assets->loadAsset("../Assets/stall.asset");
+	assets->loadAsset("../Assets/shader.asset");
+}
+
 int main()
 {
 	using namespace Triton;
 
 	Log::init();
 
-	Graphics::Context* context;
-	Graphics::Window* window;
-	Graphics::Renderer* renderer;
-
 	reference<Graphics::Shader> shader;
 	reference<Graphics::VAO> model;
 	
+	// Initialize the context
 	context = Graphics::Context::create();
 	context->init();
 
-	Core::AssetManager* assets = new Core::AssetManager(context);
+	// Create an asset manager for the context
+	assets = new Core::AssetManager(context);
 
-	IO::IntermediateAsset intAsset;
-	intAsset.Version = IO::Version::c_Version_Latest;
-	intAsset.Name = "stallMesh";
-	intAsset.Type = IO::Version::v_latest::c_MeshType;
-	intAsset.Data = new IO::MeshData();
-	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", (IO::MeshData*)intAsset.Data);
+	// Create assets
+	// createAssets();
 
-	IO::saveAssetToDisk("stall.asset", &intAsset);
+	// Load the assets
+	loadAssets();
 
-	assets->loadAsset("stall.asset");
-
+	// Create a new window
 	window = context->newWindow();
 	window->initNew(1280, 720);
 
+	// Key callback
 	window->keyboard().charInputCallback([](char c) {TR_SYSTEM_TRACE("KEY: {0}", c); });
 
+	// Create a new renderer for a window
 	renderer = context->newRenderer(window);
 
-	IO::ShaderData sData;
-	sData.pathToSource = "D:\\Programming\\Test files\\nfw\\shaders\\directx\\Simple.hlsl";
-	sData.vertexEntry = "vertex_Simple";
-	sData.pixelEntry = "pixel_Simple";
-
-	shader = context->newShader(sData);
-
-	shader->enable();
-
+	// Since the assets are loaded they can be acquired here
+	// They are loaded using the name that was stored not the file name
+	shader = (*assets)["simpleShader"].as<ShaderAsset>()->shader();
 	model = (*assets)["stallMesh"].as<MeshAsset>()->VAO();
 
+	// Enable shader and mesh
+	shader->enable();
 	model->enable();
 
-	Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 50), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
+	// Create matrices
+	Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
+	
+	renderer->fov(3.141592654f / 4.0f);
+	renderer->nearPlane(0.1f);
+	renderer->farPlane(100.0f);
 
-	shader->buffer_matrices().Transformation = transformation;
+	Matrix44 projection = renderer->projection();
+
+	StaticCamera sCamera(Vector3(0, 0, 0), Triton::Vector3(0, -1, 5));
+
+	// Update shader matrices
+	shader->buffer_matrices().Model = transformation;
+	shader->buffer_matrices().Projection = projection;
+	shader->buffer_matrices().View = sCamera.viewMatrix();
 
 	while (!window->isClosed())
 	{

@@ -82,6 +82,15 @@ Triton::Matrix44 Triton::Core::CreateOrthographicMatrix(float aWindowWidth, floa
 	return returnMatrix;
 }
 
+Triton::Matrix44 Triton::Core::lookAt(Vector3 cameraPosition, Vector3 target)
+{
+	Vector3 up(0.0, 1.0, 0.0);
+	
+	Matrix44 mView = XMMatrixLookAtLH(cameraPosition, target, up);
+
+	return mView;
+}
+
 Triton::Matrix44 Triton::Core::transpose(Matrix44& mat)
 {
 	return DirectX::XMMatrixTranspose(mat);

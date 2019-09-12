@@ -182,30 +182,48 @@ namespace Triton
 				}
 			}
 
-			// Secondly lets create the swap chain
 			DXGI_SWAP_CHAIN_DESC swapChainDesc;
-			IDXGIFactory* factory;
 
-			result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
+			IDXGIDevice* pDXGIDevice = nullptr;
+			result = device->QueryInterface(__uuidof(IDXGIDevice), (void **)&pDXGIDevice);
 			if (FAILED(result))
 			{
-				TR_SYSTEM_ERROR("Failed to create DX factory!");
+				TR_SYSTEM_ERROR("Failed to get IDXGIDevice!");
 				return false;
 			}
 
+			IDXGIAdapter* pDXGIAdapter = nullptr;
+			result = pDXGIDevice->GetAdapter(&pDXGIAdapter);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Failed to get IDXGIAdapter!");
+				return false;
+			}
+
+			IDXGIFactory* pIDXGIFactory = nullptr;
+			result = pDXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void **)&pIDXGIFactory);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Failed to get IDXGIFactory!");
+				return false;
+			}
+
+			pDXGIDevice->Release();
+			pDXGIAdapter->Release();
+			
 			// Initialize the swap chain description.
 			ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
-
+			
 			// Set to a single back buffer.
 			swapChainDesc.BufferCount = 1;
-
+			
 			// Set the width and height of the back buffer.
 			swapChainDesc.BufferDesc.Width = width;
 			swapChainDesc.BufferDesc.Height = height;
-
+			
 			// Set regular 32-bit surface for the back buffer.
 			swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-
+			
 			// Set the refresh rate of the back buffer.
 			if (m_vsync)
 			{
@@ -217,17 +235,17 @@ namespace Triton
 				swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
 				swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 			}
-
+			
 			// Set the usage of the back buffer.
 			swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-
+			
 			// Set the handle for the window to render to.
 			swapChainDesc.OutputWindow = static_cast<DXWindow*>(m_renderingTo)->nativeHandle();
-
+			
 			// Turn multi sampling off.
 			swapChainDesc.SampleDesc.Count = 1;
 			swapChainDesc.SampleDesc.Quality = 0;
-
+			
 			// Set to full screen or windowed mode.
 			if (m_renderingTo->isFullscreen())
 			{
@@ -237,26 +255,26 @@ namespace Triton
 			{
 				swapChainDesc.Windowed = true;
 			}
-
+			
 			// Set the scan line ordering and scaling to unspecified.
 			swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 			swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
+			
 			// Discard the back buffer contents after presenting.
 			swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
+			
 			// Don't set the advanced flags.
 			swapChainDesc.Flags = 0;
-
+			
 			// Create the swap chain, Direct3D device, and Direct3D device context.
-			result = factory->CreateSwapChain(device, &swapChainDesc, &m_swapChain);
+			result = pIDXGIFactory->CreateSwapChain(device, &swapChainDesc, &m_swapChain);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create a swap chain!");
 				return false;
 			}
-
-			factory->Release();
+			
+			pIDXGIFactory->Release();
 
 			// Lets get the render target view
 			ID3D11Texture2D* backBufferPtr;

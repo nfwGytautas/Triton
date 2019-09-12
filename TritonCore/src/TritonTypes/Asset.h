@@ -2,6 +2,7 @@
 
 #include "TritonPlatform2/CrossTypes/VAO.h"
 #include "TritonPlatform2/CrossTypes/Texture.h"
+#include "TritonPlatform2/CrossTypes/Shader.h"
 
 namespace Triton
 {
@@ -71,5 +72,30 @@ namespace Triton
 	private:
 		/// The constructed Texture object for this asset
 		reference<Graphics::Texture> m_texture;
+	};
+
+	/**
+	 * Shader asset
+	 */
+	class ShaderAsset : public Asset
+	{
+	public:
+		/**
+		 * Create the asset with a name and already created Texture
+		 *
+		 * @param name The name of the asset
+		 * @param shader The Shader that has been created for this asset
+		 */
+		ShaderAsset(std::string name, reference<Graphics::Shader> shader);
+
+		/**
+		 * Get the Shader associated with this shader asset
+		 *
+		 * @return reference to a Shader
+		 */
+		reference<Graphics::Shader> shader() const;
+	private:
+		/// The constructed Shader object for this asset
+		reference<Graphics::Shader> m_shader;
 	};
 }

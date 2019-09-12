@@ -31,4 +31,14 @@ namespace Triton
 		: Asset(name), m_texture(tex)
 	{
 	}
+
+	ShaderAsset::ShaderAsset(std::string name, reference<Graphics::Shader> shader)
+		: Asset(name), m_shader(shader)
+	{
+	}
+
+	reference<Graphics::Shader> ShaderAsset::shader() const
+	{
+		return m_shader;
+	}
 }
