@@ -72,9 +72,16 @@ namespace Triton
 
 			/**
 			 * The buffer of the loaded image
+			 * [NOT SERIALIZED]
 			 * Since 00_00_00
 			 */
 			std::unique_ptr<unsigned char> buffer;
+
+			/**
+			 * The buffer of the contents from the image file
+			 * Since 00_00_00
+			 */
+			std::vector<unsigned char> rawData;
 		};
 
 		class ImageArrayData

@@ -21,6 +21,24 @@ namespace Triton
 {
 	namespace IO
 	{
+		void imageFromByteVector(ImageData* objectToStoreIn)
+		{
+			// If the platform is windows make sure to flip the pixel
+#ifdef TR_PLATFORM_WINDOWS
+			stbi_set_flip_vertically_on_load(1);
+#endif
+
+			const int desiredBPP = 4;
+
+			objectToStoreIn->buffer = std::unique_ptr<unsigned char>(stbi_load_from_memory(
+				objectToStoreIn->rawData.data(),
+				objectToStoreIn->rawData.size(),
+				&objectToStoreIn->width,
+				&objectToStoreIn->height,
+				&objectToStoreIn->BPP,
+				desiredBPP));
+		}
+
 		namespace Version
 		{
 			const char* c_Version_Latest = "00.00.00";
@@ -36,7 +54,7 @@ namespace Triton
 			namespace v_latest
 			{
 				const char* c_MeshType = v_00_00_00::c_MeshType;
-				const char* c_ImageType = v_00_00_00::c_MeshType;
+				const char* c_ImageType = v_00_00_00::c_ImageType;
 				const char* c_ShaderType = v_00_00_00::c_ShaderType;
 			}
 		}
@@ -48,7 +66,7 @@ namespace Triton
 			return fs::exists(pathToFile);
 		}
 
-		IOStatus readFileFromDisk(const std::string & pathToFile, std::string* objectToStoreIn)
+		IOStatus readFileFromDisk(const std::string& pathToFile, std::string* objectToStoreIn)
 		{
 			// The function status
 			IOStatus status;
@@ -68,6 +86,40 @@ namespace Triton
 			return status;
 		}
 
+		IOStatus readBinaryFromDisk(const std::string& pathToFile, std::vector<unsigned char>* objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+			std::ifstream file(pathToFile, std::ios::binary);
+
+			file.unsetf(std::ios::skipws);
+
+			std::streampos fileSize;
+
+			file.seekg(0, std::ios::end);
+			fileSize = file.tellg();
+			file.seekg(0, std::ios::beg);
+
+			objectToStoreIn->reserve(fileSize);
+
+			// read the data:
+			objectToStoreIn->insert(objectToStoreIn->begin(),
+				std::istream_iterator<unsigned char>(file),
+				std::istream_iterator<unsigned char>());
+
+			return status;
+		}
+
 		IOStatus loadImageFromDisk(const std::string& pathToFile, ImageData* objectToStoreIn)
 		{
 			// The function status
@@ -81,18 +133,11 @@ namespace Triton
 				return status;
 			}
 
-			// If the platform is windows make sure to flip the pixel
-#ifdef TR_PLATFORM_WINDOWS
-			stbi_set_flip_vertically_on_load(1);
-#endif
-
 			// Load the data
-			objectToStoreIn->buffer = std::unique_ptr<unsigned char>(
-				stbi_load(pathToFile.c_str(),
-					&objectToStoreIn->width,
-					&objectToStoreIn->height,
-					&objectToStoreIn->BPP,
-					4));
+			readBinaryFromDisk(pathToFile, &objectToStoreIn->rawData);
+
+			// Create the image
+			imageFromByteVector(objectToStoreIn);
 
 			// Check if load was successful
 			if (!objectToStoreIn->buffer)
@@ -439,13 +484,20 @@ namespace Triton
 					archive(objectToStoreIn->width,
 							objectToStoreIn->height,
 							objectToStoreIn->BPP,
-							objectToStoreIn->buffer);
+							objectToStoreIn->rawData);
 
 					// Check for errors in loading
 					if (objectToStoreIn->width <= 0 || objectToStoreIn->height <= 0 || objectToStoreIn->BPP <= 0)
 					{
 						status.status = IOStatus::IO_INCORRECT_FORMAT;
 					}
+
+					if (objectToStoreIn->rawData.size() == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+					}
+
+					imageFromByteVector(objectToStoreIn);
 
 					if (!objectToStoreIn->buffer)
 					{
@@ -626,7 +678,7 @@ namespace Triton
 						return status;
 					}
 
-					if (!rawData->buffer)
+					if (rawData->rawData.size() == 0)
 					{
 						status.status = IOStatus::IO_INCORRECT_FORMAT;
 						return status;
@@ -635,7 +687,7 @@ namespace Triton
 					archive(rawData->width,
 							rawData->height,
 							rawData->BPP,
-							rawData->buffer);
+							rawData->rawData);
 
 					return status;
 				}

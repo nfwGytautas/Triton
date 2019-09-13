@@ -7,6 +7,9 @@ cbuffer MatrixBuffer : register(b0)
     matrix model;
 };
 
+Texture2D shaderTexture;
+SamplerState SampleType;
+
 struct VertexInputType
 {
     float4 position : POSITION;
@@ -17,6 +20,7 @@ struct VertexInputType
 struct PixelInputType
 {
     float4 position : SV_POSITION;
+    float2 tex : TEXCOORD0;
 };
 
 PixelInputType vertex_Simple(VertexInputType input)
@@ -26,11 +30,13 @@ PixelInputType vertex_Simple(VertexInputType input)
     // Change the position vector to be 4 units for proper matrix calculations.
     input.position.w = 1.0f;
 
-
     // Calculate the position of the vertex against the world, view, and projection matrices.
     output.position = mul(input.position, model);
     output.position = mul(output.position, view);
     output.position = mul(output.position, projection);
+    
+    // Store the input color for the pixel shader to use.
+    output.tex = input.tex;
     
     return output;
 }
@@ -38,5 +44,6 @@ PixelInputType vertex_Simple(VertexInputType input)
 
 float4 pixel_Simple(PixelInputType input) : SV_TARGET
 {
-    return float4(1.0f, 1.0f, 1.0f, 1.0f);
+    float4 textureColor = shaderTexture.Sample(SampleType, input.tex);
+    return textureColor;
 }

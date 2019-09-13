@@ -69,6 +69,13 @@ namespace Triton
 		 * @param tex The Texture that has been created for this asset
 		 */
 		ImageAsset(std::string name, reference<Graphics::Texture> tex);
+
+		/**
+		 * Get the Texture associated with this image asset
+		 *
+		 * @return reference to a Texture
+		 */
+		reference<Graphics::Texture> texture() const;
 	private:
 		/// The constructed Texture object for this asset
 		reference<Graphics::Texture> m_texture;

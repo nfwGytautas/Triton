@@ -214,7 +214,10 @@ namespace Triton
 				return false;
 			}
 
-			m_className = std::wstring(L"WindowClass" + std::to_wstring(WindowIndex)).c_str();
+			std::wstring baseName(L"TritonWindow");
+			std::wstring index = std::to_wstring(WindowIndex);
+			std::wstring concated = baseName + index;
+			m_className = concated.c_str();
 			m_hinstance = GetModuleHandle(NULL);
 			WindowHandle = this;
 
@@ -280,6 +283,12 @@ namespace Triton
 				posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance,
 				NULL);
 			//this);
+
+			if (m_hwnd == NULL)
+			{
+				TR_SYSTEM_ERROR("Failed to create a window!");
+				return false;
+			}
 
 			// Bring the window up on the screen and set it as main focus.
 			ShowWindow(m_hwnd, SW_SHOW);

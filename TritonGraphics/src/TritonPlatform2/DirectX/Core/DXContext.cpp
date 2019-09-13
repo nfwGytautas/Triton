@@ -58,6 +58,10 @@ namespace Triton
 		{
 		}
 
+		DXContext::~DXContext()
+		{
+		}
+
 		Window* DXContext::newWindow()
 		{
 			if (!m_initialized)
@@ -482,7 +486,7 @@ namespace Triton
 			// Set the row pitch of the targa image data.
 			rowPitch = (createParams.width * 4) * sizeof(unsigned char);
 
-			// Copy the targa image data into the texture.
+			// Copy the image data into the texture.
 			m_deviceContext->UpdateSubresource(texture->m_texture, 0, NULL, createParams.buffer.get(), rowPitch, 0);
 
 			// Setup the shader resource view description.
@@ -548,7 +552,7 @@ namespace Triton
 				// This is only used for 3d textures.
 				pData[cubeMapFaceIndex].SysMemSlicePitch = 0;
 			}
-
+			
 			//Create the Texture Resource
 			hResult = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
 			if (FAILED(hResult))

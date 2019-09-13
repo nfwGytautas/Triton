@@ -11,6 +11,8 @@ public:
 	/// Create the DX context
 	DXContext();
 
+	~DXContext();
+
 	// Inherited via Context
 	virtual Window* newWindow() override;
 	virtual Renderer* newRenderer(Window* window) override;

@@ -37,11 +37,25 @@ void createAssets()
 	sDatap->pixelEntry = "pixel_Simple";
 
 	IO::saveAssetToDisk("../Assets/shader.asset", &shaderAsset);
+
+	IO::IntermediateAsset textureAsset;
+	textureAsset.Version = IO::Version::c_Version_Latest;
+	textureAsset.Name = "stallTexture";
+	textureAsset.Type = IO::Version::v_latest::c_ImageType;
+	textureAsset.Data = std::make_shared<IO::ImageData>();
+
+	auto tDatap = (IO::ImageData*)textureAsset.Data.get();
+	// This is the shader for the asset could be anything
+	// This shader can be found in the Assets folder
+	IO::loadImageFromDisk("D:\\Programming\\Test files\\nfw\\stallTexture.png", tDatap);
+
+	IO::saveAssetToDisk("../Assets/texture.asset", &textureAsset);
 }
 
 void loadAssets()
 {
 	assets->loadAsset("../Assets/stall.asset");
+	assets->loadAsset("../Assets/texture.asset");
 	assets->loadAsset("../Assets/shader.asset");
 }
 
@@ -53,6 +67,7 @@ int main()
 
 	reference<Graphics::Shader> shader;
 	reference<Graphics::VAO> model;
+	reference<Graphics::Texture> texture;
 	
 	// Initialize the context
 	context = Graphics::Context::create();
@@ -62,7 +77,7 @@ int main()
 	assets = new Core::AssetManager(context);
 
 	// Create assets
-	// createAssets();
+	//createAssets();
 
 	// Load the assets
 	loadAssets();
@@ -81,10 +96,12 @@ int main()
 	// They are loaded using the name that was stored not the file name
 	shader = (*assets)["simpleShader"].as<ShaderAsset>()->shader();
 	model = (*assets)["stallMesh"].as<MeshAsset>()->VAO();
+	texture = (*assets)["stallTexture"].as<ImageAsset>()->texture();
 
 	// Enable shader and mesh
 	shader->enable();
 	model->enable();
+	texture->enable();
 
 	// Create matrices
 	Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
@@ -95,21 +112,28 @@ int main()
 
 	Matrix44 projection = renderer->projection();
 
-	StaticCamera sCamera(Vector3(0, 0, 0), Triton::Vector3(0, -1, 5));
+	StaticCamera sCamera(Vector3(0, 0, 0), Triton::Vector3(0, 0, 5));
 
 	// Update shader matrices
 	shader->buffer_matrices().Model = transformation;
 	shader->buffer_matrices().Projection = projection;
 	shader->buffer_matrices().View = sCamera.viewMatrix();
 
+	float rotation = 0;
+
 	while (!window->isClosed())
 	{
 		window->update();
+
+		Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 20), Triton::Vector3(0, rotation, 0), Triton::Vector3(1, 1, 1));
+		shader->buffer_matrices().Model = transformation;
 
 		renderer->newFrame(1.0, 0.5, 0.5, 0.5);
 
 		shader->update_matrices();
 		renderer->render(model->getIndiceCount());
+
+		rotation += 1 * 0.2;
 
 		renderer->endFrame();
 	}
