@@ -143,8 +143,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.h" />
     <ClInclude Include="src\Triton2\Scene\Camera.h" />
     <ClInclude Include="src\Triton2\Limits.h" />
+    <ClInclude Include="src\Triton2\Scene\Lighting.h" />
+    <ClInclude Include="src\TritonTypes\Flags.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton2\Assert.h" />
@@ -162,7 +165,9 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.cpp" />
     <ClCompile Include="src\Triton2\Scene\Camera.cpp" />
+    <ClCompile Include="src\Triton2\Scene\Lighting.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

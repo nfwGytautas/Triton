@@ -1,6 +1,6 @@
 #pragma pack_matrix(row_major)
 
-cbuffer MatrixBuffer : register(b0)
+cbuffer MatrixBuffer : register(b1)
 {
     matrix projection;
     matrix view;

@@ -279,7 +279,7 @@ namespace Triton
 
 			// Create the window with the screen settings and get the handle to it.
 			m_hwnd = CreateWindowEx(NULL, m_className, L"Engine",
-				WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
+				WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_TILEDWINDOW,
 				posX, posY, screenWidth, screenHeight, NULL, NULL, m_hinstance,
 				NULL);
 			//this);

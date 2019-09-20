@@ -25,6 +25,20 @@ namespace Triton
 		 */
 		const Matrix44& viewMatrix() const;
 
+		/**
+		 * Get the position where the camera is currently situated
+		 *
+		 * @return 3 component vector containing x,y,z position of the camera
+		 */
+		virtual Vector3 getPosition() const = 0;
+
+		/**
+		 * Get the direction the camera is looking in
+		 *
+		 * @return 3 component vector containing x,y,z view direction of the camera
+		 */
+		virtual Vector3 getViewDirection() const = 0;
+
 	protected:
 		Camera();
 	protected:
@@ -48,5 +62,12 @@ namespace Triton
 		 * Updates the camera depending on it's type
 		 */
 		virtual void onUpdate() override {}
+
+		// Inherited via Camera
+		virtual Vector3 getPosition() const override;
+		virtual Vector3 getViewDirection() const override;
+	private:
+		Vector3 m_Position;
+		Vector3 m_Target;
 	};
 }

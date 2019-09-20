@@ -45,6 +45,15 @@ namespace Triton
 		IOStatus loadImageFromDisk(const std::string& pathToFile, ImageData* objectToStoreIn);
 
 		/**
+		 * Load an image from raw byte vector that is found inside ImageData::rawData member
+		 *
+		 * @param objectToStoreIn The ImageData structure where the function should store the loaded data 
+		 *  and where the rawData is found
+		 * @return The status of the specified operation
+		 */
+		IOStatus imageFromByteVector(ImageData* objectToStoreIn);
+
+		/**
 		 * Load a mesh file from disk and store the data inside the specified object
 		 *
 		 * @param pathToFile The path to the file that you want to be loaded
@@ -71,112 +80,18 @@ namespace Triton
 		 */
 		IOStatus saveAssetToDisk(const std::string& pathToFile, IntermediateAsset* asset);
 
-		namespace Version
+		namespace Serialization
 		{
 			/**
 			 * Latest file version
-			 * Format:
-			 *	'file version'
-			 *	'name of the asset'
-			 *	'type of the asset'
-			 *	'data for the asset'
 			 */
 			extern const char* c_Version_Latest;
-
-			/** 
-			 * File version 00.00.00
-			 * Format: 
-			 *	'file version'
-			 *	'name of the asset'
-			 *	'type of the asset'
-			 *	'data for the asset'
-			 */
-			extern const char* c_Version_00_00_00;
 
 			namespace v_latest
 			{
 				extern const char* c_MeshType;
 				extern const char* c_ImageType;
 				extern const char* c_ShaderType;
-			}
-
-			namespace v_00_00_00
-			{
-				extern const char* c_MeshType;
-				extern const char* c_ImageType;
-				extern const char* c_ShaderType;
-
-				/**
-				 * Loads an asset whose format is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to an asset
-				 * @return The status of the specified operation
-				 */
-				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn, Graphics::Context* gContext);
-
-				/**
-				 * Loads an asset whose format is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param asset Pointer to the intermediate asset structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus saveFormat_00_00_00(cereal::BinaryOutputArchive& archive, IntermediateAsset* asset);
-
-				/**
-				 * Load an image from an asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a ImageData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus loadImageFromArchive_00_00_00(cereal::BinaryInputArchive& archive, ImageData* objectToStoreIn);
-
-				/**
-				 * Load a mesh from an asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a MeshData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus loadMeshFromArchive_00_00_00(cereal::BinaryInputArchive& archive, MeshData* objectToStoreIn);
-
-				/**
-				 * Load a shader from an asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a ShaderData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus loadShaderFromArchive_00_00_00(cereal::BinaryInputArchive& archive, ShaderData* objectToStoreIn);
-
-				/**
-				 * Save a mesh to a asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param rawData INITIALIZED pointer to MeshData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus saveMeshToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MeshData* rawData);
-
-				/**
-				 * Save a image to a asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param rawData INITIALIZED pointer to ImageData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus saveImageToArchive_00_00_00(cereal::BinaryOutputArchive& archive, ImageData* rawData);
-
-				/**
-				 * Save a shader to a asset file whose version is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param rawData INITIALIZED pointer to ShaderData structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus saveShaderToArchive_00_00_00(cereal::BinaryOutputArchive& archive, ShaderData* rawData);
 			}
 		}
 	}

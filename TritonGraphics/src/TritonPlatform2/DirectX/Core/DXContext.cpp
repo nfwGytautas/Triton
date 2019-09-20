@@ -50,6 +50,7 @@ namespace Triton
 			}
 
 			TR_ERROR("Shader compiling error: {0}", ss.str());
+			TR_SYSTEM_ERROR("Shader compiling error: {0}", ss.str());
 
 			return;
 		}
@@ -212,7 +213,7 @@ namespace Triton
 
 		Shader* DXContext::newShader(const IO::ShaderData& createParams)
 		{
-			DXShader* shader = new DXShader();
+			DXShader* shader = new DXShader(createParams.flags);
 
 			HRESULT result;
 			ID3D10Blob* errorMessage;
@@ -245,7 +246,7 @@ namespace Triton
 				nullptr,
 				createParams.vertexEntry.c_str(),
 				"vs_5_0",
-				D3DCOMPILE_ENABLE_STRICTNESS, 
+				D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG,
 				0,
 				&vertexShaderBuffer,
 				&errorMessage);
@@ -266,7 +267,7 @@ namespace Triton
 				return nullptr;
 			}
 
-			// Pixxel shader
+			// Pixel shader
 			result = D3DCompile(
 				createParams.source.c_str(),
 				createParams.source.length(),
@@ -275,7 +276,7 @@ namespace Triton
 				nullptr,
 				createParams.pixelEntry.c_str(),
 				"ps_5_0",
-				D3DCOMPILE_ENABLE_STRICTNESS,
+				D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG,
 				0,
 				&pixelShaderBuffer,
 				&errorMessage);
@@ -330,19 +331,104 @@ namespace Triton
 			pixelShaderBuffer = 0;
 
 			// Matrix buffer
-			D3D11_BUFFER_DESC bufferDesc;
-			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			bufferDesc.ByteWidth = sizeof(MatrixBuffer);
-			bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bufferDesc.MiscFlags = 0;
-			bufferDesc.StructureByteStride = 0;
+			D3D11_BUFFER_DESC matrixBufferDesc;
+			matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			matrixBufferDesc.ByteWidth = sizeof(MatrixBuffer);
+			matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			matrixBufferDesc.MiscFlags = 0;
+			matrixBufferDesc.StructureByteStride = 0;
 
 			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
-			result = m_device->CreateBuffer(&bufferDesc, NULL, &shader->m_matrixBuffer);
+			result = m_device->CreateBuffer(&matrixBufferDesc, NULL, &shader->m_matrixBuffer);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Creating matrix buffer failed");
+				return nullptr;
+			}
+
+			// Settings buffer
+			D3D11_BUFFER_DESC settingsBufferDesc;
+			settingsBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			settingsBufferDesc.ByteWidth = sizeof(SettingsBuffer);
+			settingsBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			settingsBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			settingsBufferDesc.MiscFlags = 0;
+			settingsBufferDesc.StructureByteStride = 0;
+
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&settingsBufferDesc, NULL, &shader->m_settingsBuffer);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Creating settings buffer failed");
+				return nullptr;
+			}
+
+			// Point light buffer
+			D3D11_BUFFER_DESC plightBufferDesc;
+			plightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			plightBufferDesc.ByteWidth = sizeof(PointLights);
+			plightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			plightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			plightBufferDesc.MiscFlags = 0;
+			plightBufferDesc.StructureByteStride = 0;
+
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&plightBufferDesc, NULL, &shader->m_plightBuffer);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Creating point light buffer failed");
+				return nullptr;
+			}
+
+			// Settings buffer
+			D3D11_BUFFER_DESC slightBufferDesc;
+			slightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			slightBufferDesc.ByteWidth = sizeof(SpotLights);
+			slightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			slightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			slightBufferDesc.MiscFlags = 0;
+			slightBufferDesc.StructureByteStride = 0;
+
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&slightBufferDesc, NULL, &shader->m_slightBuffer);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Creating spot light buffer failed");
+				return nullptr;
+			}
+
+			// Settings buffer
+			D3D11_BUFFER_DESC dlightBufferDesc;
+			dlightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			dlightBufferDesc.ByteWidth = sizeof(DirectionalLights);
+			dlightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			dlightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			dlightBufferDesc.MiscFlags = 0;
+			dlightBufferDesc.StructureByteStride = 0;
+
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&dlightBufferDesc, NULL, &shader->m_dlightBuffer);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Creating directional light buffer failed");
+				return nullptr;
+			}
+
+			// Camera buffer
+			D3D11_BUFFER_DESC camBufferDesc;
+			camBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			camBufferDesc.ByteWidth = sizeof(CameraBuffer);
+			camBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			camBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			camBufferDesc.MiscFlags = 0;
+			camBufferDesc.StructureByteStride = 0;
+
+			// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+			result = m_device->CreateBuffer(&camBufferDesc, NULL, &shader->m_cameraBuffer);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Creating camera buffer failed");
 				return nullptr;
 			}
 

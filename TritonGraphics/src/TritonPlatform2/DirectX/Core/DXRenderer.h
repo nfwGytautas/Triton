@@ -23,6 +23,8 @@ public:
 	virtual void render(reference<Renderable>& renderable) override;
 	virtual void render(unsigned int indiceCount) override;
 
+
+
 	virtual void setViewPort(int x, int y, int width, int height) override;
 	virtual void depthBufferState(bool state) override;
 	virtual void cullBufferState(bool state) override;

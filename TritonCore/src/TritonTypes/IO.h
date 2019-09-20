@@ -156,6 +156,12 @@ namespace Triton
 			 * Since 00_00_00
 			 */
 			std::string pixelEntry;
+
+			/**
+			 * The flags of this shader
+			 * Since 00_00_00
+			 */
+			Flags::ShaderFlagset flags;
 		};
 
 		/**
@@ -187,5 +193,7 @@ namespace Triton
 			 */
 			std::shared_ptr<void> Data;
 		};
+
+
 	}
 }
