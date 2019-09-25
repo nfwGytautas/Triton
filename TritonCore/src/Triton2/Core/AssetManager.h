@@ -22,6 +22,11 @@ namespace Triton
 			AssetManager(Graphics::Context* context);
 
 			/**
+			 * Cleans up and then destroys the asset manager
+			 */
+			~AssetManager();
+
+			/**
 			 * Unloads specified assets, meaning that they are removed from the map
 			 * The assets will be deleted once all the references go out of scope
 			 *
@@ -67,14 +72,15 @@ namespace Triton
 
 			/**
 			 * [Convenience] 
+			 * [Multi threaded]
 			 * Same as calling IO::loadAssetFromDisk() and then addAsset() with the loaded asset
 			 *
 			 * @param file File to the asset
-			 * @return Reference to a loaded asset
 			 */
-			reference<Asset> loadAsset(const std::string& file);
+			void loadAsset(const std::string& file);
 
 			/**
+			 * [Thread safe, uses mutex]
 			 * Add an asset to the manager
 			 *
 			 * @param asset Asset to add
@@ -82,6 +88,7 @@ namespace Triton
 			void addAsset(reference<Asset> asset);
 
 			/**
+			 * [Thread safe, uses mutex]
 			 * Get the asset with the specified name
 			 *
 			 * @param name Name of the asset
@@ -99,12 +106,26 @@ namespace Triton
 			{
 				return getAsset(name);
 			}
+
+			/**
+			 * Wait for asset manager to finish all asset loading
+			 */
+			void wait();
+
+			/**
+			 * Wait for asset manager to finish loading an asset with specified name
+			 * for a specified amount of time in seconds.
+			 * If an asset with the specified name can't be found after amount of time
+			 * has passed the return value is a reference to nullptr
+			 *
+			 * @param name Name of the asset to wait for
+			 * @param amount The amount to wait for if 0 then the function will wait forever
+			 * @return The asset that was waited for
+			 */
+			reference<Asset> waitFor(const std::string& name, unsigned int amount);
 		private:
-			/// Map of asset name to asset reference
-			std::vector<reference<Asset>> m_assets;
-			
-			/// Pointer to the context instance
-			Graphics::Context* m_contextInstance;
+			class AssetManagerImpl;
+			AssetManagerImpl* m_impl;
 		};
 	}
 }

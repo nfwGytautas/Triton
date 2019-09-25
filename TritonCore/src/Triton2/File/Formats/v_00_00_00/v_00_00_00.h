@@ -4,7 +4,6 @@
 
 #include "TritonTypes\IO.h"
 #include "TritonTypes\Asset.h"
-#include "TritonPlatform2\CrossTypes\Core\Context.h"
 
 namespace Triton
 {
@@ -36,7 +35,7 @@ namespace Triton
 				 * @param objectToStoreIn UNINITIALIZED pointer to an asset
 				 * @return The status of the specified operation
 				 */
-				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn, Graphics::Context* gContext);
+				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn);
 
 				/**
 				 * Loads an asset whose format is 00_00_00

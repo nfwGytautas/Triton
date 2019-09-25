@@ -11,12 +11,6 @@
 [submodule "vendor/entt"]
 	path = vendor/entt
 	url = https://github.com/skypjack/entt
-[submodule "vendor/pybind"]
-	path = vendor/pybind
-	url = https://github.com/pybind/pybind11
-[submodule "vendor/python"]
-	path = vendor/python
-	url = https://github.com/nfwGytautas/cpython
 [submodule "vendor/stb_image"]
 	path = vendor/stb_image
 	url = https://github.com/nothings/stb

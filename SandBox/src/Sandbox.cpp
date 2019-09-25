@@ -113,6 +113,8 @@ int main()
 	// Create a new renderer for a window
 	renderer = context->newRenderer(window);
 
+	assets->wait();
+
 	// Since the assets are loaded they can be acquired here
 	// They are loaded using the name that was stored not the file name
 	//shader = (*assets)["simpleShader"].as<ShaderAsset>()->shader();

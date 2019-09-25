@@ -264,7 +264,7 @@ namespace Triton
 			return status;
 		}
 
-		IOStatus loadAssetFromDisk(const std::string& pathToFile, Asset*& objectToStoreIn, Graphics::Context* gContext)
+		IOStatus loadAssetFromDisk(const std::string& pathToFile, Asset*& objectToStoreIn)
 		{
 			// The function status
 			IOStatus status;
@@ -289,7 +289,7 @@ namespace Triton
 
 			if (fileVersion == Serialization::c_Version_00_00_00)
 			{
-				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn, gContext);
+				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
 			}
 
 			// Warn the user that the file is outdated

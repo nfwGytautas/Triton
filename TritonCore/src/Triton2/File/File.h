@@ -69,7 +69,7 @@ namespace Triton
 		 * @param objectToStoreIn UNINITIALIZED pointer to an asset
 		 * @return The status of the specified operation
 		 */
-		IOStatus loadAssetFromDisk(const std::string& pathToFile, Asset*& objectToStoreIn, Graphics::Context* gContext);
+		IOStatus loadAssetFromDisk(const std::string& pathToFile, Asset*& objectToStoreIn);
 
 		/**
 		 * Save an asset file to disk

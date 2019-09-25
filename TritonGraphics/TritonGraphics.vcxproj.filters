@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="TritonPlatform">
-      <UniqueIdentifier>{2A85815E-1653-7564-FFE6-E58AEB5351C9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TritonPlatform\CrossTypes">
-      <UniqueIdentifier>{9872EFA4-0435-232F-4DE5-B1BBB9E6FB0C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TritonPlatform\DirectX">
-      <UniqueIdentifier>{ECF164E2-D8EB-8D34-C158-2445ADF1F3A0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TritonPlatform\DirectX\BasicTypes">
-      <UniqueIdentifier>{D27964A2-3EE8-B921-87D1-7421F37EAFBD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TritonPlatform\OpenGL">
-      <UniqueIdentifier>{1E7B23BC-8AE7-DEB6-53DB-7614BF06011F}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TritonPlatform2">
       <UniqueIdentifier>{9C2AB22E-08B6-1FF3-11C7-A2E77DD17BF3}</UniqueIdentifier>
     </Filter>

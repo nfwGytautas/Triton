@@ -168,42 +168,18 @@
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Window.cpp" />
-    <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp">
-      <ObjectFileName>$(IntDir)\Shader1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXBitmap.cpp">
-      <ObjectFileName>$(IntDir)\DXBitmap1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp">
-      <ObjectFileName>$(IntDir)\DXFramebuffer1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.cpp">
-      <ObjectFileName>$(IntDir)\DXShader1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.cpp">
-      <ObjectFileName>$(IntDir)\DXTexture1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.cpp">
-      <ObjectFileName>$(IntDir)\DXVAO1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXContext.cpp">
-      <ObjectFileName>$(IntDir)\DXContext1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXRenderer.cpp">
-      <ObjectFileName>$(IntDir)\DXRenderer1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp">
-      <ObjectFileName>$(IntDir)\DXWindow1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp">
-      <ObjectFileName>$(IntDir)\DXManip1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp">
-      <ObjectFileName>$(IntDir)\PlatformAbstraction1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\mathematical.cpp">
-      <ObjectFileName>$(IntDir)\mathematical1.obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXBitmap.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXContext.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXRenderer.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp" />
+    <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp" />
+    <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp" />
+    <ClCompile Include="src\TritonPlatform2\mathematical.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">

@@ -18,7 +18,7 @@ namespace Triton
 				const char* c_ImageType = "image";
 				const char* c_ShaderType = "shader";
 
-				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn, Graphics::Context* gContext)
+				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn)
 				{
 					// The function status
 					IOStatus status;
@@ -46,13 +46,7 @@ namespace Triton
 						{
 							// No need to check for size of meshes vector since if it's empty IO_PARTIAL_OK will be set
 							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
-							Graphics::VAO* vao = gContext->newVAO(data->meshes[0]);
-							objectToStoreIn = new MeshAsset(name, vao);
-						}
-
-						if (data)
-						{
-							delete data;
+							objectToStoreIn = new MeshAsset(name, data);
 						}
 					}
 					else if (type == c_ImageType)
@@ -64,13 +58,7 @@ namespace Triton
 						{
 							// No need to check for size of meshes vector since if it's empty IO_PARTIAL_OK will be set
 							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
-							Graphics::Texture* tex = gContext->newTexture(*data);
-							objectToStoreIn = new ImageAsset(name, tex);
-						}
-
-						if (data)
-						{
-							delete data;
+							objectToStoreIn = new ImageAsset(name, data);
 						}
 					}
 					else if (type == c_ShaderType)
@@ -82,13 +70,7 @@ namespace Triton
 						{
 							// No need to check for size of meshes vector since if it's empty IO_PARTIAL_OK will be set
 							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
-							Graphics::Shader* shader = gContext->newShader(*data);
-							objectToStoreIn = new ShaderAsset(name, shader);
-						}
-
-						if (data)
-						{
-							delete data;
+							objectToStoreIn = new ShaderAsset(name, data);
 						}
 					}
 					else

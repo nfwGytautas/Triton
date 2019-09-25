@@ -190,6 +190,11 @@ namespace Triton
 			m_mouseState = new IO::Mouse();
 			
 			m_initialized = true;
+
+			D3D11_FEATURE_DATA_THREADING str;
+			m_device->CheckFeatureSupport(D3D11_FEATURE_THREADING, &str, sizeof(str));
+
+
 			return true;
 		}
 
