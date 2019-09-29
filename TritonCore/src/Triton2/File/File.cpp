@@ -77,6 +77,17 @@ namespace Triton
 			return fs::exists(pathToFile);
 		}
 
+		IOStatus createDirectory(const std::string& pathToDir)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			fs::create_directory(pathToDir);
+
+			return status;
+		}
+
 		IOStatus readFileFromDisk(const std::string& pathToFile, std::string* objectToStoreIn)
 		{
 			// The function status

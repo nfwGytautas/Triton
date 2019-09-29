@@ -6,6 +6,11 @@ namespace Triton
 {
 	namespace Graphics
 	{
+		bool Renderer::valid() const
+		{
+			return m_initialized;
+		}
+
 		void Renderer::vsync(bool value)
 		{
 			m_vsync = value;

@@ -3,13 +3,233 @@
 #include "TritonPlatform2/CrossTypes/Base.h"
 #include "TritonPlatform2/mathematical.h"
 
+#include "Triton2/Utility/Log.h"
+
 namespace Triton
 {
 	namespace Graphics
 	{
+		bool DXRenderer::s_descsCreated = false;
+		D3D11_DEPTH_STENCIL_DESC DXRenderer::s_defaultDepthStencilDesc;
+		D3D11_DEPTH_STENCIL_VIEW_DESC DXRenderer::s_defaultDepthStencilViewDesc;
+		D3D11_RASTERIZER_DESC DXRenderer::s_defaultRasterDesc;
+		D3D11_RASTERIZER_DESC DXRenderer::s_noCullRasterDesc;
+		D3D11_DEPTH_STENCIL_DESC DXRenderer::s_disabledDepthStencilDesc;
+
+		void DXRenderer::createDescs()
+		{
+			TR_SYSTEM_TRACE("Creating default depth stencil");
+			// Initialize the description of the stencil state.
+			ZeroMemory(&s_defaultDepthStencilDesc, sizeof(s_defaultDepthStencilDesc));
+
+			// Set up the description of the stencil state.
+			s_defaultDepthStencilDesc.DepthEnable = true;
+			s_defaultDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+			s_defaultDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+			s_defaultDepthStencilDesc.StencilEnable = true;
+			s_defaultDepthStencilDesc.StencilReadMask = 0xFF;
+			s_defaultDepthStencilDesc.StencilWriteMask = 0xFF;
+
+			// Stencil operations if pixel is front-facing.
+			s_defaultDepthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			s_defaultDepthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+			s_defaultDepthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			s_defaultDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			// Stencil operations if pixel is back-facing.
+			s_defaultDepthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			s_defaultDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+			s_defaultDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			s_defaultDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			TR_SYSTEM_TRACE("Creating default depth stencil view");
+
+			// Initialize the depth stencil view.
+			ZeroMemory(&s_defaultDepthStencilViewDesc, sizeof(s_defaultDepthStencilViewDesc));
+
+			// Set up the depth stencil view description.
+			s_defaultDepthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			s_defaultDepthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+			s_defaultDepthStencilViewDesc.Texture2D.MipSlice = 0;
+
+			TR_SYSTEM_TRACE("Creating default raster description");
+			// Setup the raster description which will determine how and what polygons will be drawn.
+			s_defaultRasterDesc.AntialiasedLineEnable = false;
+			s_defaultRasterDesc.CullMode = D3D11_CULL_BACK;
+			s_defaultRasterDesc.DepthBias = 0;
+			s_defaultRasterDesc.DepthBiasClamp = 0.0f;
+			s_defaultRasterDesc.DepthClipEnable = true;
+			s_defaultRasterDesc.FillMode = D3D11_FILL_SOLID;
+			s_defaultRasterDesc.FrontCounterClockwise = false;
+			s_defaultRasterDesc.MultisampleEnable = false;
+			s_defaultRasterDesc.ScissorEnable = false;
+			s_defaultRasterDesc.SlopeScaledDepthBias = 0.0f;
+
+			TR_SYSTEM_TRACE("Creating no culling raster description");
+			s_noCullRasterDesc = s_defaultRasterDesc;
+			s_noCullRasterDesc.CullMode = D3D11_CULL_NONE;
+
+
+			TR_SYSTEM_TRACE("Creating disabled depth stencil");
+
+			// Clear the second depth stencil state before setting the parameters.
+			ZeroMemory(&s_disabledDepthStencilDesc, sizeof(s_disabledDepthStencilDesc));
+
+			// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
+			// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
+			s_disabledDepthStencilDesc.DepthEnable = false;
+			s_disabledDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+			s_disabledDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+			s_disabledDepthStencilDesc.StencilEnable = true;
+			s_disabledDepthStencilDesc.StencilReadMask = 0xFF;
+			s_disabledDepthStencilDesc.StencilWriteMask = 0xFF;
+			s_disabledDepthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			s_disabledDepthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+			s_disabledDepthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			s_disabledDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+			s_disabledDepthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			s_disabledDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+			s_disabledDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			s_disabledDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			s_descsCreated = true;
+		}
+
+		std::tuple<DXGI_SWAP_CHAIN_DESC, D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT> DXRenderer::createDescs2(const std::vector<DXGI_MODE_DESC>& displayModeList)
+		{
+			auto[width, height] = m_renderingTo->size();
+
+			// First lets get the refresh rate for the monitor
+			unsigned int numerator, denominator;
+
+			TR_SYSTEM_TRACE("Getting display refresh rate");
+			for (int i = 0; i < displayModeList.size(); i++)
+			{
+				if (displayModeList[i].Width == (unsigned int)width)
+				{
+					if (displayModeList[i].Height == (unsigned int)height)
+					{
+						numerator = displayModeList[i].RefreshRate.Numerator;
+						denominator = displayModeList[i].RefreshRate.Denominator;
+					}
+				}
+			}
+
+			TR_SYSTEM_INFO("Refresh rate: '{0}' '{1}'", numerator, denominator);
+
+			TR_SYSTEM_TRACE("Creating swap chain description");
+
+			DXGI_SWAP_CHAIN_DESC swapChainDesc;
+
+			// Initialize the swap chain description.
+			ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+
+			// Set to a single back buffer.
+			swapChainDesc.BufferCount = 1;
+
+			// Set the width and height of the back buffer.
+			swapChainDesc.BufferDesc.Width = width;
+			swapChainDesc.BufferDesc.Height = height;
+
+			// Set regular 32-bit surface for the back buffer.
+			swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+			// Set the refresh rate of the back buffer.
+			if (m_vsync)
+			{
+				TR_SYSTEM_TRACE("V_SYNC enabled");
+				swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
+				swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
+			}
+			else
+			{
+				TR_SYSTEM_TRACE("V_SYNC disabled");
+				swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
+				swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+			}
+
+			// Set the usage of the back buffer.
+			swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+
+			// Set the handle for the window to render to.
+			swapChainDesc.OutputWindow = static_cast<DXWindow*>(m_renderingTo)->nativeHandle();
+
+			// Turn multi sampling off.
+			swapChainDesc.SampleDesc.Count = 1;
+			swapChainDesc.SampleDesc.Quality = 0;
+
+			// Set to full screen or windowed mode.
+			if (m_renderingTo->isFullscreen())
+			{
+				TR_SYSTEM_TRACE("Full screen enabled");
+				swapChainDesc.Windowed = false;
+			}
+			else
+			{
+				TR_SYSTEM_TRACE("Full screen disabled");
+				swapChainDesc.Windowed = true;
+			}
+
+			// Set the scan line ordering and scaling to unspecified.
+			swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+			swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+
+			// Discard the back buffer contents after presenting.
+			swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+			// Don't set the advanced flags.
+			swapChainDesc.Flags = 0;
+
+			TR_SYSTEM_TRACE("Creating depth buffer description");
+
+			// Now get the depth buffer
+			D3D11_TEXTURE2D_DESC depthBufferDesc;
+
+			// Initialize the description of the depth buffer.
+			ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+
+			// Set up the description of the depth buffer.
+			depthBufferDesc.Width = width;
+			depthBufferDesc.Height = height;
+			depthBufferDesc.MipLevels = 1;
+			depthBufferDesc.ArraySize = 1;
+			depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			depthBufferDesc.SampleDesc.Count = 1;
+			depthBufferDesc.SampleDesc.Quality = 0;
+			depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+			depthBufferDesc.CPUAccessFlags = 0;
+			depthBufferDesc.MiscFlags = 0;
+
+			TR_SYSTEM_TRACE("Creating view port");
+			// Setup the view port for rendering.
+			D3D11_VIEWPORT viewport;
+
+			viewport.Width = (float)width;
+			viewport.Height = (float)height;
+			viewport.MinDepth = 0.0f;
+			viewport.MaxDepth = 1.0f;
+			viewport.TopLeftX = 0.0f;
+			viewport.TopLeftY = 0.0f;
+
+			return std::tuple<DXGI_SWAP_CHAIN_DESC, D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT>(swapChainDesc, depthBufferDesc, viewport);
+		}
+
 		DXRenderer::DXRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const std::vector<DXGI_MODE_DESC>& displayModeList, DXWindow* window)
 			: m_deviceContext(deviceContext)
 		{
+			TR_SYSTEM_TRACE("Checking renderer state descriptions");
+			if (!s_descsCreated)
+			{
+				TR_SYSTEM_WARN("Renderer descriptions not created, creating now");
+				createDescs();
+			}
+			else
+			{
+				TR_SYSTEM_TRACE("Descriptions already created");
+			}
+
 			m_renderingTo = static_cast<Window*>(window);
 			if (!init(device, displayModeList))
 			{
@@ -164,26 +384,13 @@ namespace Triton
 
 		bool DXRenderer::init(ID3D11Device* device, const std::vector<DXGI_MODE_DESC>& displayModeList)
 		{
+			TR_SYSTEM_INFO("Initializing renderer");
+
 			HRESULT result;
 
-			// First lets get the refresh rate for the monitor
-			unsigned int numerator, denominator;
+			auto[swapChainDesc, depthBufferDesc, viewport] = createDescs2(displayModeList);
 
-			auto[width, height] = m_renderingTo->size();
-			for (int i = 0; i < displayModeList.size(); i++)
-			{
-				if (displayModeList[i].Width == (unsigned int)width)
-				{
-					if (displayModeList[i].Height == (unsigned int)height)
-					{
-						numerator = displayModeList[i].RefreshRate.Numerator;
-						denominator = displayModeList[i].RefreshRate.Denominator;
-					}
-				}
-			}
-
-			DXGI_SWAP_CHAIN_DESC swapChainDesc;
-
+			
 			IDXGIDevice* pDXGIDevice = nullptr;
 			result = device->QueryInterface(__uuidof(IDXGIDevice), (void **)&pDXGIDevice);
 			if (FAILED(result))
@@ -210,62 +417,8 @@ namespace Triton
 
 			pDXGIDevice->Release();
 			pDXGIAdapter->Release();
-			
-			// Initialize the swap chain description.
-			ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
-			
-			// Set to a single back buffer.
-			swapChainDesc.BufferCount = 1;
-			
-			// Set the width and height of the back buffer.
-			swapChainDesc.BufferDesc.Width = width;
-			swapChainDesc.BufferDesc.Height = height;
-			
-			// Set regular 32-bit surface for the back buffer.
-			swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			
-			// Set the refresh rate of the back buffer.
-			if (m_vsync)
-			{
-				swapChainDesc.BufferDesc.RefreshRate.Numerator = numerator;
-				swapChainDesc.BufferDesc.RefreshRate.Denominator = denominator;
-			}
-			else
-			{
-				swapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
-				swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
-			}
-			
-			// Set the usage of the back buffer.
-			swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			
-			// Set the handle for the window to render to.
-			swapChainDesc.OutputWindow = static_cast<DXWindow*>(m_renderingTo)->nativeHandle();
-			
-			// Turn multi sampling off.
-			swapChainDesc.SampleDesc.Count = 1;
-			swapChainDesc.SampleDesc.Quality = 0;
-			
-			// Set to full screen or windowed mode.
-			if (m_renderingTo->isFullscreen())
-			{
-				swapChainDesc.Windowed = false;
-			}
-			else
-			{
-				swapChainDesc.Windowed = true;
-			}
-			
-			// Set the scan line ordering and scaling to unspecified.
-			swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-			swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-			
-			// Discard the back buffer contents after presenting.
-			swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-			
-			// Don't set the advanced flags.
-			swapChainDesc.Flags = 0;
-			
+
+			TR_SYSTEM_TRACE("Creating swap chain instance");
 			// Create the swap chain, Direct3D device, and Direct3D device context.
 			result = pIDXGIFactory->CreateSwapChain(device, &swapChainDesc, &m_swapChain);
 			if (FAILED(result))
@@ -274,10 +427,15 @@ namespace Triton
 				return false;
 			}
 			
+			TR_SYSTEM_INFO("Swap chain created");
+
 			pIDXGIFactory->Release();
+
 
 			// Lets get the render target view
 			ID3D11Texture2D* backBufferPtr;
+
+			TR_SYSTEM_TRACE("Creating renderer states");
 
 			// Get the pointer to the back buffer.
 			result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
@@ -299,25 +457,6 @@ namespace Triton
 			backBufferPtr->Release();
 			backBufferPtr = 0;
 
-			// Now get the depth buffer
-			D3D11_TEXTURE2D_DESC depthBufferDesc;
-
-			// Initialize the description of the depth buffer.
-			ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-
-			// Set up the description of the depth buffer.
-			depthBufferDesc.Width = width;
-			depthBufferDesc.Height = height;
-			depthBufferDesc.MipLevels = 1;
-			depthBufferDesc.ArraySize = 1;
-			depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-			depthBufferDesc.SampleDesc.Count = 1;
-			depthBufferDesc.SampleDesc.Quality = 0;
-			depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-			depthBufferDesc.CPUAccessFlags = 0;
-			depthBufferDesc.MiscFlags = 0;
-
 			// Create the texture for the depth buffer using the filled out description.
 			result = device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 			if (FAILED(result))
@@ -325,37 +464,10 @@ namespace Triton
 				TR_SYSTEM_ERROR("Failed to acquire depth stencil buffer");
 				return false;
 			}
-
-			// Get the depth stencil
-			D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-			D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-
-			// Initialize the description of the stencil state.
-			ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-
-			// Set up the description of the stencil state.
-			depthStencilDesc.DepthEnable = true;
-			depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-			depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-
-			depthStencilDesc.StencilEnable = true;
-			depthStencilDesc.StencilReadMask = 0xFF;
-			depthStencilDesc.StencilWriteMask = 0xFF;
-
-			// Stencil operations if pixel is front-facing.
-			depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-			depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-			depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-			// Stencil operations if pixel is back-facing.
-			depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-			depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-			depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+			
 
 			// Create the depth stencil state.
-			result = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+			result = device->CreateDepthStencilState(&s_defaultDepthStencilDesc, &m_depthStencilState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil state");
@@ -365,16 +477,8 @@ namespace Triton
 			// Set the depth stencil state.
 			m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
-			// Initialize the depth stencil view.
-			ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
-
-			// Set up the depth stencil view description.
-			depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-			depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-			depthStencilViewDesc.Texture2D.MipSlice = 0;
-
 			// Create the depth stencil view.
-			result = device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
+			result = device->CreateDepthStencilView(m_depthStencilBuffer, &s_defaultDepthStencilViewDesc, &m_depthStencilView);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil view");
@@ -384,38 +488,16 @@ namespace Triton
 			// Bind the render target view and depth stencil buffer to the output render pipeline.
 			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
-			// Set up the rasterizer
-			D3D11_RASTERIZER_DESC rasterDesc;
-
-			// Setup the raster description which will determine how and what polygons will be drawn.
-			rasterDesc.AntialiasedLineEnable = false;
-			rasterDesc.CullMode = D3D11_CULL_BACK;
-			rasterDesc.DepthBias = 0;
-			rasterDesc.DepthBiasClamp = 0.0f;
-			rasterDesc.DepthClipEnable = true;
-			rasterDesc.FillMode = D3D11_FILL_SOLID;
-			//rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
-			rasterDesc.FrontCounterClockwise = false;
-			rasterDesc.MultisampleEnable = false;
-			rasterDesc.ScissorEnable = false;
-			rasterDesc.SlopeScaledDepthBias = 0.0f;
-
 			// Create the rasterizer state from the description we just filled out.
-			result = device->CreateRasterizerState(&rasterDesc, &m_rasterState);
+			result = device->CreateRasterizerState(&s_defaultRasterDesc, &m_rasterState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create rasterizer state");
 				return false;
 			}
 
-
-			// Disabled culling state
-			D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
-
-			rasterDesc.CullMode = D3D11_CULL_NONE;
-
 			// Create the disabled cull mode rasterizer state
-			result = device->CreateRasterizerState(&rasterDesc, &m_disabledCullingState);
+			result = device->CreateRasterizerState(&s_noCullRasterDesc, &m_disabledCullingState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create disabled culling rasterizer state");
@@ -425,50 +507,26 @@ namespace Triton
 			// Now set the rasterizer state.
 			m_deviceContext->RSSetState(m_rasterState);
 
-			// Setup the view port for rendering.
-			D3D11_VIEWPORT viewport;
-
-			viewport.Width = (float)width;
-			viewport.Height = (float)height;
-			viewport.MinDepth = 0.0f;
-			viewport.MaxDepth = 1.0f;
-			viewport.TopLeftX = 0.0f;
-			viewport.TopLeftY = 0.0f;
-
 			// Create the view port.
 			m_deviceContext->RSSetViewports(1, &viewport);
 
-			// Clear the second depth stencil state before setting the parameters.
-			ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
-
-			// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
-			// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
-			depthDisabledStencilDesc.DepthEnable = false;
-			depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-			depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-			depthDisabledStencilDesc.StencilEnable = true;
-			depthDisabledStencilDesc.StencilReadMask = 0xFF;
-			depthDisabledStencilDesc.StencilWriteMask = 0xFF;
-			depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-			depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-			depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-			depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-			depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-			depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
 			// Create the state using the device.
-			result = device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState);
+			result = device->CreateDepthStencilState(&s_disabledDepthStencilDesc, &m_depthDisabledStencilState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create disabled depth stencil");
 				return false;
 			}
 
+			TR_SYSTEM_TRACE("Calculating matrices");
+
 			// Create the projection matrix for 3D rendering.
 			recalcMatrices();
 			m_worldMatrix = DirectX::XMMatrixIdentity();
+
+			m_initialized = true;
+
+			TR_SYSTEM_INFO("Renderer initialized");
 
 			return true;
 		}

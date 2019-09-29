@@ -193,6 +193,8 @@ int main()
 		renderer->endFrame();
 	}
 
+	Log::flush();
+
 #if _DEBUG
 	std::cin.get();
 #endif

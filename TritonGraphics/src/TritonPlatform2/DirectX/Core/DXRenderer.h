@@ -9,6 +9,28 @@ PLATFORM_NAMESPACE_BEGIN
 
 class DXRenderer : public Renderer
 {
+private:
+	/// Variable to track if the descriptions have been created already
+	static bool s_descsCreated;
+
+	static D3D11_DEPTH_STENCIL_DESC s_defaultDepthStencilDesc;
+	static D3D11_DEPTH_STENCIL_VIEW_DESC s_defaultDepthStencilViewDesc;
+	static D3D11_RASTERIZER_DESC s_defaultRasterDesc;
+	static D3D11_RASTERIZER_DESC s_noCullRasterDesc;
+	static D3D11_DEPTH_STENCIL_DESC s_disabledDepthStencilDesc;
+	
+	/**
+	 * Creates the renderer description structures
+	 */
+	static void createDescs();
+
+	/**
+	 * Creates the display specific descriptions
+	 *
+	 * @param displayModeList Possible default list got from the context
+	 * @return A tuple of swap chain description, depth buffer description, view port
+	 */
+	std::tuple<DXGI_SWAP_CHAIN_DESC, D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT> createDescs2(const std::vector<DXGI_MODE_DESC>& displayModeList);
 public:
 	DXRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const std::vector<DXGI_MODE_DESC>& displayModeList, DXWindow* window);
 	
@@ -22,8 +44,6 @@ public:
 
 	virtual void render(reference<Renderable>& renderable) override;
 	virtual void render(unsigned int indiceCount) override;
-
-
 
 	virtual void setViewPort(int x, int y, int width, int height) override;
 	virtual void depthBufferState(bool state) override;

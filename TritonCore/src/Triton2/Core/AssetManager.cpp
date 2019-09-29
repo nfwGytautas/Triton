@@ -23,7 +23,7 @@ namespace Triton
 			AssetManagerImpl(Graphics::Context* context)
 				: m_contextInstance(context), m_tPool(c_threadCount)
 			{
-				
+				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
 
 			~AssetManagerImpl()
@@ -79,6 +79,8 @@ namespace Triton
 
 			void loadAsset(const std::string& file)
 			{
+				TR_SYSTEM_DEBUG("Loading: '{0}'", file);
+
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
@@ -87,7 +89,7 @@ namespace Triton
 				{
 					auto f = file;
 					loadAssetInternalMT(f); 
-					TR_SYSTEM_TRACE("Loaded {0}", f);
+					TR_SYSTEM_DEBUG("'{0}' loading complete", f);
 				});
 			}
 

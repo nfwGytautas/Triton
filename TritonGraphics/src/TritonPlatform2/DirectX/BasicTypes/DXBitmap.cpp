@@ -2,6 +2,8 @@
 
 #include "DXTexture.h"
 
+#include "Triton2/Utility/Log.h"
+
 PLATFORM_NAMESPACE_BEGIN
 
 DXBitmap::~DXBitmap()

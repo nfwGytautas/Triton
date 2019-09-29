@@ -7,6 +7,22 @@ PLATFORM_NAMESPACE_BEGIN
 
 class DXContext : public Context
 {
+private:
+	/// Variable to track if the descriptions have been created already
+	static bool s_descsCreated;
+
+	static D3D11_BUFFER_DESC s_matrixBufferDesc;
+	static D3D11_BUFFER_DESC s_settingsBufferDesc;
+	static D3D11_BUFFER_DESC s_plightBufferDesc;
+	static D3D11_BUFFER_DESC s_slightBufferDesc;
+	static D3D11_BUFFER_DESC s_dlightBufferDesc;
+	static D3D11_BUFFER_DESC s_camBufferDesc;
+	static D3D11_SAMPLER_DESC s_samplerDesc;
+
+	/**
+	 * Creates the context description structures
+	 */
+	static void createDescs();
 public:
 	/// Create the DX context
 	DXContext();

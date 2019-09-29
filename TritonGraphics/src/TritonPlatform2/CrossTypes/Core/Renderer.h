@@ -83,6 +83,13 @@ namespace Triton
 			virtual void render(unsigned int indiceCount) = 0;
 
 			/**
+			 * Check if the renderer has been initialized successfully
+			 *
+			 * @return True if renderer has initialized successfully
+			 */
+			bool valid() const;
+
+			/**
 			 * Set the renderer vertical sync variable
 			 *
 			 * @param value New v sync value
@@ -150,6 +157,9 @@ namespace Triton
 			Matrix44 m_orthographicMatrix;
 			/// Renderer calculated world matrix
 			Matrix44 m_worldMatrix;
+
+			/// Variable specifying if the renderer has initialized successfully
+			bool m_initialized = false;
 		};
 	}
 }

@@ -5,7 +5,10 @@
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/sinks/base_sink.h"
 #include "spdlog/details/null_mutex.h"
+#include "spdlog/sinks/basic_file_sink.h"
 #include <mutex>
+
+#include "Triton2/File/File.h"
 
 
 template<typename Mutex>
@@ -50,18 +53,43 @@ namespace Triton {
 
 	void Log::init()
 	{
+		const std::string pattern = "[%T.%e] Thread: %-5t %=6n: %^[%=7l] %v%$";
+
+		Triton::IO::createDirectory("logs");
+
 		std::shared_ptr<GUI_sink_mt> s_GUISink = std::make_shared<GUI_sink_mt>();
 
-		s_GUISink->set_pattern("[%T] Thread: %t %n: %^[%l] %v%$");
-		spdlog::set_pattern("[%T] Thread: %t %n: %^[%l] %v%$");
+		auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+		console_sink->set_level(spdlog::level::trace);
+		console_sink->set_pattern(pattern);
 
-		s_GUILogger = std::make_shared<spdlog::logger>("TRITON", s_GUISink);
+		auto file_sink_system = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/system.txt", true);
+		file_sink_system->set_level(spdlog::level::trace);
+		file_sink_system->set_pattern(pattern);
 
-		s_SystemLogger = spdlog::stdout_color_mt("SYSTEM");
+		auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs/app.txt", true);
+		file_sink->set_level(spdlog::level::trace);
+		file_sink->set_pattern(pattern);
+
+		s_GUISink->set_pattern(pattern);
+		spdlog::set_pattern(pattern);
+
+		s_GUILogger = std::make_shared<spdlog::logger>("TRITON", std::initializer_list<spdlog::sink_ptr>{s_GUISink, file_sink});
+
+		s_SystemLogger = std::make_shared<spdlog::logger>("SYSTEM", std::initializer_list<spdlog::sink_ptr>{console_sink, file_sink_system});;
 		s_SystemLogger->set_level(spdlog::level::trace);
 
 		//s_GUILogger = spdlog::stdout_color_mt("TRITON");
 		s_GUILogger->set_level(spdlog::level::trace);
+	}
+
+	void Log::flush()
+	{
+		TR_SYSTEM_INFO("FLUSHING");
+		TR_INFO("FLUSHING");
+
+		s_SystemLogger->flush();
+		s_GUILogger->flush();
 	}
 
 }

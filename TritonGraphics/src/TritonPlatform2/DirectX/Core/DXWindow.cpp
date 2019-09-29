@@ -209,6 +209,8 @@ namespace Triton
 
 		bool DXWindow::initNew(float startingWidth, float startingHeight)
 		{
+			TR_SYSTEM_TRACE("Initializing a window '{0}x{1}'", startingWidth, startingHeight);
+
 			if (m_initialized)
 			{
 				return false;
@@ -231,8 +233,6 @@ namespace Triton
 			
 			// Initialize the message structure.
 			ZeroMemory(&m_msg, sizeof(MSG));
-
-			TR_SYSTEM_INFO("Creating a WINDOWS display: W:{0} H:{1}", startingWidth, startingHeight);
 
 			// Setup the windows class with default settings.
 			wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -277,6 +277,7 @@ namespace Triton
 				posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
 			}
 
+			TR_SYSTEM_TRACE("Creating hwnd");
 			// Create the window with the screen settings and get the handle to it.
 			m_hwnd = CreateWindowEx(NULL, m_className, L"Engine",
 				WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_TILEDWINDOW,
@@ -286,7 +287,7 @@ namespace Triton
 
 			if (m_hwnd == NULL)
 			{
-				TR_SYSTEM_ERROR("Failed to create a window!");
+				TR_SYSTEM_ERROR("Failed to create hwnd!");
 				return false;
 			}
 
@@ -309,10 +310,14 @@ namespace Triton
 			//Rid[1].dwFlags = RIDEV_NOLEGACY;   // adds HID keyboard and also ignores legacy keyboard messages
 			Rid[1].hwndTarget = 0;
 
+			TR_SYSTEM_TRACE("Registering RID devices");
+
 			if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE) {
 				TR_SYSTEM_ERROR("RID registration failure");
 				return false;
 			}
+
+			TR_SYSTEM_INFO("RID devices registered");
 
 			POINT p;
 			if (GetCursorPos(&p))
@@ -325,6 +330,9 @@ namespace Triton
 
 			m_initialized = true;
 			m_selfCreated = true;
+
+			TR_SYSTEM_INFO("Window initialized");
+
 			return true;
 		}
 

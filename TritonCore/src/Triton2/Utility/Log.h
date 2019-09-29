@@ -10,27 +10,39 @@ namespace Triton {
 		spdlog::level::level_enum Level;
 	};
 
+	/**
+	 * The logger class used by Triton
+	 */
 	class Log
 	{
 	public:
+		/**
+		 * Initializes Triton logger
+		 */
 		static void init();
+
+		/**
+		 * Flush all logs to files
+		 */
+		static void flush();
 
 		inline static std::shared_ptr<spdlog::logger>& getGUILogger() { return s_GUILogger; }
 
 		inline static std::shared_ptr<spdlog::logger>& getSystemLogger() { return s_SystemLogger; }
 
-		// History of the logger used for GUI log
+		/// History of the logger used for GUI log
 		static std::vector<LogMessage> History;
 	private:
-		// GUI logger logs messages to GUI console
+		/// GUI logger logs messages to GUI console
 		static std::shared_ptr<spdlog::logger> s_GUILogger;
 
-		// System logger logs messages to console rather than the GUI log
+		/// System logger logs messages to console rather than the GUI log
 		static std::shared_ptr<spdlog::logger> s_SystemLogger;
 	};
 }
 
 // System log macros
+#define TR_SYSTEM_DEBUG(...)       ::Triton::Log::getSystemLogger()->debug(__VA_ARGS__)
 #define TR_SYSTEM_TRACE(...)       ::Triton::Log::getSystemLogger()->trace(__VA_ARGS__)
 #define TR_SYSTEM_INFO(...)        ::Triton::Log::getSystemLogger()->info(__VA_ARGS__)
 #define TR_SYSTEM_WARN(...)        ::Triton::Log::getSystemLogger()->warn(__VA_ARGS__)

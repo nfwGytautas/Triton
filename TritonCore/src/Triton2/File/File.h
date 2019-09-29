@@ -18,6 +18,14 @@ namespace Triton
 		bool fileValid(const std::string& pathToFile);
 
 		/**
+		 * Creates a directory with specified path
+		 *
+		 * @param pathToDir The path to the directory
+		 * @return The status of the specified operation
+		 */
+		IOStatus createDirectory(const std::string& pathToDir);
+
+		/**
 		 * Read all the text inside a file
 		 *
 		 * @param pathToFile The path to the file that you want to be loaded

@@ -1,5 +1,7 @@
 #include "DXShader.h"
 
+#include "Triton2/Utility/Log.h"
+
 PLATFORM_NAMESPACE_BEGIN
 
 DXShader::DXShader(const Flags::ShaderFlagset& flags)

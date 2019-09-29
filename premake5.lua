@@ -124,8 +124,8 @@ project "TritonCore"
 
 	libdirs
 	{
-		"C:/dev/Triton/vendor/Assimp/lib/Release",
-		"C:/dev/Triton/vendor/mono/lib",
+		"vendor/Assimp/lib/Release",
+		"vendor/mono/lib",
 	}
 	
 	links 

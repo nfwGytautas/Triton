@@ -1,6 +1,8 @@
 #include "TRpch.h"
 #include "PlatformAbstraction.h"
 
+#include "Triton2/Utility/Log.h"
+
 #ifdef TR_PLATFORM_WINDOWS
 
 #include <d3d11.h>

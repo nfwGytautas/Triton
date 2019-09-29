@@ -1,0 +1,49 @@
+[21:02:33.711] Thread: 13532 SYSTEM: [ trace ] Creating 'WINDOWS' context
+[21:02:33.712] Thread: 13532 SYSTEM: [ trace ] Initializing DXContext
+[21:02:33.713] Thread: 13532 SYSTEM: [ trace ] Creating DX device with feature level '45056'
+[21:02:33.868] Thread: 13532 SYSTEM: [ info  ] DX device created
+[21:02:33.869] Thread: 13532 SYSTEM: [ trace ] Getting display parameters
+[21:02:33.869] Thread: 13532 SYSTEM: [ trace ] Adapter information acquired
+[21:02:33.871] Thread: 13532 SYSTEM: [ trace ] Possible display mode count '146'
+[21:02:33.873] Thread: 13532 SYSTEM: [ trace ] Getting video card information
+[21:02:33.873] Thread: 13532 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
+[21:02:33.873] Thread: 13532 SYSTEM: [ trace ] Checking context state descriptions
+[21:02:33.874] Thread: 13532 SYSTEM: [warning] Context descriptions not created, creating now
+[21:02:33.874] Thread: 13532 SYSTEM: [ trace ] Creating shader matrix buffer description
+[21:02:33.874] Thread: 13532 SYSTEM: [ trace ] Creating shader settings buffer description
+[21:02:33.874] Thread: 13532 SYSTEM: [ trace ] Creating shader point light buffer description
+[21:02:33.875] Thread: 13532 SYSTEM: [ trace ] Creating shader spot light buffer description
+[21:02:33.875] Thread: 13532 SYSTEM: [ trace ] Creating shader directional light buffer description
+[21:02:33.875] Thread: 13532 SYSTEM: [ trace ] Creating shader camera buffer description
+[21:02:33.875] Thread: 13532 SYSTEM: [ trace ] Creating shader sampler description
+[21:02:33.877] Thread: 13532 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
+[21:02:33.995] Thread: 13532 SYSTEM: [ debug ] Loading: '../Assets/stall.asset'
+[21:02:33.996] Thread: 13532 SYSTEM: [ debug ] Loading: '../Assets/texture.asset'
+[21:02:33.996] Thread: 13532 SYSTEM: [ debug ] Loading: '../Assets/lightingShader.asset'
+[21:02:33.997] Thread: 13532 SYSTEM: [ debug ] Loading: '../Assets/simpleShader.asset'
+[21:02:33.997] Thread: 13532 SYSTEM: [ trace ] Creating a new 'Windows' window
+[21:02:33.997] Thread: 19624 SYSTEM: [ debug ] '../Assets/lightingShader.asset' loading complete
+[21:02:33.998] Thread: 13532 SYSTEM: [ trace ] Initializing a window '1280x720'
+[21:02:33.998] Thread: 19624 SYSTEM: [ debug ] '../Assets/simpleShader.asset' loading complete
+[21:02:34.001] Thread: 13532 SYSTEM: [ trace ] Creating hwnd
+[21:02:34.003] Thread: 14576 SYSTEM: [ debug ] '../Assets/stall.asset' loading complete
+[21:02:34.014] Thread: 14576 SYSTEM: [ debug ] '../Assets/texture.asset' loading complete
+[21:02:34.042] Thread: 13532 SYSTEM: [ trace ] Registering RID devices
+[21:02:34.042] Thread: 13532 SYSTEM: [ info  ] RID devices registered
+[21:02:34.043] Thread: 13532 SYSTEM: [ info  ] Window initialized
+[21:02:34.044] Thread: 13532 SYSTEM: [ trace ] Creating a new 'Windows' renderer
+[21:02:34.045] Thread: 13532 SYSTEM: [ trace ] Checking renderer state descriptions
+[21:02:34.045] Thread: 13532 SYSTEM: [warning] Renderer descriptions not created, creating now
+[21:02:34.046] Thread: 13532 SYSTEM: [ trace ] Creating default depth stencil
+[21:02:34.047] Thread: 13532 SYSTEM: [ trace ] Creating default depth stencil view
+[21:02:34.048] Thread: 13532 SYSTEM: [ trace ] Creating default raster description
+[21:02:34.048] Thread: 13532 SYSTEM: [ trace ] Creating no culling raster description
+[21:02:34.049] Thread: 13532 SYSTEM: [ trace ] Creating disabled depth stencil
+[21:02:34.050] Thread: 13532 SYSTEM: [ info  ] Initializing renderer
+[21:02:34.051] Thread: 13532 SYSTEM: [ trace ] Getting display refresh rate
+[21:02:34.053] Thread: 13532 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
+[21:02:34.055] Thread: 13532 SYSTEM: [ trace ] Creating swap chain description
+[21:02:34.056] Thread: 13532 SYSTEM: [ trace ] V_SYNC disabled
+[21:02:34.057] Thread: 13532 SYSTEM: [ trace ] Full screen disabled
+[21:02:34.058] Thread: 13532 SYSTEM: [ trace ] Creating depth buffer description
+[21:02:34.059] Thread: 13532 SYSTEM: [ trace ] Creating
