@@ -1,11 +1,15 @@
 #pragma once
 
-#include "TritonPlatform2/CrossTypes/Base.h"
-#include "TritonPlatform2/CrossTypes/Core/Context.h"
 #include "TritonTypes/Asset.h"
 
 namespace Triton
 {
+	namespace Graphics
+	{
+		// Forward declaration
+		class Context;
+	}
+
 	namespace Core
 	{
 		/**
@@ -97,7 +101,7 @@ namespace Triton
 			reference<Asset> getAsset(const std::string& name) const;
 
 			/**
-			 * Load a file from disk and
+			 * Same as getAsset()
 			 *
 			 * @param name Name of the asset
 			 * @return Reference to an asset with the specified name

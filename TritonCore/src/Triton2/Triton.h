@@ -12,5 +12,8 @@
 /// Asset manager
 #include "Triton2/Core/AssetManager.h"
 
+/// Scene manager
+#include "Triton2/Core/SceneManager.h"
+
 /// All the cameras that are built in with Triton
 #include "Triton2/Scene/Camera.h"

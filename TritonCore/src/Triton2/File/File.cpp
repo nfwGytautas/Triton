@@ -142,6 +142,26 @@ namespace Triton
 			return status;
 		}
 
+		IOStatus readBinaryFromDisk(const std::string & pathToFile, std::string * objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+			std::ifstream file{ pathToFile, std::ios::binary };
+			*objectToStoreIn = std::string({ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() });
+
+			status.status = IOStatus::IO_OK;
+			return status;
+		}
+
 		IOStatus loadImageFromDisk(const std::string& pathToFile, ImageData* objectToStoreIn)
 		{
 			// The function status
@@ -316,11 +336,49 @@ namespace Triton
 			return status;
 		}
 
+		IOStatus loadAssetFromMemory(const std::string& content, Asset*& objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+			
+			// Create a cereal binary reader
+			std::istringstream is(content, std::ios::binary);
+			cereal::BinaryInputArchive archive(is);
+
+			// Check if the file version
+			std::string fileVersion;
+
+			archive(fileVersion);
+
+			if (fileVersion == Serialization::c_Version_00_00_00)
+			{
+				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
+			}
+
+			// Warn the user that the file is outdated
+			if (fileVersion != Serialization::c_Version_Latest)
+			{
+				TR_SYSTEM_WARN("Loading an outdated asset! Asset file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+				TR_WARN("Loading an outdated asset! Asset file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+
+				// Set the flag that the file is outdated
+				status.additionalFlags |= status.IO_OUTDATED;
+			}
+
+			return status;
+		}
+
 		IOStatus saveAssetToDisk(const std::string& pathToFile, IntermediateAsset* asset)
 		{
 			// The function status
 			IOStatus status;
 			status.status = IOStatus::IO_OK;
+
+			if (asset->Version == "Latest")
+			{
+				asset->Version = Serialization::c_Version_Latest;
+			}
 
 			// Create a cereal binary reader
 			std::ofstream os(pathToFile, std::ios::binary);
@@ -339,6 +397,116 @@ namespace Triton
 			{
 				TR_SYSTEM_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", asset->Version, Serialization::c_Version_Latest);
 				TR_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", asset->Version, Serialization::c_Version_Latest);
+
+				// Set the flag that the file is outdated
+				status.additionalFlags |= status.IO_OUTDATED;
+			}
+
+			return status;
+		}
+		
+		IOStatus loadSceneFromDisk(const std::string& pathToFile, Scene*& objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+			// Create a cereal binary reader
+			std::ifstream is(pathToFile, std::ios::binary);
+			cereal::BinaryInputArchive archive(is);
+
+			// Check if the file version
+			std::string fileVersion;
+
+			archive(fileVersion);
+
+			if (fileVersion == Serialization::c_Version_00_00_00)
+			{
+				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
+			}
+
+			// Warn the user that the file is outdated
+			if (fileVersion != Serialization::c_Version_Latest)
+			{
+				TR_SYSTEM_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+				TR_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+
+				// Set the flag that the file is outdated
+				status.additionalFlags |= status.IO_OUTDATED;
+			}
+
+			return status;
+		}
+
+		IOStatus loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			// Create a cereal binary reader
+			std::istringstream is(content, std::ios::binary);
+			cereal::BinaryInputArchive archive(is);
+
+			// Check if the file version
+			std::string fileVersion;
+
+			archive(fileVersion);
+
+			if (fileVersion == Serialization::c_Version_00_00_00)
+			{
+				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
+			}
+
+			// Warn the user that the file is outdated
+			if (fileVersion != Serialization::c_Version_Latest)
+			{
+				TR_SYSTEM_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+				TR_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
+
+				// Set the flag that the file is outdated
+				status.additionalFlags |= status.IO_OUTDATED;
+			}
+
+			return status;
+		}
+
+		IOStatus saveSceneToDisk(const std::string& pathToFile, SceneData* scene)
+		{
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			if (scene->Version == "Latest")
+			{
+				scene->Version = Serialization::c_Version_Latest;
+			}
+
+			// Create a cereal binary reader
+			std::ofstream os(pathToFile, std::ios::binary);
+			cereal::BinaryOutputArchive archive(os);
+
+			// Check if the file version
+			archive(scene->Version);
+
+			if (scene->Version == Serialization::c_Version_00_00_00)
+			{
+				status = Serialization::v_00_00_00::saveFormat_00_00_00(archive, scene);
+			}
+
+			// Warn the user that the file is outdated
+			if (scene->Version != Serialization::c_Version_Latest)
+			{
+				TR_SYSTEM_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", scene->Version, Serialization::c_Version_Latest);
+				TR_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", scene->Version, Serialization::c_Version_Latest);
 
 				// Set the flag that the file is outdated
 				status.additionalFlags |= status.IO_OUTDATED;

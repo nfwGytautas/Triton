@@ -5,6 +5,7 @@ Triton::Graphics::Context* context;
 Triton::Graphics::Window* window;
 Triton::Graphics::Renderer* renderer;
 Triton::Core::AssetManager* assets;
+Triton::Core::SceneManager* scenes;
 
 void createAssets()
 {
@@ -70,6 +71,43 @@ void createAssets()
 	IO::loadImageFromDisk("D:\\Programming\\Test files\\nfw\\stallTexture.png", tDatap);
 
 	IO::saveAssetToDisk("../Assets/texture.asset", &textureAsset);
+
+	
+	Scene scene("sample");
+
+	PointLight pl;
+	pl.Color = Vector3(1.0f, 1.0f, 1.0f);
+	pl.Position = Vector3(5, 0, 20);
+
+	PointLight pl2;
+	pl2.Color = Vector3(1.0f, 1.0f, 1.0f);
+	pl2.Position = Vector3(-5, 0, 20);
+
+	DirectionalLight dl;
+	dl.Color = Vector3(1.0f, 1.0f, 1.0f);
+	dl.Direction = Vector3(200.0f, 200.0f, 200.0f);
+
+	SpotLight sl;
+	sl.Color = Vector3(1.0f, 1.0f, 1.0f);
+	sl.Direction = Vector3(0, 0, 20);
+	sl.Angle = 5;
+	sl.Range = 50;
+	sl.Linear = 0.045;
+	sl.Quadratic = 0.0075;
+	sl.Position = Vector3(0, 5, 40);
+
+	scene.lights().PointLights.push_back(pl);
+	scene.lights().PointLights.push_back(pl2);
+	//scene.lights().DirLights.push_back(dl);
+	scene.lights().SpotLights.push_back(sl);
+
+	auto& scene_assets = scene.assets();
+
+	scene_assets.push_back("lightingShader");
+	scene_assets.push_back("stallMesh");
+	scene_assets.push_back("stallTexture");
+
+	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene.toRawData());
 }
 
 void loadAssets()
@@ -78,6 +116,8 @@ void loadAssets()
 	assets->loadAsset("../Assets/texture.asset");
 	assets->loadAsset("../Assets/lightingShader.asset");
 	assets->loadAsset("../Assets/simpleShader.asset");
+
+	scenes->loadScene("../Assets/Scenes/sampleScene.scene");
 }
 
 int main()
@@ -96,6 +136,9 @@ int main()
 
 	// Create an asset manager for the context
 	assets = new Core::AssetManager(context);
+
+	// Create scene manager using asset manager
+	scenes = new Core::SceneManager(assets);
 
 	// Create assets
 	createAssets();
@@ -148,31 +191,9 @@ int main()
 	shader->buffer_camera().Position = Vector4(pos.x, pos.y, pos.z, 1.0f);
 	shader->buffer_camera().ViewDirection = Vector4(dir.x, dir.y, dir.z, 1.0f);
 
-	PointLight pl;
-	pl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	pl.Position = Vector3(5, 0, 20);
+	reference<Scene> sampleScene = (*scenes)["sample"];
 
-	PointLight pl2;
-	pl2.Color = Vector3(1.0f, 1.0f, 1.0f);
-	pl2.Position = Vector3(-5, 0, 20);
-
-	DirectionalLight dl;
-	dl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	dl.Direction = Vector3(200.0f, 200.0f, 200.0f);
-
-	SpotLight sl;
-	sl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	sl.Direction = Vector3(0, 0, 20);
-	sl.Angle = 5;
-	sl.Range = 50;
-	sl.Linear = 0.045;
-	sl.Quadratic = 0.0075;
-	sl.Position = Vector3(0, 5, 40);
-
-	shader->buffer_lights().PointLights.push_back(pl);
-	shader->buffer_lights().PointLights.push_back(pl2);
-	//shader->buffer_lights().DirLights.push_back(dl);
-	shader->buffer_lights().SpotLights.push_back(sl);
+	shader->buffer_lights() = sampleScene->lights();
 
 	float rotation = 0;
 

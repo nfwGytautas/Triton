@@ -89,6 +89,8 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\Core\SceneManager.h" />
+    <ClInclude Include="src\TritonTypes\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -122,5 +124,8 @@
     <ClCompile Include="src\TritonTypes\Asset.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
+    <ClCompile Include="src\TritonTypes\Scene.cpp" />
+    <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
   </ItemGroup>
 </Project>

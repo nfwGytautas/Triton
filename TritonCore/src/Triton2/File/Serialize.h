@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TritonTypes/IO.h"
+#include "Triton2/Scene/Lighting.h"
 #include "TritonPlatform2/mathematical.h"
 
 namespace Triton
@@ -24,6 +25,27 @@ namespace Triton
 		Vector4& m)
 	{
 		archive(m.x, m.y, m.z, m.w);
+	}
+
+	template<class Archive>
+	void serialize(Archive& archive,
+		PointLight& m)
+	{
+		archive(m.Position, m.Color, m.Range, m.Constant, m.Linear, m.Quadratic);
+	}
+
+	template<class Archive>
+	void serialize(Archive& archive,
+		DirectionalLight& m)
+	{
+		archive(m.Position, m.Color, m.Direction);
+	}
+
+	template<class Archive>
+	void serialize(Archive& archive,
+		SpotLight& m)
+	{
+		archive(m.Position, m.Color, m.Range, m.Angle, m.Direction, m.Constant, m.Linear, m.Quadratic);
 	}
 }
 

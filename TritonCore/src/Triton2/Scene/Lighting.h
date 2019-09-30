@@ -1,6 +1,5 @@
 #pragma once
 #include "TritonPlatform2/mathematical.h"
-#include "TritonPlatform2/CrossTypes/Shader.h"
 
 namespace Triton
 {

@@ -12,6 +12,8 @@
 
 #include "Triton2/Utility/Log.h"
 
+#include "TritonPlatform2/CrossTypes/Core/Context.h"
+
 namespace Triton
 {
 	namespace Core
@@ -79,17 +81,16 @@ namespace Triton
 
 			void loadAsset(const std::string& file)
 			{
-				TR_SYSTEM_DEBUG("Loading: '{0}'", file);
+				TR_SYSTEM_DEBUG("Loading asset: '{0}'", file);
 
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
-				//m_tasks.push_back(m_tPool.run<void>([&]() {loadAssetInternalMT(file); TR_SYSTEM_TRACE("Loading complete"); }));
 				m_tPool.run([&, file]()
 				{
 					auto f = file;
 					loadAssetInternalMT(f); 
-					TR_SYSTEM_DEBUG("'{0}' loading complete", f);
+					TR_SYSTEM_DEBUG("Asset '{0}' loading complete", f);
 				});
 			}
 
@@ -140,9 +141,11 @@ namespace Triton
 			void loadAssetInternalMT(const std::string& file)
 			{
 				Triton::Asset* asset = nullptr;
+				
 				TR_CORE_ASSERT(
 					IO::loadAssetFromDisk(file, asset).status == IO::IOStatus::IO_OK,
 					"Loading of an asset failed");
+
 				reference<Asset> res(asset);
 				addAsset(res);
 			}

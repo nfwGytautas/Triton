@@ -3,7 +3,7 @@
 
 #include "TritonTypes\IO.h"
 #include "TritonTypes\Asset.h"
-#include "Triton2\Core\AssetManager.h"
+#include "TritonTypes\Scene.h"
 
 namespace Triton
 {
@@ -44,6 +44,15 @@ namespace Triton
 		IOStatus readBinaryFromDisk(const std::string& pathToFile, std::vector<unsigned char>* objectToStoreIn);
 
 		/**
+		 * Read all the text inside a file as binary and fill the data inside a string
+		 *
+		 * @param pathToFile The path to the file that you want to be loaded
+		 * @param objectToStoreIn The structure where the function should store the loaded data
+		 * @return The status of the specified operation
+		 */
+		IOStatus readBinaryFromDisk(const std::string& pathToFile, std::string* objectToStoreIn);
+
+		/**
 		 * Load an image file from disk and store the data inside the specified object
 		 *
 		 * @param pathToFile The path to the file that you want to be loaded
@@ -80,6 +89,15 @@ namespace Triton
 		IOStatus loadAssetFromDisk(const std::string& pathToFile, Asset*& objectToStoreIn);
 
 		/**
+		 * Load an asset file from memory
+		 *
+		 * @param content The string representation of the asset that is read from file
+		 * @param objectToStoreIn UNINITIALIZED pointer to an asset
+		 * @return The status of the specified operation
+		 */
+		IOStatus loadAssetFromMemory(const std::string& content, Asset*& objectToStoreIn);
+
+		/**
 		 * Save an asset file to disk
 		 *
 		 * @param pathToFile The path to the asset file
@@ -87,6 +105,33 @@ namespace Triton
 		 * @return The status of the specified operation
 		 */
 		IOStatus saveAssetToDisk(const std::string& pathToFile, IntermediateAsset* asset);
+
+		/**
+		 * Load a scene file from disk
+		 *
+		 * @param pathToFile The path to the scene file
+		 * @param objectToStoreIn UNINITIALIZED pointer to a scene
+		 * @return The status of the specified operation
+		 */
+		IOStatus loadSceneFromDisk(const std::string& pathToFile, Scene*& objectToStoreIn);
+
+		/**
+		 * Load a scene file from memory
+		 *
+		 * @param content The string representation of the scene that is read from file
+		 * @param objectToStoreIn UNINITIALIZED pointer to a scene
+		 * @return The status of the specified operation
+		 */
+		IOStatus loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn);
+
+		/**
+		 * Save a scene to disk
+		 *
+		 * @param pathToFile The path to the scene file
+		 * @param scene Pointer to the intermediate scene structure
+		 * @return The status of the specified operation
+		 */
+		IOStatus saveSceneToDisk(const std::string& pathToFile, SceneData* scene);
 
 		namespace Serialization
 		{
