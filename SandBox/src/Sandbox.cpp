@@ -11,6 +11,8 @@ void createAssets()
 {
 	using namespace Triton;
 
+	Triton::Core::AssetDictionary dict(Triton::Core::AssetDictionary::c_LatestVersion);
+
 	IO::IntermediateAsset meshAsset;
 	meshAsset.Version = IO::Serialization::c_Version_Latest;
 	meshAsset.Name = "stallMesh";
@@ -22,6 +24,8 @@ void createAssets()
 	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", (IO::MeshData*)meshAsset.Data.get());
 
 	IO::saveAssetToDisk("../Assets/stall.asset", &meshAsset);
+
+	dict.associate(meshAsset.Name, { "../Assets/stall.asset", false });
 
 
 	IO::IntermediateAsset simpleShader;
@@ -39,6 +43,8 @@ void createAssets()
 	sDatap->flags.set(Flags::sFlag_Matrices);
 
 	IO::saveAssetToDisk("../Assets/simpleShader.asset", &simpleShader);
+
+	dict.associate(simpleShader.Name, { "../Assets/simpleShader.asset", false });
 
 	IO::IntermediateAsset lightingShader;
 	lightingShader.Version = IO::Serialization::c_Version_Latest;
@@ -59,6 +65,8 @@ void createAssets()
 
 	IO::saveAssetToDisk("../Assets/lightingShader.asset", &lightingShader);
 
+	dict.associate(lightingShader.Name, { "../Assets/lightingShader.asset", false });
+
 	IO::IntermediateAsset textureAsset;
 	textureAsset.Version = IO::Serialization::c_Version_Latest;
 	textureAsset.Name = "stallTexture";
@@ -71,6 +79,8 @@ void createAssets()
 	IO::loadImageFromDisk("D:\\Programming\\Test files\\nfw\\stallTexture.png", tDatap);
 
 	IO::saveAssetToDisk("../Assets/texture.asset", &textureAsset);
+
+	dict.associate(textureAsset.Name, { "../Assets/texture.asset", false });
 
 	
 	Scene scene("sample");
@@ -108,14 +118,13 @@ void createAssets()
 	scene_assets.push_back("stallTexture");
 
 	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene.toRawData());
+
+	dict.saveToFile("../Assets/dictionary.meta");
 }
 
 void loadAssets()
 {
-	assets->loadAsset("../Assets/stall.asset");
-	assets->loadAsset("../Assets/texture.asset");
-	assets->loadAsset("../Assets/lightingShader.asset");
-	assets->loadAsset("../Assets/simpleShader.asset");
+	assets->loadDictionary("../Assets/dictionary.meta");
 
 	scenes->loadScene("../Assets/Scenes/sampleScene.scene");
 }
@@ -156,6 +165,7 @@ int main()
 	// Create a new renderer for a window
 	renderer = context->newRenderer(window);
 
+	scenes->setScene("sample");
 	assets->wait();
 
 	// Since the assets are loaded they can be acquired here

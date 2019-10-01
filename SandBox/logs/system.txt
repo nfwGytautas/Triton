@@ -1,72 +1,47 @@
-[19:48:28.894] Thread: 18008 SYSTEM: [ trace ] Creating 'WINDOWS' context
-[19:48:28.895] Thread: 18008 SYSTEM: [ trace ] Initializing DXContext
-[19:48:28.895] Thread: 18008 SYSTEM: [ trace ] Creating DX device with feature level '45056'
-[19:48:29.047] Thread: 18008 SYSTEM: [ info  ] DX device created
-[19:48:29.047] Thread: 18008 SYSTEM: [ trace ] Getting display parameters
-[19:48:29.047] Thread: 18008 SYSTEM: [ trace ] Adapter information acquired
-[19:48:29.048] Thread: 18008 SYSTEM: [ trace ] Possible display mode count '146'
-[19:48:29.049] Thread: 18008 SYSTEM: [ trace ] Getting video card information
-[19:48:29.049] Thread: 18008 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
-[19:48:29.050] Thread: 18008 SYSTEM: [ trace ] Checking context state descriptions
-[19:48:29.050] Thread: 18008 SYSTEM: [warning] Context descriptions not created, creating now
-[19:48:29.050] Thread: 18008 SYSTEM: [ trace ] Creating shader matrix buffer description
-[19:48:29.050] Thread: 18008 SYSTEM: [ trace ] Creating shader settings buffer description
-[19:48:29.050] Thread: 18008 SYSTEM: [ trace ] Creating shader point light buffer description
-[19:48:29.050] Thread: 18008 SYSTEM: [ trace ] Creating shader spot light buffer description
-[19:48:29.051] Thread: 18008 SYSTEM: [ trace ] Creating shader directional light buffer description
-[19:48:29.051] Thread: 18008 SYSTEM: [ trace ] Creating shader camera buffer description
-[19:48:29.051] Thread: 18008 SYSTEM: [ trace ] Creating shader sampler description
-[19:48:29.053] Thread: 18008 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
-[19:48:29.054] Thread: 18008 SYSTEM: [ trace ] Created a scene manager instance with '1' threads
-[19:48:29.178] Thread: 18008 SYSTEM: [ debug ] Loading asset: '../Assets/stall.asset'
-[19:48:29.178] Thread: 18008 SYSTEM: [ debug ] Loading asset: '../Assets/texture.asset'
-[19:48:29.178] Thread: 18008 SYSTEM: [ debug ] Loading asset: '../Assets/lightingShader.asset'
-[19:48:29.179] Thread: 18008 SYSTEM: [ debug ] Loading asset: '../Assets/simpleShader.asset'
-[19:48:29.179] Thread: 18008 SYSTEM: [ debug ] Loading scene: '../Assets/Scenes/sampleScene.scene'
-[19:48:29.179] Thread: 19304 SYSTEM: [ debug ] Asset '../Assets/lightingShader.asset' loading complete
-[19:48:29.179] Thread: 18008 SYSTEM: [ trace ] Creating a new 'Windows' window
-[19:48:29.180] Thread: 19304 SYSTEM: [ debug ] Asset '../Assets/simpleShader.asset' loading complete
-[19:48:29.180] Thread: 14872 SYSTEM: [ debug ] Scene '../Assets/Scenes/sampleScene.scene' loading complete
-[19:48:29.180] Thread: 18008 SYSTEM: [ trace ] Initializing a window '1280x720'
-[19:48:29.184] Thread: 18008 SYSTEM: [ trace ] Creating hwnd
-[19:48:29.184] Thread: 8032  SYSTEM: [ debug ] Asset '../Assets/stall.asset' loading complete
-[19:48:29.212] Thread: 8032  SYSTEM: [ debug ] Asset '../Assets/texture.asset' loading complete
-[19:48:29.222] Thread: 18008 SYSTEM: [ trace ] Registering RID devices
-[19:48:29.222] Thread: 18008 SYSTEM: [ info  ] RID devices registered
-[19:48:29.225] Thread: 18008 SYSTEM: [ info  ] Window initialized
-[19:48:29.227] Thread: 18008 SYSTEM: [ trace ] Creating a new 'Windows' renderer
-[19:48:29.229] Thread: 18008 SYSTEM: [ trace ] Checking renderer state descriptions
-[19:48:29.231] Thread: 18008 SYSTEM: [warning] Renderer descriptions not created, creating now
-[19:48:29.231] Thread: 18008 SYSTEM: [ trace ] Creating default depth stencil
-[19:48:29.232] Thread: 18008 SYSTEM: [ trace ] Creating default depth stencil view
-[19:48:29.232] Thread: 18008 SYSTEM: [ trace ] Creating default raster description
-[19:48:29.234] Thread: 18008 SYSTEM: [ trace ] Creating no culling raster description
-[19:48:29.235] Thread: 18008 SYSTEM: [ trace ] Creating disabled depth stencil
-[19:48:29.235] Thread: 18008 SYSTEM: [ info  ] Initializing renderer
-[19:48:29.236] Thread: 18008 SYSTEM: [ trace ] Getting display refresh rate
-[19:48:29.236] Thread: 18008 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
-[19:48:29.237] Thread: 18008 SYSTEM: [ trace ] Creating swap chain description
-[19:48:29.238] Thread: 18008 SYSTEM: [ trace ] V_SYNC disabled
-[19:48:29.240] Thread: 18008 SYSTEM: [ trace ] Full screen disabled
-[19:48:29.242] Thread: 18008 SYSTEM: [ trace ] Creating depth buffer description
-[19:48:29.242] Thread: 18008 SYSTEM: [ trace ] Creating view port
-[19:48:29.244] Thread: 18008 SYSTEM: [ trace ] Creating swap chain instance
-[19:48:29.245] Thread: 18008 SYSTEM: [ info  ] Swap chain created
-[19:48:29.245] Thread: 18008 SYSTEM: [ trace ] Creating renderer states
-[19:48:29.247] Thread: 18008 SYSTEM: [ trace ] Calculating matrices
-[19:48:29.248] Thread: 18008 SYSTEM: [ info  ] Renderer initialized
-[19:48:29.249] Thread: 18008 SYSTEM: [ trace ] Creating direct x shader
-[19:48:29.250] Thread: 18008 SYSTEM: [ trace ] Compiling vertex shader
-[19:48:29.266] Thread: 18008 SYSTEM: [ trace ] Compiling pixel shader
-[19:48:29.328] Thread: 18008 SYSTEM: [ trace ] Creating shader
-[19:48:29.333] Thread: 18008 SYSTEM: [ trace ] Creating shader buffers
-[19:48:29.334] Thread: 18008 SYSTEM: [ info  ] Shader created
-[19:48:29.334] Thread: 18008 SYSTEM: [ trace ] Creating vertex array(VAO)
-[19:48:29.334] Thread: 18008 SYSTEM: [ trace ] Vertices: '629' Indices: '1878'
-[19:48:29.335] Thread: 18008 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[19:48:29.336] Thread: 18008 SYSTEM: [ info  ] Vertex array object(VAO) created
-[19:48:29.336] Thread: 18008 SYSTEM: [ trace ] Creating a texture
-[19:48:29.337] Thread: 18008 SYSTEM: [ trace ] Creating texture resources
-[19:48:29.339] Thread: 18008 SYSTEM: [ trace ] Generating texture mipmaps
-[19:48:29.340] Thread: 18008 SYSTEM: [ info  ] Texture created
-[19:49:12.680] Thread: 18008 SYSTEM: [ info  ] FLUSHING
+[18:01:21.367] Thread: 1836  SYSTEM: [ trace ] Creating 'WINDOWS' context
+[18:01:21.369] Thread: 1836  SYSTEM: [ trace ] Initializing DXContext
+[18:01:21.369] Thread: 1836  SYSTEM: [ trace ] Creating DX device with feature level '45056'
+[18:01:21.522] Thread: 1836  SYSTEM: [ info  ] DX device created
+[18:01:21.522] Thread: 1836  SYSTEM: [ trace ] Getting display parameters
+[18:01:21.523] Thread: 1836  SYSTEM: [ trace ] Adapter information acquired
+[18:01:21.524] Thread: 1836  SYSTEM: [ trace ] Possible display mode count '146'
+[18:01:21.525] Thread: 1836  SYSTEM: [ trace ] Getting video card information
+[18:01:21.526] Thread: 1836  SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
+[18:01:21.526] Thread: 1836  SYSTEM: [ trace ] Checking context state descriptions
+[18:01:21.526] Thread: 1836  SYSTEM: [warning] Context descriptions not created, creating now
+[18:01:21.526] Thread: 1836  SYSTEM: [ trace ] Creating shader matrix buffer description
+[18:01:21.526] Thread: 1836  SYSTEM: [ trace ] Creating shader settings buffer description
+[18:01:21.527] Thread: 1836  SYSTEM: [ trace ] Creating shader point light buffer description
+[18:01:21.527] Thread: 1836  SYSTEM: [ trace ] Creating shader spot light buffer description
+[18:01:21.527] Thread: 1836  SYSTEM: [ trace ] Creating shader directional light buffer description
+[18:01:21.527] Thread: 1836  SYSTEM: [ trace ] Creating shader camera buffer description
+[18:01:21.527] Thread: 1836  SYSTEM: [ trace ] Creating shader sampler description
+[18:01:21.530] Thread: 1836  SYSTEM: [ trace ] Created an asset manager instance with '2' threads
+[18:01:21.531] Thread: 1836  SYSTEM: [ trace ] Created a scene manager instance with '1' threads
+[18:01:21.643] Thread: 1836  SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
+[18:01:21.644] Thread: 1836  SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '4' entries
+[18:01:21.646] Thread: 1836  SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
+[18:01:21.646] Thread: 1836  SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
+[18:01:21.647] Thread: 1836  SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '4' entries
+[18:01:21.648] Thread: 1836  SYSTEM: [ debug ] Asset manager filled with '4' new associations
+[18:01:21.648] Thread: 1836  SYSTEM: [ debug ] Loading scene: '../Assets/Scenes/sampleScene.scene'
+[18:01:21.648] Thread: 1836  SYSTEM: [ trace ] Creating a new 'Windows' window
+[18:01:21.648] Thread: 1836  SYSTEM: [ trace ] Initializing a window '1280x720'
+[18:01:21.648] Thread: 7704  SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
+[18:01:21.649] Thread: 7704  SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
+[18:01:21.651] Thread: 7704  SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
+[18:01:21.651] Thread: 7440  SYSTEM: [ debug ] Asset 'lightingShader' loading complete
+[18:01:21.651] Thread: 7704  SYSTEM: [ debug ] Scene '../Assets/Scenes/sampleScene.scene' loading complete
+[18:01:21.651] Thread: 1836  SYSTEM: [ trace ] Creating hwnd
+[18:01:21.658] Thread: 7440  SYSTEM: [ debug ] Asset 'stallMesh' loading complete
+[18:01:21.662] Thread: 14492 SYSTEM: [ debug ] Asset 'stallTexture' loading complete
+[18:01:21.686] Thread: 1836  SYSTEM: [ trace ] Registering RID devices
+[18:01:21.686] Thread: 1836  SYSTEM: [ info  ] RID devices registered
+[18:01:21.687] Thread: 1836  SYSTEM: [ info  ] Window initialized
+[18:01:21.687] Thread: 1836  SYSTEM: [ trace ] Creating a new 'Windows' renderer
+[18:01:21.687] Thread: 1836  SYSTEM: [ trace ] Checking renderer state descriptions
+[18:01:21.688] Thread: 1836  SYSTEM: [warning] Renderer descriptions not created, creating now
+[18:01:21.689] Thread: 1836  SYSTEM: [ trace ] Creating default depth stencil
+[18:01:21.690] Thread: 1836  SYSTEM: [ trace ] Creating default depth stencil view
+[18:01:21.690] Thread: 1836  SYSTEM: [ trace ] Creating default raster description
+[18:01:21.691] Thread: 1836  SYSTEM: [ trace ] Creating n

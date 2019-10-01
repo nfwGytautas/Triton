@@ -76,7 +76,7 @@ namespace Triton
 					auto f = file;
 					loadSceneInternalMT(f); 
 					TR_SYSTEM_DEBUG("Scene '{0}' loading complete", f);
-				});
+				});				
 			}
 
 			void addScene(reference<Scene> scene)
@@ -128,6 +128,8 @@ namespace Triton
 
 				reference<Scene> res(scene);
 				addScene(res);
+
+				m_assetManager->loadAssetsByName(res->assets());
 			}
 		private:
 			/// Thread pool used by the scene manager

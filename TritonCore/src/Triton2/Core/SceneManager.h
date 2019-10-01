@@ -68,6 +68,7 @@ namespace Triton
 			 * [Convenience] 
 			 * [Multi threaded]
 			 * Same as calling IO::loadSceneFromDisk() and then addScene() with the loaded scene
+			 * Also queues up asset loading to asset manager
 			 *
 			 * @param file File to the scene
 			 */

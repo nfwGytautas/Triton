@@ -13,6 +13,7 @@
 #include "Triton2/Utility/Log.h"
 
 #include "TritonPlatform2/CrossTypes/Core/Context.h"
+#include "TritonTypes/AssetDictionary.h"
 
 namespace Triton
 {
@@ -73,10 +74,30 @@ namespace Triton
 				m_assets.erase(it, m_assets.end());
 			}
 
+			void unloadDictionaries()
+			{
+				m_dictionaries.clear();
+			}
+
 			bool hasAsset(const std::string& name) const
 			{
 				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
 				return it == m_assets.end();
+			}
+
+			void loadAssetByName(const std::string& name)
+			{
+				TR_SYSTEM_DEBUG("Loading asset by name: '{0}'", name);
+
+				// Create lock guard
+				std::lock_guard<std::mutex> guard(m_mtx);
+
+				m_tPool.run([&, name]()
+				{
+					auto f = name;
+					loadAssetByNameInternalMT(f);
+					TR_SYSTEM_DEBUG("Asset '{0}' loading complete", f);
+				});
 			}
 
 			void loadAsset(const std::string& file)
@@ -94,11 +115,28 @@ namespace Triton
 				});
 			}
 
+			void loadDictionary(const std::string& dict)
+			{
+				TR_SYSTEM_DEBUG("Loading dictionary: '{0}'", dict);
+
+				AssetDictionary* dictionary = AssetDictionary::loadFromFile(dict);
+				m_dictionaries.push_back(dictionary);
+
+				TR_SYSTEM_DEBUG("Asset manager filled with '{0}' new associations", dictionary->size());
+			}
+
 			void addAsset(reference<Asset> asset)
 			{
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
+			}
+
+			void addDictionary(reference<AssetDictionary> dictionary)
+			{
+				// Create lock guard
+				std::lock_guard<std::mutex> guard(m_mtx);
+				m_dictionaries.push_back(dictionary);
 			}
 
 			reference<Asset> getAsset(const std::string& name) const
@@ -149,6 +187,34 @@ namespace Triton
 				reference<Asset> res(asset);
 				addAsset(res);
 			}
+
+			void loadAssetByNameInternalMT(const std::string& name)
+			{
+				Triton::Asset* asset = nullptr;
+
+				// Find the asset inside a dictionary and then load it
+				bool found = false;
+				for (auto i = m_dictionaries.rbegin(); i != m_dictionaries.rend(); ++i) 
+				{
+					if ((*i)->has(name))
+					{
+						std::string path = (*i)->getData(name).Path;
+
+						TR_CORE_ASSERT(
+							IO::loadAssetFromDisk(path, asset).status == IO::IOStatus::IO_OK,
+							"Loading of an asset failed");
+
+						found = true;
+						break;
+					}
+				}
+
+				TR_CORE_ASSERT(
+					found, "Asset with specified name cannot be found inside any loaded dictionaries");
+
+				reference<Asset> res(asset);
+				addAsset(res);
+			}
 		private:
 			/// Thread pool used by the asset manager
 			Thread::ThreadPool m_tPool;
@@ -161,6 +227,9 @@ namespace Triton
 
 			/// Pointer to the context instance
 			Graphics::Context* m_contextInstance;
+
+			/// Dictionaries that are loaded into the asset manager
+			std::vector<reference<AssetDictionary>> m_dictionaries;
 		};
 
 		AssetManager::AssetManager(Graphics::Context* context)
@@ -198,14 +267,50 @@ namespace Triton
 			return m_impl->hasAsset(name);
 		}
 
+		void AssetManager::loadDictionary(const std::string& dict)
+		{
+			m_impl->loadDictionary(dict);
+		}
+
+		void AssetManager::unloadDictionaries()
+		{
+			m_impl->unloadDictionaries();
+		}
+
+		void AssetManager::loadAssetByName(const std::string& name)
+		{
+			m_impl->loadAssetByName(name);
+		}
+
+		void AssetManager::loadAssetsByName(const std::vector<std::string>& names)
+		{
+			for (const std::string& name : names)
+			{
+				loadAssetByName(name);
+			}
+		}
+
 		void AssetManager::loadAsset(const std::string& file)
 		{
 			m_impl->loadAsset(file);
 		}
 
+		void AssetManager::loadAssets(const std::vector<std::string>& files)
+		{
+			for (const std::string& file : files)
+			{
+				loadAsset(file);
+			}
+		}
+
 		void AssetManager::addAsset(reference<Asset> asset)
 		{
 			m_impl->addAsset(asset);
+		}
+
+		void AssetManager::addDictionary(reference<AssetDictionary> dictionary)
+		{
+			m_impl->addDictionary(dictionary);
 		}
 
 		reference<Asset> AssetManager::getAsset(const std::string& name) const

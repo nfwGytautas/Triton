@@ -3,6 +3,7 @@
 #include "TritonTypes/IO.h"
 #include "Triton2/Scene/Lighting.h"
 #include "TritonPlatform2/mathematical.h"
+#include "TritonTypes/AssetDictionary.h"
 
 namespace Triton
 {
@@ -47,10 +48,22 @@ namespace Triton
 	{
 		archive(m.Position, m.Color, m.Range, m.Angle, m.Direction, m.Constant, m.Linear, m.Quadratic);
 	}
+
+	namespace Core
+	{
+		template<class Archive>
+		void serialize(Archive& archive,
+			AssetDictionary::AssetMeta& m)
+		{
+			archive(cereal::make_nvp("Path", m.Path), cereal::make_nvp("IsPacket", m.PacketFile));
+		}
+	}
 }
 
 #include <cereal/archives/binary.hpp>
+#include <cereal/archives/xml.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/bitset.hpp>
+#include <cereal/types/unordered_map.hpp>

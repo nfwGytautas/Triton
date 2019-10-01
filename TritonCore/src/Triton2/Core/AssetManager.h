@@ -12,6 +12,9 @@ namespace Triton
 
 	namespace Core
 	{
+		// Forward declaration
+		class AssetDictionary;
+
 		/**
 		 * Class to keep engine assets in one place
 		 */
@@ -75,6 +78,41 @@ namespace Triton
 			}
 
 			/**
+			 * [Convenience]
+			 * Same as calling addDictionary(AssetDictionary::loadFromFile(dict))
+			 * Loads an asset dictionary to be used for the asset manager
+			 * When a scene is loaded all assets are iterated and are looked up in the dictionary
+			 * for their metadata and are then loaded.
+			 *
+			 * @param dict Path to the dictionary file
+			 */
+			void loadDictionary(const std::string& dict);
+
+			/**
+			 * Unloads ALL dictionaries used by the asset manager.
+			 */
+			void unloadDictionaries();
+
+			/**
+			 * [Multi threaded]
+			 * Loads an asset with the specified name. The asset needs an entry inside an asset dictionary
+			 * and that dictionary must be loaded into the asset manager.
+			 * If multiple dictionaries contains the same asset name entry the latest added one will be used
+			 *
+			 * @param name Name of the asset to be loaded
+			 */
+			void loadAssetByName(const std::string& name);
+
+			/**
+			 * [Convenience]
+			 * [Multi threaded]
+			 * Same as calling loadAssetByName(name) with each vector entry
+			 *
+			 * @param names Names of the asset to be loaded
+			 */
+			void loadAssetsByName(const std::vector<std::string>& names);
+
+			/**
 			 * [Convenience] 
 			 * [Multi threaded]
 			 * Same as calling IO::loadAssetFromDisk() and then addAsset() with the loaded asset
@@ -84,12 +122,29 @@ namespace Triton
 			void loadAsset(const std::string& file);
 
 			/**
+			 * [Convenience]
+			 * [Multi threaded]
+			 * Same as calling loadAsset(file) with each vector entry
+			 *
+			 * @param files Files to the assets
+			 */
+			void loadAssets(const std::vector<std::string>& files);
+
+			/**
 			 * [Thread safe, uses mutex]
 			 * Add an asset to the manager
 			 *
 			 * @param asset Asset to add
 			 */
 			void addAsset(reference<Asset> asset);
+
+			/**
+			 * [Thread safe, uses mutex]
+			 * Add an asset dictionary to the manager
+			 *
+			 * @param dictionary Dictionary to add
+			 */
+			void addDictionary(reference<AssetDictionary> dictionary);
 
 			/**
 			 * [Thread safe, uses mutex]

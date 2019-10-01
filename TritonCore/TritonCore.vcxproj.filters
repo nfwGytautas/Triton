@@ -91,6 +91,7 @@
     </ClInclude>
     <ClInclude Include="src\Triton2\Core\SceneManager.h" />
     <ClInclude Include="src\TritonTypes\Scene.h" />
+    <ClInclude Include="src\TritonTypes\AssetDictionary.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -127,5 +128,6 @@
     <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
     <ClCompile Include="src\TritonTypes\Scene.cpp" />
     <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
+    <ClCompile Include="src\TritonTypes\AssetDictionary.cpp" />
   </ItemGroup>
 </Project>
