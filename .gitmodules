@@ -17,16 +17,9 @@
 [submodule "vendor/Assimp"]
 	path = vendor/Assimp
 	url = https://github.com/assimp/assimp
-[submodule "vendor/ImGui"]
-	path = vendor/ImGui
-	url = https://github.com/ocornut/imgui
 [submodule "vendor/cereal"]
 	path = vendor/cereal
 	url = https://github.com/USCiLab/cereal
 [submodule "vendor/DirectXTK"]
 	path = vendor/DirectXTK
 	url = https://github.com/Microsoft/DirectXTK
-[submodule "vendor/imguiDocking"]
-	path = vendor/imguiDocking
-	url = https://github.com/ocornut/imgui
-	branch = docking
