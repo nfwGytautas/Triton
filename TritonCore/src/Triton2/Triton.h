@@ -17,3 +17,6 @@
 
 /// All the cameras that are built in with Triton
 #include "Triton2/Scene/Camera.h"
+
+/// Engine singleton
+#include "Triton2/Instance/Engine.h"

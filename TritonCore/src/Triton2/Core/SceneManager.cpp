@@ -31,7 +31,7 @@ namespace Triton
 			~SceneManagerImpl()
 			{
 				m_tPool.wait();
-				unloadAll();
+				shutdown();
 			}
 
 			reference<Scene> currentScene()
@@ -56,6 +56,11 @@ namespace Triton
 
 				// Slightly inefficient but this method isn't going to be called frequently
 				m_scenes.push_back(m_currentScene);
+			}
+
+			void shutdown()
+			{
+				m_scenes.clear();
 			}
 
 			bool hasScene(const std::string& name) const

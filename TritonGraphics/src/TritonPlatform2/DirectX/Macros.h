@@ -10,9 +10,6 @@
 
 #define OBJECT_AS(type, obj) dynamic_cast<type*>(obj);
 
-#define PLATFORM_NAMESPACE_BEGIN namespace Triton { namespace Graphics {
-#define PLATFORM_NAMESPACE_END } }
-
 namespace Triton
 {
 	namespace Graphics

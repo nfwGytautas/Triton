@@ -28,8 +28,12 @@ namespace Triton
 
 			void WorkerThread::terminate()
 			{
-				m_terminated = true;
-				m_thread.join();
+				if(!m_terminated)
+				{
+					m_terminated = true;
+					m_cv.notify_one();
+					m_thread.join();
+				}
 			}
 
 			void WorkerThread::addTask(std::function<void()> task)
@@ -59,27 +63,23 @@ namespace Triton
 			{
 				for (;;)
 				{
-					if (m_terminated)
+					std::function<void()> task;
+
 					{
-						return;
+						std::unique_lock<std::mutex> guard(m_queueLock);
+						m_cv.wait(guard, [&] { return !m_tasks.empty() || this->m_terminated; });
+						if (this->m_terminated || this->m_tasks.empty())
+						{
+							return;
+						}
+
+						task = std::move(m_tasks.front());
+						m_tasks.pop();
 					}
 
-					auto task = takeTask();
 					task();
 				}
 			}
-
-			std::function<void()> WorkerThread::takeTask()
-			{
-				std::unique_lock<std::mutex> guard(m_queueLock);
-				m_cv.wait(guard, [&] { return !m_tasks.empty(); });
-
-				auto task = std::move(m_tasks.front());
-				m_tasks.pop();
-
-				return task;
-			}
-
 
 			ThreadPool::ThreadPool()
 				: m_size(std::thread::hardware_concurrency()),

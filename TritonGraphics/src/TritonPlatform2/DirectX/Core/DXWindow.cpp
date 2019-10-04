@@ -341,22 +341,28 @@ namespace Triton
 			// TODO: Implement
 			m_initialized = false;
 			m_selfCreated = false;
-			return false;
+
+			m_hwnd = (HWND)params[0];
+
+			return true;
 		}
 
 		void DXWindow::update()
 		{
-			// Handle the windows messages.
-			while (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
+			if (m_selfCreated)
 			{
-				if (m_msg.message == WM_QUIT)
+				// Handle the windows messages.
+				while (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
 				{
-					m_closed = true;
-					return;
-				}
+					if (m_msg.message == WM_QUIT)
+					{
+						m_closed = true;
+						return;
+					}
 
-				TranslateMessage(&m_msg);
-				DispatchMessage(&m_msg);
+					TranslateMessage(&m_msg);
+					DispatchMessage(&m_msg);
+				}
 			}
 		}
 

@@ -15,6 +15,8 @@
 #include "TritonPlatform2/CrossTypes/Core/State/Mouse.h"
 #include "TritonPlatform2/CrossTypes/Core/State/Keyboard.h"
 
+#include "TritonTypes/Settings.h"
+
 namespace Triton
 {
 	namespace Graphics
@@ -53,9 +55,10 @@ namespace Triton
 			/**
 			 * Initialize the Context class
 			 *
+			 * @param settings Engine settings passed from engine init method
 			 * @return Boolean that specifies if the initialization was successful
 			 */
-			virtual bool init() = 0;
+			virtual bool init(EngineSettings& settings) = 0;
 
 			/**
 			 * Shutdown the context and clean all the resources

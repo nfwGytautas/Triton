@@ -1,86 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Data">
-      <UniqueIdentifier>{3F05847C-2B3C-850D-D428-6B10C03E010F}</UniqueIdentifier>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Impl">
-      <UniqueIdentifier>{B7F5867C-A32C-880D-4C19-6E10382F040F}</UniqueIdentifier>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{86EEB3D0-7290-DEA6-5B4B-F2FA478C65F7}</UniqueIdentifier>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Widgets">
-      <UniqueIdentifier>{7CB70329-E896-82C4-F1AE-0D9B5D0DE925}</UniqueIdentifier>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonEditor\Data\EditorState.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Impl\imgui_impl_dx11.h">
-      <Filter>Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Impl\imgui_impl_win32.h">
-      <Filter>Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Macros.h" />
-    <ClInclude Include="src\TritonEditor\Scenes\EditorScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Scenes\TestScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\AssetWindow.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\Dialog.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\DockSpace.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\InspectorWindow.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\LogWindow.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\MainMenuBar.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\MaterialEditor.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\Metrics.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\Popup.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\SceneView.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonEditor\Widgets\Viewport.h">
-      <Filter>Widgets</Filter>
-    </ClInclude>
+    <ClCompile Include="src\TritonEditor\TritonEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TritonEditor\Data\EditorState.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonEditor\Impl\imgui_impl_dx11.cpp">
-      <Filter>Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonEditor\Impl\imgui_impl_win32.cpp">
-      <Filter>Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonEditor\Scenes\EditorScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonEditor\Scenes\TestScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonEditor\TritonEditor.cpp" />
+    <QtMoc Include="src\TritonEditor\Viewport\Viewport.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\TritonEditor\TritonEditor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="src\TritonEditor\TritonEditor.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\TritonEditor\TritonEditor.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

@@ -5,6 +5,8 @@
 
 #include "Triton2/Utility/Log.h"
 
+#include "Triton2/Assert.h"
+
 namespace Triton
 {
 	namespace Graphics
@@ -96,7 +98,7 @@ namespace Triton
 			s_descsCreated = true;
 		}
 
-		std::tuple<DXGI_SWAP_CHAIN_DESC, D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT> DXRenderer::createDescs2(const std::vector<DXGI_MODE_DESC>& displayModeList)
+		DXGI_SWAP_CHAIN_DESC DXRenderer::createDescs2(const std::vector<DXGI_MODE_DESC>& displayModeList)
 		{
 			auto[width, height] = m_renderingTo->size();
 
@@ -180,6 +182,13 @@ namespace Triton
 
 			// Don't set the advanced flags.
 			swapChainDesc.Flags = 0;
+			
+			return swapChainDesc;
+		}
+
+		std::tuple<D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT> DXRenderer::createDescs3()
+		{
+			auto[width, height] = m_renderingTo->size();
 
 			TR_SYSTEM_TRACE("Creating depth buffer description");
 
@@ -213,7 +222,7 @@ namespace Triton
 			viewport.TopLeftX = 0.0f;
 			viewport.TopLeftY = 0.0f;
 
-			return std::tuple<DXGI_SWAP_CHAIN_DESC, D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT>(swapChainDesc, depthBufferDesc, viewport);
+			return std::tuple<D3D11_TEXTURE2D_DESC, D3D11_VIEWPORT>(depthBufferDesc, viewport);
 		}
 
 		DXRenderer::DXRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const std::vector<DXGI_MODE_DESC>& displayModeList, DXWindow* window)
@@ -245,41 +254,7 @@ namespace Triton
 				m_swapChain->SetFullscreenState(false, NULL);
 			}
 
-			if (m_depthDisabledStencilState)
-			{
-				m_depthDisabledStencilState->Release();
-				m_depthDisabledStencilState = 0;
-			}
-
-			if (m_rasterState)
-			{
-				m_rasterState->Release();
-				m_rasterState = 0;
-			}
-
-			if (m_depthStencilView)
-			{
-				m_depthStencilView->Release();
-				m_depthStencilView = 0;
-			}
-
-			if (m_depthStencilState)
-			{
-				m_depthStencilState->Release();
-				m_depthStencilState = 0;
-			}
-
-			if (m_depthStencilBuffer)
-			{
-				m_depthStencilBuffer->Release();
-				m_depthStencilBuffer = 0;
-			}
-
-			if (m_renderTargetView)
-			{
-				m_renderTargetView->Release();
-				m_renderTargetView = 0;
-			}
+			freeBuffers();
 
 			if (m_swapChain)
 			{
@@ -382,14 +357,43 @@ namespace Triton
 			}
 		}
 
+		void DXRenderer::resize()
+		{
+			TR_SYSTEM_TRACE("Resizing the renderer swap chain");
+
+			m_deviceContext->OMSetRenderTargets(0, 0, 0);
+
+			freeBuffers();
+
+			HRESULT hr;
+
+			TR_SYSTEM_TRACE("Resizing buffers");
+			hr = m_swapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
+
+			if (FAILED(hr))
+			{
+				TR_SYSTEM_ERROR("Failed to resize buffers");
+				return;
+			}
+
+			auto[width, height] = m_renderingTo->size();
+			setViewPort(0, 0, width, height);
+
+			recalcMatrices();
+
+			createBuffers();
+		}
+
 		bool DXRenderer::init(ID3D11Device* device, const std::vector<DXGI_MODE_DESC>& displayModeList)
 		{
 			TR_SYSTEM_INFO("Initializing renderer");
 
 			HRESULT result;
 
-			auto[swapChainDesc, depthBufferDesc, viewport] = createDescs2(displayModeList);
+			auto swapChainDesc = createDescs2(displayModeList);
+			auto[depthBufferDesc, viewport] = createDescs3();
 
+			m_device = device;
 			
 			IDXGIDevice* pDXGIDevice = nullptr;
 			result = device->QueryInterface(__uuidof(IDXGIDevice), (void **)&pDXGIDevice);
@@ -431,11 +435,32 @@ namespace Triton
 
 			pIDXGIFactory->Release();
 
+			if (!createBuffers())
+			{
+				TR_SYSTEM_ERROR("Failed to create render buffers");
+				return false;
+			}
+			
+
+			m_initialized = true;
+
+			TR_SYSTEM_INFO("Renderer initialized");
+
+			return true;
+		}
+		bool DXRenderer::createBuffers()
+		{
+			// Free previous buffer instances
+			freeBuffers();
+
+			auto [depthBufferDesc, viewport] = createDescs3();
 
 			// Lets get the render target view
 			ID3D11Texture2D* backBufferPtr;
 
 			TR_SYSTEM_TRACE("Creating renderer states");
+
+			HRESULT result;
 
 			// Get the pointer to the back buffer.
 			result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
@@ -446,7 +471,7 @@ namespace Triton
 			}
 
 			// Create the render target view with the back buffer pointer.
-			result = device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
+			result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to get render target view from swap chain!");
@@ -458,16 +483,16 @@ namespace Triton
 			backBufferPtr = 0;
 
 			// Create the texture for the depth buffer using the filled out description.
-			result = device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
+			result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to acquire depth stencil buffer");
 				return false;
 			}
-			
+
 
 			// Create the depth stencil state.
-			result = device->CreateDepthStencilState(&s_defaultDepthStencilDesc, &m_depthStencilState);
+			result = m_device->CreateDepthStencilState(&s_defaultDepthStencilDesc, &m_depthStencilState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil state");
@@ -478,7 +503,7 @@ namespace Triton
 			m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
 			// Create the depth stencil view.
-			result = device->CreateDepthStencilView(m_depthStencilBuffer, &s_defaultDepthStencilViewDesc, &m_depthStencilView);
+			result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &s_defaultDepthStencilViewDesc, &m_depthStencilView);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil view");
@@ -489,7 +514,7 @@ namespace Triton
 			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
 
 			// Create the rasterizer state from the description we just filled out.
-			result = device->CreateRasterizerState(&s_defaultRasterDesc, &m_rasterState);
+			result = m_device->CreateRasterizerState(&s_defaultRasterDesc, &m_rasterState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create rasterizer state");
@@ -497,7 +522,7 @@ namespace Triton
 			}
 
 			// Create the disabled cull mode rasterizer state
-			result = device->CreateRasterizerState(&s_noCullRasterDesc, &m_disabledCullingState);
+			result = m_device->CreateRasterizerState(&s_noCullRasterDesc, &m_disabledCullingState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create disabled culling rasterizer state");
@@ -511,7 +536,7 @@ namespace Triton
 			m_deviceContext->RSSetViewports(1, &viewport);
 
 			// Create the state using the device.
-			result = device->CreateDepthStencilState(&s_disabledDepthStencilDesc, &m_depthDisabledStencilState);
+			result = m_device->CreateDepthStencilState(&s_disabledDepthStencilDesc, &m_depthDisabledStencilState);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create disabled depth stencil");
@@ -524,11 +549,52 @@ namespace Triton
 			recalcMatrices();
 			m_worldMatrix = DirectX::XMMatrixIdentity();
 
-			m_initialized = true;
-
-			TR_SYSTEM_INFO("Renderer initialized");
-
 			return true;
+		}
+
+		void DXRenderer::freeBuffers()
+		{
+			if (m_depthDisabledStencilState)
+			{
+				m_depthDisabledStencilState->Release();
+				m_depthDisabledStencilState = 0;
+			}
+
+			if (m_rasterState)
+			{
+				m_rasterState->Release();
+				m_rasterState = 0;
+			}
+
+			if (m_disabledCullingState)
+			{
+				m_disabledCullingState->Release();
+				m_disabledCullingState = 0;
+			}
+
+			if (m_depthStencilView)
+			{
+				m_depthStencilView->Release();
+				m_depthStencilView = 0;
+			}
+
+			if (m_depthStencilState)
+			{
+				m_depthStencilState->Release();
+				m_depthStencilState = 0;
+			}
+
+			if (m_depthStencilBuffer)
+			{
+				m_depthStencilBuffer->Release();
+				m_depthStencilBuffer = 0;
+			}
+
+			if (m_renderTargetView)
+			{
+				m_renderTargetView->Release();
+				m_renderTargetView = 0;
+			}
 		}
 	}
 }

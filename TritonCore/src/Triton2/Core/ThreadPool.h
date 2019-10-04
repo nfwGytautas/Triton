@@ -64,13 +64,6 @@ namespace Triton
 				 * The inner loop of the std::thread
 				 */
 				void process();
-
-				/**
-				 * Take a task from queue and return it
-				 *
-				 * @return Task to be executed
-				 */
-				std::function<void()> takeTask();
 			private:
 				/// Atomic variable to keep track if the worker has been terminated or not
 				std::atomic<bool> m_terminated;

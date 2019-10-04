@@ -143,13 +143,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton2\Core\SceneManager.h" />
-    <ClInclude Include="src\TritonTypes\AssetDictionary.h" />
-    <ClInclude Include="src\TritonTypes\Scene.h" />
+    <ClInclude Include="src\Triton2\Instance\Engine.h" />
+    <ClInclude Include="src\TritonTypes\Settings.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton2\Assert.h" />
     <ClInclude Include="src\Triton2\Core\AssetManager.h" />
+    <ClInclude Include="src\Triton2\Core\SceneManager.h" />
     <ClInclude Include="src\Triton2\Core\ThreadPool.h" />
     <ClInclude Include="src\Triton2\File\File.h" />
     <ClInclude Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.h" />
@@ -162,22 +162,22 @@
     <ClInclude Include="src\Triton2\Utility\Log.h" />
     <ClInclude Include="src\Triton2\Utility\Timer.h" />
     <ClInclude Include="src\TritonTypes\Asset.h" />
+    <ClInclude Include="src\TritonTypes\AssetDictionary.h" />
     <ClInclude Include="src\TritonTypes\Flags.h" />
     <ClInclude Include="src\TritonTypes\IO.h" />
+    <ClInclude Include="src\TritonTypes\Scene.h" />
     <ClInclude Include="src\TritonTypes\ShaderBuffers.h" />
     <ClInclude Include="src\TritonTypes\data_collection.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
-    <ClCompile Include="src\TritonTypes\AssetDictionary.cpp" />
-    <ClCompile Include="src\TritonTypes\Scene.cpp" />
-    <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
+    <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Triton2\Core\AssetManager.cpp" />
+    <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
     <ClCompile Include="src\Triton2\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Triton2\File\File.cpp" />
     <ClCompile Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.cpp" />
@@ -187,6 +187,9 @@
     <ClCompile Include="src\Triton2\Utility\Log.cpp" />
     <ClCompile Include="src\Triton2\Utility\Timer.cpp" />
     <ClCompile Include="src\TritonTypes\Asset.cpp" />
+    <ClCompile Include="src\TritonTypes\AssetDictionary.cpp" />
+    <ClCompile Include="src\TritonTypes\Scene.cpp" />
+    <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TritonGraphics\TritonGraphics.vcxproj">

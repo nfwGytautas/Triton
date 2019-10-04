@@ -35,6 +35,9 @@
     <ClInclude Include="src\Triton2\Core\AssetManager.h">
       <Filter>Triton2\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\Core\SceneManager.h">
+      <Filter>Triton2\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton2\Core\ThreadPool.h">
       <Filter>Triton2\Core</Filter>
     </ClInclude>
@@ -71,10 +74,16 @@
     <ClInclude Include="src\TritonTypes\Asset.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonTypes\AssetDictionary.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonTypes\Flags.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\IO.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonTypes\Scene.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\ShaderBuffers.h">
@@ -89,13 +98,15 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton2\Core\SceneManager.h" />
-    <ClInclude Include="src\TritonTypes\Scene.h" />
-    <ClInclude Include="src\TritonTypes\AssetDictionary.h" />
+    <ClInclude Include="src\Triton2\Instance\Engine.h" />
+    <ClInclude Include="src\TritonTypes\Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
     <ClCompile Include="src\Triton2\Core\AssetManager.cpp">
+      <Filter>Triton2\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Core\SceneManager.cpp">
       <Filter>Triton2\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Core\ThreadPool.cpp">
@@ -125,9 +136,15 @@
     <ClCompile Include="src\TritonTypes\Asset.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
-    <ClCompile Include="src\TritonTypes\Scene.cpp" />
-    <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
-    <ClCompile Include="src\TritonTypes\AssetDictionary.cpp" />
+    <ClCompile Include="src\TritonTypes\AssetDictionary.cpp">
+      <Filter>TritonTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonTypes\Scene.cpp">
+      <Filter>TritonTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp">
+      <Filter>TritonTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
   </ItemGroup>
 </Project>

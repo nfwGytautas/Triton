@@ -1,0 +1,47 @@
+[22:03:14.374] Thread: 18448 SYSTEM: [ trace ] Creating 'WINDOWS' context
+[22:03:14.376] Thread: 18448 SYSTEM: [ trace ] Initializing DXContext
+[22:03:14.376] Thread: 18448 SYSTEM: [ trace ] Creating DX device with feature level '45056'
+[22:03:14.521] Thread: 18448 SYSTEM: [ info  ] DX device created
+[22:03:14.522] Thread: 18448 SYSTEM: [ trace ] Getting display parameters
+[22:03:14.522] Thread: 18448 SYSTEM: [ trace ] Adapter information acquired
+[22:03:14.524] Thread: 18448 SYSTEM: [ trace ] Possible display mode count '146'
+[22:03:14.525] Thread: 18448 SYSTEM: [ trace ] Getting video card information
+[22:03:14.526] Thread: 18448 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
+[22:03:14.526] Thread: 18448 SYSTEM: [ trace ] Checking context state descriptions
+[22:03:14.527] Thread: 18448 SYSTEM: [warning] Context descriptions not created, creating now
+[22:03:14.527] Thread: 18448 SYSTEM: [ trace ] Creating shader matrix buffer description
+[22:03:14.527] Thread: 18448 SYSTEM: [ trace ] Creating shader settings buffer description
+[22:03:14.528] Thread: 18448 SYSTEM: [ trace ] Creating shader point light buffer description
+[22:03:14.528] Thread: 18448 SYSTEM: [ trace ] Creating shader spot light buffer description
+[22:03:14.528] Thread: 18448 SYSTEM: [ trace ] Creating shader directional light buffer description
+[22:03:14.529] Thread: 18448 SYSTEM: [ trace ] Creating shader camera buffer description
+[22:03:14.529] Thread: 18448 SYSTEM: [ trace ] Creating shader sampler description
+[22:03:14.533] Thread: 18448 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
+[22:03:14.534] Thread: 18448 SYSTEM: [ trace ] Created a scene manager instance with '1' threads
+[22:03:14.713] Thread: 18448 SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
+[22:03:14.714] Thread: 18448 SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '4' entries
+[22:03:14.716] Thread: 18448 SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
+[22:03:14.716] Thread: 18448 SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
+[22:03:14.718] Thread: 18448 SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '4' entries
+[22:03:14.718] Thread: 18448 SYSTEM: [ debug ] Asset manager filled with '4' new associations
+[22:03:14.719] Thread: 18448 SYSTEM: [ debug ] Loading scene: '../Assets/Scenes/sampleScene.scene'
+[22:03:14.719] Thread: 18448 SYSTEM: [ trace ] Creating a new 'Windows' window
+[22:03:14.719] Thread: 18448 SYSTEM: [ trace ] Creating a new 'Windows' renderer
+[22:03:14.719] Thread: 22488 SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
+[22:03:14.720] Thread: 18448 SYSTEM: [ trace ] Checking renderer state descriptions
+[22:03:14.720] Thread: 22488 SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
+[22:03:14.721] Thread: 9804  SYSTEM: [ debug ] Asset 'lightingShader' loading complete
+[22:03:14.721] Thread: 18448 SYSTEM: [warning] Renderer descriptions not created, creating now
+[22:03:14.722] Thread: 22488 SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
+[22:03:14.724] Thread: 18448 SYSTEM: [ trace ] Creating default depth stencil
+[22:03:14.725] Thread: 22488 SYSTEM: [ debug ] Scene '../Assets/Scenes/sampleScene.scene' loading complete
+[22:03:14.725] Thread: 18448 SYSTEM: [ trace ] Creating default depth stencil view
+[22:03:14.727] Thread: 9804  SYSTEM: [ debug ] Asset 'stallMesh' loading complete
+[22:03:14.727] Thread: 18448 SYSTEM: [ trace ] Creating default raster description
+[22:03:14.730] Thread: 18448 SYSTEM: [ trace ] Creating no culling raster description
+[22:03:14.731] Thread: 18448 SYSTEM: [ trace ] Creating disabled depth stencil
+[22:03:14.732] Thread: 18448 SYSTEM: [ info  ] Initializing renderer
+[22:03:14.733] Thread: 18448 SYSTEM: [ trace ] Getting display refresh rate
+[22:03:14.734] Thread: 18448 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
+[22:03:14.734] Thread: 18448 SYSTEM: [ trace ] Creating swap chain description
+[22:03:14.735]

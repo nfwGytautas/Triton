@@ -5,7 +5,7 @@ Just another game engine that I am coding for fun in my spare time
 
 
 # Features I would like to implement
-* ~~Basic editor~~
+* Basic editor
 * Text rendering
 * Sound engine
 * Shadows
@@ -18,11 +18,4 @@ Just another game engine that I am coding for fun in my spare time
 * Scripting support
 * Serialization
 
-# *Tests projects*
-
-**You can find test projects in the test projects folder (https://github.com/nfwGytautas/Triton/tree/master/Test%20projects)**
-
-*Note: Some projects are not fleshed out and might only work in certain circumstances, this is because these projects are created for the purpose of testing specific features of the engine and not to create a game or any other application*
-* Rubik's cube **Triton version: 000a** (Created for object rotation, simple model creation and event system testing)
-* Mario (sort of) **Triton version: 001a** (Created for texture loading and python embedding, EnTT integration and simple material testing)
-* Scene **Triton version: 002a** (Created for testing mesh loading, multiple lighting, render chain and serialization)
+The engine uses various third party libraries all of them can be found inside the vendor folder

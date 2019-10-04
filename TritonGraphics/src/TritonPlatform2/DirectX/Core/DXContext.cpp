@@ -175,7 +175,7 @@ namespace Triton
 			return static_cast<Renderer*>(new DXRenderer(m_device, m_deviceContext, m_displayModeList, dxwindow));
 		}
 
-		bool DXContext::init()
+		bool DXContext::init(EngineSettings& settings)
 		{
 			TR_SYSTEM_TRACE("Initializing DXContext");
 
@@ -187,7 +187,14 @@ namespace Triton
 			D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
 			TR_SYSTEM_TRACE("Creating DX device with feature level '{0}'", featureLevel);
-			result = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, 0, &featureLevel, 1,
+
+			UINT flags = 0;
+
+#ifdef TR_DEBUG
+			flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+			result = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, flags, &featureLevel, 1,
 				D3D11_SDK_VERSION, &m_device, NULL, &m_deviceContext);
 			if (FAILED(result))
 			{
@@ -195,6 +202,32 @@ namespace Triton
 				return false;
 			}
 			TR_SYSTEM_INFO("DX device created");
+
+#ifdef TR_DEBUG
+			ID3D11Debug *d3dDebug = nullptr;
+			if (SUCCEEDED(m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&d3dDebug)))
+			{
+				ID3D11InfoQueue *d3dInfoQueue = nullptr;
+				if (SUCCEEDED(d3dDebug->QueryInterface(__uuidof(ID3D11InfoQueue), (void**)&d3dInfoQueue)))
+				{
+					d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
+					d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, true);
+
+					D3D11_MESSAGE_ID hide[] =
+					{
+					D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
+					// Add more message IDs here as needed
+					};
+
+					D3D11_INFO_QUEUE_FILTER filter = {};
+					filter.DenyList.NumIDs = _countof(hide);
+					filter.DenyList.pIDList = hide;
+					d3dInfoQueue->AddStorageFilterEntries(&filter);
+					d3dInfoQueue->Release();
+				}
+				d3dDebug->Release();
+			}
+#endif
 
 			// Secondly lets query some information about the system and monitor
 			IDXGIFactory* factory;
@@ -288,6 +321,12 @@ namespace Triton
 
 			m_keyboardState = new IO::Keyboard();
 			m_mouseState = new IO::Mouse();
+
+			if (settings.in_customInputLoop)
+			{
+				settings.out_keyboard = m_keyboardState;
+				settings.out_mouse = m_mouseState;
+			}
 			
 			m_initialized = true;
 

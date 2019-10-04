@@ -87,7 +87,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\vendor\GLFW\bin\Debug-windows-x86_64\GLFW\GLFW.lib;..\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -110,7 +110,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\vendor\GLFW\bin\Release-windows-x86_64\GLFW\GLFW.lib;..\vendor\Glad\bin\Release-windows-x86_64\Glad\Glad.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -133,7 +133,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\vendor\GLFW\bin\Dist-windows-x86_64\GLFW\GLFW.lib;..\vendor\Glad\bin\Dist-windows-x86_64\Glad\Glad.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -180,14 +180,6 @@
     <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp" />
     <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp" />
     <ClCompile Include="src\TritonPlatform2\mathematical.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\vendor\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\vendor\Glad\Glad.vcxproj">
-      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

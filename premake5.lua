@@ -15,17 +15,13 @@ IncludeDir["GLFW"] = "vendor/GLFW/include"
 IncludeDir["Glad"] = "vendor/Glad/include"
 IncludeDir["GLM"] = "vendor/glm"
 IncludeDir["entt"] = "vendor/entt/src"
-IncludeDir["ImGui"] = "vendor/imguiDocking"
 IncludeDir["Assimp"] = "vendor/Assimp/include"
 IncludeDir["stb_image"] = "vendor/stb_image"
 IncludeDir["cereal"] = "vendor/cereal/include"
 IncludeDir["XTK"] = "vendor/DirectXTK/Inc"
 IncludeDir["mono"] = "vendor/mono/include/mono-2.0"
-
-include "vendor/GLFW"
-include "vendor/Glad"
-include "vendor/imguiDocking"
-
+IncludeDir["QT"] = "vendor/QT/include/mono-2.0"
+IncludeDir["spdlog"] = "vendor/spdlog/include"
 
 project "TritonGraphics"
 	location "TritonGraphics"
@@ -56,8 +52,8 @@ project "TritonGraphics"
 
 	links 
 	{ 
-		"GLFW",
-		"Glad",
+		"vendor/GLFW/bin/" .. outputdir .. "/GLFW/GLFW.lib",
+		"vendor/Glad/bin/" .. outputdir .. "/Glad/Glad.lib",
 		"opengl32.lib",
 	}
 
@@ -163,69 +159,6 @@ project "TritonCore"
 		optimize "on"
 		runtime "Release"
 
-project "TritonEditor"
-	location "TritonEditor"
-	kind "ConsoleApp"
-	language "C++"	
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"%{prj.name}/src",
-		"vendor/spdlog/include",
-		"%{IncludeDir.GLM}",
-		"%{IncludeDir.entt}",
-		"%{IncludeDir.XTK}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.cereal}",
-		"TritonEditor/src",
-		"TritonCore/src",
-		"TritonGraphics/src",
-	}
-
-	links
-	{
-		"TritonCore",
-		"ImGui",
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TR_PLATFORM_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines 
-		{
-			"TR_DEBUG",
-			"TR_ENABLE_ASSERTS"
-		}
-		runtime "Debug"
-		symbols "on"
-	
-	filter "configurations:Release"
-		defines "TR_RELEASE"
-		optimize "on"
-		runtime "Release"
-
-	filter "configurations:Dist"
-		defines "TR_DIST"
-		runtime "Release"
-		optimize "on"
-
 project "TritonEngine"
 	location "TritonEngine"
 	kind "SharedLib"
@@ -247,49 +180,6 @@ project "TritonEngine"
 	postbuildcommands 
 	{
 		("{COPY} %{cfg.buildtarget.relpath} ../bin"),
-	}
-
-	filter "configurations:Debug"
-		defines 
-		{
-			"TR_DEBUG",
-			"TR_ENABLE_ASSERTS"
-		}
-		runtime "Debug"
-		symbols "on"
-	
-	filter "configurations:Release"
-		defines "TR_RELEASE"
-		optimize "on"
-		runtime "Release"
-
-	filter "configurations:Dist"
-		defines "TR_DIST"
-		runtime "Release"
-		optimize "on"
-
-project "TritonEditorExtension"
-	location "TritonEditorExtension"
-	kind "SharedLib"
-	language "C#"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	links
-	{
-		"System",
-		"TritonEngine"
-	}
-
-	files
-	{
-		"%{prj.name}/src/**.cs"
-	}
-	
-	postbuildcommands 
-	{
-		("{COPY} %{cfg.buildtarget.relpath} ../"),
 	}
 
 	filter "configurations:Debug"

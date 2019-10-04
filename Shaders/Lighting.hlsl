@@ -51,7 +51,7 @@ cbuffer SpotLights : register(b3)
     float4 sl_Position[MAX_SPOT_LIGHTS];
     float4 sl_ColorAndAngle[MAX_SPOT_LIGHTS];
     float4 sl_Direction[MAX_SPOT_LIGHTS];
-    float4 sl_AtennuationAndRange[MAX_POINT_LIGHTS];
+    float4 sl_AtennuationAndRange[MAX_SPOT_LIGHTS];
 };
 
 cbuffer DirectionalLights : register(b4)
@@ -216,8 +216,7 @@ float4 spotLightCalc(PixelInputType input)
         float intensity = pow(max(dot(lightDir, normalize(direction)), 0.0f), angle);
 
         // attenuation
-        float distance = length(lightPosition - input.worldPos);
-        float attenuation = 1.0 / (constant + _linear * distance + quadratic * (distance * distance));
+        float attenuation = 1.0 / (constant + _linear * d + quadratic * (d * d));
 
         // combine results
         ambient *= intensity;

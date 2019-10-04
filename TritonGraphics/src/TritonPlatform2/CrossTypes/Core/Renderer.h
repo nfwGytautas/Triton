@@ -83,6 +83,11 @@ namespace Triton
 			virtual void render(unsigned int indiceCount) = 0;
 
 			/**
+			 * Reconfigures the renderer with newest window settings
+			 */
+			virtual void resize() = 0;
+
+			/**
 			 * Check if the renderer has been initialized successfully
 			 *
 			 * @return True if renderer has initialized successfully

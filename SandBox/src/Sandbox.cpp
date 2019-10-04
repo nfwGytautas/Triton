@@ -1,11 +1,10 @@
 #include <iostream>
 #include "Triton2/Triton.h"
 
-Triton::Graphics::Context* context;
+Triton::Engine& engine = Triton::Engine::getInstance();
+
 Triton::Graphics::Window* window;
 Triton::Graphics::Renderer* renderer;
-Triton::Core::AssetManager* assets;
-Triton::Core::SceneManager* scenes;
 
 void createAssets()
 {
@@ -104,11 +103,11 @@ void createAssets()
 	sl.Range = 50;
 	sl.Linear = 0.045;
 	sl.Quadratic = 0.0075;
-	sl.Position = Vector3(0, 5, 40);
+	sl.Position = Vector3(0, 5, 25);
 
-	scene.lights().PointLights.push_back(pl);
-	scene.lights().PointLights.push_back(pl2);
-	//scene.lights().DirLights.push_back(dl);
+	//scene.lights().PointLights.push_back(pl);
+	//scene.lights().PointLights.push_back(pl2);
+	scene.lights().DirLights.push_back(dl);
 	scene.lights().SpotLights.push_back(sl);
 
 	auto& scene_assets = scene.assets();
@@ -124,30 +123,23 @@ void createAssets()
 
 void loadAssets()
 {
-	assets->loadDictionary("../Assets/dictionary.meta");
+	engine.assets().loadDictionary("../Assets/dictionary.meta");
 
-	scenes->loadScene("../Assets/Scenes/sampleScene.scene");
+	engine.scenes().loadScene("../Assets/Scenes/sampleScene.scene");
 }
 
 int main()
 {
 	using namespace Triton;
 
-	Log::init();
+	EngineSettings settings;
+	settings.in_customInputLoop = false;
+
+	engine.init(settings);
 
 	reference<Graphics::Shader> shader;
 	reference<Graphics::VAO> model;
 	reference<Graphics::Texture> texture;
-	
-	// Initialize the context
-	context = Graphics::Context::create();
-	context->init();
-
-	// Create an asset manager for the context
-	assets = new Core::AssetManager(context);
-
-	// Create scene manager using asset manager
-	scenes = new Core::SceneManager(assets);
 
 	// Create assets
 	createAssets();
@@ -156,24 +148,24 @@ int main()
 	loadAssets();
 
 	// Create a new window
-	window = context->newWindow();
+	window = engine.context().newWindow();
 	window->initNew(1280, 720);
 
 	// Key callback
 	window->keyboard().charInputCallback([](char c) {TR_SYSTEM_TRACE("KEY: {0}", c); });
 
 	// Create a new renderer for a window
-	renderer = context->newRenderer(window);
+	renderer = engine.context().newRenderer(window);
 
-	scenes->setScene("sample");
-	assets->wait();
+	engine.scenes().setScene("sample");
+	engine.assets().wait();
 
 	// Since the assets are loaded they can be acquired here
 	// They are loaded using the name that was stored not the file name
 	//shader = (*assets)["simpleShader"].as<ShaderAsset>()->shader();
-	shader = (*assets)["lightingShader"].as<ShaderAsset>()->shader();
-	model = (*assets)["stallMesh"].as<MeshAsset>()->VAO();
-	texture = (*assets)["stallTexture"].as<ImageAsset>()->texture();
+	shader = engine.assets()["lightingShader"].as<ShaderAsset>()->shader();
+	model = engine.assets()["stallMesh"].as<MeshAsset>()->VAO();
+	texture = engine.assets()["stallTexture"].as<ImageAsset>()->texture();
 
 	// Enable shader and mesh
 	shader->enable();
@@ -201,7 +193,7 @@ int main()
 	shader->buffer_camera().Position = Vector4(pos.x, pos.y, pos.z, 1.0f);
 	shader->buffer_camera().ViewDirection = Vector4(dir.x, dir.y, dir.z, 1.0f);
 
-	reference<Scene> sampleScene = (*scenes)["sample"];
+	reference<Scene> sampleScene = engine.scenes()["sample"];
 
 	shader->buffer_lights() = sampleScene->lights();
 
@@ -224,7 +216,7 @@ int main()
 		renderer->endFrame();
 	}
 
-	Log::flush();
+	engine.shutdown();
 
 #if _DEBUG
 	std::cin.get();

@@ -3,29 +3,33 @@
 #include "TritonPlatform2/DirectX/Macros.h"
 #include "TritonPlatform2/CrossTypes/Bitmap.h"
 
-PLATFORM_NAMESPACE_BEGIN
-
-class DXContext;
-
-class DXBitmap : public Bitmap
+namespace Triton
 {
-public:
-	DXBitmap();
-	virtual ~DXBitmap();
+	namespace Graphics
+	{
 
-	virtual void enable() override;
-	virtual void disable() override;
+		class DXContext;
 
-	virtual void setPosition(unsigned int newX, unsigned int newY) override;
-	virtual unsigned int getIndiceCount() override;
-private:
-	ID3D11DeviceContext* m_deviceContext;
-	ID3D11Buffer* m_vertexBuffer;
-	ID3D11Buffer* m_indexBuffer;
-	unsigned int m_vertexCount;
-	unsigned int m_indiceCount;
+		class DXBitmap : public Bitmap
+		{
+		public:
+			DXBitmap();
+			virtual ~DXBitmap();
 
-	friend DXContext;
-};
+			virtual void enable() override;
+			virtual void disable() override;
 
-PLATFORM_NAMESPACE_END
+			virtual void setPosition(unsigned int newX, unsigned int newY) override;
+			virtual unsigned int getIndiceCount() override;
+		private:
+			ID3D11DeviceContext* m_deviceContext;
+			ID3D11Buffer* m_vertexBuffer;
+			ID3D11Buffer* m_indexBuffer;
+			unsigned int m_vertexCount;
+			unsigned int m_indiceCount;
+
+			friend DXContext;
+		};
+
+	}
+}

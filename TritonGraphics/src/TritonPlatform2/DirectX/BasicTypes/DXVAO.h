@@ -3,28 +3,32 @@
 #include "TritonPlatform2/DirectX/Macros.h"
 #include "TritonPlatform2/CrossTypes/VAO.h"
 
-PLATFORM_NAMESPACE_BEGIN
-
-class DXRenderer;
-class DXContext;
-
-class DXVAO : public VAO
+namespace Triton
 {
-public:
-	virtual ~DXVAO();
+	namespace Graphics
+	{
 
-	virtual void enable() override;
-	virtual void disable() override;
+		class DXRenderer;
+		class DXContext;
 
-	virtual unsigned int getIndiceCount() override;
-private:
-	ID3D11DeviceContext* m_deviceContext;
-	ID3D11Buffer *m_vertexBuffer;
-	ID3D11Buffer *m_indexBuffer;
-	unsigned int m_indiceCount;
+		class DXVAO : public VAO
+		{
+		public:
+			virtual ~DXVAO();
 
-	friend DXRenderer;
-	friend DXContext;
-};
+			virtual void enable() override;
+			virtual void disable() override;
 
-PLATFORM_NAMESPACE_END
+			virtual unsigned int getIndiceCount() override;
+		private:
+			ID3D11DeviceContext* m_deviceContext;
+			ID3D11Buffer *m_vertexBuffer;
+			ID3D11Buffer *m_indexBuffer;
+			unsigned int m_indiceCount;
+
+			friend DXRenderer;
+			friend DXContext;
+		};
+
+	}
+}
