@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TritonTypes/Asset.h"
+#include "TritonTypes/AssetDictionary.h"
 
 namespace Triton
 {
@@ -12,9 +13,6 @@ namespace Triton
 
 	namespace Core
 	{
-		// Forward declaration
-		class AssetDictionary;
-
 		/**
 		 * Class to keep engine assets in one place
 		 */
@@ -27,6 +25,15 @@ namespace Triton
 			 * @param context The graphics Context
 			 */
 			AssetManager(Graphics::Context* context);
+
+			/**
+			 * Create an asset map instance with the graphics context
+			 *
+			 * @param context The graphics Context
+			 * @param dictionary The dictionary that will be used by the asset manager 
+			 * when loading by name
+			 */
+			AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary);
 
 			/**
 			 * Cleans up and then destroys the asset manager
@@ -78,25 +85,9 @@ namespace Triton
 			}
 
 			/**
-			 * [Convenience]
-			 * Same as calling addDictionary(AssetDictionary::loadFromFile(dict))
-			 * Loads an asset dictionary to be used for the asset manager
-			 * When a scene is loaded all assets are iterated and are looked up in the dictionary
-			 * for their metadata and are then loaded.
-			 *
-			 * @param dict Path to the dictionary file
-			 */
-			void loadDictionary(const std::string& dict);
-
-			/**
-			 * Unloads ALL dictionaries used by the asset manager.
-			 */
-			void unloadDictionaries();
-
-			/**
 			 * [Multi threaded]
 			 * Loads an asset with the specified name. The asset needs an entry inside an asset dictionary
-			 * and that dictionary must be loaded into the asset manager.
+			 * and that dictionary must be loaded into the engine.
 			 * If multiple dictionaries contains the same asset name entry the latest added one will be used
 			 *
 			 * @param name Name of the asset to be loaded
@@ -116,6 +107,7 @@ namespace Triton
 			 * [Convenience] 
 			 * [Multi threaded]
 			 * Same as calling IO::loadAssetFromDisk() and then addAsset() with the loaded asset
+			 * Consider using loading by name together with a dictionary
 			 *
 			 * @param file File to the asset
 			 */
@@ -137,14 +129,6 @@ namespace Triton
 			 * @param asset Asset to add
 			 */
 			void addAsset(reference<Asset> asset);
-
-			/**
-			 * [Thread safe, uses mutex]
-			 * Add an asset dictionary to the manager
-			 *
-			 * @param dictionary Dictionary to add
-			 */
-			void addDictionary(reference<AssetDictionary> dictionary);
 
 			/**
 			 * [Thread safe, uses mutex]

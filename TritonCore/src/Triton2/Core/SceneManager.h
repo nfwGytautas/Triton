@@ -1,6 +1,7 @@
 #pragma once
 
-#include "TritonTypes/Scene.h"
+#include "Triton2/Scene/Scene.h"
+#include "TritonTypes/AssetDictionary.h"
 
 namespace Triton
 {
@@ -21,6 +22,15 @@ namespace Triton
 			 * @param assetManager The asset manager instance that will be used by the scene manager
 			 */
 			SceneManager(AssetManager* assetManager);
+
+			/**
+			 * Create a scene manager instance that uses the specified AssetManager and dictionary
+			 *
+			 * @param assetManager The asset manager instance that will be used by the scene manager
+			 * @param dictionary The dictionary that will be used by the scene manager 
+			 * when loading by name
+			 */
+			SceneManager(AssetManager* assetManager, reference<AssetDictionary> dictionary);
 
 			/**
 			 * Cleans up and then destroys the scene manager
@@ -63,12 +73,23 @@ namespace Triton
 			 * @return Does the map contain a scene with the specified name
 			 */
 			bool hasScene(const std::string& name) const;
+			
+			/**
+			 * [Multi threaded]
+			 * Loads a scene with the specified name. The scene needs an entry inside an asset dictionary
+			 * and that dictionary must be loaded into the engine.
+			 * If multiple dictionaries contains the same scene name entry the latest added one will be used
+			 *
+			 * @param name Name of the scene to be loaded
+			 */
+			void loadSceneByName(const std::string& name);
 
 			/**
 			 * [Convenience] 
 			 * [Multi threaded]
 			 * Same as calling IO::loadSceneFromDisk() and then addScene() with the loaded scene
 			 * Also queues up asset loading to asset manager
+			 * Consider using loading by name together with a dictionary
 			 *
 			 * @param file File to the scene
 			 */

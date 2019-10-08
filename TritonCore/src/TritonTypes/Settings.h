@@ -5,8 +5,8 @@ namespace Triton
 	// Forward declarations
 	namespace IO
 	{
-		struct Keyboard;
-		struct Mouse;
+		class Keyboard;
+		class Mouse;
 	}
 
 	/**

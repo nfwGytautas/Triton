@@ -1,9 +1,10 @@
 #pragma once
 
-#include "TritonTypes/IO.h"
+#include "TritonTypes/IO2.h"
 #include "Triton2/Scene/Lighting.h"
 #include "TritonPlatform2/mathematical.h"
 #include "TritonTypes/AssetDictionary.h"
+#include "Triton2/Scene/ECS.h"
 
 namespace Triton
 {
@@ -55,7 +56,25 @@ namespace Triton
 		void serialize(Archive& archive,
 			AssetDictionary::AssetMeta& m)
 		{
-			archive(cereal::make_nvp("Path", m.Path), cereal::make_nvp("IsPacket", m.PacketFile));
+			int& type = (int&)m.Type;
+			archive(cereal::make_nvp("Path", m.Path), cereal::make_nvp("IsPacket", m.PacketFile), cereal::make_nvp("Type", type));
+		}
+	}
+
+	namespace Components
+	{
+		template<class Archive>
+		void serialize(Archive& archive,
+			MetaComponent& m)
+		{
+			archive(m.Name);
+		}
+
+		template<class Archive>
+		void serialize(Archive& archive,
+			Transform& m)
+		{
+			archive(m.Position, m.Rotation, m.Scale);
 		}
 	}
 }

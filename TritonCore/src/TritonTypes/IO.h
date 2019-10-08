@@ -196,35 +196,5 @@ namespace Triton
 			 */
 			std::shared_ptr<void> Data;
 		};
-
-		/**
-		 * Scene data structure used for serializing and deserializing scenes
-		 */
-		struct SceneData
-		{
-			/**
-			 * Format of the scene
-			 * Since 00_00_00
-			 */
-			std::string Version;
-
-			/**
-			 * Name of the scene to be created
-			 * Since 00_00_00
-			 */
-			std::string Name;
-
-			/**
-			 * Asset names used by the scene
-			 * Since 00_00_00
-			 */
-			std::vector<std::string> Assets;
-
-			/**
-			 * Lights used in this scene
-			 * Since 00_00_00
-			 */
-			Graphics::LightBuffer Lights;
-		};
 	}
 }

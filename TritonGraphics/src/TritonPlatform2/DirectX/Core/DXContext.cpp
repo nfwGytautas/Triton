@@ -12,7 +12,6 @@
 #include "TritonPlatform2/DirectX/BasicTypes/DXVAO.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXTexture.h"
 #include "TritonPlatform2/DirectX/BasicTypes/DXFramebuffer.h"
-#include "TritonPlatform2/DirectX/BasicTypes/DXBitmap.h"
 
 #include "Triton2/Utility/Log.h"
 
@@ -874,113 +873,6 @@ namespace Triton
 			TR_SYSTEM_INFO("Frame buffer created");
 
 			return frameBuffer;
-		}
-
-		Bitmap* DXContext::newBitmap(const BitmapCreateParams& createParams)
-		{
-			TR_SYSTEM_TRACE("Creating bitmap");
-
-			DXBitmap* bitmap = new DXBitmap();
-			
-			bitmap->prtc_screenWidth = 250;
-			bitmap->prtc_screenHeight = 250;
-
-			bitmap->prtc_bitmapWidth = createParams.width;
-			bitmap->prtc_bitmapHeight = createParams.height;
-
-
-			BitmapVertexType* vertices;
-			unsigned long* indices;
-			D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-			D3D11_SUBRESOURCE_DATA vertexData, indexData;
-			HRESULT result;
-			unsigned int i;
-
-
-			// Set the number of vertices in the vertex array.
-			bitmap->m_vertexCount = 6;
-
-			// Set the number of indices in the index array.
-			bitmap->m_indiceCount = bitmap->m_vertexCount;
-
-			// Create the vertex array.
-			vertices = new BitmapVertexType[bitmap->m_vertexCount];
-
-			// Create the index array.
-			indices = new unsigned long[bitmap->m_indiceCount];
-			if (!indices)
-			{
-				TR_SYSTEM_ERROR("Failed to create bitmap indices array");
-				return nullptr;
-			}
-
-			// Initialize vertex array to zeros at first.
-			memset(vertices, 0, (sizeof(BitmapVertexType) * bitmap->m_vertexCount));
-
-			// Load the index array with data.
-			for (i = 0; i < bitmap->m_indiceCount; i++)
-			{
-				indices[i] = i;
-			}
-
-			// Set up the description of the static vertex buffer.
-			vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			vertexBufferDesc.ByteWidth = sizeof(BitmapVertexType) * bitmap->m_vertexCount;
-			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			vertexBufferDesc.MiscFlags = 0;
-			vertexBufferDesc.StructureByteStride = 0;
-
-			// Give the sub resource structure a pointer to the vertex data.
-			vertexData.pSysMem = vertices;
-			vertexData.SysMemPitch = 0;
-			vertexData.SysMemSlicePitch = 0;
-
-			TR_SYSTEM_TRACE("Creating bitmap buffers");
-
-			// Now create the vertex buffer.
-			result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &bitmap->m_vertexBuffer);
-			if (FAILED(result))
-			{
-				TR_SYSTEM_ERROR("Failed to create bitmap vertex buffer");
-				return nullptr;
-			}
-
-			// Set up the description of the static index buffer.
-			indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-			indexBufferDesc.ByteWidth = sizeof(unsigned long) * bitmap->m_indiceCount;
-			indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-			indexBufferDesc.CPUAccessFlags = 0;
-			indexBufferDesc.MiscFlags = 0;
-			indexBufferDesc.StructureByteStride = 0;
-
-			// Give the sub resource structure a pointer to the index data.
-			indexData.pSysMem = indices;
-			indexData.SysMemPitch = 0;
-			indexData.SysMemSlicePitch = 0;
-
-			// Create the index buffer.
-			result = m_device->CreateBuffer(&indexBufferDesc, &indexData, &bitmap->m_indexBuffer);
-			if (FAILED(result))
-			{
-				TR_SYSTEM_ERROR("Failed to create bitmap indices buffer");
-				return nullptr;
-			}
-
-			// Release the arrays now that the vertex and index buffers have been created and loaded.
-			delete[] vertices;
-			vertices = 0;
-
-			delete[] indices;
-			indices = 0;
-
-			// Create the texture object.
-			bitmap->m_Texture = createParams.texture;
-			bitmap->m_deviceContext = m_deviceContext;
-
-			TR_SYSTEM_INFO("Bitmap created");
-
-			return bitmap;
 		}
 	}
 }

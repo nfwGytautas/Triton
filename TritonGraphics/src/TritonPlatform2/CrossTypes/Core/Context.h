@@ -8,7 +8,6 @@
 #include "TritonPlatform2/CrossTypes/Shader.h"
 #include "TritonPlatform2/CrossTypes/VAO.h"
 #include "TritonPlatform2/CrossTypes/Texture.h"
-#include "TritonPlatform2/CrossTypes/Bitmap.h"
 
 #include "TritonTypes/IO.h"
 
@@ -105,14 +104,6 @@ namespace Triton
 			 * @return reference to the newly created frame buffer
 			 */
 			virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) = 0;
-
-			/**
-			 * Create a new bitmap from the create params
-			 *
-			 * @param createParams The parameters of the bitmap
-			 * @return reference to the newly created bitmap
-			 */
-			virtual Bitmap* newBitmap(const BitmapCreateParams& createParams) = 0;
 
 			/**
 			 * Returns the keyboard state of the context

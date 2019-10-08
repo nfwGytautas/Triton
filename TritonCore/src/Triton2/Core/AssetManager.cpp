@@ -29,6 +29,12 @@ namespace Triton
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
 
+			AssetManagerImpl(Graphics::Context* context, reference<AssetDictionary> dictionary)
+				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount)
+			{
+				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
+			}
+
 			~AssetManagerImpl()
 			{
 				m_tPool.wait();
@@ -74,11 +80,6 @@ namespace Triton
 				m_assets.erase(it, m_assets.end());
 			}
 
-			void unloadDictionaries()
-			{
-				m_dictionaries.clear();
-			}
-
 			bool hasAsset(const std::string& name) const
 			{
 				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
@@ -115,28 +116,11 @@ namespace Triton
 				});
 			}
 
-			void loadDictionary(const std::string& dict)
-			{
-				TR_SYSTEM_DEBUG("Loading dictionary: '{0}'", dict);
-
-				AssetDictionary* dictionary = AssetDictionary::loadFromFile(dict);
-				m_dictionaries.push_back(dictionary);
-
-				TR_SYSTEM_DEBUG("Asset manager filled with '{0}' new associations", dictionary->size());
-			}
-
 			void addAsset(reference<Asset> asset)
 			{
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
-			}
-
-			void addDictionary(reference<AssetDictionary> dictionary)
-			{
-				// Create lock guard
-				std::lock_guard<std::mutex> guard(m_mtx);
-				m_dictionaries.push_back(dictionary);
 			}
 
 			reference<Asset> getAsset(const std::string& name) const
@@ -193,24 +177,18 @@ namespace Triton
 				Triton::Asset* asset = nullptr;
 
 				// Find the asset inside a dictionary and then load it
-				bool found = false;
-				for (auto i = m_dictionaries.rbegin(); i != m_dictionaries.rend(); ++i) 
+				if (m_dictionary->has(name))
 				{
-					if ((*i)->has(name))
-					{
-						std::string path = (*i)->getData(name).Path;
+					auto& data = m_dictionary->getData(name);
 
-						TR_CORE_ASSERT(
-							IO::loadAssetFromDisk(path, asset).status == IO::IOStatus::IO_OK,
-							"Loading of an asset failed");
+					TR_CORE_ASSERT(data.Type == AssetDictionary::EntryType::Asset, "Specified entry is not of 'Asset' type. Could be conflicting names.");
 
-						found = true;
-						break;
-					}
+					std::string path = data.Path;
+
+					TR_CORE_ASSERT(
+						IO::loadAssetFromDisk(path, asset).status == IO::IOStatus::IO_OK,
+						"Loading of an asset failed");
 				}
-
-				TR_CORE_ASSERT(
-					found, "Asset with specified name cannot be found inside any loaded dictionaries");
 
 				reference<Asset> res(asset);
 				addAsset(res);
@@ -228,13 +206,18 @@ namespace Triton
 			/// Pointer to the context instance
 			Graphics::Context* m_contextInstance;
 
-			/// Dictionaries that are loaded into the asset manager
-			std::vector<reference<AssetDictionary>> m_dictionaries;
+			/// Dictionary used by the asset manager
+			reference<AssetDictionary> m_dictionary;
 		};
 
 		AssetManager::AssetManager(Graphics::Context* context)
 		{
 			m_impl = new AssetManagerImpl(context);
+		}
+
+		AssetManager::AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary)
+		{
+			m_impl = new AssetManagerImpl(context, dictionary);
 		}
 
 		AssetManager::~AssetManager()
@@ -267,16 +250,6 @@ namespace Triton
 			return m_impl->hasAsset(name);
 		}
 
-		void AssetManager::loadDictionary(const std::string& dict)
-		{
-			m_impl->loadDictionary(dict);
-		}
-
-		void AssetManager::unloadDictionaries()
-		{
-			m_impl->unloadDictionaries();
-		}
-
 		void AssetManager::loadAssetByName(const std::string& name)
 		{
 			m_impl->loadAssetByName(name);
@@ -306,11 +279,6 @@ namespace Triton
 		void AssetManager::addAsset(reference<Asset> asset)
 		{
 			m_impl->addAsset(asset);
-		}
-
-		void AssetManager::addDictionary(reference<AssetDictionary> dictionary)
-		{
-			m_impl->addDictionary(dictionary);
 		}
 
 		reference<Asset> AssetManager::getAsset(const std::string& name) const

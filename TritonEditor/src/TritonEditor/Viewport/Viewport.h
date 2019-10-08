@@ -312,7 +312,7 @@ private:
 
 	void loadAssets()
 	{
-		Triton::Engine::getInstance().assets().loadDictionary("../Assets/dictionary.meta");
+		Triton::Engine::getInstance().loadDictionary("../Assets/dictionary.meta");
 
 		Triton::Engine::getInstance().scenes().loadScene("../Assets/Scenes/sampleScene.scene");
 	}

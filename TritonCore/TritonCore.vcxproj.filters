@@ -83,9 +83,6 @@
     <ClInclude Include="src\TritonTypes\IO.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonTypes\Scene.h">
-      <Filter>TritonTypes</Filter>
-    </ClInclude>
     <ClInclude Include="src\TritonTypes\ShaderBuffers.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
@@ -100,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="src\Triton2\Instance\Engine.h" />
     <ClInclude Include="src\TritonTypes\Settings.h" />
+    <ClInclude Include="src\Triton2\Core\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Triton2\Scene\ECS.h" />
+    <ClInclude Include="src\Triton2\Scene\Scene.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonTypes\IO2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -139,12 +142,13 @@
     <ClCompile Include="src\TritonTypes\AssetDictionary.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonTypes\Scene.cpp">
-      <Filter>TritonTypes</Filter>
-    </ClCompile>
     <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
+    <ClCompile Include="src\Triton2\Scene\Scene.cpp">
+      <Filter>TritonTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Scene\ECS.cpp" />
   </ItemGroup>
 </Project>

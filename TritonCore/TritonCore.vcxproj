@@ -143,7 +143,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton2\Core\Systems\RenderSystem.h" />
     <ClInclude Include="src\Triton2\Instance\Engine.h" />
+    <ClInclude Include="src\Triton2\Scene\ECS.h" />
+    <ClInclude Include="src\TritonTypes\IO2.h" />
     <ClInclude Include="src\TritonTypes\Settings.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton.h" />
@@ -165,7 +168,7 @@
     <ClInclude Include="src\TritonTypes\AssetDictionary.h" />
     <ClInclude Include="src\TritonTypes\Flags.h" />
     <ClInclude Include="src\TritonTypes\IO.h" />
-    <ClInclude Include="src\TritonTypes\Scene.h" />
+    <ClInclude Include="src\Triton2\Scene\Scene.h" />
     <ClInclude Include="src\TritonTypes\ShaderBuffers.h" />
     <ClInclude Include="src\TritonTypes\data_collection.h" />
     <ClInclude Include="src\TritonTypes\reference.h" />
@@ -173,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
+    <ClCompile Include="src\Triton2\Scene\ECS.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -188,7 +192,7 @@
     <ClCompile Include="src\Triton2\Utility\Timer.cpp" />
     <ClCompile Include="src\TritonTypes\Asset.cpp" />
     <ClCompile Include="src\TritonTypes\AssetDictionary.cpp" />
-    <ClCompile Include="src\TritonTypes\Scene.cpp" />
+    <ClCompile Include="src\Triton2\Scene\Scene.cpp" />
     <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp" />
   </ItemGroup>
   <ItemGroup>

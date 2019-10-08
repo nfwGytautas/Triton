@@ -28,9 +28,6 @@
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Base.h">
       <Filter>TritonPlatform2\CrossTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\CrossTypes\Bitmap.h">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
-    </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Context.h">
       <Filter>TritonPlatform2\CrossTypes\Core</Filter>
     </ClInclude>
@@ -54,9 +51,6 @@
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\VAO.h">
       <Filter>TritonPlatform2\CrossTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXBitmap.h">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.h">
       <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
@@ -113,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp">
       <Filter>TritonPlatform2\CrossTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXBitmap.cpp">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp">
       <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>

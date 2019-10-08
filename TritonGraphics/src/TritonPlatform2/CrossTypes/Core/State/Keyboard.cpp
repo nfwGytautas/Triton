@@ -11,7 +11,10 @@ namespace Triton
 
 		void Keyboard::setKey(Key key, bool state)
 		{
-			m_keys[(size_t)key] = state;
+			if ((int)key < TR_KEYBOARD_KEY_COUNT)
+			{
+				m_keys[(size_t)key] = state;
+			}
 		}
 
 		void Keyboard::charInput(char input) const

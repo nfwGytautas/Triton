@@ -24,7 +24,7 @@ void createAssets()
 
 	IO::saveAssetToDisk("../Assets/stall.asset", &meshAsset);
 
-	dict.associate(meshAsset.Name, { "../Assets/stall.asset", false });
+	dict.associate(meshAsset.Name, { "../Assets/stall.asset", false, Core::AssetDictionary::EntryType::Asset });
 
 
 	IO::IntermediateAsset simpleShader;
@@ -64,7 +64,7 @@ void createAssets()
 
 	IO::saveAssetToDisk("../Assets/lightingShader.asset", &lightingShader);
 
-	dict.associate(lightingShader.Name, { "../Assets/lightingShader.asset", false });
+	dict.associate(lightingShader.Name, { "../Assets/lightingShader.asset", false, Core::AssetDictionary::EntryType::Asset });
 
 	IO::IntermediateAsset textureAsset;
 	textureAsset.Version = IO::Serialization::c_Version_Latest;
@@ -79,7 +79,7 @@ void createAssets()
 
 	IO::saveAssetToDisk("../Assets/texture.asset", &textureAsset);
 
-	dict.associate(textureAsset.Name, { "../Assets/texture.asset", false });
+	dict.associate(textureAsset.Name, { "../Assets/texture.asset", false, Core::AssetDictionary::EntryType::Asset });
 
 	
 	Scene scene("sample");
@@ -116,16 +116,23 @@ void createAssets()
 	scene_assets.push_back("stallMesh");
 	scene_assets.push_back("stallTexture");
 
+	auto registry = scene.entities();
+	auto entity = registry->create();
+	registry->assign<Components::MetaComponent>(entity, "stall");
+	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
+
 	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene.toRawData());
+
+	dict.associate("sample", { "../Assets/Scenes/sampleScene.scene", false, Core::AssetDictionary::EntryType::Scene });
 
 	dict.saveToFile("../Assets/dictionary.meta");
 }
 
 void loadAssets()
 {
-	engine.assets().loadDictionary("../Assets/dictionary.meta");
+	engine.loadDictionary("../Assets/dictionary.meta");
 
-	engine.scenes().loadScene("../Assets/Scenes/sampleScene.scene");
+	engine.scenes().loadSceneByName("sample");
 }
 
 int main()
@@ -172,9 +179,7 @@ int main()
 	model->enable();
 	texture->enable();
 
-	// Create matrices
-	Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
-	
+	// Create matrices	
 	renderer->fov(3.141592654f / 4.0f);
 	renderer->nearPlane(0.1f);
 	renderer->farPlane(100.0f);
@@ -184,7 +189,6 @@ int main()
 	StaticCamera sCamera(Vector3(0, 5, 50), Triton::Vector3(0, 0, 20));
 
 	// Update shader matrices
-	shader->buffer_matrices().Model = transformation;
 	shader->buffer_matrices().Projection = projection;
 	shader->buffer_matrices().View = sCamera.viewMatrix();
 
@@ -193,17 +197,18 @@ int main()
 	shader->buffer_camera().Position = Vector4(pos.x, pos.y, pos.z, 1.0f);
 	shader->buffer_camera().ViewDirection = Vector4(dir.x, dir.y, dir.z, 1.0f);
 
-	reference<Scene> sampleScene = engine.scenes()["sample"];
+	reference<Scene> sampleScene = engine.scenes().currentScene();
 
 	shader->buffer_lights() = sampleScene->lights();
-
-	float rotation = 0;
+	
+	ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
+	Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);
 
 	while (!window->isClosed())
 	{
 		window->update();
 
-		Matrix44 transformation = Core::CreateTransformationMatrix(Triton::Vector3(0, 0, 20), Triton::Vector3(0, rotation, 0), Triton::Vector3(1, 1, 1));
+		Matrix44 transformation = Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
 		shader->buffer_matrices().Model = transformation;
 
 		renderer->newFrame(1.0, 0.5, 0.5, 0.5);
@@ -211,7 +216,7 @@ int main()
 		shader->update_matrices();
 		renderer->render(model->getIndiceCount());
 
-		rotation += 1 * 0.2;
+		transform.Rotation.y += 1 * 0.2;
 
 		renderer->endFrame();
 	}

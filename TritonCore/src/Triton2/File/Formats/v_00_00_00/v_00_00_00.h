@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Triton2\File\Serialize.h"
+#include "Triton2\Scene\Scene.h"
 
-#include "TritonTypes\IO.h"
+#include "TritonTypes\IO2.h"
 #include "TritonTypes\Asset.h"
-#include "TritonTypes\Scene.h"
 
 namespace Triton
 {

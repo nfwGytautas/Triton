@@ -1,7 +1,9 @@
 #pragma once
 
-#include "ShaderBuffers.h"
-#include "TritonTypes/IO.h"
+#include "TritonTypes/ShaderBuffers.h"
+#include "TritonTypes/IO2.h"
+
+#include "Triton2/Scene/ECS.h"
 
 namespace Triton
 {
@@ -45,6 +47,20 @@ namespace Triton
 		 * @return Graphics::LightBuffer structure of lights
 		 */
 		Graphics::LightBuffer& lights();
+
+		/**
+		 * Returns the entities of this scene
+		 *
+		 * @return Reference to ECS registry instance
+		 */
+		reference<ECS::Registry>& entities();
+
+		/**
+		 * Returns the entities of this scene that satisfies the predicate
+		 *
+		 * @return Vector containing the registry ids of entities
+		 */
+		std::vector<ECS::Entity> getByMeta(std::function<bool(const Triton::Components::MetaComponent&)> pred);
 	private:
 		/// Name of the scene
 		std::string m_name;
@@ -54,5 +70,8 @@ namespace Triton
 
 		/// Light buffer of this scene
 		Graphics::LightBuffer m_lights;
+
+		/// Entities used in this scene
+		reference<ECS::Registry> m_entities;
 	};
 }

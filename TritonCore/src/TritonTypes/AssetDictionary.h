@@ -26,6 +26,15 @@ namespace Triton
 			static const char* c_v_00_00_00;
 		public:
 			/**
+			 * Enum used to specify dictionary entry type
+			 */
+			enum class EntryType : int
+			{
+				Asset = 0,
+				Scene = 1
+			};
+
+			/**
 			 * Struct that contains the metadata of the asset
 			 */
 			struct AssetMeta
@@ -35,6 +44,14 @@ namespace Triton
 
 				/// If true then the path is to a packet
 				bool PacketFile;
+
+				/**
+				 * The type of the entry
+				 *
+				 * 0 - Asset
+				 * 1 - Scene
+				 */
+				EntryType Type;
 			};
 		public:
 			/**
@@ -43,11 +60,21 @@ namespace Triton
 			AssetDictionary();
 
 			/**
+			 * Copy constructor
+			 */
+			AssetDictionary(const AssetDictionary& other);
+
+			/**
 			 * Creates an empty asset dictionary with the specified format of the specified version
 			 *
 			 * @param version Version of the dictionary
 			 */
 			AssetDictionary(const std::string& version);
+
+			/**
+			 * Destructor used to clean up all the data used by the dictionary
+			 */
+			~AssetDictionary();
 
 			/**
 			 * Checks if the dictionary has an entry with the specified name
@@ -85,6 +112,13 @@ namespace Triton
 			void associate(const std::string& assetName, const AssetMeta& metaData);
 
 			/**
+			 * Appends dictionary contents to this dictionary
+			 *
+			 * @param dict Dictionary to append to this one
+			 */
+			void append(const AssetDictionary& dict);
+
+			/**
 			 * Get the size of the dictionary
 			 *
 			 * @return The amount of associations that are made inside this dictionary
@@ -106,26 +140,8 @@ namespace Triton
 			 */
 			void saveToFile(const std::string& path);
 		private:
-			/**
-			 * Loads an asset dictionary whose version is 00.00.00
-			 *
-			 * @param archive Initialized xml input archive
-			 */
-			void load_v_00_00_00(cereal::XMLInputArchive& archive);
-
-			/**
-			 * Saves an asset dictionary whose version is 00.00.00
-			 *
-			 * @param archive Initialized xml output archive
-			 */
-			void save_v_00_00_00(cereal::XMLOutputArchive& archive);
-
-		private:
-			/// Version of the asset dictionary
-			std::string m_version;
-
-			/// Unordered map used to associate an asset name to it's meta structure
-			std::unordered_map<std::string, AssetMeta> m_dictionary;
+			class AssetDictionaryImpl;
+			AssetDictionaryImpl* m_impl;
 		};
 	}
 }

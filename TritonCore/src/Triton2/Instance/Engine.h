@@ -2,6 +2,8 @@
 
 #include "TritonTypes/Settings.h"
 
+#include "TritonTypes/AssetDictionary.h"
+
 namespace Triton
 {
 	// Forward declarations
@@ -58,11 +60,36 @@ namespace Triton
 		 */
 		Core::SceneManager& scenes() const;
 	
+		/**
+		 * [Convenience]
+		 * Same as calling addDictionary(*AssetDictionary::loadFromFile(dict))
+		 * Loads an asset dictionary to be used for the scene manager
+		 * When a scene is requested to be loaded the manager will look inside the
+		 * dictionary to find the path to it's file path and then load it
+		 *
+		 * @param dict Path to the dictionary file
+		 */
+		void loadDictionary(const std::string& dict);
+
+		/**
+		 * Appends dictionary contents to the engine wide dictionary.
+		 * Any duplicate entries are rewritten
+		 *
+		 * @param dict Dictionary to append
+		 */
+		void addDictionary(const Core::AssetDictionary& dict);
 	private:
+		/// Graphics context created by the engine
 		Graphics::Context* m_context;
+
+		/// Asset manager created by the engine
 		Core::AssetManager* m_assets;
+
+		/// Scene manager created by the engine
 		Core::SceneManager* m_scenes;
 
+		/// Engine wide dictionary used by the asset and scene managers to find resources
+		reference<Core::AssetDictionary> m_dictionary;
 	public: // Singleton stuff
 
 		/**
@@ -78,7 +105,7 @@ namespace Triton
 	private:
 		/// Disable public instantiation
 		Engine();
-		/// Disable stack destruction
+		/// Disable public destruction
 		~Engine();
 	};
 }

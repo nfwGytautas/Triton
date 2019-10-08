@@ -3,6 +3,7 @@
 
 #include "Triton2/Utility/Log.h"
 #include "Triton2/File/File.h"
+#include "Triton2/Scene/ECS.h"
 
 namespace Triton
 {
@@ -116,6 +117,8 @@ namespace Triton
 					lBuffer.PointLights.insert(lBuffer.PointLights.end(), PointLights.begin(), PointLights.end());
 					lBuffer.SpotLights.insert(lBuffer.SpotLights.end(), SpotLights.begin(), SpotLights.end());
 
+					objectToStoreIn->entities()->loader().entities(archive).component<TR_SERIALIZABLE_COMPONENTS>(archive);
+
 					return status;
 				}
 
@@ -175,6 +178,8 @@ namespace Triton
 					 *	'data for the scene'
 					 */
 					archive(scene->Name, scene->Assets, scene->Lights.DirLights, scene->Lights.PointLights, scene->Lights.SpotLights);
+
+					scene->Entities->snapshot().entities(archive).component<TR_SERIALIZABLE_COMPONENTS>(archive);
 
 					return status;
 				}

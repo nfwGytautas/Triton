@@ -28,6 +28,12 @@ namespace Triton
 				TR_SYSTEM_TRACE("Created a scene manager instance with '{0}' threads", c_threadCount);
 			}
 
+			SceneManagerImpl(AssetManager* assetManager, reference<AssetDictionary> dictionary)
+				: m_assetManager(assetManager), m_dictionary(dictionary), m_tPool(c_threadCount)
+			{
+				TR_SYSTEM_TRACE("Created an scene manager instance with '{0}' threads", c_threadCount);
+			}
+
 			~SceneManagerImpl()
 			{
 				m_tPool.wait();
@@ -47,7 +53,7 @@ namespace Triton
 				}
 				m_currentScene = scene;
 				auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [&](const reference<Scene>& scene) { return scene == m_currentScene; });
-				m_prevScene = it - m_scenes.begin();
+				m_prevScene = (int)(it - m_scenes.begin());
 			}
 
 			void unloadAll()
@@ -67,6 +73,21 @@ namespace Triton
 			{
 				auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [&](const reference<Scene>& scene) {return scene->getName() == name; });
 				return it == m_scenes.end();
+			}
+
+			void loadSceneByName(const std::string& name)
+			{
+				TR_SYSTEM_DEBUG("Loading scene by name: '{0}'", name);
+
+				// Create lock guard
+				std::lock_guard<std::mutex> guard(m_mtx);
+
+				m_tPool.run([&, name]()
+				{
+					auto f = name;
+					loadSceneByNameInternalMT(f);
+					TR_SYSTEM_DEBUG("Scene '{0}' loading complete", f);
+				});
 			}
 
 			void loadScene(const std::string& file)
@@ -122,7 +143,6 @@ namespace Triton
 				return reference<Scene>(nullptr);
 			}
 		private:
-
 			void loadSceneInternalMT(const std::string& file)
 			{
 				Triton::Scene* scene = nullptr;
@@ -130,6 +150,30 @@ namespace Triton
 				TR_CORE_ASSERT(
 					IO::loadSceneFromDisk(file, scene).status == IO::IOStatus::IO_OK,
 					"Loading of a scene failed");
+
+				reference<Scene> res(scene);
+				addScene(res);
+
+				m_assetManager->loadAssetsByName(res->assets());
+			}
+
+			void loadSceneByNameInternalMT(const std::string& name)
+			{
+				Triton::Scene* scene = nullptr;
+
+				// Find the asset inside a dictionary and then load it
+				if (m_dictionary->has(name))
+				{
+					auto& data = m_dictionary->getData(name);
+
+					TR_CORE_ASSERT(data.Type == AssetDictionary::EntryType::Scene, "Specified entry is not of 'Scene' type. Could be conflicting names.");
+
+					std::string path = data.Path;
+
+					TR_CORE_ASSERT(
+						IO::loadSceneFromDisk(path, scene).status == IO::IOStatus::IO_OK,
+						"Loading of a scene failed");
+				}
 
 				reference<Scene> res(scene);
 				addScene(res);
@@ -154,11 +198,19 @@ namespace Triton
 
 			/// Pointer to the asset manager instance
 			AssetManager* m_assetManager;
+
+			/// Dictionary used by the asset manager
+			reference<AssetDictionary> m_dictionary;
 		};
 
 		SceneManager::SceneManager(AssetManager* assetManager)
 		{
 			m_impl = new SceneManagerImpl(assetManager);
+		}
+
+		SceneManager::SceneManager(AssetManager* assetManager, reference<AssetDictionary> dictionary)
+		{
+			m_impl = new SceneManagerImpl(assetManager, dictionary);
 		}
 
 		SceneManager::~SceneManager()
@@ -189,6 +241,11 @@ namespace Triton
 		bool SceneManager::hasScene(const std::string& name) const
 		{
 			return m_impl->hasScene(name);
+		}
+
+		void SceneManager::loadSceneByName(const std::string & name)
+		{
+			m_impl->loadSceneByName(name);
 		}
 
 		void SceneManager::loadScene(const std::string& file)

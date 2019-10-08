@@ -38,7 +38,7 @@ namespace Triton
 
 			objectToStoreIn->buffer = std::unique_ptr<unsigned char>(stbi_load_from_memory(
 				objectToStoreIn->rawData.data(),
-				objectToStoreIn->rawData.size(),
+				(int)objectToStoreIn->rawData.size(),
 				&objectToStoreIn->width,
 				&objectToStoreIn->height,
 				&objectToStoreIn->BPP,
