@@ -5,10 +5,15 @@
 #include "TritonPlatform2/CrossTypes/Texture.h"
 #include "TritonPlatform2/CrossTypes/Shader.h"
 
-#include "TritonTypes/IO.h"
+#include "TritonTypes/IO2.h"
 
 namespace Triton
 {
+	namespace Core
+	{
+		class AssetManager;
+	}
+
 	/**
 	 * Base class for all asset types
 	 */
@@ -36,8 +41,9 @@ namespace Triton
 		 * the underlying data is freed after calling this function
 		 *
 		 * @param gContext Graphics context pointer
+		 * @param getAssetCallback Callback used to get dependencies of assets from the AssetManager without blocking it
 		 */
-		virtual void create(Graphics::Context* gContext) = 0;
+		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) = 0;
 
 		/**
 		 * Check if the asset has been created
@@ -57,7 +63,7 @@ namespace Triton
 	{
 	public:
 		/**
-		 * Create the asset with a name and already created VAO
+		 * Create the asset with a name and mesh data
 		 *
 		 * @param name The name of the asset
 		 * @param data The data used to create this asset when calling create method
@@ -72,7 +78,7 @@ namespace Triton
 		reference<Graphics::VAO> VAO() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext) override;
+		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -90,7 +96,7 @@ namespace Triton
 	{
 	public:
 		/**
-		 * Create the asset with a name and already created Texture
+		 * Create the asset with a name and texture data
 		 *
 		 * @param name The name of the asset
 		 * @param data The data used to create this asset when calling create method
@@ -105,7 +111,7 @@ namespace Triton
 		reference<Graphics::Texture> texture() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext) override;
+		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -123,7 +129,7 @@ namespace Triton
 	{
 	public:
 		/**
-		 * Create the asset with a name and already created Texture
+		 * Create the asset with a name and shader data
 		 *
 		 * @param name The name of the asset
 		 * @param data The data used to create this asset when calling create method
@@ -138,7 +144,7 @@ namespace Triton
 		reference<Graphics::Shader> shader() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext) override;
+		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -147,5 +153,48 @@ namespace Triton
 
 		/// The raw data of this object
 		IO::ShaderData* m_data;
+	};
+
+	/**
+	 * Material asset
+	 */
+	class MaterialAsset : public Asset
+	{
+	public:
+		/**
+		 * Create the asset with a name and already created material
+		 *
+		 * @param name The name of the asset
+		 * @param data The data used to create this asset when calling create method
+		 */
+		MaterialAsset(std::string name, IO::MaterialData* data);
+
+		/**
+		 * Get the ImageAsset associated with this material asset
+		 *
+		 * @return reference to an ImageAsset instance
+		 */
+		reference<ImageAsset> mainTexture() const;
+
+		/**
+		 * Get the ShaderAsset associated with this material asset
+		 *
+		 * @return reference to a ShaderAsset instance
+		 */
+		reference<ShaderAsset> shader() const;
+
+		// Inherited via Asset
+		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
+		// Inherited via Asset
+		virtual bool isCreated() const;
+	private:
+		/// Reference to the main image texture
+		reference<ImageAsset> m_mainTexture;
+
+		/// Shader for this material
+		reference<ShaderAsset> m_shader;
+
+		/// The raw data of this object
+		IO::MaterialData* m_data;
 	};
 }

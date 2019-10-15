@@ -31,8 +31,6 @@ namespace Triton
 
 	void Engine::shutdown()
 	{
-		// Free all pointers in correct order
-
 		// Automatically frees resources
 		delete m_scenes;
 

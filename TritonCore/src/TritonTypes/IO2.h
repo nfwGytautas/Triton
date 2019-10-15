@@ -47,5 +47,23 @@ namespace Triton
 			 */
 			reference<ECS::Registry> Entities;
 		};
+
+		/**
+		 * Material data structure used for serializing and deserializing materials
+		 */
+		struct MaterialData
+		{
+			/**
+			 * Main texture name used for the material
+			 * Since 00_00_00
+			 */
+			std::string MainTexture;
+
+			/**
+			 * Shader name used for the material
+			 * Since 00_00_00
+			 */
+			std::string Shader;
+		};
 	}
 }

@@ -1,7 +1,7 @@
 #include "TRpch.h"
 #include "Scene.h"
 
-#include "Triton2/Scene/ECS.h"
+#include "TritonTypes/IO2.h"
 
 namespace Triton
 {

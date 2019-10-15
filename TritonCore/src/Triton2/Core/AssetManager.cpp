@@ -23,14 +23,14 @@ namespace Triton
 		{
 			const int c_threadCount = 2;
 		public:
-			AssetManagerImpl(Graphics::Context* context)
-				: m_contextInstance(context), m_tPool(c_threadCount)
+			AssetManagerImpl(Graphics::Context* context, AssetManager* manager)
+				: m_contextInstance(context), m_tPool(c_threadCount), m_manager(manager)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
 
-			AssetManagerImpl(Graphics::Context* context, reference<AssetDictionary> dictionary)
-				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount)
+			AssetManagerImpl(Graphics::Context* context, AssetManager* manager, reference<AssetDictionary> dictionary)
+				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount), m_manager(manager)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
@@ -128,15 +128,7 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
-				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
-				TR_CORE_ASSERT(it != m_assets.end(), "Trying to retrieve an asset that doesn't exist!");
-
-				if (!(*it)->isCreated())
-				{
-					(*it)->create(m_contextInstance);
-				}
-
-				return *it;
+				return getAssetInternalMT(name);
 			}
 
 			void wait()
@@ -193,6 +185,19 @@ namespace Triton
 				reference<Asset> res(asset);
 				addAsset(res);
 			}
+
+			reference<Asset> getAssetInternalMT(const std::string& name) const
+			{
+				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
+				TR_CORE_ASSERT(it != m_assets.end(), "Trying to retrieve an asset that doesn't exist!");
+
+				if (!(*it)->isCreated())
+				{
+					(*it)->create(m_contextInstance, std::bind(&AssetManagerImpl::getAssetInternalMT, this, std::placeholders::_1));
+				}
+
+				return *it;
+			}
 		private:
 			/// Thread pool used by the asset manager
 			Thread::ThreadPool m_tPool;
@@ -208,16 +213,19 @@ namespace Triton
 
 			/// Dictionary used by the asset manager
 			reference<AssetDictionary> m_dictionary;
+
+			/// Pointer to the manager so that the create can be called for assets
+			AssetManager* m_manager;
 		};
 
 		AssetManager::AssetManager(Graphics::Context* context)
 		{
-			m_impl = new AssetManagerImpl(context);
+			m_impl = new AssetManagerImpl(context, this);
 		}
 
 		AssetManager::AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary)
 		{
-			m_impl = new AssetManagerImpl(context, dictionary);
+			m_impl = new AssetManagerImpl(context, this, dictionary);
 		}
 
 		AssetManager::~AssetManager()

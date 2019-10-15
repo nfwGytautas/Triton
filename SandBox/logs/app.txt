@@ -1,1 +1,1 @@
-[18:59:36.556] Thread: 14436 TRITON: [ info  ] FLUSHING
+[01:27:33.827] Thread: 19576 TRITON: [ info  ] FLUSHING

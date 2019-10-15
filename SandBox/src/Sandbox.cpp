@@ -81,6 +81,20 @@ void createAssets()
 
 	dict.associate(textureAsset.Name, { "../Assets/texture.asset", false, Core::AssetDictionary::EntryType::Asset });
 
+	IO::IntermediateAsset materialAsset;
+	materialAsset.Version = IO::Serialization::c_Version_Latest;
+	materialAsset.Name = "stallMaterial";
+	materialAsset.Type = IO::Serialization::v_latest::c_MaterialType;
+	materialAsset.Data = std::make_shared<IO::MaterialData>();
+
+	auto mDatap = (IO::MaterialData*)materialAsset.Data.get();
+	mDatap->MainTexture = "stallTexture";
+	mDatap->Shader = "lightingShader";
+
+	IO::saveAssetToDisk("../Assets/material.asset", &materialAsset);
+
+	dict.associate(materialAsset.Name, { "../Assets/material.asset", false, Core::AssetDictionary::EntryType::Asset });
+
 	
 	Scene scene("sample");
 
@@ -115,11 +129,13 @@ void createAssets()
 	scene_assets.push_back("lightingShader");
 	scene_assets.push_back("stallMesh");
 	scene_assets.push_back("stallTexture");
+	scene_assets.push_back("stallMaterial");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
 	registry->assign<Components::MetaComponent>(entity, "stall");
 	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Visual>(entity, "stallMesh", "stallMaterial");
 
 	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene.toRawData());
 
@@ -208,13 +224,9 @@ int main()
 	{
 		window->update();
 
-		Matrix44 transformation = Core::CreateTransformationMatrix(transform.Position, transform.Rotation, transform.Scale);
-		shader->buffer_matrices().Model = transformation;
+		renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
 
-		renderer->newFrame(1.0, 0.5, 0.5, 0.5);
-
-		shader->update_matrices();
-		renderer->render(model->getIndiceCount());
+		Extension::renderScene(sampleScene, renderer, &engine.assets());
 
 		transform.Rotation.y += 1 * 0.2;
 

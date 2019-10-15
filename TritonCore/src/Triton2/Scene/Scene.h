@@ -1,12 +1,20 @@
 #pragma once
 
 #include "TritonTypes/ShaderBuffers.h"
-#include "TritonTypes/IO2.h"
-
 #include "Triton2/Scene/ECS.h"
 
 namespace Triton
 {
+	namespace IO
+	{
+		struct SceneData;
+	}
+
+	namespace Graphics
+	{
+		struct LightBuffer;
+	}
+
 	/**
 	 * Scene object
 	 */

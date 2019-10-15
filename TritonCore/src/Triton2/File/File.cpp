@@ -67,6 +67,7 @@ namespace Triton
 				const char* c_MeshType = v_00_00_00::c_MeshType;
 				const char* c_ImageType = v_00_00_00::c_ImageType;
 				const char* c_ShaderType = v_00_00_00::c_ShaderType;
+				const char* c_MaterialType = v_00_00_00::c_MaterialType;
 			}
 		}
 

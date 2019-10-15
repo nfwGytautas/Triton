@@ -146,6 +146,7 @@ namespace Triton
 				extern const char* c_MeshType;
 				extern const char* c_ImageType;
 				extern const char* c_ShaderType;
+				extern const char* c_MaterialType;
 			}
 		}
 	}

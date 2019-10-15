@@ -18,6 +18,7 @@ namespace Triton
 				const char* c_MeshType = "mesh";
 				const char* c_ImageType = "image";
 				const char* c_ShaderType = "shader";
+				const char* c_MaterialType = "material";
 
 				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn)
 				{
@@ -57,8 +58,6 @@ namespace Triton
 
 						if (status.status == IOStatus::IO_OK)
 						{
-							// No need to check for size of meshes vector since if it's empty IO_PARTIAL_OK will be set
-							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
 							objectToStoreIn = new ImageAsset(name, data);
 						}
 					}
@@ -69,9 +68,17 @@ namespace Triton
 
 						if (status.status == IOStatus::IO_OK)
 						{
-							// No need to check for size of meshes vector since if it's empty IO_PARTIAL_OK will be set
-							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
 							objectToStoreIn = new ShaderAsset(name, data);
+						}
+					}
+					else if (type == c_MaterialType)
+					{
+						MaterialData* data = new MaterialData();
+						status = loadMaterialFromArchive_00_00_00(archive, data);
+
+						if (status.status == IOStatus::IO_OK)
+						{
+							objectToStoreIn = new MaterialAsset(name, data);
 						}
 					}
 					else
@@ -149,6 +156,10 @@ namespace Triton
 					else if (asset->Type == c_ShaderType)
 					{
 						status = saveShaderToArchive_00_00_00(archive, (ShaderData*)asset->Data.get());
+					}
+					else if (asset->Type == c_MaterialType)
+					{
+						status = saveMaterialToArchive_00_00_00(archive, (MaterialData*)asset->Data.get());
 					}
 					else
 					{
@@ -317,6 +328,42 @@ namespace Triton
 					return status;
 				}
 
+				IOStatus loadMaterialFromArchive_00_00_00(cereal::BinaryInputArchive & archive, MaterialData* objectToStoreIn)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					/**
+					 * File version 00.00.00
+					 * Format:
+					 *	'file version'
+					 *	'name of the asset'
+					 *	'type of the asset'
+					 *	'data for the asset'
+					 */
+
+					archive(objectToStoreIn->MainTexture,
+						objectToStoreIn->Shader);
+
+					 // Check for errors in loading
+					if (objectToStoreIn->MainTexture == "" ||
+						objectToStoreIn->MainTexture.find_first_not_of(' ') == std::string::npos)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (objectToStoreIn->Shader == "" ||
+						objectToStoreIn->Shader.find_first_not_of(' ') == std::string::npos)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					return status;
+				}
+
 				IOStatus saveMeshToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MeshData* rawData)
 				{
 					// The function status
@@ -404,7 +451,7 @@ namespace Triton
 					return status;
 				}
 
-				IOStatus saveShaderToArchive_00_00_00(cereal::BinaryOutputArchive & archive, ShaderData * rawData)
+				IOStatus saveShaderToArchive_00_00_00(cereal::BinaryOutputArchive & archive, ShaderData* rawData)
 				{
 					// The function status
 					IOStatus status;
@@ -445,6 +492,42 @@ namespace Triton
 						rawData->pixelEntry,
 						rawData->source,
 						rawData->flags);
+
+					return status;
+				}
+				
+				IOStatus saveMaterialToArchive_00_00_00(cereal::BinaryOutputArchive & archive, MaterialData* rawData)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					/**
+					 * File version 00.00.00
+					 * Format:
+					 *	'file version'
+					 *	'name of the asset'
+					 *	'type of the asset'
+					 *	'data for the asset'
+					 */
+
+					 // Check for errors in loading
+					if (rawData->MainTexture == "" ||
+						rawData->MainTexture.find_first_not_of(' ') == std::string::npos)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (rawData->Shader == "" ||
+						rawData->Shader.find_first_not_of(' ') == std::string::npos)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					archive(rawData->MainTexture,
+						rawData->Shader);
 
 					return status;
 				}

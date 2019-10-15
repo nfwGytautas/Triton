@@ -28,7 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TRpch.h" />
-    <ClInclude Include="src\Triton.h" />
     <ClInclude Include="src\Triton2\Assert.h">
       <Filter>Triton2</Filter>
     </ClInclude>
@@ -97,12 +96,14 @@
     </ClInclude>
     <ClInclude Include="src\Triton2\Instance\Engine.h" />
     <ClInclude Include="src\TritonTypes\Settings.h" />
-    <ClInclude Include="src\Triton2\Core\Systems\RenderSystem.h" />
     <ClInclude Include="src\Triton2\Scene\ECS.h" />
     <ClInclude Include="src\Triton2\Scene\Scene.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\IO2.h" />
+    <ClInclude Include="src\Triton2\Core\Extension\Rendering.h" />
+    <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
+    <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -150,5 +151,8 @@
       <Filter>TritonTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Scene\ECS.cpp" />
+    <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp" />
+    <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
+    <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
   </ItemGroup>
 </Project>

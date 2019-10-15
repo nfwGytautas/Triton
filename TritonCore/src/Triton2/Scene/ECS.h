@@ -17,7 +17,7 @@ namespace Triton
 	}
 }
 
-#define TR_SERIALIZABLE_COMPONENTS Triton::Components::MetaComponent, Triton::Components::Transform
+#define TR_SERIALIZABLE_COMPONENTS Triton::Components::MetaComponent, Triton::Components::Transform, Triton::Components::Visual
 
 namespace Triton
 {
@@ -96,6 +96,44 @@ namespace Triton
 			 */
 			Transform(Vector3& position, Vector3& rotation, Vector3& scale)
 				: Position(position), Rotation(rotation), Scale(scale)
+			{}
+		};
+
+		/**
+		 * Component containing the data needed to represent the entity
+		 */
+		struct Visual
+		{
+			/// Mesh used by the entity
+			std::string Mesh;
+
+			/// Material used by the entity
+			std::string Material;
+
+			/**
+			 * Default constructor
+			 */
+			Visual()
+				: Mesh("NULL"), Material("NULL")
+			{}
+
+			/**
+			 * Copy constructor
+			 *
+			 * @param other The visual component to copy
+			 */
+			Visual(const Visual& other)
+				: Mesh(other.Mesh), Material(other.Material)
+			{ }
+
+			/**
+			 * Constructor with given mesh and material
+			 *
+			 * @param mesh Mesh object name
+			 * @param material Material object name
+			 */
+			Visual(std::string mesh, std::string material)
+				: Mesh(mesh), Material(material)
 			{}
 		};
 	}

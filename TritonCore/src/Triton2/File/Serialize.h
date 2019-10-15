@@ -76,6 +76,13 @@ namespace Triton
 		{
 			archive(m.Position, m.Rotation, m.Scale);
 		}
+
+		template<class Archive>
+		void serialize(Archive& archive,
+			Visual& m)
+		{
+			archive(m.Mesh, m.Material);
+		}
 	}
 }
 
