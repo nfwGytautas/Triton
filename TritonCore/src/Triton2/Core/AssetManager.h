@@ -69,7 +69,7 @@ namespace Triton
 			 * Check if an asset with a name already exists
 			 *
 			 * @param name Name of the asset
-			 * @return Does the map contain an asset with the specified name
+			 * @return True if the asset manager has loaded an asset with the given name
 			 */
 			bool hasAsset(const std::string& name) const;
 

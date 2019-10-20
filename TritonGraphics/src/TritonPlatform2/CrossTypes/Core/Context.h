@@ -15,6 +15,7 @@
 #include "TritonPlatform2/CrossTypes/Core/State/Keyboard.h"
 
 #include "TritonTypes/Settings.h"
+#include "TritonTypes/ThreadSynchronizer.h"
 
 namespace Triton
 {
@@ -118,6 +119,13 @@ namespace Triton
 			 * @return mouse state associated with current context
 			 */
 			IO::Mouse& mouse() const;
+
+			/**
+			 * Returns the ThreadSynchronizer of the context
+			 *
+			 * @return ThreadSynchronizer associated with current context
+			 */
+			Core::ThreadSynchronizer& synchronizer() const;
 		protected:
 			/// Variable to track if the context has been initialized or not
 			bool m_initialized = false;
@@ -127,6 +135,9 @@ namespace Triton
 
 			/// Variable used to track the mouse state, all windows share a single mouse state
 			IO::Mouse* m_mouseState;
+
+			/// Thread synchronizer used by the graphics context
+			Core::ThreadSynchronizer* m_synchronizer;
 		};
 	}
 }

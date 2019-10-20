@@ -41,9 +41,8 @@ namespace Triton
 		 * the underlying data is freed after calling this function
 		 *
 		 * @param gContext Graphics context pointer
-		 * @param getAssetCallback Callback used to get dependencies of assets from the AssetManager without blocking it
 		 */
-		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) = 0;
+		virtual void create(Graphics::Context* gContext) = 0;
 
 		/**
 		 * Check if the asset has been created
@@ -51,9 +50,33 @@ namespace Triton
 		 * @return True if the asset has been created
 		 */
 		virtual bool isCreated() const = 0;
+
+		/**
+		 * Marks the asset for destruction by the asset manager
+		 * On the next available synchronize call the resources will be freed and the asset invalidated
+		 */
+		void destroy();
+
+		/**
+		 * Check if the specific asset needs to be destroyed
+		 *
+		 * @return True if asset was marked for destruction, False otherwise
+		 */
+		bool shouldDestroyed() const;
+
+		/**
+		 * Resolves dependencies for this asset
+		 * The function is always called before create()
+		 *
+		 * @param assets Vector of assets
+		 */
+		virtual void resolveDependencies(const Core::AssetManager& manager);
 	private:
 		/// The name of the asset
 		std::string m_name;
+
+		/// Variable to keep track if the asset should be destroyed or not
+		bool m_shouldDestroy = false;
 	};
 
 	/**
@@ -78,7 +101,7 @@ namespace Triton
 		reference<Graphics::VAO> VAO() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
+		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -111,7 +134,7 @@ namespace Triton
 		reference<Graphics::Texture> texture() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
+		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -144,7 +167,7 @@ namespace Triton
 		reference<Graphics::Shader> shader() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
+		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
 	private:
@@ -184,10 +207,17 @@ namespace Triton
 		reference<ShaderAsset> shader() const;
 
 		// Inherited via Asset
-		virtual void create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback) override;
+		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
+		// Inherited via Asset
+		void resolveDependencies(const Core::AssetManager& manager);
 	private:
+		/// Main texture name
+		std::string m_mainTextureName;
+		/// Shader name
+		std::string m_shaderName;
+
 		/// Reference to the main image texture
 		reference<ImageAsset> m_mainTexture;
 

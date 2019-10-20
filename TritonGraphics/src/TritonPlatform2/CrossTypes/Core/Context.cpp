@@ -23,9 +23,14 @@ namespace Triton
 			return *m_keyboardState;
 		}
 
-		IO::Mouse & Context::mouse() const
+		IO::Mouse& Context::mouse() const
 		{
 			return *m_mouseState;
+		}
+
+		Core::ThreadSynchronizer& Context::synchronizer() const
+		{
+			return *m_synchronizer;
 		}
 	}
 }

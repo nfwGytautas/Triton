@@ -11,6 +11,12 @@ namespace Triton
 	class Camera
 	{
 	public:
+		/**
+		 * Create a camera with the specified name
+		 *
+		 * @param name Name of the camera
+		 */
+		Camera(std::string name);
 		virtual ~Camera() {}
 
 		/**
@@ -39,6 +45,12 @@ namespace Triton
 		 */
 		virtual Vector3 getViewDirection() const = 0;
 
+		/**
+		 * Get the name of the camera
+		 *
+		 * @return Name of the camera
+		 */
+		std::string getName() const;
 	protected:
 		Camera();
 	protected:
@@ -48,6 +60,9 @@ namespace Triton
 		 * themselves
 		 */
 		Matrix44 m_viewMatrix;
+
+	private:
+		std::string m_name;
 	};
 
 	/**
@@ -56,7 +71,7 @@ namespace Triton
 	class StaticCamera : public Camera
 	{
 	public:
-		StaticCamera(Vector3 position, Vector3 targetPosition);
+		StaticCamera(std::string name, Vector3 position, Vector3 targetPosition);
 
 		/**
 		 * Updates the camera depending on it's type

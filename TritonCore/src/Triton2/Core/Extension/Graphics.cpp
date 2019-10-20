@@ -39,9 +39,24 @@ namespace Triton
 
 			for (auto& entry : batch)
 			{
+				// Ignore non ready entities
+				if (!assetManager->hasAsset(entry.first.first) || !assetManager->hasAsset(entry.first.second))
+				{
+					continue;
+				}
+
 				RenderBatch rBatch;
 				rBatch.Mesh = assetManager->getAsset(entry.first.first).as<MeshAsset>();
 				rBatch.Material = assetManager->getAsset(entry.first.second).as<MaterialAsset>();
+
+				rBatch.Material->resolveDependencies(*assetManager);
+
+				// Ignore non ready entities
+				if (!rBatch.Mesh->isCreated() || !rBatch.Material->isCreated())
+				{
+					continue;
+				}
+
 				rBatch.Entities = entry.second;
 				result.push_back(rBatch);
 			}

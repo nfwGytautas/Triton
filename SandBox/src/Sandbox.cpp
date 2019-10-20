@@ -181,47 +181,32 @@ int main()
 	renderer = engine.context().newRenderer(window);
 
 	engine.scenes().setScene("sample");
-	engine.assets().wait();
-
-	// Since the assets are loaded they can be acquired here
-	// They are loaded using the name that was stored not the file name
-	//shader = (*assets)["simpleShader"].as<ShaderAsset>()->shader();
-	shader = engine.assets()["lightingShader"].as<ShaderAsset>()->shader();
-	model = engine.assets()["stallMesh"].as<MeshAsset>()->VAO();
-	texture = engine.assets()["stallTexture"].as<ImageAsset>()->texture();
-
-	// Enable shader and mesh
-	shader->enable();
-	model->enable();
-	texture->enable();
 
 	// Create matrices	
 	renderer->fov(3.141592654f / 4.0f);
 	renderer->nearPlane(0.1f);
 	renderer->farPlane(100.0f);
 
-	Matrix44 projection = renderer->projection();
-
-	StaticCamera sCamera(Vector3(0, 5, 50), Triton::Vector3(0, 0, 20));
-
-	// Update shader matrices
-	shader->buffer_matrices().Projection = projection;
-	shader->buffer_matrices().View = sCamera.viewMatrix();
-
-	Vector3 pos = sCamera.getPosition();
-	Vector3 dir = sCamera.getViewDirection();
-	shader->buffer_camera().Position = Vector4(pos.x, pos.y, pos.z, 1.0f);
-	shader->buffer_camera().ViewDirection = Vector4(dir.x, dir.y, dir.z, 1.0f);
-
 	reference<Scene> sampleScene = engine.scenes().currentScene();
-
-	shader->buffer_lights() = sampleScene->lights();
+	sampleScene->cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
+	sampleScene->setActiveCamera("mainCamera");
 	
 	ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
 	Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);
 
+	engine.assets().wait();
+
+	Utility::Timer timer(false);
+
+	int frames = 0;
+	long double frameSum = 0;
+
 	while (!window->isClosed())
 	{
+		timer.start();
+
+		engine.context().synchronizer().synchronize(0);
+
 		window->update();
 
 		renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
@@ -231,6 +216,20 @@ int main()
 		transform.Rotation.y += 1 * 0.2;
 
 		renderer->endFrame();
+
+		timer.end();
+
+		frameSum += 1 / (timer.microseconds() / 1000 / 1000);
+
+		frames++;
+
+		if (frames == 6000)
+		{
+			frameSum = frameSum / frames;
+			TR_SYSTEM_INFO("AVERAGE FPS FOR 6000 FRAMES: {0}", frameSum);
+			frameSum = 0;
+			frames = 0;
+		}
 	}
 
 	engine.shutdown();

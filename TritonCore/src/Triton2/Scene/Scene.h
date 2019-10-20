@@ -2,6 +2,7 @@
 
 #include "TritonTypes/ShaderBuffers.h"
 #include "Triton2/Scene/ECS.h"
+#include "Triton2/Scene/Camera.h"
 
 namespace Triton
 {
@@ -69,6 +70,29 @@ namespace Triton
 		 * @return Vector containing the registry ids of entities
 		 */
 		std::vector<ECS::Entity> getByMeta(std::function<bool(const Triton::Components::MetaComponent&)> pred);
+
+		/**
+		 * Returns all cameras of this scene
+		 *
+		 * @return Vector containing all the cameras of this scene
+		 */
+		std::vector<reference<Camera>>& cameras();
+
+		/**
+		 * Returns the current active camera of this scene
+		 *
+		 * @return Triton reference to active camera
+		 */
+		reference<Camera> activeCamera() const;
+
+		/**
+		 * Sets the active camera to be of the specified name.
+		 * If the camera is not part of the scene then a warning is
+		 * logged and the first camera in the cameras vector is set as active.
+		 *
+		 * @return Triton reference to active camera
+		 */
+		void setActiveCamera(const std::string& name);
 	private:
 		/// Name of the scene
 		std::string m_name;
@@ -81,5 +105,11 @@ namespace Triton
 
 		/// Entities used in this scene
 		reference<ECS::Registry> m_entities;
+
+		/// Cameras of this scene
+		std::vector<reference<Camera>> m_cameras;
+
+		/// Current camera
+		reference<Camera> m_activeCamera;
 	};
 }

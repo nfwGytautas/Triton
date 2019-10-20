@@ -23,14 +23,14 @@ namespace Triton
 		{
 			const int c_threadCount = 2;
 		public:
-			AssetManagerImpl(Graphics::Context* context, AssetManager* manager)
-				: m_contextInstance(context), m_tPool(c_threadCount), m_manager(manager)
+			AssetManagerImpl(Graphics::Context* context)
+				: m_contextInstance(context), m_tPool(c_threadCount)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
 
-			AssetManagerImpl(Graphics::Context* context, AssetManager* manager, reference<AssetDictionary> dictionary)
-				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount), m_manager(manager)
+			AssetManagerImpl(Graphics::Context* context, reference<AssetDictionary> dictionary)
+				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
@@ -83,11 +83,17 @@ namespace Triton
 			bool hasAsset(const std::string& name) const
 			{
 				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
-				return it == m_assets.end();
+				return it != m_assets.end();
 			}
 
 			void loadAssetByName(const std::string& name)
 			{
+				if (hasAsset(name))
+				{
+					TR_SYSTEM_TRACE("Ignoring duplicate asset: '{0}'", name);
+					return;
+				}
+
 				TR_SYSTEM_DEBUG("Loading asset by name: '{0}'", name);
 
 				// Create lock guard
@@ -121,13 +127,21 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
+
+				if (!asset->isCreated())
+				{
+					m_contextInstance->synchronizer().enqueue(
+					[&, asset]() 
+					{ 
+						asset->create(m_contextInstance);
+					});
+				}
 			}
 
 			reference<Asset> getAsset(const std::string& name) const
 			{
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
-
 				return getAssetInternalMT(name);
 			}
 
@@ -140,7 +154,7 @@ namespace Triton
 			{
 				Utility::Timer timer(true);
 
-				while (timer.elapsedTime() <= amount)
+				while (timer.seconds() <= amount)
 				{
 					if (hasAsset(name))
 					{
@@ -190,12 +204,6 @@ namespace Triton
 			{
 				auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
 				TR_CORE_ASSERT(it != m_assets.end(), "Trying to retrieve an asset that doesn't exist!");
-
-				if (!(*it)->isCreated())
-				{
-					(*it)->create(m_contextInstance, std::bind(&AssetManagerImpl::getAssetInternalMT, this, std::placeholders::_1));
-				}
-
 				return *it;
 			}
 		private:
@@ -213,19 +221,16 @@ namespace Triton
 
 			/// Dictionary used by the asset manager
 			reference<AssetDictionary> m_dictionary;
-
-			/// Pointer to the manager so that the create can be called for assets
-			AssetManager* m_manager;
 		};
 
 		AssetManager::AssetManager(Graphics::Context* context)
 		{
-			m_impl = new AssetManagerImpl(context, this);
+			m_impl = new AssetManagerImpl(context);
 		}
 
 		AssetManager::AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary)
 		{
-			m_impl = new AssetManagerImpl(context, this, dictionary);
+			m_impl = new AssetManagerImpl(context, dictionary);
 		}
 
 		AssetManager::~AssetManager()

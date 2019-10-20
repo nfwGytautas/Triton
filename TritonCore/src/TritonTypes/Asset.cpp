@@ -19,6 +19,20 @@ namespace Triton
 		return m_name;
 	}
 
+	void Asset::destroy()
+	{
+		m_shouldDestroy = true;
+	}
+
+	bool Asset::shouldDestroyed() const
+	{
+		return m_shouldDestroy;
+	}
+
+	void Asset::resolveDependencies(const Core::AssetManager& manager)
+	{
+	}
+
 	MeshAsset::MeshAsset(std::string name, IO::MeshData* data)
 		: Asset(name), m_data(data)
 	{
@@ -29,7 +43,7 @@ namespace Triton
 		return m_vao;
 	}
 
-	void MeshAsset::create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback)
+	void MeshAsset::create(Graphics::Context* gContext)
 	{
 		m_vao = gContext->newVAO(m_data->meshes[0]);
 
@@ -53,7 +67,7 @@ namespace Triton
 		return m_texture;
 	}
 
-	void ImageAsset::create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback)
+	void ImageAsset::create(Graphics::Context* gContext)
 	{
 		m_texture = gContext->newTexture(*m_data);
 
@@ -77,7 +91,7 @@ namespace Triton
 		return m_shader;
 	}
 
-	void ShaderAsset::create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback)
+	void ShaderAsset::create(Graphics::Context* gContext)
 	{
 		m_shader = gContext->newShader(*m_data);
 
@@ -106,13 +120,24 @@ namespace Triton
 		return m_shader;
 	}
 
-	void MaterialAsset::create(Graphics::Context* gContext, std::function<reference<Asset>(const std::string&)> getAssetCallback)
+	void MaterialAsset::create(Graphics::Context* gContext)
 	{
-		m_mainTexture = getAssetCallback(m_data->MainTexture).as<ImageAsset>();
-		m_shader = getAssetCallback(m_data->Shader).as<ShaderAsset>();
+		m_mainTextureName = m_data->MainTexture;
+		m_shaderName = m_data->Shader;
 
 		delete m_data;
 		m_data = nullptr;
+	}
+
+	void MaterialAsset::resolveDependencies(const Core::AssetManager& manager)
+	{
+		if (!manager.hasAsset(m_mainTextureName) || !manager.hasAsset(m_shaderName))
+		{
+			return;
+		}
+
+		m_mainTexture = manager.getAsset(m_mainTextureName).as<ImageAsset>();
+		m_shader = manager.getAsset(m_shaderName).as<ShaderAsset>();
 	}
 
 	bool MaterialAsset::isCreated() const

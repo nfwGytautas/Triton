@@ -104,6 +104,7 @@
     <ClInclude Include="src\Triton2\Core\Extension\Rendering.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
+    <ClInclude Include="src\TritonTypes\ThreadSynchronizer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -154,5 +155,6 @@
     <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
+    <ClCompile Include="src\TritonTypes\ThreadSynchronizer.cpp" />
   </ItemGroup>
 </Project>

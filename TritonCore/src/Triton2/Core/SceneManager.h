@@ -45,6 +45,7 @@ namespace Triton
 			reference<Scene> currentScene();
 
 			/**
+			 * [Thread safe, uses mutex]
 			 * Sets the currently active scene and unloads the previous scene if necessary
 			 *
 			 * @param scene Reference to the scene object that should be activated

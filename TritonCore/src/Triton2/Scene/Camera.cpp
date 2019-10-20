@@ -8,19 +8,27 @@ namespace Triton
 		return m_viewMatrix;
 	}
 
-	Camera::Camera()
+	Camera::Camera(std::string name)
+		: m_name(name)
 	{
 	}
 
-	StaticCamera::StaticCamera(Vector3 position, Vector3 targetPosition)
-		: m_Position(position), m_Target(targetPosition)
+	std::string Camera::getName() const
+	{
+		return m_name;
+	}
+
+	StaticCamera::StaticCamera(std::string name, Vector3 position, Vector3 targetPosition)
+		: Camera(name), m_Position(position), m_Target(targetPosition)
 	{
 		m_viewMatrix = Core::lookAt(position, targetPosition);
 	}
+
 	Vector3 StaticCamera::getPosition() const
 	{
 		return m_Position;
 	}
+
 	Vector3 StaticCamera::getViewDirection() const
 	{
 		Vector3 dir = Vector3(

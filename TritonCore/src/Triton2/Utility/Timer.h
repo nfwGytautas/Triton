@@ -32,12 +32,28 @@ namespace Triton
 			void end();
 
 			/**
-			 * Method to get the duration that has elapsed between the start
-			 * of the timer and the end of the timer
+			 * Get the duration that has elapsed between the start
+			 * of the timer and the end of the timer in microseconds
+			 *
+			 * @return The amount of time that has elapsed since start in microseconds
+			 */
+			double microseconds() const;
+
+			/**
+			 * Get the duration that has elapsed between the start
+			 * of the timer and the end of the timer in milliseconds
+			 *
+			 * @return The amount of time that has elapsed since start in milliseconds
+			 */
+			double milliseconds() const;
+
+			/**
+			 * Get the duration that has elapsed between the start
+			 * of the timer and the end of the timer in seconds
 			 *
 			 * @return The amount of time that has elapsed since start in seconds
 			 */
-			double elapsedTime() const;
+			double seconds() const;
 		private:
 			/// Time point of Timer start
 			std::chrono::time_point<std::chrono::system_clock> m_start;

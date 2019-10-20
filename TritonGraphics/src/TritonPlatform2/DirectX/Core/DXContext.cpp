@@ -320,6 +320,7 @@ namespace Triton
 
 			m_keyboardState = new IO::Keyboard();
 			m_mouseState = new IO::Mouse();
+			m_synchronizer = new Core::ThreadSynchronizer();
 
 			if (settings.in_customInputLoop)
 			{

@@ -29,9 +29,19 @@ namespace Triton
 			m_ended = true;
 		}
 
-		double Timer::elapsedTime() const
+		double Timer::microseconds() const
 		{
-			return (m_end - m_start).count();
+			return std::chrono::duration_cast<std::chrono::microseconds>(m_end - m_start).count();
+		}
+
+		double Timer::milliseconds() const
+		{
+			return std::chrono::duration_cast<std::chrono::milliseconds>(m_end - m_start).count();
+		}
+
+		double Timer::seconds() const
+		{
+			return std::chrono::duration_cast<std::chrono::seconds>(m_end - m_start).count();
 		}
 	}
 }

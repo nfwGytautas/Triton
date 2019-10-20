@@ -32,3 +32,6 @@
 
 /// Engine singleton
 #include "Triton2/Instance/Engine.h"
+
+/// Utility timer
+#include "Triton2/Utility/Timer.h"

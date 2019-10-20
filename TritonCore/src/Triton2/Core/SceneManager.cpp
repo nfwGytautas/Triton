@@ -47,6 +47,9 @@ namespace Triton
 
 			void setScene(reference<Scene> scene, bool unloadPrevious)
 			{
+				// Create lock guard
+				std::lock_guard<std::mutex> guard(m_mtx);
+
 				if (unloadPrevious && m_prevScene > -1)
 				{
 					m_scenes.erase(m_scenes.begin() + m_prevScene);
@@ -132,7 +135,7 @@ namespace Triton
 			{
 				Utility::Timer timer(true);
 
-				while (timer.elapsedTime() <= amount)
+				while (timer.seconds() <= amount)
 				{
 					if (hasScene(name))
 					{

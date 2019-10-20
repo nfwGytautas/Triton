@@ -58,4 +58,26 @@ namespace Triton
 
 		return result;
 	}
+
+	std::vector<reference<Camera>>& Scene::cameras()
+	{
+		return m_cameras;
+	}
+
+	reference<Camera> Scene::activeCamera() const
+	{
+		return m_activeCamera;
+	}
+
+	void Scene::setActiveCamera(const std::string& name)
+	{
+		for (auto& camera : m_cameras)
+		{
+			if (camera->getName() == name)
+			{
+				m_activeCamera = camera;
+				break;
+			}
+		}
+	}
 }

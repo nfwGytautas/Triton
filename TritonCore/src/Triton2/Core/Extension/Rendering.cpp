@@ -33,6 +33,16 @@ namespace Triton
 				if (batch.Material->getName() != currentMaterial)
 				{
 					shader = batch.Material->shader()->shader();
+
+					shader->buffer_lights() = scene->lights();
+					shader->buffer_matrices().Projection = renderer->projection();
+					shader->buffer_matrices().View = scene->activeCamera()->viewMatrix();
+
+					Vector3& pos = scene->activeCamera()->getPosition();
+					Vector3& dir = scene->activeCamera()->getViewDirection();
+					shader->buffer_camera().Position = Vector4(pos.x, pos.y, pos.z, 1.0f);
+					shader->buffer_camera().ViewDirection = Vector4(dir.x, dir.y, dir.z, 1.0f);
+
 					shader->enable();
 
 					texture = batch.Material->mainTexture()->texture();
