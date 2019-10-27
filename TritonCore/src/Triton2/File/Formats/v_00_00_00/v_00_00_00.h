@@ -40,15 +40,6 @@ namespace Triton
 				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn);
 
 				/**
-				 * Loads a scene whose format is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to an asset
-				 * @return The status of the specified operation
-				 */
-				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Scene*& objectToStoreIn);
-
-				/**
 				 * Saves an asset whose format is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
@@ -56,15 +47,6 @@ namespace Triton
 				 * @return The status of the specified operation
 				 */
 				IOStatus saveFormat_00_00_00(cereal::BinaryOutputArchive& archive, IntermediateAsset* asset);
-
-				/**
-				 * Saves a scene whose format is 00_00_00
-				 *
-				 * @param archive The initialized archive with the stream already opened
-				 * @param scene Pointer to the scene data structure
-				 * @return The status of the specified operation
-				 */
-				IOStatus saveFormat_00_00_00(cereal::BinaryOutputArchive& archive, SceneData* scene);
 
 				/**
 				 * Load an image from an asset file whose version is 00_00_00

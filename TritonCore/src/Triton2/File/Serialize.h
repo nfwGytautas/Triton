@@ -93,3 +93,4 @@ namespace Triton
 #include <cereal/types/string.hpp>
 #include <cereal/types/bitset.hpp>
 #include <cereal/types/unordered_map.hpp>
+#include "Triton2/File/Serialize.h"

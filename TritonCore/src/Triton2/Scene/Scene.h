@@ -3,6 +3,7 @@
 #include "TritonTypes/ShaderBuffers.h"
 #include "Triton2/Scene/ECS.h"
 #include "Triton2/Scene/Camera.h"
+#include "Triton2/File/Serializable.h"
 
 namespace Triton
 {
@@ -19,22 +20,19 @@ namespace Triton
 	/**
 	 * Scene object
 	 */
-	class Scene
+	class Scene : public Serializable
 	{
 	public:
+		/**
+		 * Creates an empty Scene instance used for serialization
+		 */
+		Scene();
 		/**
 		 * Creates a scene with a given name
 		 *
 		 * @param name Name of the scene
 		 */
 		Scene(std::string name);
-
-		/**
-		 * Creates a IO::SceneData structure from this scene
-		 *
-		 * @return IO::SceneData representation of this scene
-		 */
-		IO::SceneData toRawData();
 
 		/**
 		 * Returns the name of the scene
@@ -93,6 +91,13 @@ namespace Triton
 		 * @return Triton reference to active camera
 		 */
 		void setActiveCamera(const std::string& name);
+
+		// Inherited via Serializable
+		virtual void serialize(BinaryOutputArchive & archive) override;
+		// Inherited via Serializable
+		virtual void deserialize(BinaryInputArchive & archive) override;
+		// Inherited via Serializable
+		virtual std::string type() override;
 	private:
 		/// Name of the scene
 		std::string m_name;

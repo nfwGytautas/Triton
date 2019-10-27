@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Triton2/File/Serializable.h"
 #include "TritonPlatform2/mathematical.h"
 
 namespace Triton
@@ -8,7 +9,7 @@ namespace Triton
 	 * Base camera object with the ability to calculate a view matrix from it's data
 	 * said view matrix can then be directly applied to the shader matrices buffer
 	 */
-	class Camera
+	class Camera : public Serializable
 	{
 	public:
 		/**
@@ -61,7 +62,7 @@ namespace Triton
 		 */
 		Matrix44 m_viewMatrix;
 
-	private:
+	protected:
 		std::string m_name;
 	};
 
@@ -71,6 +72,18 @@ namespace Triton
 	class StaticCamera : public Camera
 	{
 	public:
+		/**
+		 * Empty static camera instance constructor
+		 * Used in serialization
+		 */
+		StaticCamera();
+		/**
+		 * Static camera instance constructor
+		 *
+		 * @param name The name of the static camera
+		 * @param position The position in the world
+		 * @param targetPosition The position of target of the camera
+		 */
 		StaticCamera(std::string name, Vector3 position, Vector3 targetPosition);
 
 		/**
@@ -81,6 +94,13 @@ namespace Triton
 		// Inherited via Camera
 		virtual Vector3 getPosition() const override;
 		virtual Vector3 getViewDirection() const override;
+
+		// Inherited via Camera
+		virtual void serialize(BinaryOutputArchive& archive) override;
+		// Inherited via Camera
+		virtual void deserialize(BinaryInputArchive& archive) override;
+		// Inherited via Camera
+		virtual std::string type() override;
 	private:
 		Vector3 m_Position;
 		Vector3 m_Target;

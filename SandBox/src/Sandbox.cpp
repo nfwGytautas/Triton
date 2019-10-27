@@ -137,7 +137,10 @@ void createAssets()
 	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(entity, "stallMesh", "stallMaterial");
 
-	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene.toRawData());
+	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
+	scene.setActiveCamera("mainCamera");
+
+	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene);
 
 	dict.associate("sample", { "../Assets/Scenes/sampleScene.scene", false, Core::AssetDictionary::EntryType::Scene });
 
@@ -188,8 +191,6 @@ int main()
 	renderer->farPlane(100.0f);
 
 	reference<Scene> sampleScene = engine.scenes().currentScene();
-	sampleScene->cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
-	sampleScene->setActiveCamera("mainCamera");
 	
 	ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
 	Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);

@@ -105,6 +105,8 @@
     <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
     <ClInclude Include="src\TritonTypes\ThreadSynchronizer.h" />
+    <ClInclude Include="src\Triton2\File\Serializable.h" />
+    <ClInclude Include="src\Triton2\File\FormatDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
@@ -156,5 +158,7 @@
     <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
     <ClCompile Include="src\TritonTypes\ThreadSynchronizer.cpp" />
+    <ClCompile Include="src\Triton2\File\Serializable.cpp" />
+    <ClCompile Include="src\Triton2\File\FormatDefinitions.cpp" />
   </ItemGroup>
 </Project>

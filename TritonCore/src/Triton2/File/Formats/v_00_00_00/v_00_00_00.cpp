@@ -94,41 +94,6 @@ namespace Triton
 					return status;
 				}
 
-				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Scene*& objectToStoreIn)
-				{
-					// The function status
-					IOStatus status;
-					status.status = IOStatus::IO_OK;
-
-					/**
-					 * File version 00.00.00
-					 * Format:
-					 *	'file version'
-					 *	'name of the scene'
-					 *	'data for the scene'
-					 */
-					std::string name;
-					std::vector<std::string> assets;
-					std::vector<DirectionalLight> DirLights;
-					std::vector<PointLight> PointLights;
-					std::vector<SpotLight> SpotLights;
-
-					archive(name, assets, DirLights, PointLights, SpotLights);
-
-					objectToStoreIn = new Scene(name);
-
-					objectToStoreIn->assets().insert(objectToStoreIn->assets().end(), assets.begin(), assets.end());
-					auto& lBuffer = objectToStoreIn->lights();
-
-					lBuffer.DirLights.insert(lBuffer.DirLights.end(), DirLights.begin(), DirLights.end());
-					lBuffer.PointLights.insert(lBuffer.PointLights.end(), PointLights.begin(), PointLights.end());
-					lBuffer.SpotLights.insert(lBuffer.SpotLights.end(), SpotLights.begin(), SpotLights.end());
-
-					objectToStoreIn->entities()->loader().entities(archive).component<TR_SERIALIZABLE_COMPONENTS>(archive);
-
-					return status;
-				}
-
 				IOStatus saveFormat_00_00_00(cereal::BinaryOutputArchive& archive, IntermediateAsset* asset)
 				{
 					// The function status
@@ -170,27 +135,6 @@ namespace Triton
 						TR_ERROR("Type of asset: {0} cannot be deduced!", asset->Type);
 						return status;
 					}
-
-					return status;
-				}
-
-				IOStatus saveFormat_00_00_00(cereal::BinaryOutputArchive& archive, SceneData* scene)
-				{
-					// The function status
-					IOStatus status;
-					status.status = IOStatus::IO_OK;
-
-					/**
-					 * File version 00.00.00
-					 * Format:
-					 *	'file version'
-					 *	'name of the asset'
-					 *	'name of the scene'
-					 *	'data for the scene'
-					 */
-					archive(scene->Name, scene->Assets, scene->Lights.DirLights, scene->Lights.PointLights, scene->Lights.SpotLights);
-
-					scene->Entities->snapshot().entities(archive).component<TR_SERIALIZABLE_COMPONENTS>(archive);
 
 					return status;
 				}

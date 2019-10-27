@@ -112,7 +112,6 @@ namespace Triton
 		 *
 		 * @param pathToFile The path to the scene file
 		 * @param objectToStoreIn UNINITIALIZED pointer to a scene
-		 * @return The status of the specified operation
 		 */
 		IOStatus loadSceneFromDisk(const std::string& pathToFile, Scene*& objectToStoreIn);
 
@@ -121,18 +120,16 @@ namespace Triton
 		 *
 		 * @param content The string representation of the scene that is read from file
 		 * @param objectToStoreIn UNINITIALIZED pointer to a scene
-		 * @return The status of the specified operation
 		 */
-		IOStatus loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn);
+		void loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn);
 
 		/**
 		 * Save a scene to disk
 		 *
 		 * @param pathToFile The path to the scene file
-		 * @param scene Pointer to the intermediate scene structure
-		 * @return The status of the specified operation
+		 * @param scene Pointer to the scene
 		 */
-		IOStatus saveSceneToDisk(const std::string& pathToFile, SceneData* scene);
+		void saveSceneToDisk(const std::string& pathToFile, Scene* scene);
 
 		namespace Serialization
 		{

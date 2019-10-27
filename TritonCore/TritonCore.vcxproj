@@ -146,9 +146,11 @@
     <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Rendering.h" />
+    <ClInclude Include="src\Triton2\File\FormatDefinitions.h" />
     <ClInclude Include="src\Triton2\Instance\Engine.h" />
     <ClInclude Include="src\Triton2\Scene\ECS.h" />
     <ClInclude Include="src\TritonTypes\IO2.h" />
+    <ClInclude Include="src\Triton2\File\Serializable.h" />
     <ClInclude Include="src\TritonTypes\Settings.h" />
     <ClInclude Include="src\TritonTypes\ThreadSynchronizer.h" />
     <ClInclude Include="src\TRpch.h" />
@@ -180,8 +182,10 @@
     <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp" />
+    <ClCompile Include="src\Triton2\File\FormatDefinitions.cpp" />
     <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
     <ClCompile Include="src\Triton2\Scene\ECS.cpp" />
+    <ClCompile Include="src\Triton2\File\Serializable.cpp" />
     <ClCompile Include="src\TritonTypes\ThreadSynchronizer.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

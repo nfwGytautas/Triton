@@ -405,7 +405,7 @@ namespace Triton
 
 			return status;
 		}
-		
+
 		IOStatus loadSceneFromDisk(const std::string& pathToFile, Scene*& objectToStoreIn)
 		{
 			// The function status
@@ -424,96 +424,29 @@ namespace Triton
 			std::ifstream is(pathToFile, std::ios::binary);
 			cereal::BinaryInputArchive archive(is);
 
-			// Check if the file version
-			std::string fileVersion;
-
-			archive(fileVersion);
-
-			if (fileVersion == Serialization::c_Version_00_00_00)
-			{
-				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
-			}
-
-			// Warn the user that the file is outdated
-			if (fileVersion != Serialization::c_Version_Latest)
-			{
-				TR_SYSTEM_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
-				TR_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
-
-				// Set the flag that the file is outdated
-				status.additionalFlags |= status.IO_OUTDATED;
-			}
+			objectToStoreIn = new Scene();
+			objectToStoreIn->deserialize(archive);
 
 			return status;
 		}
 
-		IOStatus loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn)
+		void loadSceneFromMemory(const std::string& content, Scene*& objectToStoreIn)
 		{
-			// The function status
-			IOStatus status;
-			status.status = IOStatus::IO_OK;
-
 			// Create a cereal binary reader
 			std::istringstream is(content, std::ios::binary);
 			cereal::BinaryInputArchive archive(is);
 
-			// Check if the file version
-			std::string fileVersion;
-
-			archive(fileVersion);
-
-			if (fileVersion == Serialization::c_Version_00_00_00)
-			{
-				status = Serialization::v_00_00_00::loadFormat_00_00_00(archive, objectToStoreIn);
-			}
-
-			// Warn the user that the file is outdated
-			if (fileVersion != Serialization::c_Version_Latest)
-			{
-				TR_SYSTEM_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
-				TR_WARN("Loading an outdated scene! Scene file format: {0}, latest format: {1}", fileVersion, Serialization::c_Version_Latest);
-
-				// Set the flag that the file is outdated
-				status.additionalFlags |= status.IO_OUTDATED;
-			}
-
-			return status;
+			objectToStoreIn = new Scene();
+			objectToStoreIn->deserialize(archive);
 		}
 
-		IOStatus saveSceneToDisk(const std::string& pathToFile, SceneData* scene)
+		void saveSceneToDisk(const std::string & pathToFile, Scene* scene)
 		{
-			// The function status
-			IOStatus status;
-			status.status = IOStatus::IO_OK;
-
-			if (scene->Version == "Latest")
-			{
-				scene->Version = Serialization::c_Version_Latest;
-			}
-
 			// Create a cereal binary reader
 			std::ofstream os(pathToFile, std::ios::binary);
 			cereal::BinaryOutputArchive archive(os);
 
-			// Check if the file version
-			archive(scene->Version);
-
-			if (scene->Version == Serialization::c_Version_00_00_00)
-			{
-				status = Serialization::v_00_00_00::saveFormat_00_00_00(archive, scene);
-			}
-
-			// Warn the user that the file is outdated
-			if (scene->Version != Serialization::c_Version_Latest)
-			{
-				TR_SYSTEM_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", scene->Version, Serialization::c_Version_Latest);
-				TR_WARN("Save as an outdated asset! Asset file format: {0}, latest format: {1}", scene->Version, Serialization::c_Version_Latest);
-
-				// Set the flag that the file is outdated
-				status.additionalFlags |= status.IO_OUTDATED;
-			}
-
-			return status;
+			scene->serialize(archive);
 		}
 	}
 }
