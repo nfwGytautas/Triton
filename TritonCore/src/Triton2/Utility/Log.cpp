@@ -92,4 +92,10 @@ namespace Triton {
 		s_GUILogger->flush();
 	}
 
+	void Log::setLevel(spdlog::level::level_enum level)
+	{
+		s_SystemLogger->set_level(level);
+		s_GUILogger->set_level(level);
+	}
+
 }

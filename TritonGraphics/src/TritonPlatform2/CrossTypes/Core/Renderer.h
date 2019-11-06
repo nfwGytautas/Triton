@@ -88,6 +88,13 @@ namespace Triton
 			virtual void resize() = 0;
 
 			/**
+			 * Enable or disable the blending state
+			 *
+			 * @param state If True then alpha blending will be enabled else disabled
+			 */
+			virtual void alphaBlending(bool state) = 0;
+
+			/**
 			 * Check if the renderer has been initialized successfully
 			 *
 			 * @return True if renderer has initialized successfully
@@ -135,6 +142,13 @@ namespace Triton
 			 * @return Orthographic matrix value
 			 */
 			Matrix44 orthographic();
+
+			/**
+			 * Get the size of the renderer window
+			 *
+			 * @return tuple of window size
+			 */
+			virtual std::tuple<int, int> size() = 0;
 		protected:
 			/**
 			 * Recalculates the matrices for the renderer

@@ -2,6 +2,8 @@
 #include "Asset.h"
 
 #include "Triton2/Core/AssetManager.h"
+#include "Triton2/File/File.h"
+#include "Triton2/Utility/Log.h"
 
 namespace Triton
 {
@@ -143,5 +145,61 @@ namespace Triton
 	bool MaterialAsset::isCreated() const
 	{
 		return (m_data == nullptr && m_mainTexture.valid());
+	}
+
+	FontAsset::FontAsset(std::string name, IO::FontData* data)
+		: Asset(name), m_data(data)
+	{
+	}
+
+	reference<Graphics::Texture> FontAsset::texture() const
+	{
+		return m_texture;
+	}
+
+	const std::unordered_map<char, IO::FontData::CharMetrics>& FontAsset::metrics() const
+	{
+		return m_metrics;
+	}
+
+	unsigned int FontAsset::width() const
+	{
+		return m_width;
+	}
+
+	unsigned int FontAsset::height() const
+	{
+		return m_height;
+	}
+
+	void FontAsset::create(Graphics::Context* gContext)
+	{
+		IO::ImageData* imageData = new IO::ImageData();
+		imageData->rawData = m_data->Buffer;
+		imageData->BPP = 1;
+		imageData->height = m_data->Height;
+		imageData->width = m_data->Width;
+
+		m_width = m_data->Width;
+		m_height = m_data->Height;
+
+		m_texture = gContext->newTexture(*imageData);
+
+		m_metrics = m_data->Metrics;
+
+		delete imageData;
+
+		// Free the data structure, it is useless after creating the graphics object
+		delete m_data;
+		m_data = nullptr;
+	}
+
+	bool FontAsset::isCreated() const
+	{
+		return (m_data == nullptr && m_texture.valid());;
+	}
+
+	void FontAsset::resolveDependencies(const Core::AssetManager& manager)
+	{
 	}
 }

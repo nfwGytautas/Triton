@@ -22,6 +22,7 @@ IncludeDir["XTK"] = "vendor/DirectXTK/Inc"
 IncludeDir["mono"] = "vendor/mono/include/mono-2.0"
 IncludeDir["QT"] = "vendor/QT/include/mono-2.0"
 IncludeDir["spdlog"] = "vendor/spdlog/include"
+IncludeDir["FreeType"] = "vendor/FreeType/include"
 
 project "TritonGraphics"
 	location "TritonGraphics"
@@ -115,6 +116,7 @@ project "TritonCore"
 		"%{IncludeDir.cereal}",
 		"%{IncludeDir.XTK}",
 		"%{IncludeDir.mono}",
+		"%{IncludeDir.FreeType}",
 		"TritonGraphics/src",
 	}
 
@@ -122,6 +124,7 @@ project "TritonCore"
 	{
 		"vendor/Assimp/lib/Release",
 		"vendor/mono/lib",
+		"vendor/FreeType/win64",
 	}
 	
 	links 
@@ -129,6 +132,7 @@ project "TritonCore"
 		"TritonGraphics",
 		"assimp-vc140-mt.lib",
 		"mono-2.0-sgen.lib",
+		"freetype.lib",
 	}
 
 	filter "system:windows"
@@ -232,6 +236,10 @@ project "SandBox"
 	links
 	{
 		"TritonCore",
+	}
+
+	postbuildcommands {
+		("{COPY} ../vendor/FreeType/win64/freetype.dll ../bin/" .. outputdir .. "/%{prj.name}")
 	}
 
 	filter "system:windows"

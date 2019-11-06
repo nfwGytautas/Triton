@@ -7,6 +7,9 @@
     <Filter Include="Triton2\Core">
       <UniqueIdentifier>{8F56AB38-7BB9-3ADD-243F-739310810660}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Triton2\Core\Extension">
+      <UniqueIdentifier>{7BEC72A5-67E6-9BF7-5053-32083CEC0164}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Triton2\File">
       <UniqueIdentifier>{66E1AC38-5244-3CDD-FBC9-7493E70B0860}</UniqueIdentifier>
     </Filter>
@@ -15,6 +18,9 @@
     </Filter>
     <Filter Include="Triton2\File\Formats\v_00_00_00">
       <UniqueIdentifier>{F38768F3-5F6B-7733-686E-A56FD4D03D84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Triton2\Instance">
+      <UniqueIdentifier>{9B70AEF4-8769-CD46-B09B-B2CB9CF3AC52}</UniqueIdentifier>
     </Filter>
     <Filter Include="Triton2\Scene">
       <UniqueIdentifier>{34E6304F-A0A6-AC85-69E1-F502D560F161}</UniqueIdentifier>
@@ -34,6 +40,15 @@
     <ClInclude Include="src\Triton2\Core\AssetManager.h">
       <Filter>Triton2\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\Core\Extension\Entity.h">
+      <Filter>Triton2\Core\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Core\Extension\Graphics.h">
+      <Filter>Triton2\Core\Extension</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Core\Extension\Rendering.h">
+      <Filter>Triton2\Core\Extension</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton2\Core\SceneManager.h">
       <Filter>Triton2\Core</Filter>
     </ClInclude>
@@ -43,11 +58,20 @@
     <ClInclude Include="src\Triton2\File\File.h">
       <Filter>Triton2\File</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\File\FormatDefinitions.h">
+      <Filter>Triton2\File</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.h">
       <Filter>Triton2\File\Formats\v_00_00_00</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\File\Serializable.h">
+      <Filter>Triton2\File</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton2\File\Serialize.h">
       <Filter>Triton2\File</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Instance\Engine.h">
+      <Filter>Triton2\Instance</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton2\Limits.h">
       <Filter>Triton2</Filter>
@@ -55,7 +79,13 @@
     <ClInclude Include="src\Triton2\Scene\Camera.h">
       <Filter>Triton2\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\Scene\ECS.h">
+      <Filter>Triton2\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Triton2\Scene\Lighting.h">
+      <Filter>Triton2\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Triton2\Scene\Scene.h">
       <Filter>Triton2\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\Triton2\Triton.h">
@@ -82,7 +112,16 @@
     <ClInclude Include="src\TritonTypes\IO.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\TritonTypes\IO2.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonTypes\Settings.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonTypes\ShaderBuffers.h">
+      <Filter>TritonTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonTypes\ThreadSynchronizer.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonTypes\data_collection.h">
@@ -94,24 +133,21 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Triton2\Instance\Engine.h" />
-    <ClInclude Include="src\TritonTypes\Settings.h" />
-    <ClInclude Include="src\Triton2\Scene\ECS.h" />
-    <ClInclude Include="src\Triton2\Scene\Scene.h">
-      <Filter>TritonTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TritonTypes\IO2.h" />
-    <ClInclude Include="src\Triton2\Core\Extension\Rendering.h" />
-    <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
-    <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
-    <ClInclude Include="src\TritonTypes\ThreadSynchronizer.h" />
-    <ClInclude Include="src\Triton2\File\Serializable.h" />
-    <ClInclude Include="src\Triton2\File\FormatDefinitions.h" />
+    <ClInclude Include="src\Triton2\Core\Extension\Text.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />
     <ClCompile Include="src\Triton2\Core\AssetManager.cpp">
       <Filter>Triton2\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp">
+      <Filter>Triton2\Core\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp">
+      <Filter>Triton2\Core\Extension</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp">
+      <Filter>Triton2\Core\Extension</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Core\SceneManager.cpp">
       <Filter>Triton2\Core</Filter>
@@ -122,13 +158,28 @@
     <ClCompile Include="src\Triton2\File\File.cpp">
       <Filter>Triton2\File</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton2\File\FormatDefinitions.cpp">
+      <Filter>Triton2\File</Filter>
+    </ClCompile>
     <ClCompile Include="src\Triton2\File\Formats\v_00_00_00\v_00_00_00.cpp">
       <Filter>Triton2\File\Formats\v_00_00_00</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\File\Serializable.cpp">
+      <Filter>Triton2\File</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Instance\Engine.cpp">
+      <Filter>Triton2\Instance</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Scene\Camera.cpp">
       <Filter>Triton2\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Triton2\Scene\ECS.cpp">
+      <Filter>Triton2\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Triton2\Scene\Lighting.cpp">
+      <Filter>Triton2\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Triton2\Scene\Scene.cpp">
       <Filter>Triton2\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Triton2\Utility\Algorithm.cpp">
@@ -149,16 +200,9 @@
     <ClCompile Include="src\TritonTypes\ShaderBuffers.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton2\Instance\Engine.cpp" />
-    <ClCompile Include="src\Triton2\Scene\Scene.cpp">
+    <ClCompile Include="src\TritonTypes\ThreadSynchronizer.cpp">
       <Filter>TritonTypes</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triton2\Scene\ECS.cpp" />
-    <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp" />
-    <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
-    <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
-    <ClCompile Include="src\TritonTypes\ThreadSynchronizer.cpp" />
-    <ClCompile Include="src\Triton2\File\Serializable.cpp" />
-    <ClCompile Include="src\Triton2\File\FormatDefinitions.cpp" />
+    <ClCompile Include="src\Triton2\Core\Extension\Text.cpp" />
   </ItemGroup>
 </Project>

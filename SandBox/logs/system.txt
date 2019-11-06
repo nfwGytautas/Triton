@@ -1,84 +1,102 @@
-[15:55:44.020] Thread: 1704  SYSTEM: [ trace ] Creating 'WINDOWS' context
-[15:55:44.021] Thread: 1704  SYSTEM: [ trace ] Initializing DXContext
-[15:55:44.022] Thread: 1704  SYSTEM: [ trace ] Creating DX device with feature level '45056'
-[15:55:44.155] Thread: 1704  SYSTEM: [ info  ] DX device created
-[15:55:44.155] Thread: 1704  SYSTEM: [ trace ] Getting display parameters
-[15:55:44.155] Thread: 1704  SYSTEM: [ trace ] Adapter information acquired
-[15:55:44.156] Thread: 1704  SYSTEM: [ trace ] Possible display mode count '146'
-[15:55:44.157] Thread: 1704  SYSTEM: [ trace ] Getting video card information
-[15:55:44.157] Thread: 1704  SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
-[15:55:44.157] Thread: 1704  SYSTEM: [ trace ] Checking context state descriptions
-[15:55:44.158] Thread: 1704  SYSTEM: [warning] Context descriptions not created, creating now
-[15:55:44.158] Thread: 1704  SYSTEM: [ trace ] Creating shader matrix buffer description
-[15:55:44.158] Thread: 1704  SYSTEM: [ trace ] Creating shader settings buffer description
-[15:55:44.158] Thread: 1704  SYSTEM: [ trace ] Creating shader point light buffer description
-[15:55:44.158] Thread: 1704  SYSTEM: [ trace ] Creating shader spot light buffer description
-[15:55:44.158] Thread: 1704  SYSTEM: [ trace ] Creating shader directional light buffer description
-[15:55:44.159] Thread: 1704  SYSTEM: [ trace ] Creating shader camera buffer description
-[15:55:44.159] Thread: 1704  SYSTEM: [ trace ] Creating shader sampler description
-[15:55:44.160] Thread: 1704  SYSTEM: [ trace ] Created an asset manager instance with '2' threads
-[15:55:44.161] Thread: 1704  SYSTEM: [ trace ] Created an scene manager instance with '1' threads
-[15:55:44.278] Thread: 1704  SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
-[15:55:44.280] Thread: 1704  SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '6' entries
-[15:55:44.282] Thread: 1704  SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
-[15:55:44.282] Thread: 1704  SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
-[15:55:44.284] Thread: 1704  SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '6' entries
-[15:55:44.284] Thread: 1704  SYSTEM: [ debug ] Engine filled with '6' new associations
-[15:55:44.284] Thread: 1704  SYSTEM: [ debug ] Loading scene by name: 'sample'
-[15:55:44.285] Thread: 1704  SYSTEM: [ trace ] Creating a new 'Windows' window
-[15:55:44.285] Thread: 1704  SYSTEM: [ trace ] Initializing a window '1280x720'
-[15:55:44.287] Thread: 22708 SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
-[15:55:44.287] Thread: 1704  SYSTEM: [ trace ] Creating hwnd
-[15:55:44.288] Thread: 22708 SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
-[15:55:44.289] Thread: 21452 SYSTEM: [ debug ] Asset 'lightingShader' loading complete
-[15:55:44.292] Thread: 22708 SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
-[15:55:44.300] Thread: 22708 SYSTEM: [ debug ] Loading asset by name: 'stallMaterial'
-[15:55:44.300] Thread: 22708 SYSTEM: [ debug ] Scene 'sample' loading complete
-[15:55:44.301] Thread: 21452 SYSTEM: [ debug ] Asset 'stallMesh' loading complete
-[15:55:44.301] Thread: 12020 SYSTEM: [ debug ] Asset 'stallMaterial' loading complete
-[15:55:44.310] Thread: 21452 SYSTEM: [ debug ] Asset 'stallTexture' loading complete
-[15:55:44.332] Thread: 1704  SYSTEM: [ trace ] Registering RID devices
-[15:55:44.332] Thread: 1704  SYSTEM: [ info  ] RID devices registered
-[15:55:44.333] Thread: 1704  SYSTEM: [ info  ] Window initialized
-[15:55:44.353] Thread: 1704  SYSTEM: [ trace ] Creating a new 'Windows' renderer
-[15:55:44.354] Thread: 1704  SYSTEM: [ trace ] Checking renderer state descriptions
-[15:55:44.355] Thread: 1704  SYSTEM: [warning] Renderer descriptions not created, creating now
-[15:55:44.356] Thread: 1704  SYSTEM: [ trace ] Creating default depth stencil
-[15:55:44.357] Thread: 1704  SYSTEM: [ trace ] Creating default depth stencil view
-[15:55:44.358] Thread: 1704  SYSTEM: [ trace ] Creating default raster description
-[15:55:44.359] Thread: 1704  SYSTEM: [ trace ] Creating no culling raster description
-[15:55:44.360] Thread: 1704  SYSTEM: [ trace ] Creating disabled depth stencil
-[15:55:44.360] Thread: 1704  SYSTEM: [ info  ] Initializing renderer
-[15:55:44.362] Thread: 1704  SYSTEM: [ trace ] Getting display refresh rate
-[15:55:44.362] Thread: 1704  SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
-[15:55:44.363] Thread: 1704  SYSTEM: [ trace ] Creating swap chain description
-[15:55:44.365] Thread: 1704  SYSTEM: [ trace ] V_SYNC disabled
-[15:55:44.365] Thread: 1704  SYSTEM: [ trace ] Full screen disabled
-[15:55:44.366] Thread: 1704  SYSTEM: [ trace ] Creating depth buffer description
-[15:55:44.367] Thread: 1704  SYSTEM: [ trace ] Creating view port
-[15:55:44.367] Thread: 1704  SYSTEM: [ trace ] Creating swap chain instance
-[15:55:44.369] Thread: 1704  SYSTEM: [ info  ] Swap chain created
-[15:55:44.369] Thread: 1704  SYSTEM: [ trace ] Creating depth buffer description
-[15:55:44.372] Thread: 1704  SYSTEM: [ trace ] Creating view port
-[15:55:44.372] Thread: 1704  SYSTEM: [ trace ] Creating renderer states
-[15:55:44.373] Thread: 1704  SYSTEM: [ trace ] Calculating matrices
-[15:55:44.373] Thread: 1704  SYSTEM: [ info  ] Renderer initialized
-[15:55:44.374] Thread: 1704  SYSTEM: [ trace ] Creating direct x shader
-[15:55:44.374] Thread: 1704  SYSTEM: [ trace ] Compiling vertex shader
-[15:55:44.389] Thread: 1704  SYSTEM: [ trace ] Compiling pixel shader
-[15:55:44.448] Thread: 1704  SYSTEM: [ trace ] Creating shader
-[15:55:44.453] Thread: 1704  SYSTEM: [ trace ] Creating shader buffers
-[15:55:44.454] Thread: 1704  SYSTEM: [ info  ] Shader created
-[15:55:44.454] Thread: 1704  SYSTEM: [ trace ] Creating vertex array(VAO)
-[15:55:44.455] Thread: 1704  SYSTEM: [ trace ] Vertices: '629' Indices: '1878'
-[15:55:44.455] Thread: 1704  SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[15:55:44.458] Thread: 1704  SYSTEM: [ info  ] Vertex array object(VAO) created
-[15:55:44.458] Thread: 1704  SYSTEM: [ trace ] Creating a texture
-[15:55:44.459] Thread: 1704  SYSTEM: [ trace ] Creating texture resources
-[15:55:44.460] Thread: 1704  SYSTEM: [ trace ] Generating texture mipmaps
-[15:55:44.461] Thread: 1704  SYSTEM: [ info  ] Texture created
-[15:55:55.895] Thread: 1704  SYSTEM: [ info  ] AVERAGE FPS FOR 6000 FRAMES: 539.297
-[15:56:09.083] Thread: 1704  SYSTEM: [ info  ] AVERAGE FPS FOR 6000 FRAMES: 457.558
-[15:56:22.095] Thread: 1704  SYSTEM: [ info  ] AVERAGE FPS FOR 6000 FRAMES: 463.8
-[15:56:24.251] Thread: 1704  SYSTEM: [warning] Shutting down DXContext
-[15:56:24.252] Thread: 1704  SYSTEM: [ info  ] FLUSHING
+[20:42:15.642] Thread: 17148 SYSTEM: [ trace ] Creating 'WINDOWS' context
+[20:42:15.644] Thread: 17148 SYSTEM: [ trace ] Initializing DXContext
+[20:42:15.644] Thread: 17148 SYSTEM: [ trace ] Creating DX device with feature level '45056'
+[20:42:15.789] Thread: 17148 SYSTEM: [ info  ] DX device created
+[20:42:15.790] Thread: 17148 SYSTEM: [ trace ] Getting display parameters
+[20:42:15.790] Thread: 17148 SYSTEM: [ trace ] Adapter information acquired
+[20:42:15.791] Thread: 17148 SYSTEM: [ trace ] Possible display mode count '146'
+[20:42:15.792] Thread: 17148 SYSTEM: [ trace ] Getting video card information
+[20:42:15.792] Thread: 17148 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
+[20:42:15.793] Thread: 17148 SYSTEM: [ trace ] Checking context state descriptions
+[20:42:15.793] Thread: 17148 SYSTEM: [warning] Context descriptions not created, creating now
+[20:42:15.793] Thread: 17148 SYSTEM: [ trace ] Creating shader matrix buffer description
+[20:42:15.794] Thread: 17148 SYSTEM: [ trace ] Creating shader settings buffer description
+[20:42:15.794] Thread: 17148 SYSTEM: [ trace ] Creating shader point light buffer description
+[20:42:15.794] Thread: 17148 SYSTEM: [ trace ] Creating shader spot light buffer description
+[20:42:15.794] Thread: 17148 SYSTEM: [ trace ] Creating shader directional light buffer description
+[20:42:15.794] Thread: 17148 SYSTEM: [ trace ] Creating shader camera buffer description
+[20:42:15.795] Thread: 17148 SYSTEM: [ trace ] Creating shader sampler description
+[20:42:15.796] Thread: 17148 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
+[20:42:15.797] Thread: 17148 SYSTEM: [ trace ] Created an scene manager instance with '1' threads
+[20:42:15.996] Thread: 17148 SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
+[20:42:15.998] Thread: 17148 SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '9' entries
+[20:42:16.000] Thread: 17148 SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
+[20:42:16.001] Thread: 17148 SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
+[20:42:16.004] Thread: 17148 SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '9' entries
+[20:42:16.004] Thread: 17148 SYSTEM: [ debug ] Engine filled with '9' new associations
+[20:42:16.004] Thread: 17148 SYSTEM: [ debug ] Loading scene by name: 'sample'
+[20:42:16.005] Thread: 17148 SYSTEM: [ trace ] Creating a new 'Windows' window
+[20:42:16.005] Thread: 17148 SYSTEM: [ trace ] Initializing a window '1280x720'
+[20:42:16.006] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
+[20:42:16.008] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
+[20:42:16.008] Thread: 22968 SYSTEM: [ debug ] Asset 'lightingShader' loading complete
+[20:42:16.009] Thread: 17148 SYSTEM: [ trace ] Creating hwnd
+[20:42:16.010] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
+[20:42:16.013] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'stallMaterial'
+[20:42:16.016] Thread: 22968 SYSTEM: [ debug ] Asset 'stallMesh' loading complete
+[20:42:16.016] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'arialFont'
+[20:42:16.017] Thread: 24084 SYSTEM: [ debug ] Asset 'stallMaterial' loading complete
+[20:42:16.023] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'textShader'
+[20:42:16.031] Thread: 14576 SYSTEM: [ debug ] Loading asset by name: 'testMesh'
+[20:42:16.037] Thread: 14576 SYSTEM: [ debug ] Scene 'sample' loading complete
+[20:42:16.037] Thread: 24084 SYSTEM: [ debug ] Asset 'textShader' loading complete
+[20:42:16.044] Thread: 22968 SYSTEM: [ debug ] Asset 'stallTexture' loading complete
+[20:42:16.051] Thread: 17148 SYSTEM: [ trace ] Registering RID devices
+[20:42:16.062] Thread: 17148 SYSTEM: [ info  ] RID devices registered
+[20:42:16.062] Thread: 17148 SYSTEM: [ info  ] Window initialized
+[20:42:16.063] Thread: 17148 SYSTEM: [ trace ] Creating a new 'Windows' renderer
+[20:42:16.064] Thread: 17148 SYSTEM: [ trace ] Checking renderer state descriptions
+[20:42:16.065] Thread: 22968 SYSTEM: [ debug ] Asset 'arialFont' loading complete
+[20:42:16.065] Thread: 17148 SYSTEM: [warning] Renderer descriptions not created, creating now
+[20:42:16.065] Thread: 17148 SYSTEM: [ trace ] Creating default depth stencil
+[20:42:16.067] Thread: 17148 SYSTEM: [ trace ] Creating default depth stencil view
+[20:42:16.067] Thread: 17148 SYSTEM: [ trace ] Creating default raster description
+[20:42:16.067] Thread: 17148 SYSTEM: [ trace ] Creating no culling raster description
+[20:42:16.068] Thread: 17148 SYSTEM: [ trace ] Creating disabled depth stencil
+[20:42:16.068] Thread: 17148 SYSTEM: [ trace ] Creating blend state descriptions
+[20:42:16.069] Thread: 17148 SYSTEM: [ info  ] Initializing renderer
+[20:42:16.069] Thread: 17148 SYSTEM: [ trace ] Getting display refresh rate
+[20:42:16.070] Thread: 17148 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
+[20:42:16.070] Thread: 17148 SYSTEM: [ trace ] Creating swap chain description
+[20:42:16.070] Thread: 17148 SYSTEM: [ trace ] V_SYNC disabled
+[20:42:16.071] Thread: 17148 SYSTEM: [ trace ] Full screen disabled
+[20:42:16.071] Thread: 17148 SYSTEM: [ trace ] Creating depth buffer description
+[20:42:16.072] Thread: 17148 SYSTEM: [ trace ] Creating view port
+[20:42:16.072] Thread: 17148 SYSTEM: [ trace ] Creating swap chain instance
+[20:42:16.073] Thread: 17148 SYSTEM: [ info  ] Swap chain created
+[20:42:16.073] Thread: 17148 SYSTEM: [ trace ] Creating depth buffer description
+[20:42:16.074] Thread: 17148 SYSTEM: [ trace ] Creating view port
+[20:42:16.074] Thread: 17148 SYSTEM: [ trace ] Creating renderer states
+[20:42:16.077] Thread: 17148 SYSTEM: [ info  ] Creating blend states
+[20:42:16.077] Thread: 17148 SYSTEM: [ trace ] Calculating matrices
+[20:42:16.078] Thread: 17148 SYSTEM: [ info  ] Renderer initialized
+[20:42:16.078] Thread: 17148 SYSTEM: [ trace ] Creating direct x shader
+[20:42:16.079] Thread: 17148 SYSTEM: [ trace ] Compiling vertex shader
+[20:42:16.096] Thread: 17148 SYSTEM: [ trace ] Compiling pixel shader
+[20:42:16.149] Thread: 17148 SYSTEM: [ trace ] Creating shader
+[20:42:16.154] Thread: 17148 SYSTEM: [ trace ] Creating shader buffers
+[20:42:16.155] Thread: 17148 SYSTEM: [ info  ] Shader created
+[20:42:16.155] Thread: 17148 SYSTEM: [ trace ] Creating vertex array(VAO)
+[20:42:16.156] Thread: 17148 SYSTEM: [ trace ] Vertices: '629' Indices: '1878' Type: '0'
+[20:42:16.156] Thread: 17148 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[20:42:16.160] Thread: 17148 SYSTEM: [ info  ] Vertex array object(VAO) created
+[20:42:16.160] Thread: 17148 SYSTEM: [ trace ] Creating direct x shader
+[20:42:16.161] Thread: 17148 SYSTEM: [ trace ] Compiling vertex shader
+[20:42:16.167] Thread: 17148 SYSTEM: [ trace ] Compiling pixel shader
+[20:42:16.174] Thread: 17148 SYSTEM: [ trace ] Creating shader
+[20:42:16.176] Thread: 17148 SYSTEM: [ trace ] Creating shader buffers
+[20:42:16.177] Thread: 17148 SYSTEM: [ info  ] Shader created
+[20:42:16.178] Thread: 17148 SYSTEM: [ trace ] Creating a texture
+[20:42:16.179] Thread: 17148 SYSTEM: [ trace ] Creating texture resources
+[20:42:16.180] Thread: 17148 SYSTEM: [ trace ] Generating texture mipmaps
+[20:42:16.180] Thread: 17148 SYSTEM: [ info  ] Texture created
+[20:42:16.181] Thread: 17148 SYSTEM: [ trace ] Creating a texture
+[20:42:16.182] Thread: 17148 SYSTEM: [ trace ] Creating texture resources
+[20:42:16.184] Thread: 17148 SYSTEM: [ trace ] Generating texture mipmaps
+[20:42:16.185] Thread: 17148 SYSTEM: [ info  ] Texture created
+[20:42:16.186] Thread: 24084 SYSTEM: [ debug ] Asset 'testMesh' loading complete
+[20:42:16.189] Thread: 17148 SYSTEM: [ trace ] Creating vertex array(VAO)
+[20:42:16.190] Thread: 17148 SYSTEM: [ trace ] Vertices: '96' Indices: '96' Type: '1'
+[20:42:16.191] Thread: 17148 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[20:42:16.192] Thread: 17148 SYSTEM: [ info  ] Vertex array object(VAO) created
+[20:42:16.224] Thread: 17148 SYSTEM: [ trace ] Creatin

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TritonPlatform2/mathematical.h"
-#include "TritonPlatform2/CrossTypes/Shader.h"
+#include "TritonTypes/Flags.h"
 
 namespace Triton
 {
@@ -29,6 +29,9 @@ namespace Triton
 
 				/// The operation was successful, but some of the loading has failed
 				IO_PARTIAL_OK,
+
+				/// The operation was unsuccessful for some other reason
+				IO_OTHER,
 			} status;
 
 			/**
@@ -109,6 +112,14 @@ namespace Triton
 		 */
 		struct Mesh
 		{
+			/**
+			 * Int indicated whether or not the underlying VAO buffer will be dynamic or not
+			 * for completely static models this is 0, for models whose indices will not change 1,
+			 * for models who can change both indices and vertices 2
+			 * Since 00_00_00
+			 */
+			int DynamicBuffer;
+
 			/**
 			 * The vector containing the vertices of the mesh
 			 * Since 00_00_00

@@ -27,6 +27,9 @@
 /// Scene extensions
 #include "Triton2/Core/Extension/Entity.h"
 
+/// Text extensions
+#include "Triton2/Core/Extension/Text.h"
+
 /// All the cameras that are built in with Triton
 #include "Triton2/Scene/Camera.h"
 

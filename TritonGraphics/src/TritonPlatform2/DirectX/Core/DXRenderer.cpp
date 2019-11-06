@@ -17,6 +17,8 @@ namespace Triton
 		D3D11_RASTERIZER_DESC DXRenderer::s_defaultRasterDesc;
 		D3D11_RASTERIZER_DESC DXRenderer::s_noCullRasterDesc;
 		D3D11_DEPTH_STENCIL_DESC DXRenderer::s_disabledDepthStencilDesc;
+		D3D11_BLEND_DESC DXRenderer::s_blendEnableDesc;
+		D3D11_BLEND_DESC DXRenderer::s_blendDisableDesc;
 
 		void DXRenderer::createDescs()
 		{
@@ -94,6 +96,23 @@ namespace Triton
 			s_disabledDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 			s_disabledDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 			s_disabledDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			TR_SYSTEM_TRACE("Creating blend state descriptions");
+
+			// Clear the blend state description.
+			ZeroMemory(&s_blendEnableDesc, sizeof(D3D11_BLEND_DESC));
+
+			s_blendEnableDesc.RenderTarget[0].BlendEnable = TRUE;
+			s_blendEnableDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+			s_blendEnableDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+			s_blendEnableDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+			s_blendEnableDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+			s_blendEnableDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+			s_blendEnableDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+			s_blendEnableDesc.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+			s_blendDisableDesc = s_blendEnableDesc;
+			s_blendDisableDesc.RenderTarget[0].BlendEnable = FALSE;
 
 			s_descsCreated = true;
 		}
@@ -319,6 +338,22 @@ namespace Triton
 			m_deviceContext->DrawIndexed(indiceCount, 0, 0);
 		}
 
+		void DXRenderer::alphaBlending(bool state)
+		{
+			float blendFactor[4];
+
+			// Setup the blend factor.
+			blendFactor[0] = 0.0f;
+			blendFactor[1] = 0.0f;
+			blendFactor[2] = 0.0f;
+			blendFactor[3] = 0.0f;
+
+			// Turn off the alpha blending.
+			m_deviceContext->OMSetBlendState(state ? m_alphaEnableBlendingState : m_alphaDisableBlendingState, blendFactor, 0xffffffff);
+
+			return;
+		}
+
 		void DXRenderer::setViewPort(int x, int y, int width, int height)
 		{
 			D3D11_VIEWPORT viewport;
@@ -384,6 +419,11 @@ namespace Triton
 			createBuffers();
 		}
 
+		std::tuple<int, int> DXRenderer::size()
+		{
+			return m_renderingTo->size();
+		}
+
 		bool DXRenderer::init(ID3D11Device* device, const std::vector<DXGI_MODE_DESC>& displayModeList)
 		{
 			TR_SYSTEM_INFO("Initializing renderer");
@@ -440,7 +480,6 @@ namespace Triton
 				TR_SYSTEM_ERROR("Failed to create render buffers");
 				return false;
 			}
-			
 
 			m_initialized = true;
 
@@ -543,6 +582,22 @@ namespace Triton
 				return false;
 			}
 
+			TR_SYSTEM_INFO("Creating blend states");
+
+			result = m_device->CreateBlendState(&s_blendEnableDesc, &m_alphaEnableBlendingState);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Failed to create alpha blending enabled state");
+				return false;
+			}
+
+			result = m_device->CreateBlendState(&s_blendDisableDesc, &m_alphaDisableBlendingState);
+			if (FAILED(result))
+			{
+				TR_SYSTEM_ERROR("Failed to create alpha blending disabled state");
+				return false;
+			}
+
 			TR_SYSTEM_TRACE("Calculating matrices");
 
 			// Create the projection matrix for 3D rendering.
@@ -594,6 +649,18 @@ namespace Triton
 			{
 				m_renderTargetView->Release();
 				m_renderTargetView = 0;
+			}
+
+			if (m_alphaEnableBlendingState)
+			{
+				m_alphaEnableBlendingState->Release();
+				m_alphaEnableBlendingState = 0;
+			}
+
+			if (m_alphaDisableBlendingState)
+			{
+				m_alphaDisableBlendingState->Release();
+				m_alphaDisableBlendingState = 0;
 			}
 		}
 	}

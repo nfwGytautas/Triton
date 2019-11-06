@@ -12,6 +12,49 @@ void createAssets()
 
 	Triton::Core::AssetDictionary dict(Triton::Core::AssetDictionary::c_LatestVersion);
 
+	IO::IntermediateAsset fontAsset;
+	fontAsset.Version = IO::Serialization::c_Version_Latest;
+	fontAsset.Name = "arialFont";
+	fontAsset.Type = IO::Serialization::v_latest::c_FontType;
+	fontAsset.Data = std::make_shared<IO::FontData>();
+
+	IO::loadFontFromDisk("../Assets/Fonts/arial.ttf", (IO::FontData*)fontAsset.Data.get());
+
+	IO::saveAssetToDisk("../Assets/Fonts/arialFont.asset", &fontAsset);
+
+	dict.associate(fontAsset.Name, { "../Assets/Fonts/arialFont.asset", false, Core::AssetDictionary::EntryType::Asset });
+
+	IO::IntermediateAsset textShader;
+	textShader.Version = IO::Serialization::c_Version_Latest;
+	textShader.Name = "textShader";
+	textShader.Type = IO::Serialization::v_latest::c_ShaderType;
+	textShader.Data = std::make_shared<IO::ShaderData>();
+
+	auto sDatap5 = (IO::ShaderData*)textShader.Data.get();
+	IO::readFileFromDisk("C:\\dev\\Triton\\Shaders\\Text.hlsl", &sDatap5->source);
+	sDatap5->vertexEntry = "vertex_text";
+	sDatap5->pixelEntry = "pixel_text";
+	sDatap5->flags.set(Flags::sFlag_Matrices);
+
+	IO::saveAssetToDisk("../Assets/textShader.asset", &textShader);
+
+	dict.associate(textShader.Name, { "../Assets/textShader.asset", false, Core::AssetDictionary::EntryType::Asset });
+
+	IO::IntermediateAsset testMesh;
+	testMesh.Version = IO::Serialization::c_Version_Latest;
+	testMesh.Name = "testMesh";
+	testMesh.Type = IO::Serialization::v_latest::c_MeshType;
+	testMesh.Data = std::make_shared<IO::MeshData>();
+
+	// This is a model for the asset could be anything
+	// These models can be found in the Assets folder
+	IO::loadMeshFromDisk("C:\\dev\\Triton\\Models\\shaderBall.obj", (IO::MeshData*)testMesh.Data.get());
+
+	IO::saveAssetToDisk("../Assets/testMesh.asset", &testMesh);
+
+	dict.associate(testMesh.Name, { "../Assets/testMesh.asset", false, Core::AssetDictionary::EntryType::Asset });
+
+
 	IO::IntermediateAsset meshAsset;
 	meshAsset.Version = IO::Serialization::c_Version_Latest;
 	meshAsset.Name = "stallMesh";
@@ -130,6 +173,9 @@ void createAssets()
 	scene_assets.push_back("stallMesh");
 	scene_assets.push_back("stallTexture");
 	scene_assets.push_back("stallMaterial");
+	scene_assets.push_back("arialFont");
+	scene_assets.push_back("textShader");
+	scene_assets.push_back("testMesh");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
@@ -162,10 +208,6 @@ int main()
 	settings.in_customInputLoop = false;
 
 	engine.init(settings);
-
-	reference<Graphics::Shader> shader;
-	reference<Graphics::VAO> model;
-	reference<Graphics::Texture> texture;
 
 	// Create assets
 	createAssets();
@@ -212,7 +254,10 @@ int main()
 
 		renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
 
-		Extension::renderScene(sampleScene, renderer, &engine.assets());
+		Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
+
+		// Temporary
+		Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
 
 		transform.Rotation.y += 1 * 0.2;
 
@@ -227,7 +272,7 @@ int main()
 		if (frames == 6000)
 		{
 			frameSum = frameSum / frames;
-			TR_SYSTEM_INFO("AVERAGE FPS FOR 6000 FRAMES: {0}", frameSum);
+			TR_SYSTEM_ERROR("AVERAGE FPS FOR 6000 FRAMES: {0}", frameSum);
 			frameSum = 0;
 			frames = 0;
 		}

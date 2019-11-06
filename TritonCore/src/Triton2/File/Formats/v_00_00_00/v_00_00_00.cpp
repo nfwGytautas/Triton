@@ -19,6 +19,7 @@ namespace Triton
 				const char* c_ImageType = "image";
 				const char* c_ShaderType = "shader";
 				const char* c_MaterialType = "material";
+				const char* c_FontType = "font";
 
 				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn)
 				{
@@ -81,6 +82,16 @@ namespace Triton
 							objectToStoreIn = new MaterialAsset(name, data);
 						}
 					}
+					else if (type == c_FontType)
+					{
+						FontData* data = new FontData();
+						status = loadFontFromArchive_00_00_00(archive, data);
+
+						if (status.status == IOStatus::IO_OK)
+						{
+							objectToStoreIn = new FontAsset(name, data);
+						}
+					}
 					else
 					{
 						// The type cannot be deduced
@@ -125,6 +136,10 @@ namespace Triton
 					else if (asset->Type == c_MaterialType)
 					{
 						status = saveMaterialToArchive_00_00_00(archive, (MaterialData*)asset->Data.get());
+					}
+					else if (asset->Type == c_FontType)
+					{
+						status = saveFontToArchive_00_00_00(archive, (FontData*)asset->Data.get());
 					}
 					else
 					{
@@ -195,6 +210,8 @@ namespace Triton
 
 					for (int i = 0; i < meshCount; i++)
 					{
+						archive(objectToStoreIn->meshes[i].DynamicBuffer);
+
 						int verticeCount = 0;
 						int indiceCount = 0;
 
@@ -308,6 +325,53 @@ namespace Triton
 					return status;
 				}
 
+				IOStatus loadFontFromArchive_00_00_00(cereal::BinaryInputArchive & archive, FontData* objectToStoreIn)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					/**
+					 * File version 00.00.00
+					 * Format:
+					 *	'file version'
+					 *	'name of the asset'
+					 *	'type of the asset'
+					 *	'data for the asset'
+					 */
+					size_t metricsCount = 0;
+
+					archive(objectToStoreIn->Buffer,
+						objectToStoreIn->Width,
+						objectToStoreIn->Height,
+						objectToStoreIn->PWidth,
+						objectToStoreIn->PHeight,
+						metricsCount);
+
+					for (size_t i = 0; i < metricsCount; i++) 
+					{
+						char c;
+						FontData::CharMetrics metric;
+						archive(c);
+						archive(metric.Start, metric.End, metric.Offset, metric.Advance);
+						objectToStoreIn->Metrics[c] = metric;
+					}
+
+					if (objectToStoreIn->Width == 0 || objectToStoreIn->Height == 0 || objectToStoreIn->PHeight == 0 || objectToStoreIn->PWidth == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (objectToStoreIn->Buffer.size() == 0 || objectToStoreIn->Metrics.size() == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					return status;
+				}
+
 				IOStatus saveMeshToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MeshData* rawData)
 				{
 					// The function status
@@ -335,6 +399,8 @@ namespace Triton
 
 					for (int i = 0; i < meshCount; i++)
 					{
+						archive(rawData->meshes[i].DynamicBuffer);
+
 						int verticeCount = rawData->meshes[i].vertices.size();
 						int indiceCount = rawData->meshes[i].indices.size();
 
@@ -472,6 +538,40 @@ namespace Triton
 
 					archive(rawData->MainTexture,
 						rawData->Shader);
+
+					return status;
+				}
+
+				IOStatus saveFontToArchive_00_00_00(cereal::BinaryOutputArchive & archive, FontData* rawData)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					if (rawData->Width == 0 || rawData->Height == 0 || rawData->PHeight == 0 || rawData->PWidth == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (rawData->Buffer.size() == 0 || rawData->Metrics.size() == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					archive(rawData->Buffer,
+						rawData->Width,
+						rawData->Height,
+						rawData->PWidth,
+						rawData->PHeight,
+						rawData->Metrics.size());
+
+					for (auto& metric : rawData->Metrics) 
+					{
+						archive(metric.first);
+						archive(metric.second.Start, metric.second.End, metric.second.Offset, metric.second.Advance);
+					}
 
 					return status;
 				}

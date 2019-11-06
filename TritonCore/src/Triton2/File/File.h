@@ -81,6 +81,15 @@ namespace Triton
 		IOStatus loadMeshFromDisk(const std::string& pathToFile, MeshData* objectToStoreIn);
 
 		/**
+		 * Load a font file from disk and store the data inside the specified object
+		 *
+		 * @param pathToFile The path to the file that you want to be loaded
+		 * @param objectToStoreIn The FontData structure where the function should store the loaded data
+		 * @return The status of the specified operation
+		 */
+		IOStatus loadFontFromDisk(const std::string& pathToFile, FontData* objectToStoreIn);
+
+		/**
 		 * Load an asset file from disk
 		 *
 		 * @param pathToFile The path to the asset file
@@ -144,6 +153,7 @@ namespace Triton
 				extern const char* c_ImageType;
 				extern const char* c_ShaderType;
 				extern const char* c_MaterialType;
+				extern const char* c_FontType;
 			}
 		}
 	}

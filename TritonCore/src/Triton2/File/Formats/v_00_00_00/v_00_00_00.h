@@ -29,6 +29,7 @@ namespace Triton
 				extern const char* c_ImageType;
 				extern const char* c_ShaderType;
 				extern const char* c_MaterialType;
+				extern const char* c_FontType;
 
 				/**
 				 * Loads an asset whose format is 00_00_00
@@ -52,7 +53,7 @@ namespace Triton
 				 * Load an image from an asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a ImageData structure
+				 * @param objectToStoreIn INITIALIZED pointer to a ImageData structure
 				 * @return The status of the specified operation
 				 */
 				IOStatus loadImageFromArchive_00_00_00(cereal::BinaryInputArchive& archive, ImageData* objectToStoreIn);
@@ -61,7 +62,7 @@ namespace Triton
 				 * Load a mesh from an asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a MeshData structure
+				 * @param objectToStoreIn INITIALIZED pointer to a MeshData structure
 				 * @return The status of the specified operation
 				 */
 				IOStatus loadMeshFromArchive_00_00_00(cereal::BinaryInputArchive& archive, MeshData* objectToStoreIn);
@@ -70,7 +71,7 @@ namespace Triton
 				 * Load a shader from an asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a ShaderData structure
+				 * @param objectToStoreIn INITIALIZED pointer to a ShaderData structure
 				 * @return The status of the specified operation
 				 */
 				IOStatus loadShaderFromArchive_00_00_00(cereal::BinaryInputArchive& archive, ShaderData* objectToStoreIn);
@@ -79,10 +80,19 @@ namespace Triton
 				 * Load a material from an asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
-				 * @param objectToStoreIn UNINITIALIZED pointer to a MaterialData structure
+				 * @param objectToStoreIn INITIALIZED pointer to a MaterialData structure
 				 * @return The status of the specified operation
 				 */
 				IOStatus loadMaterialFromArchive_00_00_00(cereal::BinaryInputArchive& archive, MaterialData* objectToStoreIn);
+
+				/**
+				 * Load a font from an asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param objectToStoreIn INITIALIZED pointer to a FontData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus loadFontFromArchive_00_00_00(cereal::BinaryInputArchive& archive, FontData* objectToStoreIn);
 
 				/**
 				 * Save a mesh to a asset file whose version is 00_00_00
@@ -119,6 +129,15 @@ namespace Triton
 				 * @return The status of the specified operation
 				 */
 				IOStatus saveMaterialToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MaterialData* rawData);
+
+				/**
+				 * Save a font to a asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param rawData INITIALIZED pointer to FontData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus saveFontToArchive_00_00_00(cereal::BinaryOutputArchive& archive, FontData* rawData);
 			}
 		}
 	}

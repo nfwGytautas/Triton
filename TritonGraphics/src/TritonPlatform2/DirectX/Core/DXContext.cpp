@@ -573,7 +573,7 @@ namespace Triton
 			// Set the number of indices in the index array.
 			unsigned int indexCount = (unsigned int)createParams.indices.size();
 
-			TR_SYSTEM_TRACE("Vertices: '{0}' Indices: '{1}'", vertexCount, indexCount);
+			TR_SYSTEM_TRACE("Vertices: '{0}' Indices: '{1}' Type: '{2}'", vertexCount, indexCount, createParams.DynamicBuffer);
 
 			// Create the vertex array.
 			vertices = createParams.vertices.data();
@@ -594,10 +594,19 @@ namespace Triton
 			vao->m_indiceCount = indexCount;
 
 			// Set up the description of the static vertex buffer.
-			vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			if (createParams.DynamicBuffer == 1 || createParams.DynamicBuffer == 2)
+			{
+				vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+				vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			}
+			else
+			{
+				vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+				vertexBufferDesc.CPUAccessFlags = 0;
+			}
+
 			vertexBufferDesc.ByteWidth = sizeof(IO::Vertex) * vertexCount;
 			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			vertexBufferDesc.CPUAccessFlags = 0;
 			vertexBufferDesc.MiscFlags = 0;
 			vertexBufferDesc.StructureByteStride = 0;
 
@@ -616,11 +625,20 @@ namespace Triton
 				return nullptr;
 			}
 
+			if (createParams.DynamicBuffer == 2)
+			{
+				indexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+				indexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			}
+			else
+			{
+				indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+				indexBufferDesc.CPUAccessFlags = 0;
+			}
+
 			// Set up the description of the static index buffer.
-			indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 			indexBufferDesc.ByteWidth = sizeof(unsigned int) * indexCount;
 			indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-			indexBufferDesc.CPUAccessFlags = 0;
 			indexBufferDesc.MiscFlags = 0;
 			indexBufferDesc.StructureByteStride = 0;
 
@@ -660,7 +678,17 @@ namespace Triton
 			textureDesc.Width = createParams.width;
 			textureDesc.MipLevels = 0;
 			textureDesc.ArraySize = 1;
-			textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+			if (createParams.BPP == 4)
+			{
+				textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			}
+			else if (createParams.BPP == 1)
+			{
+				textureDesc.Format = DXGI_FORMAT_R8_UNORM;
+			}
+
+
 			textureDesc.SampleDesc.Count = 1;
 			textureDesc.SampleDesc.Quality = 0;
 			textureDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -677,12 +705,24 @@ namespace Triton
 			}
 
 			// Set the row pitch of the targa image data.
-			rowPitch = (createParams.width * 4) * sizeof(unsigned char);
+			rowPitch = (createParams.width * createParams.BPP) * sizeof(unsigned char);
 
 			TR_SYSTEM_TRACE("Creating texture resources");
 
 			// Copy the image data into the texture.
-			m_deviceContext->UpdateSubresource(texture->m_texture, 0, NULL, createParams.buffer.get(), rowPitch, 0);
+			if (createParams.buffer)
+			{
+				m_deviceContext->UpdateSubresource(texture->m_texture, 0, NULL, createParams.buffer.get(), rowPitch, 0);
+			}
+			else if (createParams.rawData.size() > 0) 
+			{
+				m_deviceContext->UpdateSubresource(texture->m_texture, 0, NULL, createParams.rawData.data(), rowPitch, 0);
+			}
+			else
+			{
+				TR_SYSTEM_ERROR("Trying to create an empty texture (buffer pointer empty, rawData vector size is 0)");
+				return nullptr;
+			}
 
 			// Setup the shader resource view description.
 			srvDesc.Format = textureDesc.Format;

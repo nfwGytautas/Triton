@@ -17,6 +17,9 @@
 
 #include "Triton2\File\Serialize.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 // Format implementations
 #include "Triton2\File\Formats\v_00_00_00\v_00_00_00.h"
 
@@ -68,6 +71,7 @@ namespace Triton
 				const char* c_ImageType = v_00_00_00::c_ImageType;
 				const char* c_ShaderType = v_00_00_00::c_ShaderType;
 				const char* c_MaterialType = v_00_00_00::c_MaterialType;
+				const char* c_FontType = v_00_00_00::c_FontType;
 			}
 		}
 
@@ -283,6 +287,9 @@ namespace Triton
 							currentMeshLocation.indices.push_back(face.mIndices[indiceIdx]);
 						}
 					}
+
+					// Static model
+					currentMeshLocation.DynamicBuffer = 0;
 				}
 				catch (...)
 				{
@@ -293,6 +300,144 @@ namespace Triton
 			}
 
 			// Return the status of the operation
+			return status;
+		}
+
+		IOStatus loadFontFromDisk(const std::string& pathToFile, FontData* objectToStoreIn)
+		{
+			objectToStoreIn->PWidth = 0;
+			objectToStoreIn->PHeight = 32;
+
+			objectToStoreIn->Width = 128;
+			objectToStoreIn->Height = 1;
+
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+
+			FT_Library  library;   /* handle to library     */
+			FT_Face     face;      /* handle to face object */
+			FT_Error	error;
+
+			error = FT_Init_FreeType(&library);
+			if (error) 
+			{ 
+				TR_SYSTEM_ERROR("FreeFont failed to initialize");
+
+				FT_Done_FreeType(library);
+
+				status.status = IOStatus::IO_OTHER;
+				status.additionalInformation = "FreeType couldn't be initialized";
+				return status;
+			}
+
+			error = FT_New_Face(library,
+				pathToFile.c_str(),
+				0,
+				&face);
+			if (error == FT_Err_Unknown_File_Format)
+			{
+				FT_Done_Face(face);
+				FT_Done_FreeType(library);
+
+				TR_SYSTEM_ERROR("The font file '{0}' could be opened and read, but it appears that its font format is unsupported", pathToFile);
+				TR_ERROR("The font file '{0}' could be opened and read, but it appears that its font format is unsupported", pathToFile);
+
+				status.status = IOStatus::IO_INCORRECT_FORMAT;
+				return status;
+			}
+			else if (error)
+			{
+				FT_Done_Face(face);
+				FT_Done_FreeType(library);
+
+				TR_SYSTEM_ERROR("The font file '{0}' could not be opened and read", pathToFile);
+				TR_ERROR("The font file '{0}' could not be opened and read", pathToFile);
+
+				status.status = IOStatus::IO_INCORRECT_FORMAT;
+				return status;
+			}
+
+			error = FT_Set_Char_Size(
+				face,    /* handle to face object           */
+				objectToStoreIn->PWidth,       /* char_width in 1/64th of points  */
+				objectToStoreIn->PHeight * 64,   /* char_height in 1/64th of points */
+				96,     /* horizontal device resolution    */
+				96);   /* vertical device resolution      */
+
+			//error = FT_Set_Pixel_Sizes(
+			//	face,   /* handle to face object */
+			//	objectToStoreIn->PWidth,      /* pixel_width           */
+			//	objectToStoreIn->PHeight);   /* pixel_height          */
+
+			
+			if (objectToStoreIn->PWidth == 0) 
+			{
+				objectToStoreIn->PWidth = objectToStoreIn->PHeight;
+			}
+			else if (objectToStoreIn->PHeight == 0)
+			{
+				objectToStoreIn->PHeight = objectToStoreIn->PWidth;
+			}
+
+			int max_dim = (1 + (face->size->metrics.height >> 6)) * ceilf(sqrtf(128));
+			int tex_width = 1;
+			while (tex_width < max_dim) tex_width <<= 1;
+			int tex_height = tex_width;
+
+			objectToStoreIn->Width = tex_width;
+			objectToStoreIn->Height = tex_height;
+
+			objectToStoreIn->Buffer = std::vector<unsigned char>(tex_width * tex_height, 0);
+
+			int off = 0;
+
+			int pen_x = 0, pen_y = 0;
+
+			for (int i = 0; i < 128; ++i) 
+			{
+				objectToStoreIn->Metrics[i] = {};
+
+				FT_Load_Char(face, i, FT_LOAD_RENDER | FT_LOAD_FORCE_AUTOHINT | FT_LOAD_TARGET_LIGHT);
+				FT_Bitmap* bmp = &face->glyph->bitmap;
+
+				if (pen_x + bmp->width >= objectToStoreIn->Width) {
+					pen_x = 0;
+					pen_y += ((face->size->metrics.height >> 6) + 1);
+				}
+
+				for (int row = 0; row < bmp->rows; ++row) {
+					for (int col = 0; col < bmp->width; ++col) {
+						int x = pen_x + col;
+						int y = pen_y + row;
+						objectToStoreIn->Buffer[y * objectToStoreIn->Width + x] = bmp->buffer[row * bmp->pitch + col];
+					}
+				}
+
+				objectToStoreIn->Metrics[i].Start.x = pen_x;
+				objectToStoreIn->Metrics[i].Start.y = pen_y;
+				objectToStoreIn->Metrics[i].End.x = pen_x + bmp->width;
+				objectToStoreIn->Metrics[i].End.y = pen_y + bmp->rows;
+
+				objectToStoreIn->Metrics[i].Offset.x = face->glyph->bitmap_left;
+				objectToStoreIn->Metrics[i].Offset.y = face->glyph->bitmap_top;
+				objectToStoreIn->Metrics[i].Advance = face->glyph->advance.x >> 6;
+
+				pen_x += bmp->width + 1;
+			}
+
+			FT_Done_Face(face);
+			FT_Done_FreeType(library);
+
 			return status;
 		}
 

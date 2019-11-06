@@ -26,5 +26,17 @@ namespace Triton
 		 * @param assetManager Pointer to an asset manager instance
 		 */
 		void renderScene(reference<Scene> scene, Graphics::Renderer* renderer, Core::AssetManager* assetManager);
+
+		/**
+		 * [TEMPORARY]
+		 * Renders the specified text to the screen
+		 *
+		 * @param text Text to render
+		 * @param font Font name of the text
+		 * @param position Location of the text on screen
+		 * @param renderer Engine renderer instance
+		 * @param assetManager Assets manager where the text shader can be found
+		 */
+		void renderText(const std::string& text, const std::string& fontName, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager);
 	}
 }

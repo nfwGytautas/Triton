@@ -26,6 +26,13 @@ namespace Triton {
 		 */
 		static void flush();
 
+		/**
+		 * Set the level of debug messages to be printed to the console
+		 *
+		 * @param level The spdlog level of the message
+		 */
+		static void setLevel(spdlog::level::level_enum level);
+
 		inline static std::shared_ptr<spdlog::logger>& getGUILogger() { return s_GUILogger; }
 
 		inline static std::shared_ptr<spdlog::logger>& getSystemLogger() { return s_SystemLogger; }

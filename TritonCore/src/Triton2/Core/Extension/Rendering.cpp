@@ -8,6 +8,9 @@
 #include "Triton2/Core/AssetManager.h"
 #include "Triton2/Scene/ECS.h"
 
+#include "Triton2/Instance/Engine.h"
+#include "Triton2/Core/Extension/Text.h"
+
 namespace Triton
 {
 	namespace Extension
@@ -27,13 +30,16 @@ namespace Triton
 			reference<Graphics::Texture> texture = nullptr;
 			reference<Graphics::Shader> shader = nullptr;
 
+			auto asset0 = assetManager->getAsset("textShader");
+			auto asset1 = assetManager->getAsset("arialFont");
+			auto asset2 = assetManager->getAsset("testMesh");
+
 			for (const RenderBatch& batch : batches)
 			{
 				// Bind material if different one
 				if (batch.Material->getName() != currentMaterial)
 				{
 					shader = batch.Material->shader()->shader();
-
 					shader->buffer_lights() = scene->lights();
 					shader->buffer_matrices().Projection = renderer->projection();
 					shader->buffer_matrices().View = scene->activeCamera()->viewMatrix();
@@ -68,6 +74,53 @@ namespace Triton
 					shader->buffer_matrices().Model = transformation;
 					shader->update_matrices();
 					renderer->render(vao->getIndiceCount());
+				}
+			}
+		}
+
+		void renderText(const std::string& text, const std::string& fontName, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager)
+		{
+			static reference<Graphics::VAO> vao = nullptr;
+
+			if (assetManager->hasAsset("textShader") && assetManager->hasAsset(fontName))
+			{
+				reference<Graphics::Texture> texture = nullptr;
+				auto shader = assetManager->getAsset("textShader").as<ShaderAsset>();
+				auto font = assetManager->getAsset(fontName).as<FontAsset>();
+
+				if (shader->isCreated() && font->isCreated())
+				{
+					shader->shader()->buffer_matrices().Projection = renderer->orthographic();
+
+					shader->shader()->enable();
+
+					renderer->depthBufferState(false);
+					renderer->alphaBlending(true);
+
+					auto[width, height] = renderer->size();
+					float x = 0 - (width / 2) + position.x;
+					float y = 0 - (height / 2) + position.y;
+
+					Triton::IO::Mesh data = Extension::buildVertexArray(font, text, x, y);
+					if (!vao.valid())
+					{
+						data.DynamicBuffer = 1;
+						vao = Engine::getInstance().context().newVAO(data);
+					}
+					else
+					{
+						vao->updateVertices(data.vertices);
+					}
+					vao->enable();
+
+					texture = font->texture();
+					texture->enable();
+
+					shader->shader()->update_matrices();
+					renderer->render(vao->getIndiceCount());
+
+					renderer->depthBufferState(true);
+					renderer->alphaBlending(false);
 				}
 			}
 		}

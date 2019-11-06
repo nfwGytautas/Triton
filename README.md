@@ -6,13 +6,13 @@ Just another game engine that I am coding for fun in my spare time
 
 # Features I would like to implement
 * Basic editor
-* Text rendering
+* ~~Text rendering~~
 * Sound engine
 * Shadows
 * Texture mapping (Alpha, bump, specular, ect...)
 * Reflection
 * Particle system
-* Picking
+* High dynamic based lighting
 * Physics based rendering
 * OpenGL support
 * Scripting support

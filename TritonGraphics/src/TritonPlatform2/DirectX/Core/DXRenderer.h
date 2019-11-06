@@ -21,6 +21,8 @@ namespace Triton
 			static D3D11_RASTERIZER_DESC s_defaultRasterDesc;
 			static D3D11_RASTERIZER_DESC s_noCullRasterDesc;
 			static D3D11_DEPTH_STENCIL_DESC s_disabledDepthStencilDesc;
+			static D3D11_BLEND_DESC s_blendEnableDesc;
+			static D3D11_BLEND_DESC s_blendDisableDesc;
 
 			/**
 			 * Creates the renderer description structures
@@ -55,10 +57,13 @@ namespace Triton
 			virtual void render(reference<Renderable>& renderable) override;
 			virtual void render(unsigned int indiceCount) override;
 
+			virtual void alphaBlending(bool state) override;
+
 			virtual void setViewPort(int x, int y, int width, int height) override;
 			virtual void depthBufferState(bool state) override;
 			virtual void cullBufferState(bool state) override;
 			virtual void resize() override;
+			virtual std::tuple<int, int> size() override;
 		private:
 			bool init(ID3D11Device* device, const std::vector<DXGI_MODE_DESC>& displayModeList);
 			bool createBuffers();
@@ -78,6 +83,9 @@ namespace Triton
 
 			ID3D11RenderTargetView* m_renderTargetView = nullptr;
 			ID3D11DepthStencilView* m_depthStencilView = nullptr;
+
+			ID3D11BlendState* m_alphaEnableBlendingState = nullptr;
+			ID3D11BlendState* m_alphaDisableBlendingState = nullptr;
 		};
 
 	}

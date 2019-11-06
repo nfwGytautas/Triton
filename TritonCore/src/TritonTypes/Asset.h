@@ -227,4 +227,68 @@ namespace Triton
 		/// The raw data of this object
 		IO::MaterialData* m_data;
 	};
+
+	/**
+	 * Font asset
+	 */
+	class FontAsset : public Asset
+	{
+	public:
+		/**
+		 * Create the asset with a name and already created material
+		 *
+		 * @param data The data used to create this asset when calling create method
+		 */
+		FontAsset(std::string name, IO::FontData* data);
+
+		/**
+		 * Get the Texture associated with this font asset
+		 *
+		 * @return reference to a Texture
+		 */
+		reference<Graphics::Texture> texture() const;
+
+		/**
+		 * Get character metrics of this font
+		 *
+		 * @return Unordered map of character metrics
+		 */
+		const std::unordered_map<char, IO::FontData::CharMetrics>& metrics() const;
+
+		/**
+		 * Get the total width of the font texture
+		 *
+		 * @return Width of the font texture
+		 */
+		unsigned int width() const;
+
+		/**
+		 * Get the total height of the font texture
+		 *
+		 * @return Height of the font texture
+		 */
+		unsigned int height() const;
+
+		// Inherited via Asset
+		virtual void create(Graphics::Context* gContext) override;
+		// Inherited via Asset
+		virtual bool isCreated() const;
+		// Inherited via Asset
+		void resolveDependencies(const Core::AssetManager& manager);
+	private:
+		/// The constructed Texture object for this asset
+		reference<Graphics::Texture> m_texture;
+
+		/// The map containing specific metrics for a character
+		std::unordered_map<char, IO::FontData::CharMetrics> m_metrics;
+
+		/// Width of the texture
+		unsigned int m_width;
+
+		/// Height of the texture
+		unsigned int m_height;
+
+		/// The raw data of this object
+		IO::FontData* m_data;
+	};
 }
