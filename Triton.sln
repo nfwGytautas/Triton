@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SandBox", "SandBox\SandBox.vcxproj", "{D43924E3-4019-A37E-4931-2E55B58F09E0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonCore", "TritonCore\TritonCore.vcxproj", "{2E72CD3B-1A2A-0F89-8331-E8E46F08AA79}"
@@ -8,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TritonEngine", "TritonEngine\TritonEngine.csproj", "{DB058569-C768-140E-70EE-4CC45C30E090}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonGraphics", "TritonGraphics\TritonGraphics.vcxproj", "{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TritonEditor", "TritonEditor\TritonEditor.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TritonEditorExtension", "TritonEditorExtension\TritonEditorExtension.csproj", "{29E805B5-9554-C1AF-5E48-590DCA73E317}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +46,23 @@ Global
 		{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}.Dist|x64.Build.0 = Dist|x64
 		{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}.Release|x64.ActiveCfg = Release|x64
 		{1611C7DD-02DF-BAE3-EB72-2B0AD7DF9648}.Release|x64.Build.0 = Release|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.ActiveCfg = Debug|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.Build.0 = Debug|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Dist|x64.ActiveCfg = Debug|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Dist|x64.Build.0 = Debug|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Debug|x64.ActiveCfg = Debug|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Debug|x64.Build.0 = Debug|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Dist|x64.ActiveCfg = Dist|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Dist|x64.Build.0 = Dist|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Release|x64.ActiveCfg = Release|x64
+		{29E805B5-9554-C1AF-5E48-590DCA73E317}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {544ADD86-7D28-4F88-9C85-59840AC659BD}
 	EndGlobalSection
 EndGlobal

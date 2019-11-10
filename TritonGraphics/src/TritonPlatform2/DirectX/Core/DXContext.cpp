@@ -250,6 +250,9 @@ namespace Triton
 			result = factory->EnumAdapters(0, &adapter);
 			if (FAILED(result))
 			{
+				// Release the factory.
+				factory->Release();
+
 				TR_SYSTEM_ERROR("Failed to get adapters!");
 				return false;
 			}
@@ -258,6 +261,12 @@ namespace Triton
 			result = adapter->EnumOutputs(0, &adapterOutput);
 			if (FAILED(result))
 			{
+				// Release the adapter.
+				adapter->Release();
+
+				// Release the factory.
+				factory->Release();
+
 				TR_SYSTEM_ERROR("Failed to enumerate over the primary adapter!");
 				return false;
 			}
@@ -268,6 +277,15 @@ namespace Triton
 			result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 			if (FAILED(result))
 			{
+				// Release the adapter output.
+				adapterOutput->Release();
+
+				// Release the adapter.
+				adapter->Release();
+
+				// Release the factory.
+				factory->Release();
+
 				TR_SYSTEM_ERROR("Failed to get the number of modes with 'DXGI_FORMAT_R8G8B8A8_UNORM' display format!");
 				return false;
 			}
@@ -281,6 +299,15 @@ namespace Triton
 			result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, m_displayModeList.data());
 			if (FAILED(result))
 			{
+				// Release the adapter output.
+				adapterOutput->Release();
+
+				// Release the adapter.
+				adapter->Release();
+
+				// Release the factory.
+				factory->Release();
+
 				TR_SYSTEM_ERROR("Failed to fill the display mode list!");
 				return false;
 			}
@@ -291,6 +318,16 @@ namespace Triton
 			result = adapter->GetDesc(&adapterDesc);
 			if (FAILED(result))
 			{
+				// Release the adapter output.
+				adapterOutput->Release();
+
+				// Release the adapter.
+				adapter->Release();
+
+				// Release the factory.
+				factory->Release();
+
+				TR_SYSTEM_ERROR("Failed to get video card description");
 				return false;
 			}
 
@@ -301,6 +338,16 @@ namespace Triton
 			error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
 			if (error != 0)
 			{
+				// Release the adapter output.
+				adapterOutput->Release();
+
+				// Release the adapter.
+				adapter->Release();
+
+				// Release the factory.
+				factory->Release();
+
+				TR_SYSTEM_ERROR("Failed to convert description to char array");
 				return false;
 			}
 
@@ -362,6 +409,7 @@ namespace Triton
 
 			delete m_keyboardState;
 			delete m_mouseState;
+			delete m_synchronizer;
 		}
 
 		Shader* DXContext::newShader(const IO::ShaderData& createParams)
@@ -419,7 +467,7 @@ namespace Triton
 				{
 					TR_ERROR("Missing shader file");
 				}
-
+				delete shader;
 				return nullptr;
 			}
 
@@ -451,7 +499,7 @@ namespace Triton
 				{
 					TR_ERROR("Missing shader file");
 				}
-
+				delete shader;
 				return nullptr;
 			}
 
@@ -461,6 +509,7 @@ namespace Triton
 			result = m_device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &shader->m_vertexShader);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating vertex shader from buffer failed");
 				return nullptr;
 			}
@@ -469,6 +518,7 @@ namespace Triton
 			result = m_device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &shader->m_pixelShader);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating pixel shader from buffer failed");
 				return nullptr;
 			}
@@ -478,6 +528,7 @@ namespace Triton
 				vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating vertex input layout failed");
 				return nullptr;
 			}
@@ -496,6 +547,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_matrixBufferDesc, NULL, &shader->m_matrixBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating matrix buffer failed");
 				return nullptr;
 			}
@@ -504,6 +556,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_settingsBufferDesc, NULL, &shader->m_settingsBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating settings buffer failed");
 				return nullptr;
 			}
@@ -512,6 +565,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_plightBufferDesc, NULL, &shader->m_plightBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating point light buffer failed");
 				return nullptr;
 			}
@@ -520,6 +574,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_slightBufferDesc, NULL, &shader->m_slightBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating spot light buffer failed");
 				return nullptr;
 			}
@@ -528,6 +583,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_dlightBufferDesc, NULL, &shader->m_dlightBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating directional light buffer failed");
 				return nullptr;
 			}
@@ -536,6 +592,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&s_camBufferDesc, NULL, &shader->m_cameraBuffer);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating camera buffer failed");
 				return nullptr;
 			}
@@ -544,6 +601,7 @@ namespace Triton
 			result = m_device->CreateSamplerState(&s_samplerDesc, &shader->m_sampleState);
 			if (FAILED(result))
 			{
+				delete shader;
 				TR_SYSTEM_ERROR("Creating texture sampler state failed");
 				return nullptr;
 			}
@@ -579,6 +637,7 @@ namespace Triton
 			vertices = createParams.vertices.data();
 			if (!vertices)
 			{
+				delete vao;
 				TR_SYSTEM_ERROR("Creating vertex array failed");
 				return nullptr;
 			}
@@ -587,6 +646,7 @@ namespace Triton
 			indices = createParams.indices.data();
 			if (!indices)
 			{
+				delete vao;
 				TR_SYSTEM_ERROR("Creating index array failed");
 				return nullptr;
 			}
@@ -621,6 +681,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &vao->m_vertexBuffer);
 			if (FAILED(result))
 			{
+				delete vao;
 				TR_SYSTEM_ERROR("Creating vertex buffer failed");
 				return nullptr;
 			}
@@ -651,6 +712,7 @@ namespace Triton
 			result = m_device->CreateBuffer(&indexBufferDesc, &indexData, &vao->m_indexBuffer);
 			if (FAILED(result))
 			{
+				delete vao;
 				TR_SYSTEM_ERROR("Creating index buffer failed");
 				return nullptr;
 			}
@@ -700,6 +762,7 @@ namespace Triton
 			hResult = m_device->CreateTexture2D(&textureDesc, NULL, &texture->m_texture);
 			if (FAILED(hResult))
 			{
+				delete texture;
 				TR_SYSTEM_ERROR("Creating empty texture failed");
 				return nullptr;
 			}
@@ -720,6 +783,7 @@ namespace Triton
 			}
 			else
 			{
+				delete texture;
 				TR_SYSTEM_ERROR("Trying to create an empty texture (buffer pointer empty, rawData vector size is 0)");
 				return nullptr;
 			}
@@ -734,6 +798,7 @@ namespace Triton
 			hResult = m_device->CreateShaderResourceView(texture->m_texture, &srvDesc, &texture->m_textureView);
 			if (FAILED(hResult))
 			{
+				delete texture;
 				TR_SYSTEM_ERROR("Creating shader resource view failed");
 				return nullptr;
 			}
@@ -800,6 +865,7 @@ namespace Triton
 			hResult = m_device->CreateTexture2D(&textureDesc, &pData[0], &cubeTexture->m_texture);
 			if (FAILED(hResult))
 			{
+				delete cubeTexture;
 				TR_SYSTEM_ERROR("Creating cube texture failed");
 				return nullptr;
 			}
@@ -808,6 +874,7 @@ namespace Triton
 			hResult = m_device->CreateShaderResourceView(cubeTexture->m_texture, &srvDesc, &cubeTexture->m_textureView);
 			if (FAILED(hResult))
 			{
+				delete cubeTexture;
 				TR_SYSTEM_ERROR("Creating shader resource view failed");
 				return nullptr;
 			}
@@ -857,6 +924,7 @@ namespace Triton
 			result = m_device->CreateTexture2D(&textureDesc, NULL, &frameBuffer->m_renderTargetTexture);
 			if (FAILED(result))
 			{
+				delete frameBuffer;
 				TR_SYSTEM_ERROR("Failed to create 2D texture");
 				return nullptr;
 			}
@@ -870,6 +938,7 @@ namespace Triton
 			result = m_device->CreateRenderTargetView(frameBuffer->m_renderTargetTexture, &renderTargetViewDesc, &frameBuffer->m_renderTargetView);
 			if (FAILED(result))
 			{
+				delete frameBuffer;
 				TR_SYSTEM_ERROR("Failed to create render target view");
 				return nullptr;
 			}
@@ -884,6 +953,7 @@ namespace Triton
 			result = m_device->CreateShaderResourceView(frameBuffer->m_renderTargetTexture, &shaderResourceViewDesc, &frameBuffer->m_shaderResourceView);
 			if (FAILED(result))
 			{
+				delete frameBuffer;
 				TR_SYSTEM_ERROR("Failed to create shader resource view");
 				return nullptr;
 			}
@@ -905,6 +975,7 @@ namespace Triton
 			result = m_device->CreateDepthStencilView(frameBuffer->m_renderTargetTexture, &depthStencilViewDesc, &frameBuffer->m_depthStencilView);
 			if (FAILED(result))
 			{
+				delete frameBuffer;
 				TR_SYSTEM_ERROR("Failed to create depth stencil view");
 				return nullptr;
 			}

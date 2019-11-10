@@ -21,6 +21,14 @@ namespace Triton
 		return m_name;
 	}
 
+	void Asset::create(Graphics::Context* gContext)
+	{
+	}
+
+	void Asset::create(Audio::AudioContext* aContext)
+	{
+	}
+
 	void Asset::destroy()
 	{
 		m_shouldDestroy = true;
@@ -59,6 +67,11 @@ namespace Triton
 		return (m_data == nullptr && m_vao.valid());
 	}
 
+	Asset::AssetType MeshAsset::type()
+	{
+		return AssetType::MESH;
+	}
+
 	ImageAsset::ImageAsset(std::string name, IO::ImageData* data)
 		: Asset(name), m_data(data)
 	{
@@ -83,6 +96,11 @@ namespace Triton
 		return (m_data == nullptr && m_texture.valid());
 	}
 
+	Asset::AssetType ImageAsset::type()
+	{
+		return AssetType::TEXTURE;
+	}
+
 	ShaderAsset::ShaderAsset(std::string name, IO::ShaderData* data)
 		: Asset(name), m_data(data)
 	{
@@ -105,6 +123,11 @@ namespace Triton
 	bool ShaderAsset::isCreated() const
 	{
 		return (m_data == nullptr && m_shader.valid());
+	}
+
+	Asset::AssetType ShaderAsset::type()
+	{
+		return AssetType::SHADER;
 	}
 
 	MaterialAsset::MaterialAsset(std::string name, IO::MaterialData* data)
@@ -142,9 +165,21 @@ namespace Triton
 		m_shader = manager.getAsset(m_shaderName).as<ShaderAsset>();
 	}
 
+	Asset::AssetType MaterialAsset::type()
+	{
+		return AssetType::MATERIAL;
+	}
+
 	bool MaterialAsset::isCreated() const
 	{
-		return (m_data == nullptr && m_mainTexture.valid());
+		bool v = (m_data == nullptr && m_mainTexture.valid());
+
+		if (v)
+		{
+			v = m_mainTexture->isCreated();
+		}
+
+		return v;
 	}
 
 	FontAsset::FontAsset(std::string name, IO::FontData* data)
@@ -196,10 +231,40 @@ namespace Triton
 
 	bool FontAsset::isCreated() const
 	{
-		return (m_data == nullptr && m_texture.valid());;
+		return (m_data == nullptr && m_texture.valid());
 	}
 
-	void FontAsset::resolveDependencies(const Core::AssetManager& manager)
+	Asset::AssetType FontAsset::type()
 	{
+		return AssetType::FONT;
+	}
+
+	AudioAsset::AudioAsset(std::string name, IO::AudioData* data)
+		: Asset(name), m_data(data)
+	{
+	}
+
+	reference<Audio::Audio> AudioAsset::audio() const
+	{
+		return m_audio;
+	}
+
+	void AudioAsset::create(Audio::AudioContext* aContext)
+	{
+		m_audio = aContext->newAudio(*m_data);
+
+		// Free the data structure, it is useless after creating the graphics object
+		delete m_data;
+		m_data = nullptr;
+	}
+
+	bool AudioAsset::isCreated() const
+	{
+		return (m_data == nullptr && m_audio.valid());
+	}
+
+	Asset::AssetType AudioAsset::type()
+	{
+		return AssetType::AUDIO;
 	}
 }

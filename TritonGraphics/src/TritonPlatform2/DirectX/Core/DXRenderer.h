@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TritonPlatform2/DirectX/Macros.h"
+#include "TritonPlatform2/DirectX/DXMacros.h"
 #include "TritonPlatform2/CrossTypes/Core/Renderer.h"
 
 #include "TritonPlatform2/DirectX/Core/DXWindow.h"

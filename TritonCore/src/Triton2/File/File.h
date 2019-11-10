@@ -90,6 +90,15 @@ namespace Triton
 		IOStatus loadFontFromDisk(const std::string& pathToFile, FontData* objectToStoreIn);
 
 		/**
+		 * Load an audio file from disk and store the data inside the specified object
+		 *
+		 * @param pathToFile The path to the file that you want to be loaded
+		 * @param objectToStoreIn The AudioData structure where the function should store the loaded data
+		 * @return The status of the specified operation
+		 */
+		IOStatus loadAudioFromDisk(const std::string& pathToFile, AudioData* objectToStoreIn);
+
+		/**
 		 * Load an asset file from disk
 		 *
 		 * @param pathToFile The path to the asset file
@@ -154,6 +163,7 @@ namespace Triton
 				extern const char* c_ShaderType;
 				extern const char* c_MaterialType;
 				extern const char* c_FontType;
+				extern const char* c_AudioType;
 			}
 		}
 	}

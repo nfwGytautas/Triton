@@ -4,9 +4,12 @@
 #include "Triton2/Utility/Log.h"
 
 #include "TritonPlatform2/CrossTypes/Core/Context.h"
+#include "TritonPlatform2/CrossTypes/Core/AudioContext.h"
 
 #include "Triton2/Core/AssetManager.h"
 #include "Triton2/Core/SceneManager.h"
+
+#include "TritonTypes/Asset.h"
 
 namespace Triton
 {
@@ -22,8 +25,12 @@ namespace Triton
 		m_context = Graphics::Context::create();
 		m_context->init(settings);
 
+		// Create a audio context
+		m_audioContext = Audio::AudioContext::create();
+		m_audioContext->init(settings);
+
 		// Create asset manager
-		m_assets = new Core::AssetManager(m_context, m_dictionary);
+		m_assets = new Core::AssetManager(std::bind(&Engine::assetAdded, this, std::placeholders::_1), m_dictionary);
 
 		// Create scene manager using asset manager
 		m_scenes = new Core::SceneManager(m_assets, m_dictionary);
@@ -41,13 +48,22 @@ namespace Triton
 		m_context->shutdown();
 		delete m_context;
 
+		// Shutdown audio context and delete
+		m_audioContext->shutdown();
+		delete m_audioContext;
+
 		// Flush log results
 		Log::flush();
 	}
 
-	Graphics::Context& Engine::context() const
+	Graphics::Context& Engine::graphicsContext() const
 	{
 		return *m_context;
+	}
+
+	Audio::AudioContext& Engine::audioContext() const
+	{
+		return *m_audioContext;
 	}
 
 	Core::AssetManager& Engine::assets() const
@@ -75,6 +91,29 @@ namespace Triton
 	void Engine::addDictionary(const Core::AssetDictionary& dict)
 	{
 		m_dictionary->append(dict);
+	}
+
+	void Engine::assetAdded(reference<Asset> asset)
+	{
+		if (!asset->isCreated())
+		{
+			if (asset->type() != Asset::AssetType::AUDIO)
+			{
+				m_context->synchronizer().enqueue(
+					[&, asset]()
+				{
+					asset->create(m_context);
+				});
+			}
+			else
+			{
+				m_audioContext->synchronizer().enqueue(
+					[&, asset]()
+				{
+					asset->create(m_audioContext);
+				});
+			}
+		}
 	}
 
 	Engine& Engine::getInstance()

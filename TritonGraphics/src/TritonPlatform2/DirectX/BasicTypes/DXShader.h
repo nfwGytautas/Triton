@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TritonPlatform2/DirectX/Macros.h"
+#include "TritonPlatform2/DirectX/DXMacros.h"
 #include "TritonPlatform2/CrossTypes/Shader.h"
 
 namespace Triton

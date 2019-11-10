@@ -19,21 +19,23 @@ namespace Triton
 		class AssetManager
 		{
 		public:
+			using AssetAddedCallback = std::function<void(reference<Asset>)>;
+		public:
 			/**
-			 * Create an asset map instance with the graphics context
+			 * Create an asset map instance with a callback
 			 *
-			 * @param context The graphics Context
+			 * @param addedCallback Callback for added assets
 			 */
-			AssetManager(Graphics::Context* context);
+			AssetManager(AssetAddedCallback addedCallback);
 
 			/**
-			 * Create an asset map instance with the graphics context
+			 * Create an asset map instance with a callback and a dictionary
 			 *
-			 * @param context The graphics Context
+			 * @param addedCallback Callback for added assets
 			 * @param dictionary The dictionary that will be used by the asset manager 
 			 * when loading by name
 			 */
-			AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary);
+			AssetManager(AssetAddedCallback addedCallback, reference<AssetDictionary> dictionary);
 
 			/**
 			 * Cleans up and then destroys the asset manager

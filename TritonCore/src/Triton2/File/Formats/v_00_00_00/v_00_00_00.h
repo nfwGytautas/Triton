@@ -30,6 +30,7 @@ namespace Triton
 				extern const char* c_ShaderType;
 				extern const char* c_MaterialType;
 				extern const char* c_FontType;
+				extern const char* c_AudioType;
 
 				/**
 				 * Loads an asset whose format is 00_00_00
@@ -95,6 +96,15 @@ namespace Triton
 				IOStatus loadFontFromArchive_00_00_00(cereal::BinaryInputArchive& archive, FontData* objectToStoreIn);
 
 				/**
+				 * Load audio from an asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param objectToStoreIn INITIALIZED pointer to a AudioData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus loadAudioFromArchive_00_00_00(cereal::BinaryInputArchive& archive, AudioData* objectToStoreIn);
+
+				/**
 				 * Save a mesh to a asset file whose version is 00_00_00
 				 *
 				 * @param archive The initialized archive with the stream already opened
@@ -138,6 +148,15 @@ namespace Triton
 				 * @return The status of the specified operation
 				 */
 				IOStatus saveFontToArchive_00_00_00(cereal::BinaryOutputArchive& archive, FontData* rawData);
+
+				/**
+				 * Save audio to a asset file whose version is 00_00_00
+				 *
+				 * @param archive The initialized archive with the stream already opened
+				 * @param rawData INITIALIZED pointer to AudioData structure
+				 * @return The status of the specified operation
+				 */
+				IOStatus saveAudioToArchive_00_00_00(cereal::BinaryOutputArchive& archive, AudioData* rawData);
 			}
 		}
 	}

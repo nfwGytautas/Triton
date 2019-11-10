@@ -12,6 +12,18 @@ void createAssets()
 
 	Triton::Core::AssetDictionary dict(Triton::Core::AssetDictionary::c_LatestVersion);
 
+	IO::IntermediateAsset audioAsset;
+	audioAsset.Version = IO::Serialization::c_Version_Latest;
+	audioAsset.Name = "audioTest";
+	audioAsset.Type = IO::Serialization::v_latest::c_AudioType;
+	audioAsset.Data = std::make_shared<IO::AudioData>();
+
+	IO::loadAudioFromDisk("../Assets/Audio/example_audio.wav", (IO::AudioData*)audioAsset.Data.get());
+
+	IO::saveAssetToDisk("../Assets/Audio/audioTest.asset", &audioAsset);
+
+	dict.associate(audioAsset.Name, { "../Assets/Audio/audioTest.asset", false, Core::AssetDictionary::EntryType::Asset });
+
 	IO::IntermediateAsset fontAsset;
 	fontAsset.Version = IO::Serialization::c_Version_Latest;
 	fontAsset.Name = "arialFont";
@@ -176,6 +188,7 @@ void createAssets()
 	scene_assets.push_back("arialFont");
 	scene_assets.push_back("textShader");
 	scene_assets.push_back("testMesh");
+	scene_assets.push_back("audioTest");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
@@ -216,14 +229,14 @@ int main()
 	loadAssets();
 
 	// Create a new window
-	window = engine.context().newWindow();
+	window = engine.graphicsContext().newWindow();
 	window->initNew(1280, 720);
 
 	// Key callback
 	window->keyboard().charInputCallback([](char c) {TR_SYSTEM_TRACE("KEY: {0}", c); });
 
 	// Create a new renderer for a window
-	renderer = engine.context().newRenderer(window);
+	renderer = engine.graphicsContext().newRenderer(window);
 
 	engine.scenes().setScene("sample");
 
@@ -244,11 +257,14 @@ int main()
 	int frames = 0;
 	long double frameSum = 0;
 
+	reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
+
 	while (!window->isClosed())
 	{
 		timer.start();
 
-		engine.context().synchronizer().synchronize(0);
+		engine.graphicsContext().synchronizer().synchronize(0);
+		engine.audioContext().synchronizer().synchronize(0);
 
 		window->update();
 
@@ -258,6 +274,8 @@ int main()
 
 		// Temporary
 		Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+
+		testAudio->audio()->play();
 
 		transform.Rotation.y += 1 * 0.2;
 

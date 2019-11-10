@@ -143,13 +143,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Triton2\Core\Extension\Text.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton2\Assert.h" />
     <ClInclude Include="src\Triton2\Core\AssetManager.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Entity.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Graphics.h" />
     <ClInclude Include="src\Triton2\Core\Extension\Rendering.h" />
+    <ClInclude Include="src\Triton2\Core\Extension\Text.h" />
     <ClInclude Include="src\Triton2\Core\SceneManager.h" />
     <ClInclude Include="src\Triton2\Core\ThreadPool.h" />
     <ClInclude Include="src\Triton2\File\File.h" />
@@ -180,7 +180,6 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Triton2\Core\Extension\Text.cpp" />
     <ClCompile Include="src\TRpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -188,6 +187,7 @@
     <ClCompile Include="src\Triton2\Core\Extension\Entity.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Graphics.cpp" />
     <ClCompile Include="src\Triton2\Core\Extension\Rendering.cpp" />
+    <ClCompile Include="src\Triton2\Core\Extension\Text.cpp" />
     <ClCompile Include="src\Triton2\Core\SceneManager.cpp" />
     <ClCompile Include="src\Triton2\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Triton2\File\File.cpp" />

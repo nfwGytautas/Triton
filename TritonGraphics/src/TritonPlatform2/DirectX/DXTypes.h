@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Macros.h"
+#include "DXMacros.h"
 
 
 // General types expanded on in platform specific way.

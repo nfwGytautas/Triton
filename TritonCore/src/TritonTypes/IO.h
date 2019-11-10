@@ -176,6 +176,61 @@ namespace Triton
 		};
 
 		/**
+		 * Struct used to store the data from IO operation
+		 */
+		struct AudioData
+		{
+			/**
+			 * The format of the audio file in string
+			 * E.G 'wav', 'mp3'
+			 * Since 00_00_00
+			 */
+			std::string FormatString;
+
+			/**
+			 * The sample rate of the audio file
+			 * Since 00_00_00
+			 */
+			unsigned long SampleRate;
+
+			/**
+			 * Bits per sample
+			 * Since 00_00_00
+			 */
+			unsigned short BitsPerSample;
+
+			/**
+			 * Number of samples in the audio file
+			 * Since 00_00_00
+			 */
+			unsigned short Channels;
+
+			/**
+			 * Block alignment for the audio data
+			 * Since 00_00_00
+			 */
+			unsigned short BlockAllign;
+
+			/**
+			 * Bytes per second that the audio file streams
+			 * Since 00_00_00
+			 */
+			unsigned long BytesPerSecond;
+
+			/**
+			 * Format in an integer representation
+			 * Since 00_00_00
+			 */
+			unsigned short Format;
+
+			/**
+			 * The data of the audio file
+			 * Since 00_00_00
+			 */
+			std::vector<unsigned char> Data;
+		};
+
+		/**
 		 * Struct used to create a Triton MeshAsset from MeshData
 		 */
 		struct IntermediateAsset

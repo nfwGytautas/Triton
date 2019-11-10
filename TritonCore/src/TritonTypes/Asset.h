@@ -5,6 +5,9 @@
 #include "TritonPlatform2/CrossTypes/Texture.h"
 #include "TritonPlatform2/CrossTypes/Shader.h"
 
+#include "TritonPlatform2/CrossTypes/Core/AudioContext.h"
+#include "TritonPlatform2/CrossTypes/Audio.h"
+
 #include "TritonTypes/IO2.h"
 
 namespace Triton
@@ -19,6 +22,16 @@ namespace Triton
 	 */
 	class Asset
 	{
+	public:
+		enum class AssetType
+		{
+			MESH = 0,
+			TEXTURE = 10,
+			MATERIAL = 20,
+			SHADER = 30,
+			FONT = 40,
+			AUDIO = 50
+		};
 	public:
 		/**
 		 * Create an asset with a given name
@@ -42,7 +55,16 @@ namespace Triton
 		 *
 		 * @param gContext Graphics context pointer
 		 */
-		virtual void create(Graphics::Context* gContext) = 0;
+		virtual void create(Graphics::Context* gContext);
+
+		/**
+		 * [Internal, avoid usage]
+		 * Create the asset from data with which the asset instance was created
+		 * the underlying data is freed after calling this function
+		 *
+		 * @param aContext Audio context pointer
+		 */
+		virtual void create(Audio::AudioContext* aContext);
 
 		/**
 		 * Check if the asset has been created
@@ -71,6 +93,13 @@ namespace Triton
 		 * @param assets Vector of assets
 		 */
 		virtual void resolveDependencies(const Core::AssetManager& manager);
+
+		/**
+		 * Type of the asset
+		 *
+		 * @return Asset::AssetType enum representing the type of the asset
+		 */
+		virtual AssetType type() = 0;
 	private:
 		/// The name of the asset
 		std::string m_name;
@@ -104,6 +133,8 @@ namespace Triton
 		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
+		// Inherited via Asset
+		virtual AssetType type() override;
 	private:
 		/// The constructed VAO for this asset
 		reference<Graphics::VAO> m_vao;
@@ -137,6 +168,8 @@ namespace Triton
 		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
+		// Inherited via Asset
+		virtual AssetType type() override;
 	private:
 		/// The constructed Texture object for this asset
 		reference<Graphics::Texture> m_texture;
@@ -170,6 +203,8 @@ namespace Triton
 		virtual void create(Graphics::Context* gContext) override;
 		// Inherited via Asset
 		virtual bool isCreated() const;
+		// Inherited via Asset
+		virtual AssetType type() override;
 	private:
 		/// The constructed Shader object for this asset
 		reference<Graphics::Shader> m_shader;
@@ -212,6 +247,8 @@ namespace Triton
 		virtual bool isCreated() const;
 		// Inherited via Asset
 		void resolveDependencies(const Core::AssetManager& manager);
+		// Inherited via Asset
+		virtual AssetType type() override;
 	private:
 		/// Main texture name
 		std::string m_mainTextureName;
@@ -235,7 +272,7 @@ namespace Triton
 	{
 	public:
 		/**
-		 * Create the asset with a name and already created material
+		 * Create the asset with a name and already created font data
 		 *
 		 * @param data The data used to create this asset when calling create method
 		 */
@@ -274,7 +311,7 @@ namespace Triton
 		// Inherited via Asset
 		virtual bool isCreated() const;
 		// Inherited via Asset
-		void resolveDependencies(const Core::AssetManager& manager);
+		virtual AssetType type() override;
 	private:
 		/// The constructed Texture object for this asset
 		reference<Graphics::Texture> m_texture;
@@ -290,5 +327,39 @@ namespace Triton
 
 		/// The raw data of this object
 		IO::FontData* m_data;
+	};
+
+	/**
+	 * Audio asset
+	 */
+	class AudioAsset : public Asset
+	{
+	public:
+		/**
+		 * Create the asset with a name and already created audio data
+		 *
+		 * @param data The data used to create this asset when calling create method
+		 */
+		AudioAsset(std::string name, IO::AudioData* data);
+
+		/**
+		 * Get the Audio associated with this audio asset
+		 *
+		 * @return reference to audio
+		 */
+		reference<Audio::Audio> audio() const;
+
+		// Inherited via Asset
+		virtual void create(Audio::AudioContext* aContext) override;
+		// Inherited via Asset
+		virtual bool isCreated() const;
+		// Inherited via Asset
+		virtual AssetType type() override;
+	private:
+		/// The constructed Texture object for this asset
+		reference<Audio::Audio> m_audio;
+
+		/// The raw data of this object
+		IO::AudioData* m_data;
 	};
 }

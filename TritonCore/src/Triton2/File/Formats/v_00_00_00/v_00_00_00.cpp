@@ -20,6 +20,7 @@ namespace Triton
 				const char* c_ShaderType = "shader";
 				const char* c_MaterialType = "material";
 				const char* c_FontType = "font";
+				const char* c_AudioType = "audio";
 
 				IOStatus loadFormat_00_00_00(cereal::BinaryInputArchive& archive, Asset*& objectToStoreIn)
 				{
@@ -51,6 +52,10 @@ namespace Triton
 							// Since file format 00_00_00 doesn't support multiple meshes there can only be one
 							objectToStoreIn = new MeshAsset(name, data);
 						}
+						else
+						{
+							delete data;
+						}
 					}
 					else if (type == c_ImageType)
 					{
@@ -60,6 +65,10 @@ namespace Triton
 						if (status.status == IOStatus::IO_OK)
 						{
 							objectToStoreIn = new ImageAsset(name, data);
+						}
+						else
+						{
+							delete data;
 						}
 					}
 					else if (type == c_ShaderType)
@@ -71,6 +80,10 @@ namespace Triton
 						{
 							objectToStoreIn = new ShaderAsset(name, data);
 						}
+						else
+						{
+							delete data;
+						}
 					}
 					else if (type == c_MaterialType)
 					{
@@ -81,6 +94,10 @@ namespace Triton
 						{
 							objectToStoreIn = new MaterialAsset(name, data);
 						}
+						else
+						{
+							delete data;
+						}
 					}
 					else if (type == c_FontType)
 					{
@@ -90,6 +107,24 @@ namespace Triton
 						if (status.status == IOStatus::IO_OK)
 						{
 							objectToStoreIn = new FontAsset(name, data);
+						}
+						else
+						{
+							delete data;
+						}
+					}
+					else if (type == c_AudioType)
+					{
+						AudioData* data = new AudioData();
+						status = loadAudioFromArchive_00_00_00(archive, data);
+
+						if (status.status == IOStatus::IO_OK)
+						{
+							objectToStoreIn = new AudioAsset(name, data);
+						}
+						else
+						{
+							delete data;
 						}
 					}
 					else
@@ -140,6 +175,10 @@ namespace Triton
 					else if (asset->Type == c_FontType)
 					{
 						status = saveFontToArchive_00_00_00(archive, (FontData*)asset->Data.get());
+					}
+					else if (asset->Type == c_AudioType)
+					{
+						status = saveAudioToArchive_00_00_00(archive, (AudioData*)asset->Data.get());
 					}
 					else
 					{
@@ -372,6 +411,37 @@ namespace Triton
 					return status;
 				}
 
+				IOStatus loadAudioFromArchive_00_00_00(cereal::BinaryInputArchive & archive, AudioData* objectToStoreIn)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					archive(objectToStoreIn->FormatString,
+						objectToStoreIn->SampleRate,
+						objectToStoreIn->BitsPerSample,
+						objectToStoreIn->Channels,
+						objectToStoreIn->BlockAllign,
+						objectToStoreIn->BytesPerSecond,
+						objectToStoreIn->Format,
+						objectToStoreIn->Data);
+
+					if (objectToStoreIn->BitsPerSample == 0 || objectToStoreIn->BlockAllign == 0 || objectToStoreIn->BytesPerSecond == 0 || objectToStoreIn->Channels == 0
+						|| objectToStoreIn->SampleRate == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (objectToStoreIn->Data.size() == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					return status;
+				}
+
 				IOStatus saveMeshToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MeshData* rawData)
 				{
 					// The function status
@@ -572,6 +642,37 @@ namespace Triton
 						archive(metric.first);
 						archive(metric.second.Start, metric.second.End, metric.second.Offset, metric.second.Advance);
 					}
+
+					return status;
+				}
+
+				IOStatus saveAudioToArchive_00_00_00(cereal::BinaryOutputArchive & archive, AudioData* rawData)
+				{
+					// The function status
+					IOStatus status;
+					status.status = IOStatus::IO_OK;
+
+					if (rawData->BitsPerSample == 0 || rawData->BlockAllign == 0 || rawData->BytesPerSecond == 0 || rawData->Channels == 0
+						|| rawData->SampleRate == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					if (rawData->Data.size() == 0)
+					{
+						status.status = IOStatus::IO_INCORRECT_FORMAT;
+						return status;
+					}
+
+					archive(rawData->FormatString,
+						rawData->SampleRate,
+						rawData->BitsPerSample,
+						rawData->Channels,
+						rawData->BlockAllign,
+						rawData->BytesPerSecond,
+						rawData->Format,
+						rawData->Data);
 
 					return status;
 				}

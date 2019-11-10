@@ -31,7 +31,7 @@ namespace Triton
 			virtual ~Context() { }
 
 			/**
-			 * Create a context
+			 * Create the context
 			 *
 			 * @return The API specific context cast to Context base class
 			 */
@@ -69,7 +69,7 @@ namespace Triton
 			 * Create a new shader from the create params
 			 *
 			 * @param createParams The parameters of the shader
-			 * @return reference to the newly created shader
+			 * @return Pointer to the newly created shader
 			 */
 			virtual Shader* newShader(const IO::ShaderData& createParams) = 0;
 
@@ -77,7 +77,7 @@ namespace Triton
 			 * Create a new VAO from specified params
 			 *
 			 * @param createParams The parameters of the VAO not this is a single Mesh of MeshData not entire mesh data structure
-			 * @return reference to the newly created VAO
+			 * @return Pointer to the newly created VAO
 			 */
 			virtual VAO* newVAO(const IO::Mesh& createParams) = 0;
 
@@ -85,7 +85,7 @@ namespace Triton
 			 * Create a new texture from the specified params
 			 *
 			 * @param createParams The parameters of the image
-			 * @return reference to the newly created texture
+			 * @return Pointer to the newly created texture
 			 */
 			virtual Texture* newTexture(const IO::ImageData& createParams) = 0;
 
@@ -93,7 +93,7 @@ namespace Triton
 			 * Create a new CubeTexture from the create params
 			 *
 			 * @param createParams The parameters of the cube texture
-			 * @return reference to the newly created cube texture
+			 * @return Pointer to the newly created cube texture
 			 */
 			virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) = 0;
 
@@ -102,7 +102,7 @@ namespace Triton
 			 *
 			 * @param width The width of the new frame buffer
 			 * @param height The height of the new frame buffer
-			 * @return reference to the newly created frame buffer
+			 * @return Pointer to the newly created frame buffer
 			 */
 			virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) = 0;
 

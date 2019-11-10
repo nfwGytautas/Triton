@@ -7,7 +7,8 @@ Just another game engine that I am coding for fun in my spare time
 # Features I would like to implement
 * Basic editor
 * ~~Text rendering~~
-* Sound engine
+* ~~2D Sound engine~~
+* 3D Sound engine
 * Shadows
 * Texture mapping (Alpha, bump, specular, ect...)
 * Reflection
@@ -17,5 +18,7 @@ Just another game engine that I am coding for fun in my spare time
 * OpenGL support
 * Scripting support
 * Serialization
+* Simple UI framework
+* Physics
 
 The engine uses various third party libraries all of them can be found inside the vendor folder

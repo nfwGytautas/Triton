@@ -137,8 +137,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonGraphicsAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Audio.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Base.h" />
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\AudioContext.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Context.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Renderer.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h" />
@@ -154,13 +155,17 @@
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXContext.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXRenderer.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXWindow.h" />
+    <ClInclude Include="src\TritonPlatform2\DirectX\DXMacros.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\DXManip.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\DXTypes.h" />
-    <ClInclude Include="src\TritonPlatform2\DirectX\Macros.h" />
     <ClInclude Include="src\TritonPlatform2\PlatformAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform2\Windows\Core\WindowsAudioContext.h" />
+    <ClInclude Include="src\TritonPlatform2\Windows\WindowsAudio.h" />
+    <ClInclude Include="src\TritonPlatform2\Windows\WindowsMacros.h" />
     <ClInclude Include="src\TritonPlatform2\mathematical.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\AudioContext.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Context.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Renderer.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp" />
@@ -176,7 +181,9 @@
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp" />
     <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp" />
     <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp" />
+    <ClCompile Include="src\TritonPlatform2\Windows\Core\WindowsAudioContext.cpp" />
     <ClCompile Include="src\TritonPlatform2\mathematical.cpp" />
+    <ClCompile Include="src\TritonPlatform2\Windows\WindowsAudio.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

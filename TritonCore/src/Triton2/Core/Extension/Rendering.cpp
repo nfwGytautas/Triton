@@ -30,10 +30,6 @@ namespace Triton
 			reference<Graphics::Texture> texture = nullptr;
 			reference<Graphics::Shader> shader = nullptr;
 
-			auto asset0 = assetManager->getAsset("textShader");
-			auto asset1 = assetManager->getAsset("arialFont");
-			auto asset2 = assetManager->getAsset("testMesh");
-
 			for (const RenderBatch& batch : batches)
 			{
 				// Bind material if different one
@@ -105,7 +101,7 @@ namespace Triton
 					if (!vao.valid())
 					{
 						data.DynamicBuffer = 1;
-						vao = Engine::getInstance().context().newVAO(data);
+						vao = Engine::getInstance().graphicsContext().newVAO(data);
 					}
 					else
 					{

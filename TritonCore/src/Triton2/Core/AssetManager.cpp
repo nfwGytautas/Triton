@@ -23,14 +23,14 @@ namespace Triton
 		{
 			const int c_threadCount = 2;
 		public:
-			AssetManagerImpl(Graphics::Context* context)
-				: m_contextInstance(context), m_tPool(c_threadCount)
+			AssetManagerImpl(AssetAddedCallback addedCallback)
+				: m_callback(addedCallback), m_tPool(c_threadCount)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
 
-			AssetManagerImpl(Graphics::Context* context, reference<AssetDictionary> dictionary)
-				: m_contextInstance(context), m_dictionary(dictionary), m_tPool(c_threadCount)
+			AssetManagerImpl(AssetAddedCallback addedCallback, reference<AssetDictionary> dictionary)
+				: m_callback(addedCallback), m_dictionary(dictionary), m_tPool(c_threadCount)
 			{
 				TR_SYSTEM_TRACE("Created an asset manager instance with '{0}' threads", c_threadCount);
 			}
@@ -128,14 +128,7 @@ namespace Triton
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
 
-				if (!asset->isCreated())
-				{
-					m_contextInstance->synchronizer().enqueue(
-					[&, asset]() 
-					{ 
-						asset->create(m_contextInstance);
-					});
-				}
+				m_callback(asset);
 			}
 
 			reference<Asset> getAsset(const std::string& name) const
@@ -216,21 +209,23 @@ namespace Triton
 			/// Map of asset name to asset reference
 			std::vector<reference<Asset>> m_assets;
 
-			/// Pointer to the context instance
-			Graphics::Context* m_contextInstance;
+			/// Callback to engine
+			AssetManager::AssetAddedCallback m_callback;
 
 			/// Dictionary used by the asset manager
 			reference<AssetDictionary> m_dictionary;
 		};
 
-		AssetManager::AssetManager(Graphics::Context* context)
+		AssetManager::AssetManager(AssetAddedCallback addedCallback)
 		{
-			m_impl = new AssetManagerImpl(context);
+			TR_CORE_ASSERT(static_cast<bool>(addedCallback), "Provided callback is invalid")
+			m_impl = new AssetManagerImpl(addedCallback);
 		}
 
-		AssetManager::AssetManager(Graphics::Context* context, reference<AssetDictionary> dictionary)
+		AssetManager::AssetManager(AssetAddedCallback addedCallback, reference<AssetDictionary> dictionary)
 		{
-			m_impl = new AssetManagerImpl(context, dictionary);
+			TR_CORE_ASSERT(static_cast<bool>(addedCallback), "Provided callback is invalid")
+			m_impl = new AssetManagerImpl(addedCallback, dictionary);
 		}
 
 		AssetManager::~AssetManager()

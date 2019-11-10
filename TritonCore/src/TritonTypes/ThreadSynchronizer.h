@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace Triton
 {
 	namespace Core
@@ -26,7 +28,7 @@ namespace Triton
 			 * Synchronizes enqueued actions by calling them on this thread
 			 * The amount of actions to synchronize is determined by the amount parameter
 			 * The synchronizer will not synchronize more than the specified amount, however
-			 * it can synchronize less if the queue is empty.
+			 * it can synchronize less if the queue is empty
 			 * If amount is 0 the synchronizer will synchronize all actions
 			 *
 			 * @param amount the amount of actions that can be synchronized this call

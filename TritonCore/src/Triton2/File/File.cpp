@@ -23,6 +23,24 @@
 // Format implementations
 #include "Triton2\File\Formats\v_00_00_00\v_00_00_00.h"
 
+#ifdef _XBOX //Big-Endian
+#define fourccRIFF 'RIFF'
+#define fourccDATA 'data'
+#define fourccFMT 'fmt '
+#define fourccWAVE 'WAVE'
+#define fourccXWMA 'XWMA'
+#define fourccDPDS 'dpds'
+#endif
+
+#ifndef _XBOX //Little-Endian
+#define fourccRIFF 'FFIR'
+#define fourccDATA 'atad'
+#define fourccFMT ' tmf'
+#define fourccWAVE 'EVAW'
+#define fourccXWMA 'AMWX'
+#define fourccDPDS 'sdpd'
+#endif
+
 namespace Triton
 {
 	namespace IO
@@ -72,6 +90,7 @@ namespace Triton
 				const char* c_ShaderType = v_00_00_00::c_ShaderType;
 				const char* c_MaterialType = v_00_00_00::c_MaterialType;
 				const char* c_FontType = v_00_00_00::c_FontType;
+				const char* c_AudioType = v_00_00_00::c_AudioType;
 			}
 		}
 
@@ -349,10 +368,8 @@ namespace Triton
 				FT_Done_Face(face);
 				FT_Done_FreeType(library);
 
-				TR_SYSTEM_ERROR("The font file '{0}' could be opened and read, but it appears that its font format is unsupported", pathToFile);
-				TR_ERROR("The font file '{0}' could be opened and read, but it appears that its font format is unsupported", pathToFile);
-
 				status.status = IOStatus::IO_INCORRECT_FORMAT;
+				status.additionalInformation = "The font file could be opened and read, but it appears that its font format is unsupported";
 				return status;
 			}
 			else if (error)
@@ -360,10 +377,8 @@ namespace Triton
 				FT_Done_Face(face);
 				FT_Done_FreeType(library);
 
-				TR_SYSTEM_ERROR("The font file '{0}' could not be opened and read", pathToFile);
-				TR_ERROR("The font file '{0}' could not be opened and read", pathToFile);
-
 				status.status = IOStatus::IO_INCORRECT_FORMAT;
+				status.additionalInformation = "The font file could not be opened and read";
 				return status;
 			}
 
@@ -437,6 +452,109 @@ namespace Triton
 
 			FT_Done_Face(face);
 			FT_Done_FreeType(library);
+
+			return status;
+		}
+
+		IOStatus loadAudioFromDisk(const std::string& pathToFile, AudioData* objectToStoreIn)
+		{
+			// The type of the audio file
+			int fileType = -1;
+
+			// The function status
+			IOStatus status;
+			status.status = IOStatus::IO_OK;
+
+			// Check if the path exists
+			if (!fileValid(pathToFile))
+			{
+				// The path was incorrect
+				status.status = IOStatus::IO_BAD_PATH;
+				return status;
+			}
+
+			// Parse the type of audio file
+			// Currently it parses using the extension of the file
+			std::string extension = std::filesystem::path(pathToFile).extension().string();
+
+			if (extension == ".wav")
+			{
+				fileType = 0;
+			}
+
+			// UNKNOWN
+			if (fileType == -1)
+			{
+				status.status = IOStatus::IO_INCORRECT_FORMAT;
+				status.additionalInformation = "Unsupported audio file type";
+				return status;
+			}
+
+			// WAV
+			if (fileType == 0)
+			{
+				struct WaveHeaderType
+				{
+					char chunkId[4];
+					unsigned long chunkSize;
+					char format[4];
+					char subChunkId[4];
+					unsigned long subChunkSize;
+					unsigned short audioFormat;
+					unsigned short numChannels;
+					unsigned long sampleRate;
+					unsigned long bytesPerSecond;
+					unsigned short blockAlign;
+					unsigned short bitsPerSample;
+					char dataChunkId[4];
+					unsigned long dataSize;
+				};
+
+				int error;
+				FILE* filePtr;
+				unsigned int count;
+				WaveHeaderType waveFileHeader;
+				WAVEFORMATEX waveFormat;
+				HRESULT result;
+				
+				// Open the wave file in binary.
+				error = fopen_s(&filePtr, pathToFile.c_str(), "rb");
+				if (error != 0)
+				{
+					status.status = IOStatus::IO_BAD_PATH;
+					return status;
+				}
+
+				// Read in the wave file header.
+				count = fread(&waveFileHeader, sizeof(waveFileHeader), 1, filePtr);
+				if (count != 1)
+				{
+					status.status = IOStatus::IO_INCORRECT_FORMAT;
+					status.additionalInformation = "Wave file header is corrupted or in incorrect format";
+					return status;
+				}
+
+				objectToStoreIn->FormatString = "wav";
+				objectToStoreIn->SampleRate = waveFileHeader.sampleRate;
+				objectToStoreIn->BitsPerSample = waveFileHeader.bitsPerSample;
+				objectToStoreIn->Channels = waveFileHeader.numChannels;
+				objectToStoreIn->BlockAllign = waveFileHeader.blockAlign;
+				objectToStoreIn->BytesPerSecond = waveFileHeader.bytesPerSecond;
+				objectToStoreIn->Format = waveFileHeader.audioFormat;
+				
+				objectToStoreIn->Data = std::vector<unsigned char>(waveFileHeader.dataSize);
+
+				fseek(filePtr, sizeof(WaveHeaderType), SEEK_SET);
+
+				count = fread(objectToStoreIn->Data.data(), 1, waveFileHeader.dataSize, filePtr);
+				if (count != waveFileHeader.dataSize)
+				{
+					status.status = IOStatus::IO_INCORRECT_FORMAT;
+					status.additionalInformation = "Wave file corrupted. The amount of bytes read does not match header description";
+					return status;
+				}
+
+			}
 
 			return status;
 		}

@@ -7,9 +7,16 @@
 namespace Triton
 {
 	// Forward declarations
+	class Asset;
+
 	namespace Graphics
 	{
 		class Context;
+	}
+
+	namespace Audio
+	{
+		class AudioContext;
 	}
 
 	namespace Core
@@ -44,7 +51,14 @@ namespace Triton
 		 *
 		 * @return Context instance initialized by the engine
 		 */
-		Graphics::Context& context() const;
+		Graphics::Context& graphicsContext() const;
+
+		/**
+		 * Returns engine's audio context instance
+		 *
+		 * @return Context instance initialized by the engine
+		 */
+		Audio::AudioContext& audioContext() const;
 
 		/**
 		 * Returns engine's asset manager instance
@@ -78,9 +92,22 @@ namespace Triton
 		 * @param dict Dictionary to append
 		 */
 		void addDictionary(const Core::AssetDictionary& dict);
+
+	private:
+		/**
+		 * Callback for the AssetManager to call when any assets have been added
+		 * The engine adds to specific Context ThreadSynchronizers depending on the asset
+		 *
+		 * Audio -> audio context
+		 * Else -> graphics context
+		 */
+		void assetAdded(reference<Asset> asset);
 	private:
 		/// Graphics context created by the engine
 		Graphics::Context* m_context;
+
+		/// Audio context created by the engine
+		Audio::AudioContext* m_audioContext;
 
 		/// Asset manager created by the engine
 		Core::AssetManager* m_assets;

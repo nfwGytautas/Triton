@@ -1,142 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="TritonPlatform2">
-      <UniqueIdentifier>{9C2AB22E-08B6-1FF3-11C7-A2E77DD17BF3}</UniqueIdentifier>
+    <Filter Include="CrossTypes">
+      <UniqueIdentifier>{0454463B-F00B-8888-5913-61E445EA2279}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\CrossTypes">
-      <UniqueIdentifier>{CA8CAE9E-B69C-5A6F-1F56-BF8D0B854908}</UniqueIdentifier>
+    <Filter Include="CrossTypes\Core">
+      <UniqueIdentifier>{DC9A2835-4826-96F9-5137-19EEBD41F2F9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\CrossTypes\Core">
-      <UniqueIdentifier>{623F5168-CE22-60A8-D725-8EE4438826F9}</UniqueIdentifier>
+    <Filter Include="CrossTypes\Core\State">
+      <UniqueIdentifier>{2CFF8196-986B-3D91-615F-D5EECD8A5FF9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\CrossTypes\Core\State">
-      <UniqueIdentifier>{32709121-9E34-9011-679A-C0DBD31D2C47}</UniqueIdentifier>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{D86A6D73-444A-EC0E-4D62-77E5B9C05270}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\DirectX">
-      <UniqueIdentifier>{5EE9D4F6-CA20-1D8E-D32A-81B13FE14387}</UniqueIdentifier>
+    <Filter Include="DirectX\BasicTypes">
+      <UniqueIdentifier>{3E078CB2-2AEB-4C08-934B-475B7F4E378A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\DirectX\BasicTypes">
-      <UniqueIdentifier>{04A6EB4E-F0E1-EEB8-59F4-06B0454F97D3}</UniqueIdentifier>
+    <Filter Include="DirectX\Core">
+      <UniqueIdentifier>{3016B3DD-1C79-4282-C5FE-7A38B1400E05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TritonPlatform2\DirectX\Core">
-      <UniqueIdentifier>{76980CBC-6253-FC67-0B0B-75B2F7A446F8}</UniqueIdentifier>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{5032B729-BC11-36C5-C529-C19B31889C26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\Core">
+      <UniqueIdentifier>{A8481C34-94AB-ABD8-3D31-E48E2973775B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\TritonGraphicsAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Audio.h">
+      <Filter>CrossTypes</Filter>
+    </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Base.h">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
+      <Filter>CrossTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\AudioContext.h">
+      <Filter>CrossTypes\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Context.h">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Renderer.h">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.h">
-      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+      <Filter>CrossTypes\Core\State</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.h">
-      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+      <Filter>CrossTypes\Core\State</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Core\Window.h">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Shader.h">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
+      <Filter>CrossTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Texture.h">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
+      <Filter>CrossTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\CrossTypes\VAO.h">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
+      <Filter>CrossTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.h">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.h">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.h">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.h">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXContext.h">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXRenderer.h">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\Core\DXWindow.h">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\DirectX\DXMacros.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\DXManip.h">
-      <Filter>TritonPlatform2\DirectX</Filter>
+      <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\DXTypes.h">
-      <Filter>TritonPlatform2\DirectX</Filter>
+      <Filter>DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\DirectX\Macros.h">
-      <Filter>TritonPlatform2\DirectX</Filter>
+    <ClInclude Include="src\TritonPlatform2\PlatformAbstraction.h" />
+    <ClInclude Include="src\TritonPlatform2\Windows\Core\WindowsAudioContext.h">
+      <Filter>Windows\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\PlatformAbstraction.h">
-      <Filter>TritonPlatform2</Filter>
+    <ClInclude Include="src\TritonPlatform2\Windows\WindowsMacros.h">
+      <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\mathematical.h">
-      <Filter>TritonPlatform2</Filter>
-    </ClInclude>
+    <ClInclude Include="src\TritonPlatform2\mathematical.h" />
+    <ClInclude Include="src\TritonPlatform2\Windows\WindowsAudio.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\AudioContext.cpp">
+      <Filter>CrossTypes\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Context.cpp">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Renderer.cpp">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Keyboard.cpp">
-      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+      <Filter>CrossTypes\Core\State</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp">
-      <Filter>TritonPlatform2\CrossTypes\Core\State</Filter>
+      <Filter>CrossTypes\Core\State</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Window.cpp">
-      <Filter>TritonPlatform2\CrossTypes\Core</Filter>
+      <Filter>CrossTypes\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp">
-      <Filter>TritonPlatform2\CrossTypes</Filter>
+      <Filter>CrossTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.cpp">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.cpp">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.cpp">
-      <Filter>TritonPlatform2\DirectX\BasicTypes</Filter>
+      <Filter>DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXContext.cpp">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXRenderer.cpp">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\Core\DXWindow.cpp">
-      <Filter>TritonPlatform2\DirectX\Core</Filter>
+      <Filter>DirectX\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\DXManip.cpp">
-      <Filter>TritonPlatform2\DirectX</Filter>
+      <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp">
-      <Filter>TritonPlatform2</Filter>
+    <ClCompile Include="src\TritonPlatform2\PlatformAbstraction.cpp" />
+    <ClCompile Include="src\TritonPlatform2\Windows\Core\WindowsAudioContext.cpp">
+      <Filter>Windows\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\mathematical.cpp">
-      <Filter>TritonPlatform2</Filter>
-    </ClCompile>
+    <ClCompile Include="src\TritonPlatform2\mathematical.cpp" />
+    <ClCompile Include="src\TritonPlatform2\Windows\WindowsAudio.cpp" />
   </ItemGroup>
 </Project>
