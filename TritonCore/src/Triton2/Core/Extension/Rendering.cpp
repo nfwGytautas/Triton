@@ -11,6 +11,9 @@
 #include "Triton2/Instance/Engine.h"
 #include "Triton2/Core/Extension/Text.h"
 
+#include "Triton2/Utility/Log.h"
+#include "Triton2/Utility/Timer.h"
+
 namespace Triton
 {
 	namespace Extension
@@ -47,8 +50,7 @@ namespace Triton
 
 					shader->enable();
 
-					texture = batch.Material->mainTexture()->texture();
-					texture->enable();
+					batch.Material->enableTextures();
 
 					currentMaterial = batch.Material->getName();
 				}
@@ -76,6 +78,7 @@ namespace Triton
 
 		void renderText(const std::string& text, const std::string& fontName, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager)
 		{
+			// TEMPORARY
 			static reference<Graphics::VAO> vao = nullptr;
 
 			if (assetManager->hasAsset("textShader") && assetManager->hasAsset(fontName))

@@ -9,155 +9,77 @@ namespace Triton
 	{
 		namespace Thread
 		{
-			WorkerThread::WorkerThread()
-				: m_terminated(false)
-			{
-				m_thread = std::thread(std::bind(&WorkerThread::process, this));
-			}
-
-			WorkerThread::~WorkerThread()
-			{
-				terminate();
-			}
-
-			void WorkerThread::wait()
-			{
-				while (isRunning())
-				{ }
-			}
-
-			void WorkerThread::terminate()
-			{
-				if(!m_terminated)
-				{
-					m_terminated = true;
-					m_cv.notify_one();
-					m_thread.join();
-				}
-			}
-
-			void WorkerThread::addTask(std::function<void()> task)
-			{
-				std::lock_guard<std::mutex> guard(m_queueLock);
-
-				if (m_terminated)
-				{
-					return;
-				}
-
-				m_tasks.push(task);
-				m_cv.notify_one();
-			}
-
-			bool WorkerThread::isRunning() const
-			{
-				return !m_tasks.empty();
-			}
-
-			size_t WorkerThread::taskCount() const
-			{
-				return m_tasks.size();
-			}
-
-			void WorkerThread::process()
-			{
-				for (;;)
-				{
-					std::function<void()> task;
-
-					{
-						std::unique_lock<std::mutex> guard(m_queueLock);
-						m_cv.wait(guard, [&] { return !m_tasks.empty() || this->m_terminated; });
-						if (this->m_terminated || this->m_tasks.empty())
-						{
-							return;
-						}
-
-						task = std::move(m_tasks.front());
-						m_tasks.pop();
-					}
-
-					task();
-				}
-			}
-
 			ThreadPool::ThreadPool()
-				: m_size(std::thread::hardware_concurrency()),
-				m_stopped(false)
+				: ThreadPool(std::thread::hardware_concurrency())
 			{
-				createPool();
+				
 			}
 
-			ThreadPool::ThreadPool(std::size_t threadCount)
-				: m_size(threadCount),
-				m_stopped(false)
+			ThreadPool::ThreadPool(size_t threadCount)
+				: m_runningTasks(), m_terminated()
 			{
-				createPool();
+				for (unsigned int i = 0; i < threadCount; ++i)
+				{
+					m_threads.emplace_back(std::bind(&ThreadPool::threadProcess, this));
+				}
 			}
 
 			ThreadPool::~ThreadPool()
 			{
-				wait();
-				terminate();
-			}
+				std::unique_lock<std::mutex> latch(m_queueMutex);
+				m_terminated = true;
+				m_cvTask.notify_all();
+				latch.unlock();
 
-			void ThreadPool::run(std::function<void()> task)
-			{
-				size_t worker = getWorker();
-				m_workers[worker]->addTask(std::move(task));
-			}
-
-			size_t ThreadPool::getWorker()
-			{
-				// Default add to 0 thread
-				size_t idLeast = 0;
-				size_t tasks = m_workers[0]->taskCount();
-
-				for (size_t i = 1; i < m_workers.size(); i++)
-				{
-					size_t taskCount = m_workers[i]->taskCount();
-					if (tasks > taskCount)
-					{
-						idLeast = i;
-						tasks = taskCount;
-					}
-				}
-
-				return idLeast;
+				for (auto& t : m_threads)
+					t.join();
 			}
 
 			void ThreadPool::wait()
 			{
-				std::lock_guard<decltype(m_lock)> pl(m_lock);
-				for (const auto& w : m_workers)
+				std::unique_lock<std::mutex> lock(m_queueMutex);
+				m_cvFinished.wait(lock, [this]() { return m_tasks.empty() && (m_runningTasks == 0); });
+			}
+
+			bool ThreadPool::isStopped() const
+			{
+				return m_terminated;
+			}
+
+			void ThreadPool::threadProcess()
+			{
+				while (true)
 				{
-					w->wait();
+					std::unique_lock<std::mutex> latch(m_queueMutex);
+					m_cvTask.wait(latch, [this]() { return m_terminated || !m_tasks.empty(); });
+					if (!m_tasks.empty())
+					{
+						++m_runningTasks;
+
+						auto fn = m_tasks.front();
+						m_tasks.pop_front();
+
+						// Async
+						latch.unlock();
+						fn();
+						latch.lock();
+
+						--m_runningTasks;
+						m_cvFinished.notify_one();
+					}
+					else if (m_terminated)
+					{
+						break;
+					}
 				}
 			}
 
 			void ThreadPool::terminate()
 			{
-				std::lock_guard<decltype(m_lock)> pl(m_lock);
-				// Join everything
-				for (auto& w : m_workers)
-				{
-					w->terminate();
-				}
+				m_terminated = true;
 			}
 
-			void ThreadPool::createPool()
-			{
-				std::lock_guard<decltype(m_lock)> pl(m_lock);
-				for (std::size_t i = 0; i < m_size; i++)
-				{
-					m_workers.push_back(std::make_unique<WorkerThread>());
-				}
-			}
 
-			bool ThreadPool::isStopped() const
-			{
-				return m_stopped;
-			}
 		}
 	}
 }

@@ -18,10 +18,10 @@ namespace Triton
 		struct MaterialData
 		{
 			/**
-			 * Main texture name used for the material
+			 * Textures used for the material
 			 * Since 00_00_00
 			 */
-			std::string MainTexture;
+			std::vector<std::string> Textures;
 
 			/**
 			 * Shader name used for the material

@@ -25,7 +25,7 @@ namespace Triton
 		void DXTexture::enable()
 		{
 			// Set shader texture resource in the pixel shader.
-			m_deviceContext->PSSetShaderResources(0, 1, &m_textureView);
+			m_deviceContext->PSSetShaderResources(Slot, 1, &m_textureView);
 		}
 
 		void DXTexture::disable()

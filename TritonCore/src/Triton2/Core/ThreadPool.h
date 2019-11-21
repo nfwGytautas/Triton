@@ -11,81 +11,9 @@ namespace Triton
 		namespace Thread
 		{
 			/**
-			 * A class that wraps std::thread and a std::queue to create a wrapper
-			 * and allow for parallel tasking
-			 */
-			class WorkerThread
-			{
-			public:
-				/**
-				 * Create a WorkerThread instance
-				 * Starts the thread automatically as soon as it gets created
-				 */
-				WorkerThread();
-
-				/**
-				 * Wait for the thread and join it and then destroy WorkerThread instance
-				 */
-				~WorkerThread();
-
-				/**
-				 * Wait until there is no longer any work to be done
-				 * Does not join the thread
-				 */
-				void wait();
-
-				/**
-				 * Wait for work to be complete and then join the thread
-				 */
-				void terminate();
-
-				/**
-				 * Add a task for this worker
-				 *
-				 * @param task A function that return nothing and takes nothing as a task
-				 */
-				void addTask(std::function<void()> task);
-
-				/**
-				 * Check if this worker has work to do e.g. tasks queue isn't empty
-				 * 
-				 * @return True if queue isn't empty, false otherwise
-				 */
-				bool isRunning() const;
-
-				/**
-				 * Get the amount of tasks left for this worker
-				 *
-				 * @return Amount of tasks inside the queue
-				 */
-				size_t taskCount() const;
-			private:
-				/**
-				 * The inner loop of the std::thread
-				 */
-				void process();
-			private:
-				/// Atomic variable to keep track if the worker has been terminated or not
-				std::atomic<bool> m_terminated;
-
-				/// Underlying thread object
-				std::thread m_thread;
-
-				/// Condition variable used to notify the worker about changes to queue
-				std::condition_variable m_cv;
-
-				/// Mutex to make sure that no race conditions or deadlocks appear when interacting with queue
-				mutable std::mutex m_queueLock;
-
-				/// Task queue
-				std::queue<std::function<void()>> m_tasks;
-			};
-
-
-			/**
-			 * Class used to manage multiple worker threads
+			 * Class used to manage multiple worker threads and a single task queue
 			 *
-			 * One queue per worker
+			 * One queue per pool
 			 */
 			class ThreadPool
 			{
@@ -108,12 +36,17 @@ namespace Triton
 				~ThreadPool();
 
 				/**
-				 * Run a task on the thread pool
+				 * Add a task to the pool queue
 				 *
-				 * @param task A function that takes nothing and returns nothing
-				 * @return Future of the task
+				 * @param task A task that takes nothing and returns void
 				 */
-				void run(std::function<void()> task);
+				template<class F>
+				void enqueue(F&& task)
+				{
+					std::unique_lock<std::mutex> lock(m_queueMutex);
+					m_tasks.emplace_back(std::forward<F>(task));
+					m_cvTask.notify_one();
+				}
 
 				/**
 				 * Wait for all workers inside this thread pool
@@ -121,23 +54,16 @@ namespace Triton
 				void wait();
 
 				/**
-				* Check the state of the thread pool
-				*
-				* @return True if the ThreadPool is stopped, false otherwise
-				*/
+				 * Check the state of the thread pool
+				 *
+				 * @return True if the ThreadPool is stopped, false otherwise
+				 */
 				bool isStopped() const;
 			private:
 				/**
-				 * Get the worker for who the pool should assign the task to
-				 *
-				 * @return ID of the worker to add the task to
+				 * Function ran by all pool threads
 				 */
-				size_t getWorker();
-
-				/**
-				 * Creates a threadCount amount of threads for the pool
-				 */
-				void createPool();
+				void threadProcess();
 
 				/**
 				 * Stops the ThreadPool entirely
@@ -145,16 +71,25 @@ namespace Triton
 				void terminate();
 
 				/// Vector of workers created by this pool
-				std::vector<std::unique_ptr<WorkerThread>> m_workers;
+				std::vector<std::thread> m_threads;
+
+				/// Queue of tasks
+				std::deque<std::function<void()>> m_tasks;
 
 				/// Mutex for keeping the thread pool thread safe
-				mutable std::mutex m_lock;
+				mutable std::mutex m_queueMutex;
 
-				/// Variable to check if the pool has been stopped
-				std::atomic<bool> m_stopped;
+				/// Condition variable to notify task queue changes
+				std::condition_variable m_cvTask;
 
-				/// Size of the pool.
-				const std::size_t m_size;
+				/// Condition variable to notify task completion
+				std::condition_variable m_cvFinished;
+
+				/// Variable to keep track of how many tasks are being executed right now
+				unsigned int m_runningTasks;
+
+				/// Boolean to check if the thread pool is terminated or not
+				bool m_terminated;
 			};
 		}
 	}

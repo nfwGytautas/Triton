@@ -65,6 +65,8 @@ namespace Triton
 				&objectToStoreIn->BPP,
 				desiredBPP));
 
+			objectToStoreIn->BPP = desiredBPP;
+
 			// Check if load was successful
 			if (!objectToStoreIn->buffer)
 			{

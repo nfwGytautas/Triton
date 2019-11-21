@@ -86,6 +86,20 @@ namespace Triton
 				return it != m_assets.end();
 			}
 
+			bool hasAssets(const std::vector<std::string>& names) const
+			{
+				for (const std::string& name : names)
+				{
+					auto it = std::find_if(m_assets.begin(), m_assets.end(), [&](const reference<Asset>& asset) {return asset->getName() == name; });
+					if (it == m_assets.end())
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+
 			void loadAssetByName(const std::string& name)
 			{
 				if (hasAsset(name))
@@ -98,8 +112,9 @@ namespace Triton
 
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
+				m_loading.push_back(name);
 
-				m_tPool.run([&, name]()
+				m_tPool.enqueue([&, name]()
 				{
 					auto f = name;
 					loadAssetByNameInternalMT(f);
@@ -114,7 +129,7 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
-				m_tPool.run([&, file]()
+				m_tPool.enqueue([&, file]()
 				{
 					auto f = file;
 					loadAssetInternalMT(f); 
@@ -127,6 +142,12 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
+
+				auto it = std::find_if(m_loading.begin(), m_loading.end(), [&](const std::string& name) {return asset->getName() == name; });
+				if (it != m_loading.end())
+				{
+					m_loading.erase(it);
+				}
 
 				m_callback(asset);
 			}
@@ -141,6 +162,10 @@ namespace Triton
 			void wait()
 			{
 				m_tPool.wait();
+
+				while (m_loading.size() > 0)
+				{
+				}
 			}
 
 			reference<Asset> waitFor(const std::string& name, unsigned int amount)
@@ -209,6 +234,9 @@ namespace Triton
 			/// Map of asset name to asset reference
 			std::vector<reference<Asset>> m_assets;
 
+			/// Vector containing all the assets that are currently being loaded
+			std::vector<std::string> m_loading;
+
 			/// Callback to engine
 			AssetManager::AssetAddedCallback m_callback;
 
@@ -256,6 +284,11 @@ namespace Triton
 		bool AssetManager::hasAsset(const std::string& name) const
 		{
 			return m_impl->hasAsset(name);
+		}
+
+		bool AssetManager::hasAssets(const std::vector<std::string>& names) const
+		{
+			return m_impl->hasAssets(names);
 		}
 
 		void AssetManager::loadAssetByName(const std::string& name)

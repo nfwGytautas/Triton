@@ -6,151 +6,162 @@ Triton::Engine& engine = Triton::Engine::getInstance();
 Triton::Graphics::Window* window;
 Triton::Graphics::Renderer* renderer;
 
-void createAssets()
+void exportMesh(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
 {
 	using namespace Triton;
 
-	Triton::Core::AssetDictionary dict(Triton::Core::AssetDictionary::c_LatestVersion);
-
-	IO::IntermediateAsset audioAsset;
-	audioAsset.Version = IO::Serialization::c_Version_Latest;
-	audioAsset.Name = "audioTest";
-	audioAsset.Type = IO::Serialization::v_latest::c_AudioType;
-	audioAsset.Data = std::make_shared<IO::AudioData>();
-
-	IO::loadAudioFromDisk("../Assets/Audio/example_audio.wav", (IO::AudioData*)audioAsset.Data.get());
-
-	IO::saveAssetToDisk("../Assets/Audio/audioTest.asset", &audioAsset);
-
-	dict.associate(audioAsset.Name, { "../Assets/Audio/audioTest.asset", false, Core::AssetDictionary::EntryType::Asset });
-
-	IO::IntermediateAsset fontAsset;
-	fontAsset.Version = IO::Serialization::c_Version_Latest;
-	fontAsset.Name = "arialFont";
-	fontAsset.Type = IO::Serialization::v_latest::c_FontType;
-	fontAsset.Data = std::make_shared<IO::FontData>();
-
-	IO::loadFontFromDisk("../Assets/Fonts/arial.ttf", (IO::FontData*)fontAsset.Data.get());
-
-	IO::saveAssetToDisk("../Assets/Fonts/arialFont.asset", &fontAsset);
-
-	dict.associate(fontAsset.Name, { "../Assets/Fonts/arialFont.asset", false, Core::AssetDictionary::EntryType::Asset });
-
-	IO::IntermediateAsset textShader;
-	textShader.Version = IO::Serialization::c_Version_Latest;
-	textShader.Name = "textShader";
-	textShader.Type = IO::Serialization::v_latest::c_ShaderType;
-	textShader.Data = std::make_shared<IO::ShaderData>();
-
-	auto sDatap5 = (IO::ShaderData*)textShader.Data.get();
-	IO::readFileFromDisk("C:\\dev\\Triton\\Shaders\\Text.hlsl", &sDatap5->source);
-	sDatap5->vertexEntry = "vertex_text";
-	sDatap5->pixelEntry = "pixel_text";
-	sDatap5->flags.set(Flags::sFlag_Matrices);
-
-	IO::saveAssetToDisk("../Assets/textShader.asset", &textShader);
-
-	dict.associate(textShader.Name, { "../Assets/textShader.asset", false, Core::AssetDictionary::EntryType::Asset });
-
 	IO::IntermediateAsset testMesh;
 	testMesh.Version = IO::Serialization::c_Version_Latest;
-	testMesh.Name = "testMesh";
+	testMesh.Name = name;
 	testMesh.Type = IO::Serialization::v_latest::c_MeshType;
 	testMesh.Data = std::make_shared<IO::MeshData>();
 
-	// This is a model for the asset could be anything
-	// These models can be found in the Assets folder
-	IO::loadMeshFromDisk("C:\\dev\\Triton\\Models\\shaderBall.obj", (IO::MeshData*)testMesh.Data.get());
+	IO::loadMeshFromDisk(from, (IO::MeshData*)testMesh.Data.get());
 
-	IO::saveAssetToDisk("../Assets/testMesh.asset", &testMesh);
+	IO::saveAssetToDisk(to, &testMesh);
 
-	dict.associate(testMesh.Name, { "../Assets/testMesh.asset", false, Core::AssetDictionary::EntryType::Asset });
+	dict.associate(testMesh.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
 
-
-	IO::IntermediateAsset meshAsset;
-	meshAsset.Version = IO::Serialization::c_Version_Latest;
-	meshAsset.Name = "stallMesh";
-	meshAsset.Type = IO::Serialization::v_latest::c_MeshType;
-	meshAsset.Data = std::make_shared<IO::MeshData>();
-
-	// This is a model for the asset could be anything
-	// These models can be found in the Assets folder
-	IO::loadMeshFromDisk("D:\\Programming\\Test files\\nfw\\stall.obj", (IO::MeshData*)meshAsset.Data.get());
-
-	IO::saveAssetToDisk("../Assets/stall.asset", &meshAsset);
-
-	dict.associate(meshAsset.Name, { "../Assets/stall.asset", false, Core::AssetDictionary::EntryType::Asset });
-
-
-	IO::IntermediateAsset simpleShader;
-	simpleShader.Version = IO::Serialization::c_Version_Latest;
-	simpleShader.Name = "simpleShader";
-	simpleShader.Type = IO::Serialization::v_latest::c_ShaderType;
-	simpleShader.Data = std::make_shared<IO::ShaderData>();
-
-	auto sDatap = (IO::ShaderData*)simpleShader.Data.get();
-	// This is the shader for the asset could be anything
-	// This shader can be found in the Assets folder
-	IO::readFileFromDisk("C:\\dev\\Triton\\Shaders\\Simple.hlsl", &sDatap->source);
-	sDatap->vertexEntry = "vertex_Simple";
-	sDatap->pixelEntry = "pixel_Simple";
-	sDatap->flags.set(Flags::sFlag_Matrices);
-
-	IO::saveAssetToDisk("../Assets/simpleShader.asset", &simpleShader);
-
-	dict.associate(simpleShader.Name, { "../Assets/simpleShader.asset", false });
-
-	IO::IntermediateAsset lightingShader;
-	lightingShader.Version = IO::Serialization::c_Version_Latest;
-	lightingShader.Name = "lightingShader";
-	lightingShader.Type = IO::Serialization::v_latest::c_ShaderType;
-	lightingShader.Data = std::make_shared<IO::ShaderData>();
-
-	auto sDatap2 = (IO::ShaderData*)lightingShader.Data.get();
-	// This is the shader for the asset could be anything
-	// This shader can be found in the Assets folder
-	IO::readFileFromDisk("C:\\dev\\Triton\\Shaders\\Lighting.hlsl", &sDatap2->source);
-	sDatap2->vertexEntry = "vertex_lighting";
-	sDatap2->pixelEntry = "pixel_lighting";
-	sDatap2->flags.set(Flags::sFlag_Matrices);
-	sDatap2->flags.set(Flags::sFlag_Settings);
-	sDatap2->flags.set(Flags::sFlag_Lighting);
-	sDatap2->flags.set(Flags::sFlag_Camera);
-
-	IO::saveAssetToDisk("../Assets/lightingShader.asset", &lightingShader);
-
-	dict.associate(lightingShader.Name, { "../Assets/lightingShader.asset", false, Core::AssetDictionary::EntryType::Asset });
+void exportTexture(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
+{
+	using namespace Triton;
 
 	IO::IntermediateAsset textureAsset;
 	textureAsset.Version = IO::Serialization::c_Version_Latest;
-	textureAsset.Name = "stallTexture";
+	textureAsset.Name = name;
 	textureAsset.Type = IO::Serialization::v_latest::c_ImageType;
 	textureAsset.Data = std::make_shared<IO::ImageData>();
 
 	auto tDatap = (IO::ImageData*)textureAsset.Data.get();
 	// This is the shader for the asset could be anything
 	// This shader can be found in the Assets folder
-	IO::loadImageFromDisk("D:\\Programming\\Test files\\nfw\\stallTexture.png", tDatap);
+	IO::loadImageFromDisk(from, tDatap);
 
-	IO::saveAssetToDisk("../Assets/texture.asset", &textureAsset);
+	IO::saveAssetToDisk(to, &textureAsset);
 
-	dict.associate(textureAsset.Name, { "../Assets/texture.asset", false, Core::AssetDictionary::EntryType::Asset });
+	dict.associate(textureAsset.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
+
+void exportAudio(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
+{
+	using namespace Triton;
+
+	IO::IntermediateAsset audioAsset;
+	audioAsset.Version = IO::Serialization::c_Version_Latest;
+	audioAsset.Name = name;
+	audioAsset.Type = IO::Serialization::v_latest::c_AudioType;
+	audioAsset.Data = std::make_shared<IO::AudioData>();
+
+	IO::loadAudioFromDisk(from, (IO::AudioData*)audioAsset.Data.get());
+
+	IO::saveAssetToDisk(to, &audioAsset);
+
+	dict.associate(audioAsset.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
+
+void exportFont(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
+{
+	using namespace Triton;
+
+	IO::IntermediateAsset fontAsset;
+	fontAsset.Version = IO::Serialization::c_Version_Latest;
+	fontAsset.Name = name;
+	fontAsset.Type = IO::Serialization::v_latest::c_FontType;
+	fontAsset.Data = std::make_shared<IO::FontData>();
+
+	IO::loadFontFromDisk(from, (IO::FontData*)fontAsset.Data.get());
+
+	IO::saveAssetToDisk(to, &fontAsset);
+
+	dict.associate(fontAsset.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
+
+void exportShader(Triton::Core::AssetDictionary& dict, 
+	const std::string& from, const std::string& to, const std::string& vertex, const std::string& pixel, 
+	std::vector<int> flags, const std::string& name)
+{
+	using namespace Triton;
+
+	IO::IntermediateAsset textShader;
+	textShader.Version = IO::Serialization::c_Version_Latest;
+	textShader.Name = name;
+	textShader.Type = IO::Serialization::v_latest::c_ShaderType;
+	textShader.Data = std::make_shared<IO::ShaderData>();
+
+	auto sDatap5 = (IO::ShaderData*)textShader.Data.get();
+	IO::readFileFromDisk(from, &sDatap5->source);
+	sDatap5->vertexEntry = vertex;
+	sDatap5->pixelEntry = pixel;
+	
+	for (int flag : flags)
+	{
+		sDatap5->flags.set(flag);
+	}
+
+	IO::saveAssetToDisk(to, &textShader);
+
+	dict.associate(textShader.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
+
+void exportMaterial(Triton::Core::AssetDictionary& dict, const std::string& to, const std::string& shader, 
+	std::vector<std::string> textures, const std::string& name)
+{
+	using namespace Triton;
 
 	IO::IntermediateAsset materialAsset;
 	materialAsset.Version = IO::Serialization::c_Version_Latest;
-	materialAsset.Name = "stallMaterial";
+	materialAsset.Name = name;
 	materialAsset.Type = IO::Serialization::v_latest::c_MaterialType;
 	materialAsset.Data = std::make_shared<IO::MaterialData>();
 
 	auto mDatap = (IO::MaterialData*)materialAsset.Data.get();
-	mDatap->MainTexture = "stallTexture";
-	mDatap->Shader = "lightingShader";
+	mDatap->Textures = textures;
+	mDatap->Shader = shader;
 
-	IO::saveAssetToDisk("../Assets/material.asset", &materialAsset);
+	IO::saveAssetToDisk(to, &materialAsset);
 
-	dict.associate(materialAsset.Name, { "../Assets/material.asset", false, Core::AssetDictionary::EntryType::Asset });
+	dict.associate(materialAsset.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
+}
+
+void createAssets()
+{
+	using namespace Triton;
+
+	Triton::Core::AssetDictionary dict(Triton::Core::AssetDictionary::c_LatestVersion);
+
+	exportAudio(dict, "../Assets/Audio/example_audio.wav", "../Assets/Audio/audioTest.asset", "audioTest");
+
+	exportFont(dict, "../Assets/Fonts/arial.ttf", "../Assets/Fonts/arialFont.asset", "arialFont");
+
+	exportMesh(dict, "C:\\dev\\Triton\\Models\\shaderBall.obj", "../Assets/testMesh.asset", "testMesh");
+	exportMesh(dict, "D:\\Programming\\Test files\\nfw\\stall.obj", "../Assets/stall.asset", "stallMesh");
+	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/flatPlain.asset", "flatPlainMesh");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Text.hlsl", "../Assets/textShader.asset", "vertex_text",
+		"pixel_text", { Flags::sFlag_Matrices }, "textShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Simple.hlsl", "../Assets/simpleShader.asset", "vertex_Simple",
+		"pixel_Simple", { Flags::sFlag_Matrices }, "simpleShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\MultiTexture.hlsl", "../Assets/multiShader.asset", "vertex_multi",
+		"pixel_multi", { Flags::sFlag_Matrices }, "multiTextureNoLightShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Lighting.hlsl", "../Assets/lightingShader.asset", "vertex_lighting",
+		"pixel_lighting", { Flags::sFlag_Matrices, Flags::sFlag_Settings, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "lightingShader");
+
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stallTexture.png", "../Assets/texture.asset", "stallTexture");
+
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\dirt01.png", "../Assets/dirt01.asset", "dirt_1");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stone01.png", "../Assets/stone01.asset", "stone_1");
+
+	exportMaterial(dict, "../Assets/material.asset", "lightingShader", { "stallTexture" }, "stallMaterial");
+
+	exportMaterial(dict, "../Assets/plainMaterial.asset", "multiTextureNoLightShader", { "stone_1", "dirt_1" }, "plainMaterial");
 
 	
+
+
 	Scene scene("sample");
 
 	PointLight pl;
@@ -187,14 +198,25 @@ void createAssets()
 	scene_assets.push_back("stallMaterial");
 	scene_assets.push_back("arialFont");
 	scene_assets.push_back("textShader");
+	scene_assets.push_back("simpleShader");
 	scene_assets.push_back("testMesh");
 	scene_assets.push_back("audioTest");
+	scene_assets.push_back("flatPlainMesh");
+	scene_assets.push_back("plainMaterial");
+	scene_assets.push_back("dirt_1");
+	scene_assets.push_back("stone_1");
+	scene_assets.push_back("multiTextureNoLightShader");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
 	registry->assign<Components::MetaComponent>(entity, "stall");
 	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(entity, "stallMesh", "stallMaterial");
+
+	auto plainEntity = registry->create();
+	registry->assign<Components::MetaComponent>(plainEntity, "plain1");
+	registry->assign<Components::Transform>(plainEntity, Triton::Vector3(15, 0, 20), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Visual>(plainEntity, "flatPlainMesh", "plainMaterial");
 
 	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
 	scene.setActiveCamera("mainCamera");
@@ -257,6 +279,7 @@ int main()
 	int frames = 0;
 	long double frameSum = 0;
 
+	engine.assets().waitFor("audioTest", 0);
 	reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
 
 	while (!window->isClosed())
@@ -287,10 +310,10 @@ int main()
 
 		frames++;
 
-		if (frames == 6000)
+		if (frames == 1000)
 		{
 			frameSum = frameSum / frames;
-			TR_SYSTEM_ERROR("AVERAGE FPS FOR 6000 FRAMES: {0}", frameSum);
+			TR_SYSTEM_ERROR("AVERAGE FPS FOR 1000 FRAMES: {0}", frameSum);
 			frameSum = 0;
 			frames = 0;
 		}

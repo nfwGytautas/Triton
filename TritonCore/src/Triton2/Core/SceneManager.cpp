@@ -85,7 +85,7 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
-				m_tPool.run([&, name]()
+				m_tPool.enqueue([&, name]()
 				{
 					auto f = name;
 					loadSceneByNameInternalMT(f);
@@ -100,7 +100,7 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 
-				m_tPool.run([&, file]()
+				m_tPool.enqueue([&, file]()
 				{
 					auto f = file;
 					loadSceneInternalMT(f); 

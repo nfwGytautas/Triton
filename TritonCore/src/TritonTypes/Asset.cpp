@@ -5,6 +5,8 @@
 #include "Triton2/File/File.h"
 #include "Triton2/Utility/Log.h"
 
+#include "Triton2/Assert.h"
+
 namespace Triton
 {
 	Asset::Asset(std::string name)
@@ -135,9 +137,17 @@ namespace Triton
 	{
 	}
 
-	reference<ImageAsset> MaterialAsset::mainTexture() const
+	std::vector<reference<ImageAsset>> MaterialAsset::textures() const
 	{
-		return m_mainTexture;
+		return m_textures;
+	}
+
+	void MaterialAsset::enableTextures()
+	{
+		for (const reference<ImageAsset>& texture : m_textures)
+		{
+			texture->texture()->enable();
+		}
 	}
 
 	reference<ShaderAsset> MaterialAsset::shader() const
@@ -147,8 +157,10 @@ namespace Triton
 
 	void MaterialAsset::create(Graphics::Context* gContext)
 	{
-		m_mainTextureName = m_data->MainTexture;
+		m_textureNames = m_data->Textures;
 		m_shaderName = m_data->Shader;
+
+		m_dependencies = true;
 
 		delete m_data;
 		m_data = nullptr;
@@ -156,13 +168,27 @@ namespace Triton
 
 	void MaterialAsset::resolveDependencies(const Core::AssetManager& manager)
 	{
-		if (!manager.hasAsset(m_mainTextureName) || !manager.hasAsset(m_shaderName))
+		if (!m_dependencies)
 		{
 			return;
 		}
 
-		m_mainTexture = manager.getAsset(m_mainTextureName).as<ImageAsset>();
+		if (!manager.hasAssets(m_textureNames) || !manager.hasAsset(m_shaderName))
+		{
+			TR_SYSTEM_WARN("Lacking dependencies for '{0}'", this->getName());
+			TR_WARN("Lacking dependencies for '{0}'", this->getName());
+			return;
+		}
+
+		for (size_t i = 0; i < m_textureNames.size(); i++)
+		{
+			m_textures.push_back(manager.getAsset(m_textureNames[i]).as<ImageAsset>());
+			m_textures.back()->texture()->Slot = i;
+		}
+		
 		m_shader = manager.getAsset(m_shaderName).as<ShaderAsset>();
+
+		m_dependencies = false;
 	}
 
 	Asset::AssetType MaterialAsset::type()
@@ -172,14 +198,20 @@ namespace Triton
 
 	bool MaterialAsset::isCreated() const
 	{
-		bool v = (m_data == nullptr && m_mainTexture.valid());
-
-		if (v)
+		if (m_data != nullptr)
 		{
-			v = m_mainTexture->isCreated();
+			return false;
 		}
 
-		return v;
+		for (const reference<ImageAsset>& texture : m_textures)
+		{
+			if (!texture.valid() || !texture->texture().valid())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	FontAsset::FontAsset(std::string name, IO::FontData* data)

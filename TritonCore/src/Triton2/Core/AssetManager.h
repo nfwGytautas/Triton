@@ -76,6 +76,14 @@ namespace Triton
 			bool hasAsset(const std::string& name) const;
 
 			/**
+			 * Check if assets with a names already exists
+			 *
+			 * @param name Names of the assets
+			 * @return True if the asset manager has loaded assets with the given name
+			 */
+			bool hasAssets(const std::vector<std::string>& names) const;
+
+			/**
 			 * Check if an asset with a name already exists
 			 *
 			 * @param name Name of the asset

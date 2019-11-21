@@ -343,12 +343,11 @@ namespace Triton
 					 *	'data for the asset'
 					 */
 
-					archive(objectToStoreIn->MainTexture,
+					archive(objectToStoreIn->Textures,
 						objectToStoreIn->Shader);
 
-					 // Check for errors in loading
-					if (objectToStoreIn->MainTexture == "" ||
-						objectToStoreIn->MainTexture.find_first_not_of(' ') == std::string::npos)
+					// Check for errors in loading
+					if (objectToStoreIn->Textures.size() < 1)
 					{
 						status.status = IOStatus::IO_INCORRECT_FORMAT;
 						return status;
@@ -592,8 +591,7 @@ namespace Triton
 					 */
 
 					 // Check for errors in loading
-					if (rawData->MainTexture == "" ||
-						rawData->MainTexture.find_first_not_of(' ') == std::string::npos)
+					if (rawData->Textures.size() < 1)
 					{
 						status.status = IOStatus::IO_INCORRECT_FORMAT;
 						return status;
@@ -606,7 +604,7 @@ namespace Triton
 						return status;
 					}
 
-					archive(rawData->MainTexture,
+					archive(rawData->Textures,
 						rawData->Shader);
 
 					return status;

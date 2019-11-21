@@ -100,6 +100,10 @@ namespace Triton
 		 * @return Asset::AssetType enum representing the type of the asset
 		 */
 		virtual AssetType type() = 0;
+
+	protected:
+		/// Variable to keep track if the asset has loaded it's dependencies already or not
+		bool m_dependencies = false;
 	private:
 		/// The name of the asset
 		std::string m_name;
@@ -228,11 +232,16 @@ namespace Triton
 		MaterialAsset(std::string name, IO::MaterialData* data);
 
 		/**
-		 * Get the ImageAsset associated with this material asset
+		 * Get the ImageAssets associated with this material asset
 		 *
-		 * @return reference to an ImageAsset instance
+		 * @return references to an ImageAsset instance
 		 */
-		reference<ImageAsset> mainTexture() const;
+		std::vector<reference<ImageAsset>> textures() const;
+
+		/**
+		 * Enables all textures of this material
+		 */
+		void enableTextures();
 
 		/**
 		 * Get the ShaderAsset associated with this material asset
@@ -250,13 +259,14 @@ namespace Triton
 		// Inherited via Asset
 		virtual AssetType type() override;
 	private:
-		/// Main texture name
-		std::string m_mainTextureName;
+		/// Textures used by the material
+		std::vector<std::string> m_textureNames;
+
 		/// Shader name
 		std::string m_shaderName;
 
-		/// Reference to the main image texture
-		reference<ImageAsset> m_mainTexture;
+		/// Texture references
+		std::vector<reference<ImageAsset>> m_textures;
 
 		/// Shader for this material
 		reference<ShaderAsset> m_shader;
