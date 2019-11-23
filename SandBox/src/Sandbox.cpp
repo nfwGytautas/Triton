@@ -6,7 +6,7 @@ Triton::Engine& engine = Triton::Engine::getInstance();
 Triton::Graphics::Window* window;
 Triton::Graphics::Renderer* renderer;
 
-void exportMesh(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
+void exportMesh(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name, bool tangents = false)
 {
 	using namespace Triton;
 
@@ -16,7 +16,7 @@ void exportMesh(Triton::Core::AssetDictionary& dict, const std::string& from, co
 	testMesh.Type = IO::Serialization::v_latest::c_MeshType;
 	testMesh.Data = std::make_shared<IO::MeshData>();
 
-	IO::loadMeshFromDisk(from, (IO::MeshData*)testMesh.Data.get());
+	IO::loadMeshFromDisk(from, (IO::MeshData*)testMesh.Data.get(), tangents);
 
 	IO::saveAssetToDisk(to, &testMesh);
 
@@ -137,9 +137,10 @@ void createAssets()
 	exportMesh(dict, "C:\\dev\\Triton\\Models\\shaderBall.obj", "../Assets/testMesh.asset", "testMesh");
 	exportMesh(dict, "D:\\Programming\\Test files\\nfw\\stall.obj", "../Assets/stall.asset", "stallMesh");
 	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/flatPlain.asset", "flatPlainMesh");
+	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/flatPlainNormal.asset", "flatPlainMeshNormal", true);
 
 	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Text.hlsl", "../Assets/textShader.asset", "vertex_text",
-		"pixel_text", { Flags::sFlag_Matrices }, "textShader");
+		"pixel_text", { Flags::sFlag_Matrices, Flags::sFlag_NoNormals }, "textShader");
 
 	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Simple.hlsl", "../Assets/simpleShader.asset", "vertex_Simple",
 		"pixel_Simple", { Flags::sFlag_Matrices }, "simpleShader");
@@ -150,14 +151,29 @@ void createAssets()
 	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Lighting.hlsl", "../Assets/lightingShader.asset", "vertex_lighting",
 		"pixel_lighting", { Flags::sFlag_Matrices, Flags::sFlag_Settings, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "lightingShader");
 
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\LightMap.hlsl", "../Assets/lightMapShader.asset", "vertex_multi",
+		"pixel_multi", { Flags::sFlag_Matrices }, "lightMapShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\AlphaMap.hlsl", "../Assets/alphaMapShader.asset", "vertex_alpha",
+		"pixel_alpha", { Flags::sFlag_Matrices }, "alphaMapShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\BumpMap.hlsl", "../Assets/multiShader.asset", "vertex_bump",
+		"pixel_bump", { Flags::sFlag_Matrices, Flags::sFlag_TBN }, "bumpShader");
+
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stallTexture.png", "../Assets/texture.asset", "stallTexture");
 
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\dirt01.png", "../Assets/dirt01.asset", "dirt_1");
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stone01.png", "../Assets/stone01.asset", "stone_1");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\spot.png", "../Assets/spot.asset", "spot");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\alphaMap.png", "../Assets/alphaMap.asset", "alphaMap");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\bumpMap.png", "../Assets/bumpMap.asset", "normalMap");
 
 	exportMaterial(dict, "../Assets/material.asset", "lightingShader", { "stallTexture" }, "stallMaterial");
 
-	exportMaterial(dict, "../Assets/plainMaterial.asset", "multiTextureNoLightShader", { "stone_1", "dirt_1" }, "plainMaterial");
+	exportMaterial(dict, "../Assets/plainMaterial.asset", "lightMapShader", { "stone_1", "dirt_1", "spot" }, "plainMaterial");
+	exportMaterial(dict, "../Assets/plainAlphaMaterial.asset", "alphaMapShader", { "stone_1", "dirt_1", "spot", "alphaMap" }, "plainAlphaMaterial");
+
+	exportMaterial(dict, "../Assets/plainBumpMaterial.asset", "bumpShader", { "stone_1", "normalMap"}, "plainBumpMaterial");
 
 	
 
@@ -206,17 +222,36 @@ void createAssets()
 	scene_assets.push_back("dirt_1");
 	scene_assets.push_back("stone_1");
 	scene_assets.push_back("multiTextureNoLightShader");
+	scene_assets.push_back("lightMapShader");
+	scene_assets.push_back("spot");
+	scene_assets.push_back("plainAlphaMaterial");
+	scene_assets.push_back("alphaMap");
+	scene_assets.push_back("alphaMapShader");
+	scene_assets.push_back("bumpShader");
+	scene_assets.push_back("flatPlainMeshNormal");
+	scene_assets.push_back("plainBumpMaterial");
+	scene_assets.push_back("normalMap");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
 	registry->assign<Components::MetaComponent>(entity, "stall");
-	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 0, 20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 5, -20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(entity, "stallMesh", "stallMaterial");
 
 	auto plainEntity = registry->create();
 	registry->assign<Components::MetaComponent>(plainEntity, "plain1");
 	registry->assign<Components::Transform>(plainEntity, Triton::Vector3(15, 0, 20), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(plainEntity, "flatPlainMesh", "plainMaterial");
+
+	auto plainEntity2 = registry->create();
+	registry->assign<Components::MetaComponent>(plainEntity2, "plain2");
+	registry->assign<Components::Transform>(plainEntity2, Triton::Vector3(-15, 0, 20), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Visual>(plainEntity2, "flatPlainMesh", "plainAlphaMaterial");
+
+	auto plainEntity3 = registry->create();
+	registry->assign<Components::MetaComponent>(plainEntity3, "plain3");
+	registry->assign<Components::Transform>(plainEntity3, Triton::Vector3(0, 0, 20), Triton::Vector3(70, 180, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Visual>(plainEntity3, "flatPlainMesh", "plainBumpMaterial");
 
 	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
 	scene.setActiveCamera("mainCamera");
@@ -267,55 +302,57 @@ int main()
 	renderer->nearPlane(0.1f);
 	renderer->farPlane(100.0f);
 
-	reference<Scene> sampleScene = engine.scenes().currentScene();
-	
-	ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
-	Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);
-
-	engine.assets().wait();
-
-	Utility::Timer timer(false);
-
-	int frames = 0;
-	long double frameSum = 0;
-
-	engine.assets().waitFor("audioTest", 0);
-	reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
-
-	while (!window->isClosed())
 	{
-		timer.start();
+		reference<Scene> sampleScene = engine.scenes().currentScene();
 
-		engine.graphicsContext().synchronizer().synchronize(0);
-		engine.audioContext().synchronizer().synchronize(0);
+		ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
+		Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);
 
-		window->update();
+		engine.assets().wait();
 
-		renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
+		Utility::Timer timer(false);
 
-		Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
+		int frames = 0;
+		long double frameSum = 0;
 
-		// Temporary
-		Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+		engine.assets().waitFor("audioTest", 0);
+		reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
 
-		testAudio->audio()->play();
-
-		transform.Rotation.y += 1 * 0.2;
-
-		renderer->endFrame();
-
-		timer.end();
-
-		frameSum += 1 / (timer.microseconds() / 1000 / 1000);
-
-		frames++;
-
-		if (frames == 1000)
+		while (!window->isClosed())
 		{
-			frameSum = frameSum / frames;
-			TR_SYSTEM_ERROR("AVERAGE FPS FOR 1000 FRAMES: {0}", frameSum);
-			frameSum = 0;
-			frames = 0;
+			timer.start();
+
+			engine.graphicsContext().synchronizer().synchronize(0);
+			engine.audioContext().synchronizer().synchronize(0);
+
+			window->update();
+
+			renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
+
+			Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
+
+			// Temporary
+			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+
+			testAudio->audio()->play();
+
+			transform.Rotation.y += 1 * 0.2;
+
+			renderer->endFrame();
+
+			timer.end();
+
+			frameSum += 1 / (timer.microseconds() / 1000 / 1000);
+
+			frames++;
+
+			if (frames == 1000)
+			{
+				frameSum = frameSum / frames;
+				TR_SYSTEM_ERROR("AVERAGE FPS FOR 1000 FRAMES: {0}", frameSum);
+				frameSum = 0;
+				frames = 0;
+			}
 		}
 	}
 

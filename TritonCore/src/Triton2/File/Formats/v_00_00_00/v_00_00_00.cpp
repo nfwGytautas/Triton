@@ -250,28 +250,11 @@ namespace Triton
 					for (int i = 0; i < meshCount; i++)
 					{
 						archive(objectToStoreIn->meshes[i].DynamicBuffer);
+						archive(objectToStoreIn->meshes[i].Stride);
 
-						int verticeCount = 0;
-						int indiceCount = 0;
+						archive(objectToStoreIn->meshes[i].vertices);
 
-						archive(verticeCount);
-
-						objectToStoreIn->meshes[i].vertices.resize(verticeCount);
-
-						for (int j = 0; j < verticeCount; j++)
-						{
-							Vertex& v = objectToStoreIn->meshes[i].vertices[j];
-							archive(v.Vertice, v.UV, v.Normal);
-						}
-
-						archive(indiceCount);
-
-						objectToStoreIn->meshes[i].indices.resize(indiceCount);
-
-						for (int j = 0; j < indiceCount; j++)
-						{
-							archive(objectToStoreIn->meshes[i].indices[j]);
-						}
+						archive(objectToStoreIn->meshes[i].indices);
 					}
 
 					// Check for errors in loading
@@ -469,26 +452,11 @@ namespace Triton
 					for (int i = 0; i < meshCount; i++)
 					{
 						archive(rawData->meshes[i].DynamicBuffer);
+						archive(rawData->meshes[i].Stride);
 
-						int verticeCount = rawData->meshes[i].vertices.size();
-						int indiceCount = rawData->meshes[i].indices.size();
+						archive(rawData->meshes[i].vertices);
 
-						archive(verticeCount);
-
-						for (int j = 0; j < verticeCount; j++)
-						{
-							Vertex& v = rawData->meshes[i].vertices[j];
-							archive(v.Vertice, v.UV, v.Normal);
-						}
-
-						archive(indiceCount);
-
-						rawData->meshes[i].indices.resize(indiceCount);
-
-						for (int j = 0; j < indiceCount; j++)
-						{
-							archive(rawData->meshes[i].indices[j]);
-						}
+						archive(rawData->meshes[i].indices);
 					}
 
 					return status;

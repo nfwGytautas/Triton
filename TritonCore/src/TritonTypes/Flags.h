@@ -19,6 +19,12 @@ namespace Triton
 			/// Flag that specifies that the shader uses camera buffers
 			sFlag_Camera,
 
+			/// Flag that specifies that the shader has input for by-normals and tangents
+			sFlag_TBN,
+
+			/// Flag that specifies that the shader doesn't require normals. Ignored if TBN is set
+			sFlag_NoNormals,
+
 			/// Don't use this is used for creating a bitset of correct size
 			sFlag_Count
 		};

@@ -23,6 +23,8 @@
 // Format implementations
 #include "Triton2\File\Formats\v_00_00_00\v_00_00_00.h"
 
+#include "Triton2/Limits.h"
+
 #ifdef _XBOX //Big-Endian
 #define fourccRIFF 'RIFF'
 #define fourccDATA 'data'
@@ -210,7 +212,7 @@ namespace Triton
 			return status;
 		}
 
-		IOStatus loadMeshFromDisk(const std::string& pathToFile, MeshData* objectToStoreIn)
+		IOStatus loadMeshFromDisk(const std::string& pathToFile, MeshData* objectToStoreIn, bool calculateTangents)
 		{
 			// The function status
 			IOStatus status;
@@ -223,22 +225,34 @@ namespace Triton
 				return status;
 			}
 
-
 			Assimp::Importer importer;
 
-			const aiScene* scene = importer.ReadFile(
-				pathToFile,
+			unsigned int flags = 0;
+
+			// Default flags
+			flags = flags | 
 				aiProcess_OptimizeGraph |
 				aiProcess_OptimizeMeshes |
 				aiProcess_Triangulate |
 				aiProcess_GenNormals |
-				aiProcess_JoinIdenticalVertices
+				aiProcess_JoinIdenticalVertices;
 
-				// If the platform is windows then additional processing is needed
-#ifdef TR_PLATFORM_WINDOWS
-				| aiProcess_MakeLeftHanded
-				| aiProcess_FlipWindingOrder
-#endif
+			// If the platform is windows then additional processing is needed
+			#ifdef TR_PLATFORM_WINDOWS
+			flags = flags |
+				aiProcess_MakeLeftHanded |
+				aiProcess_FlipWindingOrder;
+			#endif
+
+			if (calculateTangents)
+			{
+				flags = flags |
+					aiProcess_CalcTangentSpace;
+			}
+
+			const aiScene* scene = importer.ReadFile(
+				pathToFile,
+				flags
 			);
 
 			// Check if the scene could not be loaded
@@ -260,41 +274,64 @@ namespace Triton
 				Mesh& currentMeshLocation = objectToStoreIn->meshes[meshIdx];
 				try
 				{
+					currentMeshLocation.Stride = Triton::Limits::VAO_NO_TBN;
+
+					if (mesh->HasTangentsAndBitangents())
+					{
+						currentMeshLocation.Stride = Triton::Limits::VAO_TBN;
+					}
+
 					// Reserve memory for the mesh
-					currentMeshLocation.vertices.reserve(mesh->mNumVertices);
+					currentMeshLocation.vertices.reserve(mesh->mNumVertices * currentMeshLocation.Stride);
 
 					// Load vertices
-					Vertex currentVertex;
 					for (unsigned int verticeIdx = 0; verticeIdx < mesh->mNumVertices; verticeIdx++)
 					{
-						currentVertex.Vertice.x = mesh->mVertices[verticeIdx].x;
-						currentVertex.Vertice.y = mesh->mVertices[verticeIdx].y;
-						currentVertex.Vertice.z = mesh->mVertices[verticeIdx].z;
-
-						// Check if normals exist if not use default values
-						if (mesh->mNormals)
-						{
-							currentVertex.Normal.x = mesh->mNormals[verticeIdx].x;
-							currentVertex.Normal.y = mesh->mNormals[verticeIdx].y;
-							currentVertex.Normal.z = mesh->mNormals[verticeIdx].z;
-						}
-						else
-						{
-							currentVertex.Normal = Triton::Vector3(1.0f, 1.0f, 1.0f);
-						}
+						currentMeshLocation.vertices.push_back(mesh->mVertices[verticeIdx].x);
+						currentMeshLocation.vertices.push_back(mesh->mVertices[verticeIdx].y);
+						currentMeshLocation.vertices.push_back(mesh->mVertices[verticeIdx].z);
 
 						// Check if texture coordinates exist if not use default values
 						if (mesh->mTextureCoords[0])
 						{
-							currentVertex.UV.x = mesh->mTextureCoords[0][verticeIdx].x;
-							currentVertex.UV.y = mesh->mTextureCoords[0][verticeIdx].y;
+							currentMeshLocation.vertices.push_back(mesh->mTextureCoords[0][verticeIdx].x);
+							currentMeshLocation.vertices.push_back(mesh->mTextureCoords[0][verticeIdx].y);
 						}
 						else
 						{
-							currentVertex.UV = Triton::Vector2(0.0f, 0.0f);
+							currentMeshLocation.vertices.push_back(0.0f);
+							currentMeshLocation.vertices.push_back(0.0f);
+						}
+						
+						// Check if normals exist if not use default values
+						if (mesh->mNormals)
+						{
+							currentMeshLocation.vertices.push_back(mesh->mNormals[verticeIdx].x);
+							currentMeshLocation.vertices.push_back(mesh->mNormals[verticeIdx].y);
+							currentMeshLocation.vertices.push_back(mesh->mNormals[verticeIdx].z);
+						}
+						else
+						{
+							currentMeshLocation.vertices.push_back(1.0f);
+							currentMeshLocation.vertices.push_back(1.0f);
+							currentMeshLocation.vertices.push_back(1.0f);
 						}
 
-						currentMeshLocation.vertices.push_back(currentVertex);
+						// Check if tangents exist
+						if (mesh->mTangents && currentMeshLocation.Stride == Triton::Limits::VAO_TBN)
+						{
+							currentMeshLocation.vertices.push_back(mesh->mTangents[verticeIdx].x);
+							currentMeshLocation.vertices.push_back(mesh->mTangents[verticeIdx].y);
+							currentMeshLocation.vertices.push_back(mesh->mTangents[verticeIdx].z);
+						}
+
+						// Check if by-tangent exist
+						if (mesh->mBitangents && currentMeshLocation.Stride == Triton::Limits::VAO_TBN)
+						{
+							currentMeshLocation.vertices.push_back(mesh->mBitangents[verticeIdx].x);
+							currentMeshLocation.vertices.push_back(mesh->mBitangents[verticeIdx].y);
+							currentMeshLocation.vertices.push_back(mesh->mBitangents[verticeIdx].z);
+						}
 					}
 
 					// Load indices

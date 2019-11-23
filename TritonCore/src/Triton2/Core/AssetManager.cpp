@@ -102,6 +102,9 @@ namespace Triton
 
 			void loadAssetByName(const std::string& name)
 			{
+				// Create lock guard
+				std::lock_guard<std::mutex> guard(m_mtx);
+
 				if (hasAsset(name))
 				{
 					TR_SYSTEM_TRACE("Ignoring duplicate asset: '{0}'", name);
@@ -109,10 +112,6 @@ namespace Triton
 				}
 
 				TR_SYSTEM_DEBUG("Loading asset by name: '{0}'", name);
-
-				// Create lock guard
-				std::lock_guard<std::mutex> guard(m_mtx);
-				m_loading.push_back(name);
 
 				m_tPool.enqueue([&, name]()
 				{
@@ -142,13 +141,6 @@ namespace Triton
 				// Create lock guard
 				std::lock_guard<std::mutex> guard(m_mtx);
 				m_assets.push_back(asset);
-
-				auto it = std::find_if(m_loading.begin(), m_loading.end(), [&](const std::string& name) {return asset->getName() == name; });
-				if (it != m_loading.end())
-				{
-					m_loading.erase(it);
-				}
-
 				m_callback(asset);
 			}
 
@@ -162,10 +154,6 @@ namespace Triton
 			void wait()
 			{
 				m_tPool.wait();
-
-				while (m_loading.size() > 0)
-				{
-				}
 			}
 
 			reference<Asset> waitFor(const std::string& name, unsigned int amount)
@@ -233,9 +221,6 @@ namespace Triton
 
 			/// Map of asset name to asset reference
 			std::vector<reference<Asset>> m_assets;
-
-			/// Vector containing all the assets that are currently being loaded
-			std::vector<std::string> m_loading;
 
 			/// Callback to engine
 			AssetManager::AssetAddedCallback m_callback;

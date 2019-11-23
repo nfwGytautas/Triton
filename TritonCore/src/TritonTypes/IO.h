@@ -99,14 +99,6 @@ namespace Triton
 			std::vector<reference<IO::ImageData>> individualTextures;
 		};
 
-		/// Inner structure for vertex
-		struct Vertex
-		{
-			Vector3 Vertice;
-			Vector2 UV;
-			Vector3 Normal;
-		};
-
 		/**
 		 * Struct that contains single mesh data
 		 */
@@ -121,10 +113,17 @@ namespace Triton
 			int DynamicBuffer;
 
 			/**
+			 * Integer representing the amount of data for a single vertex
+			 * More information in 'Limits.h'
+			 * Since 00_00_00
+			 */
+			unsigned int Stride;
+
+			/**
 			 * The vector containing the vertices of the mesh
 			 * Since 00_00_00
 			 */
-			std::vector<Vertex> vertices;
+			std::vector<float> vertices;
 
 			/**
 			 * The vector containing the indices of the mesh

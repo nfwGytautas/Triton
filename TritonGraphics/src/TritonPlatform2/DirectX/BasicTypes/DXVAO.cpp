@@ -2,6 +2,8 @@
 #include "TritonTypes/IO.h"
 #include "Triton2/Utility/Log.h"
 
+#include "Triton2/Limits.h"
+
 namespace Triton
 {
 	namespace Graphics
@@ -26,16 +28,13 @@ namespace Triton
 
 		void DXVAO::enable()
 		{
-			unsigned int stride;
 			unsigned int offset;
 
-
-			// Set vertex buffer stride and offset.
-			stride = sizeof(IO::Vertex);
+			// Set vertex buffer offset.
 			offset = 0;
 
 			// Set the vertex buffer to active in the input assembler so it can be rendered.
-			m_deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+			m_deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &m_stride, &offset);
 
 			// Set the index buffer to active in the input assembler so it can be rendered.
 			m_deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
@@ -55,11 +54,11 @@ namespace Triton
 			return m_indiceCount;
 		}
 
-		void DXVAO::updateVertices(std::vector<IO::Vertex>& vertices)
+		void DXVAO::updateVertices(std::vector<float>& vertices)
 		{
 			HRESULT result;
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			IO::Vertex* verticesPtr;
+			float* verticesPtr;
 
 			// Lock the vertex buffer so it can be written to.
 			result = m_deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -70,10 +69,10 @@ namespace Triton
 			}
 
 			// Get a pointer to the data in the vertex buffer.
-			verticesPtr = (IO::Vertex*)mappedResource.pData;
+			verticesPtr = (float*)mappedResource.pData;
 
 			// Copy the data into the vertex buffer.
-			memcpy(verticesPtr, (void*)vertices.data(), (sizeof(IO::Vertex) * vertices.size()));
+			memcpy(verticesPtr, (void*)vertices.data(), (sizeof(float) * vertices.size()));
 
 			// Unlock the vertex buffer.
 			m_deviceContext->Unmap(m_vertexBuffer, 0);
@@ -86,10 +85,10 @@ namespace Triton
 			unsigned int* indicesPtr;
 
 			// Lock the indices buffer so it can be written to.
-			result = m_deviceContext->Map(m_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			result = m_deviceContext->Map(m_indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 			if (FAILED(result))
 			{
-				TR_SYSTEM_ERROR("Failed to map vertex array buffer");
+				TR_SYSTEM_ERROR("Failed to map index array buffer");
 				return;
 			}
 
@@ -97,10 +96,10 @@ namespace Triton
 			indicesPtr = (unsigned int*)mappedResource.pData;
 
 			// Copy the data into the vertex buffer.
-			memcpy(indicesPtr, (void*)indices.data(), (sizeof(IO::Vertex) * indices.size()));
+			memcpy(indicesPtr, (void*)indices.data(), (sizeof(unsigned int) * indices.size()));
 
 			// Unlock the vertex buffer.
-			m_deviceContext->Unmap(m_vertexBuffer, 0);
+			m_deviceContext->Unmap(m_indexBuffer, 0);
 		}
 
 	}

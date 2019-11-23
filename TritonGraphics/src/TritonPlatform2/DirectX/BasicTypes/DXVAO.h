@@ -22,7 +22,7 @@ namespace Triton
 
 			virtual unsigned int getIndiceCount() override;
 
-			virtual void updateVertices(std::vector<IO::Vertex>& vertices) override;
+			virtual void updateVertices(std::vector<float>& vertices) override;
 			virtual void updateIndices(std::vector<unsigned int>& indices) override;
 		private:
 			ID3D11DeviceContext* m_deviceContext;

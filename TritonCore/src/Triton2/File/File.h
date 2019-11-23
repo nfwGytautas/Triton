@@ -76,9 +76,10 @@ namespace Triton
 		 *
 		 * @param pathToFile The path to the file that you want to be loaded
 		 * @param objectToStoreIn The MeshData structure where the function should store the loaded data
+		 * @param calculateTangents If true the function will calculate tangents and by-tangents
 		 * @return The status of the specified operation
 		 */
-		IOStatus loadMeshFromDisk(const std::string& pathToFile, MeshData* objectToStoreIn);
+		IOStatus loadMeshFromDisk(const std::string& pathToFile, MeshData* objectToStoreIn, bool calculateTangents = false);
 
 		/**
 		 * Load a font file from disk and store the data inside the specified object

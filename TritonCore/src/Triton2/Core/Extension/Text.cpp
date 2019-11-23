@@ -1,13 +1,18 @@
 #include "TRpch.h"
 #include "Text.h"
 
+#include "Triton2/Limits.h"
+
 namespace Triton
 {
 	namespace Extension
 	{
 		IO::Mesh buildVertexArray(reference<FontAsset> font, const std::string& text, float x, float y)
 		{
-			std::vector<IO::Vertex> result(text.length() * 6);
+			// Modifier for the final vertex vector length
+			unsigned int stride = Triton::Limits::VAO_2D_TEXT;
+
+			std::vector<float> result(text.length() * 6 * stride);
 			std::vector<unsigned int> indices(result.size());
 
 			auto charMetrics = font->metrics();
@@ -33,36 +38,55 @@ namespace Triton
 				float w = xSize * scale;
 				float h = ySize * scale;
 
-				result[index].Vertice = Vector3(xpos, ypos + h, 1.0f);  // Top left.
-				result[index].UV = Vector2(metrics.Start.x / fontWidth, metrics.Start.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
 
-				result[index].Vertice = Vector3(xpos + w, ypos, 1.0f);  // Bottom right.
-				result[index].UV = Vector2(metrics.End.x / fontWidth, metrics.End.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
+				// First triangle
+				result.push_back(xpos);
+				result.push_back(ypos + h);
+				result.push_back(1.0f);
 
-				result[index].Vertice = Vector3(xpos, ypos, 1.0f);  // Bottom left.
-				result[index].UV = Vector2(metrics.Start.x / fontWidth, metrics.End.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
+				result.push_back(metrics.Start.x / fontWidth);
+				result.push_back(metrics.Start.y / fontHeight);
+
+
+				result.push_back(xpos + w);
+				result.push_back(ypos);
+				result.push_back(1.0f);
+
+				result.push_back(metrics.End.x / fontWidth);
+				result.push_back(metrics.End.y / fontHeight);
+
+
+				result.push_back(xpos);
+				result.push_back(ypos);
+				result.push_back(1.0f);
+
+				result.push_back(metrics.Start.x / fontWidth);
+				result.push_back(metrics.End.y / fontHeight);
+
 
 				// Second triangle in quad.
-				result[index].Vertice = Vector3(xpos, ypos + h, 1.0f);  // Top left.
-				result[index].UV = Vector2(metrics.Start.x / fontWidth, metrics.Start.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
+				result.push_back(xpos);
+				result.push_back(ypos + h);
+				result.push_back(1.0f);
 
-				result[index].Vertice = Vector3(xpos + w, ypos + h, 1.0f);  // Top right.
-				result[index].UV = Vector2(metrics.End.x / fontWidth, metrics.Start.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
+				result.push_back(metrics.Start.x / fontWidth);
+				result.push_back(metrics.Start.y / fontHeight);
 
-				result[index].Vertice = Vector3(xpos + w, ypos, 1.0f);  // Bottom right.
-				result[index].UV = Vector2(metrics.End.x / fontWidth, metrics.End.y / fontHeight);
-				result[index].Normal = Vector3(0.0, 1.0, 0.0);
-				index++;
+
+				result.push_back(xpos + w);
+				result.push_back(ypos + h);
+				result.push_back(1.0f);
+
+				result.push_back(metrics.End.x / fontWidth);
+				result.push_back(metrics.Start.y / fontHeight);
+
+
+				result.push_back(xpos + w);
+				result.push_back(ypos);
+				result.push_back(1.0f);
+
+				result.push_back(metrics.End.x / fontWidth);
+				result.push_back(metrics.End.y / fontHeight);
 
 				x += metrics.Advance * scale;
 			}
@@ -72,7 +96,7 @@ namespace Triton
 				indices[i] = i;
 			}
 
-			return IO::Mesh{1, result, indices};
+			return IO::Mesh{1, stride, result, indices};
 		}
 	}
 }

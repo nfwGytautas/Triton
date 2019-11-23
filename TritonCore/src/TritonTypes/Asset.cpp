@@ -198,7 +198,7 @@ namespace Triton
 
 	bool MaterialAsset::isCreated() const
 	{
-		if (m_data != nullptr)
+		if (m_data != nullptr || m_dependencies)
 		{
 			return false;
 		}

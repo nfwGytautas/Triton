@@ -24,7 +24,7 @@ namespace Triton
 			 * 
 			 * @param vertices Vector of new vertices
 			 */
-			virtual void updateVertices(std::vector<IO::Vertex>& vertices) = 0;
+			virtual void updateVertices(std::vector<float>& vertices) = 0;
 
 			/**
 			 * Updates vertex array indices buffer
@@ -36,6 +36,9 @@ namespace Triton
 		protected:
 			VAO()
 			{ }
+
+		protected:
+			unsigned int m_stride;
 		};
 
 	}

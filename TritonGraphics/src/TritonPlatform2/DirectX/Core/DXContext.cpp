@@ -423,16 +423,57 @@ namespace Triton
 			ID3D10Blob* vertexShaderBuffer;
 			ID3D10Blob* pixelShaderBuffer;
 
+			std::vector<D3D11_INPUT_ELEMENT_DESC> iaDescExtended;
+
 			int descCount = 3;
-			D3D11_INPUT_ELEMENT_DESC iaDescExtended[] =
+
+			if (createParams.flags.test(Flags::sFlag_TBN)) 
 			{
-				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-				0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
-				0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-				{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
-				0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			};
+				descCount = 5;
+
+				iaDescExtended = std::vector<D3D11_INPUT_ELEMENT_DESC>(
+					{
+						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+						/// TBN variables
+						{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+					});
+			}
+			else if (createParams.flags.test(Flags::sFlag_NoNormals))
+			{
+				descCount = 2;
+
+				iaDescExtended = std::vector<D3D11_INPUT_ELEMENT_DESC>(
+					{
+						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+					});
+			}
+			else
+			{
+				descCount = 3;
+
+				iaDescExtended = std::vector<D3D11_INPUT_ELEMENT_DESC>(
+					{
+						{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+						{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT,
+						0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+					});
+			}
+			
 
 			// Initialize the pointers this function will use to null.
 			errorMessage = 0;
@@ -524,7 +565,7 @@ namespace Triton
 			}
 
 			// Create the vertex input layout.
-			result = m_device->CreateInputLayout(iaDescExtended, descCount, vertexShaderBuffer->GetBufferPointer(),
+			result = m_device->CreateInputLayout(iaDescExtended.data(), descCount, vertexShaderBuffer->GetBufferPointer(),
 				vertexShaderBuffer->GetBufferSize(), &shader->m_layout);
 			if (FAILED(result))
 			{
@@ -619,7 +660,7 @@ namespace Triton
 
 			DXVAO* vao = new DXVAO();
 
-			const IO::Vertex* vertices;
+			const float* vertices;
 			const unsigned int* indices;
 			D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 			D3D11_SUBRESOURCE_DATA vertexData, indexData;
@@ -631,7 +672,10 @@ namespace Triton
 			// Set the number of indices in the index array.
 			unsigned int indexCount = (unsigned int)createParams.indices.size();
 
-			TR_SYSTEM_TRACE("Vertices: '{0}' Indices: '{1}' Type: '{2}'", vertexCount, indexCount, createParams.DynamicBuffer);
+			// Multiple element stride by data type 'float' in this case
+			vao->m_stride = createParams.Stride * sizeof(float);
+
+			TR_SYSTEM_TRACE("Vertices: '{0}' Indices: '{1}' Type: '{2}'", vertexCount / createParams.Stride, indexCount, createParams.DynamicBuffer);
 
 			// Create the vertex array.
 			vertices = createParams.vertices.data();
@@ -665,7 +709,7 @@ namespace Triton
 				vertexBufferDesc.CPUAccessFlags = 0;
 			}
 
-			vertexBufferDesc.ByteWidth = sizeof(IO::Vertex) * vertexCount;
+			vertexBufferDesc.ByteWidth = sizeof(float) * vertexCount;
 			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			vertexBufferDesc.MiscFlags = 0;
 			vertexBufferDesc.StructureByteStride = 0;

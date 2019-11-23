@@ -42,20 +42,20 @@ namespace Triton
 
 			void updateCameraBuffer();
 		private:
-			ID3D11DeviceContext* m_deviceContext;
-			ID3D11VertexShader* m_vertexShader;
-			ID3D11PixelShader* m_pixelShader;
-			ID3D11InputLayout* m_layout;
-			ID3D11SamplerState* m_sampleState;
+			ID3D11DeviceContext* m_deviceContext = nullptr;
+			ID3D11VertexShader* m_vertexShader = nullptr;
+			ID3D11PixelShader* m_pixelShader = nullptr;
+			ID3D11InputLayout* m_layout = nullptr;
+			ID3D11SamplerState* m_sampleState = nullptr;
 
-			ID3D11Buffer* m_matrixBuffer;
-			ID3D11Buffer* m_settingsBuffer;
+			ID3D11Buffer* m_matrixBuffer = nullptr;
+			ID3D11Buffer* m_settingsBuffer = nullptr;
 
-			ID3D11Buffer* m_plightBuffer;
-			ID3D11Buffer* m_slightBuffer;
-			ID3D11Buffer* m_dlightBuffer;
+			ID3D11Buffer* m_plightBuffer = nullptr;
+			ID3D11Buffer* m_slightBuffer = nullptr;
+			ID3D11Buffer* m_dlightBuffer = nullptr;
 
-			ID3D11Buffer* m_cameraBuffer;
+			ID3D11Buffer* m_cameraBuffer = nullptr;
 
 			friend DXContext;
 		};
