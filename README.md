@@ -10,7 +10,7 @@ Just another game engine that I am coding for fun in my spare time
 * ~~2D Sound engine~~
 * 3D Sound engine
 * Shadows
-* Texture mapping (Alpha, bump, specular, ect...)
+* ~~Texture mapping (Alpha, bump, specular, ect...)~~
 * Reflection
 * Particle system
 * High dynamic based lighting

@@ -158,7 +158,11 @@ void createAssets()
 		"pixel_alpha", { Flags::sFlag_Matrices }, "alphaMapShader");
 
 	exportShader(dict, "C:\\dev\\Triton\\Shaders\\BumpMap.hlsl", "../Assets/multiShader.asset", "vertex_bump",
-		"pixel_bump", { Flags::sFlag_Matrices, Flags::sFlag_TBN }, "bumpShader");
+		"pixel_bump", { Flags::sFlag_Matrices, Flags::sFlag_TBN, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "bumpShader");
+
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\SpecMap.hlsl", "../Assets/dbsShader.asset", "vertex_dbs",
+		"pixel_dbs", { Flags::sFlag_Matrices, Flags::sFlag_TBN, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "dbsShader");
+
 
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stallTexture.png", "../Assets/texture.asset", "stallTexture");
 
@@ -168,12 +172,18 @@ void createAssets()
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\alphaMap.png", "../Assets/alphaMap.asset", "alphaMap");
 	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\bumpMap.png", "../Assets/bumpMap.asset", "normalMap");
 
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specDif.png", "../Assets/specDif.asset", "specMapDiffuse");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specNormal.png", "../Assets/specNormal.asset", "specMapNormal");
+	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specSpec.png", "../Assets/specSpec.asset", "specMapSpecular");
+
 	exportMaterial(dict, "../Assets/material.asset", "lightingShader", { "stallTexture" }, "stallMaterial");
 
 	exportMaterial(dict, "../Assets/plainMaterial.asset", "lightMapShader", { "stone_1", "dirt_1", "spot" }, "plainMaterial");
 	exportMaterial(dict, "../Assets/plainAlphaMaterial.asset", "alphaMapShader", { "stone_1", "dirt_1", "spot", "alphaMap" }, "plainAlphaMaterial");
 
 	exportMaterial(dict, "../Assets/plainBumpMaterial.asset", "bumpShader", { "stone_1", "normalMap"}, "plainBumpMaterial");
+
+	exportMaterial(dict, "../Assets/plainSpecMapMaterial.asset", "dbsShader", { "specMapDiffuse", "specMapNormal", "specMapSpecular"}, "plainSpecMapMaterial");
 
 	
 
@@ -231,6 +241,11 @@ void createAssets()
 	scene_assets.push_back("flatPlainMeshNormal");
 	scene_assets.push_back("plainBumpMaterial");
 	scene_assets.push_back("normalMap");
+	scene_assets.push_back("dbsShader");
+	scene_assets.push_back("specMapDiffuse");
+	scene_assets.push_back("specMapNormal");
+	scene_assets.push_back("specMapSpecular");
+	scene_assets.push_back("plainSpecMapMaterial");
 
 	auto registry = scene.entities();
 	auto entity = registry->create();
@@ -240,18 +255,23 @@ void createAssets()
 
 	auto plainEntity = registry->create();
 	registry->assign<Components::MetaComponent>(plainEntity, "plain1");
-	registry->assign<Components::Transform>(plainEntity, Triton::Vector3(15, 0, 20), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Transform>(plainEntity, Triton::Vector3(25, 0, 10), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(plainEntity, "flatPlainMesh", "plainMaterial");
 
 	auto plainEntity2 = registry->create();
 	registry->assign<Components::MetaComponent>(plainEntity2, "plain2");
-	registry->assign<Components::Transform>(plainEntity2, Triton::Vector3(-15, 0, 20), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Transform>(plainEntity2, Triton::Vector3(13, 0, 10), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(plainEntity2, "flatPlainMesh", "plainAlphaMaterial");
 
 	auto plainEntity3 = registry->create();
 	registry->assign<Components::MetaComponent>(plainEntity3, "plain3");
-	registry->assign<Components::Transform>(plainEntity3, Triton::Vector3(0, 0, 20), Triton::Vector3(70, 180, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Transform>(plainEntity3, Triton::Vector3(1, 0, 10), Triton::Vector3(70, 180, 0), Triton::Vector3(1, 1, 1));
 	registry->assign<Components::Visual>(plainEntity3, "flatPlainMesh", "plainBumpMaterial");
+
+	auto plainEntity4 = registry->create();
+	registry->assign<Components::MetaComponent>(plainEntity4, "plain4");
+	registry->assign<Components::Transform>(plainEntity4, Triton::Vector3(-11, 0, 10), Triton::Vector3(90, 180, 0), Triton::Vector3(1, 1, 1));
+	registry->assign<Components::Visual>(plainEntity4, "flatPlainMesh", "plainSpecMapMaterial");
 
 	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
 	scene.setActiveCamera("mainCamera");

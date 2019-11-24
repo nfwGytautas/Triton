@@ -203,6 +203,11 @@ namespace Triton
 			return false;
 		}
 
+		if (!m_shader->isCreated() || !m_shader.valid())
+		{
+			return false;
+		}
+
 		for (const reference<ImageAsset>& texture : m_textures)
 		{
 			if (!texture.valid() || !texture->texture().valid())
