@@ -553,8 +553,6 @@ namespace Triton
 				FILE* filePtr;
 				unsigned int count;
 				WaveHeaderType waveFileHeader;
-				WAVEFORMATEX waveFormat;
-				HRESULT result;
 				
 				// Open the wave file in binary.
 				error = fopen_s(&filePtr, pathToFile.c_str(), "rb");

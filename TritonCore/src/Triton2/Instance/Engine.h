@@ -95,6 +95,14 @@ namespace Triton
 
 	private:
 		/**
+		 * Creates default assets for the engine
+		 *
+		 * 2DQuad (A simple rectangle shape that can be used to render a texture)
+		 * 2DShader (A simple shader that is used in conjunction with 2DQuad to render a texture on screen)
+		 */
+		void setupDefaultAssets();
+
+		/**
 		 * Callback for the AssetManager to call when any assets have been added
 		 * The engine adds to specific Context ThreadSynchronizers depending on the asset
 		 *

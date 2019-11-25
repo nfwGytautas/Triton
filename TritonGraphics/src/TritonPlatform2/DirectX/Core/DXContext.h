@@ -42,7 +42,6 @@ namespace Triton
 			virtual VAO* newVAO(const IO::Mesh& createParams) override;
 			virtual Texture* newTexture(const IO::ImageData& createParams) override;
 			virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) override;
-			virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) override;
 		private:
 			ID3D11Device* m_device;
 			ID3D11DeviceContext* m_deviceContext;

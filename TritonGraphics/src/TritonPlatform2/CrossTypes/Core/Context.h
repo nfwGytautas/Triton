@@ -98,15 +98,6 @@ namespace Triton
 			virtual CubeTexture* newCubeTexture(const IO::ImageArrayData& createParams) = 0;
 
 			/**
-			 * Create a new frame buffer
-			 *
-			 * @param width The width of the new frame buffer
-			 * @param height The height of the new frame buffer
-			 * @return Pointer to the newly created frame buffer
-			 */
-			virtual Framebuffer* newFramebuffer(unsigned int width, unsigned int height) = 0;
-
-			/**
 			 * Returns the keyboard state of the context
 			 *
 			 * @return keyboard state associated with current context

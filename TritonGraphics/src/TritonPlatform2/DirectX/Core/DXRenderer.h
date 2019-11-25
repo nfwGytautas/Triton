@@ -13,6 +13,23 @@ namespace Triton
 		class DXRenderer : public Renderer
 		{
 		private:
+			struct Surface
+			{
+				ID3D11Texture2D* RTVTexture = nullptr;
+				ID3D11RenderTargetView* RTV = nullptr;
+				ID3D11ShaderResourceView* SRV = nullptr;
+
+				ID3D11Texture2D* DSB = nullptr;
+				ID3D11DepthStencilView* DSV = nullptr;
+
+				unsigned int ID = 0;
+
+				unsigned int Width = 0;
+				unsigned int Height = 0;
+
+				~Surface();
+			};
+		private:
 			/// Variable to track if the descriptions have been created already
 			static bool s_descsCreated;
 
@@ -59,6 +76,14 @@ namespace Triton
 
 			virtual void alphaBlending(bool state) override;
 
+			virtual unsigned int newSurface(unsigned int width, unsigned int height) override;
+
+			virtual void setSurface(unsigned int id) override;
+
+			virtual void bindSurface(unsigned int id, unsigned int slot) override;
+
+			virtual std::tuple<int, int> surfaceSize(unsigned int id) override;
+
 			virtual void setViewPort(int x, int y, int width, int height) override;
 			virtual void depthBufferState(bool state) override;
 			virtual void cullBufferState(bool state) override;
@@ -81,11 +106,17 @@ namespace Triton
 			ID3D11RasterizerState* m_rasterState = nullptr;
 			ID3D11RasterizerState* m_disabledCullingState = nullptr;
 
-			ID3D11RenderTargetView* m_renderTargetView = nullptr;
-			ID3D11DepthStencilView* m_depthStencilView = nullptr;
+			ID3D11RenderTargetView* m_defaultRenderTargetView = nullptr;
+			ID3D11DepthStencilView* m_defaultDepthStencilView = nullptr;
 
 			ID3D11BlendState* m_alphaEnableBlendingState = nullptr;
 			ID3D11BlendState* m_alphaDisableBlendingState = nullptr;
+
+			ID3D11RenderTargetView* m_currentRenderTargetView = nullptr;
+			ID3D11DepthStencilView* m_currentDepthStencilView = nullptr;
+
+			std::vector<Surface*> m_surfaces;
+			unsigned int m_nextSurfaceID = 1;
 		};
 
 	}

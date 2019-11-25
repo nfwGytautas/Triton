@@ -338,6 +338,8 @@ int main()
 		engine.assets().waitFor("audioTest", 0);
 		reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
 
+		unsigned int fbo = renderer->newSurface(320, 320);
+
 		while (!window->isClosed())
 		{
 			timer.start();
@@ -347,12 +349,25 @@ int main()
 
 			window->update();
 
+			renderer->setSurface(fbo);
+			renderer->newFrame(1.0f, 0.5f, 1.0f, 0.5f);
+
+			Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
+
+			// Temporary
+			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+
+
+			renderer->default();
 			renderer->newFrame(1.0f, 0.5f, 0.5f, 0.5f);
 
 			Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
 
 			// Temporary
 			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+
+			Extension::renderSurface(fbo, { 900, 10 }, renderer, &engine.assets());
+
 
 			testAudio->audio()->play();
 

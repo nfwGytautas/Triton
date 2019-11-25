@@ -37,22 +37,5 @@ namespace Triton
 			CubeTexture()
 			{ }
 		};
-
-		class Framebuffer
-		{
-		public:
-			virtual ~Framebuffer() { }
-
-			virtual void enable() = 0;
-			virtual void disable() = 0;
-
-			virtual void clear(float red, float green, float blue, float alpha) = 0;
-			virtual void render() = 0;
-
-			virtual void* getAsTexture() = 0;
-		protected:
-			Framebuffer()
-			{ }
-		};
 	}
 }

@@ -1,208 +1,207 @@
-[16:32:03.031] Thread: 23132 SYSTEM: [ trace ] Creating 'WINDOWS' context
-[16:32:03.033] Thread: 23132 SYSTEM: [ trace ] Initializing DXContext
-[16:32:03.033] Thread: 23132 SYSTEM: [ trace ] Creating DX device with feature level '45056'
-[16:32:03.184] Thread: 23132 SYSTEM: [ info  ] DX device created
-[16:32:03.185] Thread: 23132 SYSTEM: [ trace ] Getting display parameters
-[16:32:03.185] Thread: 23132 SYSTEM: [ trace ] Adapter information acquired
-[16:32:03.186] Thread: 23132 SYSTEM: [ trace ] Possible display mode count '146'
-[16:32:03.188] Thread: 23132 SYSTEM: [ trace ] Getting video card information
-[16:32:03.188] Thread: 23132 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
-[16:32:03.189] Thread: 23132 SYSTEM: [ trace ] Checking context state descriptions
-[16:32:03.189] Thread: 23132 SYSTEM: [warning] Context descriptions not created, creating now
-[16:32:03.189] Thread: 23132 SYSTEM: [ trace ] Creating shader matrix buffer description
-[16:32:03.190] Thread: 23132 SYSTEM: [ trace ] Creating shader settings buffer description
-[16:32:03.190] Thread: 23132 SYSTEM: [ trace ] Creating shader point light buffer description
-[16:32:03.190] Thread: 23132 SYSTEM: [ trace ] Creating shader spot light buffer description
-[16:32:03.190] Thread: 23132 SYSTEM: [ trace ] Creating shader directional light buffer description
-[16:32:03.191] Thread: 23132 SYSTEM: [ trace ] Creating shader camera buffer description
-[16:32:03.191] Thread: 23132 SYSTEM: [ trace ] Creating shader sampler description
-[16:32:03.191] Thread: 23132 SYSTEM: [ trace ] Creating 'WINDOWS' audio context
-[16:32:03.192] Thread: 23132 SYSTEM: [ trace ] Initializing WindowsAudioContext
-[16:32:03.394] Thread: 23132 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
-[16:32:03.395] Thread: 23132 SYSTEM: [ trace ] Created an scene manager instance with '1' threads
-[16:32:05.944] Thread: 23132 SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
-[16:32:05.948] Thread: 23132 SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '29' entries
-[16:32:05.953] Thread: 23132 SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
-[16:32:05.954] Thread: 23132 SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
-[16:32:05.965] Thread: 23132 SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '29' entries
-[16:32:05.965] Thread: 23132 SYSTEM: [ debug ] Engine filled with '29' new associations
-[16:32:05.966] Thread: 23132 SYSTEM: [ debug ] Loading scene by name: 'sample'
-[16:32:05.966] Thread: 23132 SYSTEM: [ trace ] Creating a new 'Windows' window
-[16:32:05.967] Thread: 23132 SYSTEM: [ trace ] Initializing a window '1280x720'
-[16:32:05.970] Thread: 23132 SYSTEM: [ trace ] Creating hwnd
-[16:32:05.970] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
-[16:32:05.972] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
-[16:32:05.974] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
-[16:32:05.974] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'stallMaterial'
-[16:32:05.976] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'arialFont'
-[16:32:05.980] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'textShader'
-[16:32:05.983] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'simpleShader'
-[16:32:05.990] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'testMesh'
-[16:32:05.992] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'audioTest'
-[16:32:05.994] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'flatPlainMesh'
-[16:32:05.996] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'plainMaterial'
-[16:32:05.997] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'dirt_1'
-[16:32:05.999] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'stone_1'
-[16:32:06.000] Thread: 23132 SYSTEM: [ trace ] Registering RID devices
-[16:32:06.000] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'multiTextureNoLightShader'
-[16:32:06.000] Thread: 23132 SYSTEM: [ info  ] RID devices registered
-[16:32:06.001] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'lightMapShader'
-[16:32:06.001] Thread: 23132 SYSTEM: [ info  ] Window initialized
-[16:32:06.002] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'spot'
-[16:32:06.002] Thread: 23132 SYSTEM: [ trace ] Creating a new 'Windows' renderer
-[16:32:06.002] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'plainAlphaMaterial'
-[16:32:06.003] Thread: 23132 SYSTEM: [ trace ] Checking renderer state descriptions
-[16:32:06.003] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'alphaMap'
-[16:32:06.003] Thread: 23132 SYSTEM: [warning] Renderer descriptions not created, creating now
-[16:32:06.004] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'alphaMapShader'
-[16:32:06.004] Thread: 23132 SYSTEM: [ trace ] Creating default depth stencil
-[16:32:06.004] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'bumpShader'
-[16:32:06.005] Thread: 23132 SYSTEM: [ trace ] Creating default depth stencil view
-[16:32:06.005] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'flatPlainMeshNormal'
-[16:32:06.005] Thread: 23132 SYSTEM: [ trace ] Creating default raster description
-[16:32:06.006] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'plainBumpMaterial'
-[16:32:06.006] Thread: 23132 SYSTEM: [ trace ] Creating no culling raster description
-[16:32:06.007] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'normalMap'
-[16:32:06.007] Thread: 23132 SYSTEM: [ trace ] Creating disabled depth stencil
-[16:32:06.009] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'dbsShader'
-[16:32:06.009] Thread: 23132 SYSTEM: [ trace ] Creating blend state descriptions
-[16:32:06.010] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'specMapDiffuse'
-[16:32:06.010] Thread: 23132 SYSTEM: [ info  ] Initializing renderer
-[16:32:06.011] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'specMapNormal'
-[16:32:06.011] Thread: 23132 SYSTEM: [ trace ] Getting display refresh rate
-[16:32:06.011] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'specMapSpecular'
-[16:32:06.012] Thread: 23132 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
-[16:32:06.012] Thread: 6928  SYSTEM: [ debug ] Loading asset by name: 'plainSpecMapMaterial'
-[16:32:06.013] Thread: 23132 SYSTEM: [ trace ] Creating swap chain description
-[16:32:06.013] Thread: 6928  SYSTEM: [ debug ] Scene 'sample' loading complete
-[16:32:06.013] Thread: 6600  SYSTEM: [ debug ] Asset 'stallMesh' loading complete
-[16:32:06.013] Thread: 15492 SYSTEM: [ debug ] Asset 'lightingShader' loading complete
-[16:32:06.014] Thread: 23132 SYSTEM: [ trace ] V_SYNC disabled
-[16:32:06.016] Thread: 23132 SYSTEM: [ trace ] Full screen disabled
-[16:32:06.017] Thread: 23132 SYSTEM: [ trace ] Creating depth buffer description
-[16:32:06.017] Thread: 15492 SYSTEM: [ debug ] Asset 'stallMaterial' loading complete
-[16:32:06.017] Thread: 23132 SYSTEM: [ trace ] Creating view port
-[16:32:06.018] Thread: 23132 SYSTEM: [ trace ] Creating swap chain instance
-[16:32:06.020] Thread: 23132 SYSTEM: [ info  ] Swap chain created
-[16:32:06.020] Thread: 23132 SYSTEM: [ trace ] Creating depth buffer description
-[16:32:06.020] Thread: 23132 SYSTEM: [ trace ] Creating view port
-[16:32:06.021] Thread: 23132 SYSTEM: [ trace ] Creating renderer states
-[16:32:06.021] Thread: 15492 SYSTEM: [ debug ] Asset 'arialFont' loading complete
-[16:32:06.022] Thread: 23132 SYSTEM: [ info  ] Creating blend states
-[16:32:06.022] Thread: 15492 SYSTEM: [ debug ] Asset 'textShader' loading complete
-[16:32:06.022] Thread: 23132 SYSTEM: [ trace ] Calculating matrices
-[16:32:06.023] Thread: 6600  SYSTEM: [ debug ] Asset 'stallTexture' loading complete
-[16:32:06.023] Thread: 23132 SYSTEM: [ info  ] Renderer initialized
-[16:32:06.023] Thread: 15492 SYSTEM: [ debug ] Asset 'simpleShader' loading complete
-[16:32:06.024] Thread: 6600  SYSTEM: [ debug ] Asset 'testMesh' loading complete
-[16:32:06.029] Thread: 6600  SYSTEM: [ debug ] Asset 'flatPlainMesh' loading complete
-[16:32:06.031] Thread: 6600  SYSTEM: [ debug ] Asset 'plainMaterial' loading complete
-[16:32:06.033] Thread: 15492 SYSTEM: [ debug ] Asset 'audioTest' loading complete
-[16:32:06.071] Thread: 6600  SYSTEM: [ debug ] Asset 'dirt_1' loading complete
-[16:32:06.073] Thread: 6600  SYSTEM: [ debug ] Asset 'multiTextureNoLightShader' loading complete
-[16:32:06.074] Thread: 6600  SYSTEM: [ debug ] Asset 'lightMapShader' loading complete
-[16:32:06.079] Thread: 6600  SYSTEM: [ debug ] Asset 'spot' loading complete
-[16:32:06.081] Thread: 6600  SYSTEM: [ debug ] Asset 'plainAlphaMaterial' loading complete
-[16:32:06.086] Thread: 6600  SYSTEM: [ debug ] Asset 'alphaMap' loading complete
-[16:32:06.086] Thread: 6600  SYSTEM: [ debug ] Asset 'alphaMapShader' loading complete
-[16:32:06.087] Thread: 6600  SYSTEM: [ debug ] Asset 'bumpShader' loading complete
-[16:32:06.089] Thread: 15492 SYSTEM: [ debug ] Asset 'stone_1' loading complete
-[16:32:06.089] Thread: 6600  SYSTEM: [ debug ] Asset 'flatPlainMeshNormal' loading complete
-[16:32:06.091] Thread: 15492 SYSTEM: [ debug ] Asset 'plainBumpMaterial' loading complete
-[16:32:06.093] Thread: 15492 SYSTEM: [ debug ] Asset 'dbsShader' loading complete
-[16:32:06.098] Thread: 6600  SYSTEM: [ debug ] Asset 'normalMap' loading complete
-[16:32:06.100] Thread: 15492 SYSTEM: [ debug ] Asset 'specMapDiffuse' loading complete
-[16:32:06.105] Thread: 15492 SYSTEM: [ debug ] Asset 'specMapSpecular' loading complete
-[16:32:06.107] Thread: 15492 SYSTEM: [ debug ] Asset 'plainSpecMapMaterial' loading complete
-[16:32:06.111] Thread: 6600  SYSTEM: [ debug ] Asset 'specMapNormal' loading complete
-[16:32:06.112] Thread: 23132 SYSTEM: [ trace ] Creating vertex array(VAO)
-[16:32:06.112] Thread: 23132 SYSTEM: [ trace ] Vertices: '629' Indices: '1878' Type: '0'
-[16:32:06.113] Thread: 23132 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[16:32:06.114] Thread: 23132 SYSTEM: [ info  ] Vertex array object(VAO) created
-[16:32:06.114] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.115] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.133] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.204] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.210] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.211] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.212] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.213] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.214] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.214] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.216] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.217] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.228] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.236] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.236] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.237] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.237] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.238] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.240] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.241] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.241] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.242] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.262] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.269] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.269] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.270] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.270] Thread: 23132 SYSTEM: [ trace ] Creating vertex array(VAO)
-[16:32:06.271] Thread: 23132 SYSTEM: [ trace ] Vertices: '5900' Indices: '8700' Type: '0'
-[16:32:06.272] Thread: 23132 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[16:32:06.273] Thread: 23132 SYSTEM: [ info  ] Vertex array object(VAO) created
-[16:32:06.274] Thread: 23132 SYSTEM: [ trace ] Creating vertex array(VAO)
-[16:32:06.274] Thread: 23132 SYSTEM: [ trace ] Vertices: '20' Indices: '108' Type: '0'
-[16:32:06.275] Thread: 23132 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[16:32:06.276] Thread: 23132 SYSTEM: [ info  ] Vertex array object(VAO) created
-[16:32:06.276] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.277] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.278] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.278] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.279] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.280] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.302] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.376] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.378] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.378] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.379] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.379] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.393] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.401] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.402] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.403] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.403] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.405] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.406] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.406] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.407] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.408] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.409] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.410] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.410] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.411] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.428] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.438] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.439] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.439] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.440] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.441] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.463] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.544] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.545] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.546] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.546] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.547] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:06.548] Thread: 23132 SYSTEM: [ trace ] Generating texture mipmaps
-[16:32:06.548] Thread: 23132 SYSTEM: [ info  ] Texture created
-[16:32:06.549] Thread: 23132 SYSTEM: [ trace ] Creating vertex array(VAO)
-[16:32:06.550] Thread: 23132 SYSTEM: [ trace ] Vertices: '55' Indices: '108' Type: '0'
-[16:32:06.551] Thread: 23132 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
-[16:32:06.551] Thread: 23132 SYSTEM: [ info  ] Vertex array object(VAO) created
-[16:32:06.552] Thread: 23132 SYSTEM: [ trace ] Creating direct x shader
-[16:32:06.553] Thread: 23132 SYSTEM: [ trace ] Compiling vertex shader
-[16:32:06.575] Thread: 23132 SYSTEM: [ trace ] Compiling pixel shader
-[16:32:06.669] Thread: 23132 SYSTEM: [ trace ] Creating shader
-[16:32:06.670] Thread: 23132 SYSTEM: [ trace ] Creating shader buffers
-[16:32:06.671] Thread: 23132 SYSTEM: [ info  ] Shader created
-[16:32:06.671] Thread: 23132 SYSTEM: [ trace ] Creating a texture
-[16:32:06.672] Thread: 23132 SYSTEM: [ trace ] Creating texture resources
-[16:32:
+[00:15:31.039] Thread: 13864 SYSTEM: [ trace ] Creating 'WINDOWS' context
+[00:15:31.040] Thread: 13864 SYSTEM: [ trace ] Initializing DXContext
+[00:15:31.041] Thread: 13864 SYSTEM: [ trace ] Creating DX device with feature level '45056'
+[00:15:31.213] Thread: 13864 SYSTEM: [ info  ] DX device created
+[00:15:31.214] Thread: 13864 SYSTEM: [ trace ] Getting display parameters
+[00:15:31.214] Thread: 13864 SYSTEM: [ trace ] Adapter information acquired
+[00:15:31.216] Thread: 13864 SYSTEM: [ trace ] Possible display mode count '146'
+[00:15:31.217] Thread: 13864 SYSTEM: [ trace ] Getting video card information
+[00:15:31.217] Thread: 13864 SYSTEM: [ info  ] Video card: 'NVIDIA GeForce GTX 1050 Ti with Max-Q Design' with 4021MB dedicated video memory
+[00:15:31.218] Thread: 13864 SYSTEM: [ trace ] Checking context state descriptions
+[00:15:31.218] Thread: 13864 SYSTEM: [warning] Context descriptions not created, creating now
+[00:15:31.219] Thread: 13864 SYSTEM: [ trace ] Creating shader matrix buffer description
+[00:15:31.219] Thread: 13864 SYSTEM: [ trace ] Creating shader settings buffer description
+[00:15:31.219] Thread: 13864 SYSTEM: [ trace ] Creating shader point light buffer description
+[00:15:31.220] Thread: 13864 SYSTEM: [ trace ] Creating shader spot light buffer description
+[00:15:31.220] Thread: 13864 SYSTEM: [ trace ] Creating shader directional light buffer description
+[00:15:31.221] Thread: 13864 SYSTEM: [ trace ] Creating shader camera buffer description
+[00:15:31.221] Thread: 13864 SYSTEM: [ trace ] Creating shader sampler description
+[00:15:31.221] Thread: 13864 SYSTEM: [ trace ] Creating 'WINDOWS' audio context
+[00:15:31.222] Thread: 13864 SYSTEM: [ trace ] Initializing WindowsAudioContext
+[00:15:31.396] Thread: 13864 SYSTEM: [ trace ] Created an asset manager instance with '2' threads
+[00:15:31.398] Thread: 13864 SYSTEM: [ trace ] Created an scene manager instance with '1' threads
+[00:15:33.465] Thread: 13864 SYSTEM: [ trace ] Saving dictionary: '../Assets/dictionary.meta'
+[00:15:33.469] Thread: 13864 SYSTEM: [ trace ] Dictionary saving complete: '00.00.00' with '29' entries
+[00:15:33.474] Thread: 13864 SYSTEM: [ debug ] Loading dictionary: '../Assets/dictionary.meta'
+[00:15:33.474] Thread: 13864 SYSTEM: [ trace ] Loading dictionary: '../Assets/dictionary.meta'
+[00:15:33.483] Thread: 13864 SYSTEM: [ trace ] Dictionary loading complete: '00.00.00' with '29' entries
+[00:15:33.484] Thread: 13864 SYSTEM: [ debug ] Engine filled with '29' new associations
+[00:15:33.484] Thread: 13864 SYSTEM: [ debug ] Loading scene by name: 'sample'
+[00:15:33.485] Thread: 13864 SYSTEM: [ trace ] Creating a new 'Windows' window
+[00:15:33.485] Thread: 13864 SYSTEM: [ trace ] Initializing a window '1280x720'
+[00:15:33.487] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'lightingShader'
+[00:15:33.488] Thread: 13864 SYSTEM: [ trace ] Creating hwnd
+[00:15:33.488] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'stallMesh'
+[00:15:33.491] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'stallTexture'
+[00:15:33.494] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'stallMaterial'
+[00:15:33.494] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'arialFont'
+[00:15:33.498] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'textShader'
+[00:15:33.501] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'simpleShader'
+[00:15:33.507] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'testMesh'
+[00:15:33.508] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'audioTest'
+[00:15:33.509] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'flatPlainMesh'
+[00:15:33.510] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'plainMaterial'
+[00:15:33.512] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'dirt_1'
+[00:15:33.513] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'stone_1'
+[00:15:33.515] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'multiTextureNoLightShader'
+[00:15:33.515] Thread: 13864 SYSTEM: [ trace ] Registering RID devices
+[00:15:33.516] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'lightMapShader'
+[00:15:33.516] Thread: 13864 SYSTEM: [ info  ] RID devices registered
+[00:15:33.517] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'spot'
+[00:15:33.517] Thread: 13864 SYSTEM: [ info  ] Window initialized
+[00:15:33.518] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'plainAlphaMaterial'
+[00:15:33.518] Thread: 13864 SYSTEM: [ trace ] Creating a new 'Windows' renderer
+[00:15:33.519] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'alphaMap'
+[00:15:33.519] Thread: 13864 SYSTEM: [ trace ] Checking renderer state descriptions
+[00:15:33.520] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'alphaMapShader'
+[00:15:33.520] Thread: 13864 SYSTEM: [warning] Renderer descriptions not created, creating now
+[00:15:33.520] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'bumpShader'
+[00:15:33.521] Thread: 13864 SYSTEM: [ trace ] Creating default depth stencil
+[00:15:33.521] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'flatPlainMeshNormal'
+[00:15:33.521] Thread: 13864 SYSTEM: [ trace ] Creating default depth stencil view
+[00:15:33.522] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'plainBumpMaterial'
+[00:15:33.522] Thread: 13864 SYSTEM: [ trace ] Creating default raster description
+[00:15:33.522] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'normalMap'
+[00:15:33.523] Thread: 13864 SYSTEM: [ trace ] Creating no culling raster description
+[00:15:33.523] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'dbsShader'
+[00:15:33.524] Thread: 13864 SYSTEM: [ trace ] Creating disabled depth stencil
+[00:15:33.524] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'specMapDiffuse'
+[00:15:33.524] Thread: 13864 SYSTEM: [ trace ] Creating blend state descriptions
+[00:15:33.525] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'specMapNormal'
+[00:15:33.525] Thread: 13864 SYSTEM: [ info  ] Initializing renderer
+[00:15:33.525] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'specMapSpecular'
+[00:15:33.526] Thread: 13864 SYSTEM: [ trace ] Getting display refresh rate
+[00:15:33.526] Thread: 19672 SYSTEM: [ debug ] Loading asset by name: 'plainSpecMapMaterial'
+[00:15:33.526] Thread: 13864 SYSTEM: [ info  ] Refresh rate: '3435973836' '3435973836'
+[00:15:33.527] Thread: 19672 SYSTEM: [ debug ] Scene 'sample' loading complete
+[00:15:33.527] Thread: 22304 SYSTEM: [ debug ] Asset 'stallMesh' loading complete
+[00:15:33.527] Thread: 11188 SYSTEM: [ debug ] Asset 'lightingShader' loading complete
+[00:15:33.527] Thread: 13864 SYSTEM: [ trace ] Creating swap chain description
+[00:15:33.528] Thread: 13864 SYSTEM: [ trace ] V_SYNC disabled
+[00:15:33.528] Thread: 11188 SYSTEM: [ debug ] Asset 'stallMaterial' loading complete
+[00:15:33.528] Thread: 13864 SYSTEM: [ trace ] Full screen disabled
+[00:15:33.529] Thread: 13864 SYSTEM: [ trace ] Creating depth buffer description
+[00:15:33.530] Thread: 13864 SYSTEM: [ trace ] Creating view port
+[00:15:33.530] Thread: 13864 SYSTEM: [ trace ] Creating swap chain instance
+[00:15:33.531] Thread: 13864 SYSTEM: [ info  ] Swap chain created
+[00:15:33.531] Thread: 13864 SYSTEM: [ trace ] Creating depth buffer description
+[00:15:33.532] Thread: 13864 SYSTEM: [ trace ] Creating view port
+[00:15:33.532] Thread: 13864 SYSTEM: [ trace ] Creating renderer states
+[00:15:33.532] Thread: 11188 SYSTEM: [ debug ] Asset 'arialFont' loading complete
+[00:15:33.533] Thread: 13864 SYSTEM: [ info  ] Creating blend states
+[00:15:33.533] Thread: 11188 SYSTEM: [ debug ] Asset 'textShader' loading complete
+[00:15:33.533] Thread: 13864 SYSTEM: [ trace ] Calculating matrices
+[00:15:33.534] Thread: 11188 SYSTEM: [ debug ] Asset 'simpleShader' loading complete
+[00:15:33.534] Thread: 13864 SYSTEM: [ info  ] Renderer initialized
+[00:15:33.535] Thread: 22304 SYSTEM: [ debug ] Asset 'stallTexture' loading complete
+[00:15:33.535] Thread: 11188 SYSTEM: [ debug ] Asset 'testMesh' loading complete
+[00:15:33.541] Thread: 11188 SYSTEM: [ debug ] Asset 'flatPlainMesh' loading complete
+[00:15:33.542] Thread: 11188 SYSTEM: [ debug ] Asset 'plainMaterial' loading complete
+[00:15:33.547] Thread: 22304 SYSTEM: [ debug ] Asset 'audioTest' loading complete
+[00:15:33.575] Thread: 11188 SYSTEM: [ debug ] Asset 'dirt_1' loading complete
+[00:15:33.576] Thread: 11188 SYSTEM: [ debug ] Asset 'multiTextureNoLightShader' loading complete
+[00:15:33.577] Thread: 11188 SYSTEM: [ debug ] Asset 'lightMapShader' loading complete
+[00:15:33.580] Thread: 11188 SYSTEM: [ debug ] Asset 'spot' loading complete
+[00:15:33.581] Thread: 11188 SYSTEM: [ debug ] Asset 'plainAlphaMaterial' loading complete
+[00:15:33.583] Thread: 11188 SYSTEM: [ debug ] Asset 'alphaMap' loading complete
+[00:15:33.584] Thread: 11188 SYSTEM: [ debug ] Asset 'alphaMapShader' loading complete
+[00:15:33.584] Thread: 11188 SYSTEM: [ debug ] Asset 'bumpShader' loading complete
+[00:15:33.585] Thread: 11188 SYSTEM: [ debug ] Asset 'flatPlainMeshNormal' loading complete
+[00:15:33.585] Thread: 11188 SYSTEM: [ debug ] Asset 'plainBumpMaterial' loading complete
+[00:15:33.590] Thread: 11188 SYSTEM: [ debug ] Asset 'normalMap' loading complete
+[00:15:33.590] Thread: 22304 SYSTEM: [ debug ] Asset 'stone_1' loading complete
+[00:15:33.590] Thread: 11188 SYSTEM: [ debug ] Asset 'dbsShader' loading complete
+[00:15:33.595] Thread: 22304 SYSTEM: [ debug ] Asset 'specMapDiffuse' loading complete
+[00:15:33.595] Thread: 11188 SYSTEM: [ debug ] Asset 'specMapNormal' loading complete
+[00:15:33.597] Thread: 11188 SYSTEM: [ debug ] Asset 'plainSpecMapMaterial' loading complete
+[00:15:33.598] Thread: 22304 SYSTEM: [ debug ] Asset 'specMapSpecular' loading complete
+[00:15:33.598] Thread: 13864 SYSTEM: [ trace ] Creating frame buffer '320x320'
+[00:15:33.599] Thread: 13864 SYSTEM: [ trace ] Creating frame buffer resources
+[00:15:33.600] Thread: 13864 SYSTEM: [ info  ] Frame buffer created
+[00:15:33.600] Thread: 13864 SYSTEM: [ trace ] Creating vertex array(VAO)
+[00:15:33.600] Thread: 13864 SYSTEM: [ trace ] Vertices: '4' Indices: '6' Type: '0'
+[00:15:33.601] Thread: 13864 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[00:15:33.601] Thread: 13864 SYSTEM: [ info  ] Vertex array object(VAO) created
+[00:15:33.601] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.602] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.611] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.617] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.621] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.622] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.622] Thread: 13864 SYSTEM: [ trace ] Creating vertex array(VAO)
+[00:15:33.622] Thread: 13864 SYSTEM: [ trace ] Vertices: '629' Indices: '1878' Type: '0'
+[00:15:33.623] Thread: 13864 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[00:15:33.623] Thread: 13864 SYSTEM: [ info  ] Vertex array object(VAO) created
+[00:15:33.623] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.624] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.638] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.694] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.696] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.697] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.698] Thread: 13864 SYSTEM: [ trace ] Creating a texture
+[00:15:33.699] Thread: 13864 SYSTEM: [ trace ] Creating texture resources
+[00:15:33.702] Thread: 13864 SYSTEM: [ trace ] Generating texture mipmaps
+[00:15:33.702] Thread: 13864 SYSTEM: [ info  ] Texture created
+[00:15:33.704] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.704] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.711] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.718] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.718] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.719] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.720] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.720] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.731] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.736] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.737] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.738] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.738] Thread: 13864 SYSTEM: [ trace ] Creating a texture
+[00:15:33.739] Thread: 13864 SYSTEM: [ trace ] Creating texture resources
+[00:15:33.740] Thread: 13864 SYSTEM: [ trace ] Generating texture mipmaps
+[00:15:33.740] Thread: 13864 SYSTEM: [ info  ] Texture created
+[00:15:33.741] Thread: 13864 SYSTEM: [ trace ] Creating vertex array(VAO)
+[00:15:33.741] Thread: 13864 SYSTEM: [ trace ] Vertices: '5900' Indices: '8700' Type: '0'
+[00:15:33.741] Thread: 13864 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[00:15:33.743] Thread: 13864 SYSTEM: [ info  ] Vertex array object(VAO) created
+[00:15:33.744] Thread: 13864 SYSTEM: [ trace ] Creating vertex array(VAO)
+[00:15:33.744] Thread: 13864 SYSTEM: [ trace ] Vertices: '20' Indices: '108' Type: '0'
+[00:15:33.744] Thread: 13864 SYSTEM: [ trace ] Creating vertex array object(VAO) buffers
+[00:15:33.744] Thread: 13864 SYSTEM: [ info  ] Vertex array object(VAO) created
+[00:15:33.745] Thread: 13864 SYSTEM: [ trace ] Creating a texture
+[00:15:33.746] Thread: 13864 SYSTEM: [ trace ] Creating texture resources
+[00:15:33.748] Thread: 13864 SYSTEM: [ trace ] Generating texture mipmaps
+[00:15:33.749] Thread: 13864 SYSTEM: [ info  ] Texture created
+[00:15:33.749] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.749] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.766] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.821] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.822] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.822] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.823] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.823] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.833] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.839] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.840] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.840] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.841] Thread: 13864 SYSTEM: [ trace ] Creating a texture
+[00:15:33.841] Thread: 13864 SYSTEM: [ trace ] Creating texture resources
+[00:15:33.842] Thread: 13864 SYSTEM: [ trace ] Generating texture mipmaps
+[00:15:33.843] Thread: 13864 SYSTEM: [ info  ] Texture created
+[00:15:33.843] Thread: 13864 SYSTEM: [ trace ] Creating a texture
+[00:15:33.843] Thread: 13864 SYSTEM: [ trace ] Creating texture resources
+[00:15:33.844] Thread: 13864 SYSTEM: [ trace ] Generating texture mipmaps
+[00:15:33.844] Thread: 13864 SYSTEM: [ info  ] Texture created
+[00:15:33.845] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.845] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.855] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.861] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.862] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.862] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.863] Thread: 13864 SYSTEM: [ trace ] Creating direct x shader
+[00:15:33.863] Thread: 13864 SYSTEM: [ trace ] Compiling vertex shader
+[00:15:33.879] Thread: 13864 SYSTEM: [ trace ] Compiling pixel shader
+[00:15:33.933] Thread: 13864 SYSTEM: [ trace ] Creating shader
+[00:15:33.934] Thread: 13864 SYSTEM: [ trace ] Creating shader buffers
+[00:15:33.934] Thread: 13864 SYSTEM: [ info  ] Shader created
+[00:15:33.935] Thread: 13864 SYSTEM: [ trace ] Creating vertex array(VAO)
+[00:15:33.935] Thread: 13864 SYSTEM: [ trace ] Vertices: '55' Indices: '108' Type: '0'
+[00:15:33.936] Thread: 13864 SYSTEM: [ tr

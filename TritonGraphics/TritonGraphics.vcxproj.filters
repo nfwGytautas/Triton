@@ -60,9 +60,6 @@
     <ClInclude Include="src\TritonPlatform2\CrossTypes\VAO.h">
       <Filter>CrossTypes</Filter>
     </ClInclude>
-    <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.h">
-      <Filter>DirectX\BasicTypes</Filter>
-    </ClInclude>
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.h">
       <Filter>DirectX\BasicTypes</Filter>
     </ClInclude>
@@ -121,9 +118,6 @@
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp">
       <Filter>CrossTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp">
-      <Filter>DirectX\BasicTypes</Filter>
     </ClCompile>
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.cpp">
       <Filter>DirectX\BasicTypes</Filter>

@@ -95,6 +95,39 @@ namespace Triton
 			virtual void alphaBlending(bool state) = 0;
 
 			/**
+			 * Create a new frame buffer that can be used by the renderer
+			 *
+			 * @param width The width of the new frame buffer
+			 * @param height The height of the new frame buffer
+			 * @return ID of the new surface
+			 */
+			virtual unsigned int newSurface(unsigned int width, unsigned int height) = 0;
+
+			/**
+			 * Enable a surface with the specified index
+			 * 0 for default
+			 *
+			 * @param id The id of the surface
+			 */
+			virtual void setSurface(unsigned int id) = 0;
+
+			/**
+			 * Bind the surface with specified id to a given texture slot
+			 *
+			 * @param id The id of the surface
+			 * @param slot The texture slot
+			 */
+			virtual void bindSurface(unsigned int id, unsigned int slot) = 0;
+
+			/**
+			 * Get the size of a surface
+			 *
+			 * @param id The id of the surface
+			 * @return tuple of surface size
+			 */
+			virtual std::tuple<int, int> surfaceSize(unsigned int id) = 0;
+
+			/**
 			 * Check if the renderer has been initialized successfully
 			 *
 			 * @return True if renderer has initialized successfully
@@ -169,6 +202,12 @@ namespace Triton
 
 			/// The far plane where renderer starts culling objects
 			float m_farPlane = 100.0f;
+
+			/// The width of the current surface
+			float m_surfaceWidth = 1.0f;
+
+			/// The height of the current surface
+			float m_surfaceHeight = 1.0f;
 
 			/// Renderer calculated projection matrix
 			Matrix44 m_projectionMatrix;

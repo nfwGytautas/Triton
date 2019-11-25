@@ -38,5 +38,25 @@ namespace Triton
 		 * @param assetManager Assets manager where the text shader can be found
 		 */
 		void renderText(const std::string& text, const std::string& fontName, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager);
+
+		/**
+		 * Renders the specified texture to the screen
+		 *
+		 * @param texture Texture to render
+		 * @param position Location of the text on screen
+		 * @param renderer Engine renderer instance
+		 * @param assetManager Assets manager where the texture can be found
+		 */
+		void renderTexture(const std::string& texture, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager);
+
+		/**
+		 * Renders the current surface to a texture on the screen
+		 *
+		 * @param surface ID of the surface
+		 * @param position Location of the text on screen
+		 * @param renderer Engine renderer instance
+		 * @param assetManager Assets manager where the texture can be found
+		 */
+		void renderSurface(unsigned int surface, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager);
 	}
 }

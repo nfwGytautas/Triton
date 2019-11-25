@@ -46,9 +46,8 @@ namespace Triton
 
 		void Renderer::recalcMatrices()
 		{
-			auto[width, height] = m_renderingTo->size();
-			m_projectionMatrix = Core::CreateProjectionMatrix(width, height, m_fov, m_nearPlane, m_farPlane);
-			m_orthographicMatrix = Core::CreateOrthographicMatrix(width, height, m_nearPlane, m_farPlane);
+			m_projectionMatrix = Core::CreateProjectionMatrix(m_surfaceWidth, m_surfaceHeight, m_fov, m_nearPlane, m_farPlane);
+			m_orthographicMatrix = Core::CreateOrthographicMatrix(m_surfaceWidth, m_surfaceHeight, m_nearPlane, m_farPlane);
 		}
 	}
 }

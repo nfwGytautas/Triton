@@ -280,6 +280,11 @@ namespace Triton
 				m_swapChain->Release();
 				m_swapChain = 0;
 			}
+
+			for (int i = 0; i < m_surfaces.size(); i++)
+			{
+				delete m_surfaces[i];
+			}
 		}
 
 		void DXRenderer::newFrame(float red, float green, float blue, float alpha)
@@ -293,13 +298,13 @@ namespace Triton
 			color[3] = alpha;
 
 			// Bind the render target view and depth stencil buffer to the output render pipeline.
-			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+			m_deviceContext->OMSetRenderTargets(1, &m_currentRenderTargetView, m_currentDepthStencilView);
 
 			// Clear the back buffer.
-			m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
+			m_deviceContext->ClearRenderTargetView(m_currentRenderTargetView, color);
 
 			// Clear the depth buffer.
-			m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+			m_deviceContext->ClearDepthStencilView(m_currentDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 			return;
 		}
@@ -318,14 +323,17 @@ namespace Triton
 				m_swapChain->Present(0, 0);
 			}
 
-			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
-
 			return;
 		}
 
 		void DXRenderer::default()
 		{
-			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+			setSurface(0);
+
+			m_deviceContext->OMSetRenderTargets(1, &m_currentRenderTargetView, m_currentDepthStencilView);
+			
+			depthBufferState(true);
+			alphaBlending(false);
 		}
 
 		void DXRenderer::render(reference<Renderable>& renderable)
@@ -352,6 +360,162 @@ namespace Triton
 			m_deviceContext->OMSetBlendState(state ? m_alphaEnableBlendingState : m_alphaDisableBlendingState, blendFactor, 0xffffffff);
 
 			return;
+		}
+
+		unsigned int DXRenderer::newSurface(unsigned int width, unsigned int height)
+		{
+			TR_SYSTEM_TRACE("Creating frame buffer '{0}x{1}'", width, height);
+
+			Surface* surface = new Surface();
+
+			D3D11_TEXTURE2D_DESC textureDesc;
+			HRESULT result;
+			D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+			D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+
+
+			// Initialize the render target texture description.
+			ZeroMemory(&textureDesc, sizeof(textureDesc));
+
+			// Setup the render target texture description.
+			textureDesc.Width = width;
+			textureDesc.Height = height;
+			textureDesc.MipLevels = 1;
+			textureDesc.ArraySize = 1;
+			textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.Usage = D3D11_USAGE_DEFAULT;
+			textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			textureDesc.CPUAccessFlags = 0;
+			textureDesc.MiscFlags = 0;
+
+			TR_SYSTEM_TRACE("Creating frame buffer resources");
+
+			// Create the render target texture.
+			result = m_device->CreateTexture2D(&textureDesc, NULL, &surface->RTVTexture);
+			if (FAILED(result))
+			{
+				delete surface;
+				TR_SYSTEM_ERROR("Failed to create 2D texture");
+				return 0;
+			}
+
+			// Setup the description of the render target view.
+			renderTargetViewDesc.Format = textureDesc.Format;
+			renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+			renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+			// Create the render target view.
+			result = m_device->CreateRenderTargetView(surface->RTVTexture, &renderTargetViewDesc, &surface->RTV);
+			if (FAILED(result))
+			{
+				delete surface;
+				TR_SYSTEM_ERROR("Failed to create render target view");
+				return 0;
+			}
+
+			// Setup the description of the shader resource view.
+			shaderResourceViewDesc.Format = textureDesc.Format;
+			shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+			shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+			// Create the shader resource view.
+			result = m_device->CreateShaderResourceView(surface->RTVTexture, &shaderResourceViewDesc, &surface->SRV);
+			if (FAILED(result))
+			{
+				delete surface;
+				TR_SYSTEM_ERROR("Failed to create shader resource view");
+				return 0;
+			}
+
+			// Now get the depth buffer
+			D3D11_TEXTURE2D_DESC depthBufferDesc;
+
+			// Initialize the description of the depth buffer.
+			ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+
+			// Set up the description of the depth buffer.
+			depthBufferDesc.Width = width;
+			depthBufferDesc.Height = height;
+			depthBufferDesc.MipLevels = 1;
+			depthBufferDesc.ArraySize = 1;
+			depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			depthBufferDesc.SampleDesc.Count = 1;
+			depthBufferDesc.SampleDesc.Quality = 0;
+			depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+			depthBufferDesc.CPUAccessFlags = 0;
+			depthBufferDesc.MiscFlags = 0;
+
+			// Create the texture for the depth buffer using the filled out description.
+			result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &surface->DSB);
+			if (FAILED(result))
+			{
+				delete surface;
+				TR_SYSTEM_ERROR("Failed to acquire depth stencil buffer");
+				return 0;
+			}
+
+			// Create the depth stencil view.
+			result = m_device->CreateDepthStencilView(surface->DSB, &s_defaultDepthStencilViewDesc, &surface->DSV);
+			if (FAILED(result))
+			{
+				delete surface;
+				TR_SYSTEM_ERROR("Failed to create depth stencil view");
+				return 0;
+			}
+
+			surface->ID = m_nextSurfaceID++;
+
+			surface->Width = width;
+			surface->Height = height;
+			m_surfaces.push_back(surface);
+
+			TR_SYSTEM_INFO("Frame buffer created");
+
+			return surface->ID;
+		}
+
+		void DXRenderer::setSurface(unsigned int id)
+		{
+			TR_CORE_ASSERT(id <= m_surfaces.size(), "Trying to access undefined surface");
+
+			if (id == 0)
+			{
+				m_currentRenderTargetView = m_defaultRenderTargetView;
+				m_currentDepthStencilView = m_defaultDepthStencilView;
+
+				auto[width, height] = m_renderingTo->size();
+				m_surfaceWidth = width;
+				m_surfaceHeight = height;
+			}
+			else
+			{
+				m_currentRenderTargetView = m_surfaces[id - 1]->RTV;
+				m_currentDepthStencilView = m_surfaces[id - 1]->DSV;
+
+				m_surfaceWidth = m_surfaces[id - 1]->Width;
+				m_surfaceHeight = m_surfaces[id - 1]->Height;
+			}
+
+			recalcMatrices();
+			setViewPort(0, 0, m_surfaceWidth, m_surfaceHeight);
+		}
+
+		void DXRenderer::bindSurface(unsigned int id, unsigned int slot)
+		{
+			TR_CORE_ASSERT(id <= m_surfaces.size(), "Trying to access undefined surface");
+
+			// Set shader texture resource in the pixel shader.
+			m_deviceContext->PSSetShaderResources(slot, 1, &m_surfaces[id-1]->SRV);
+		}
+
+		std::tuple<int, int> DXRenderer::surfaceSize(unsigned int id)
+		{
+			TR_CORE_ASSERT(id <= m_surfaces.size(), "Trying to access undefined surface");
+
+			return { m_surfaces[id - 1]->Width, m_surfaces[id - 1]->Height };
 		}
 
 		void DXRenderer::setViewPort(int x, int y, int width, int height)
@@ -510,7 +674,7 @@ namespace Triton
 			}
 
 			// Create the render target view with the back buffer pointer.
-			result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
+			result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_defaultRenderTargetView);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to get render target view from swap chain!");
@@ -542,7 +706,7 @@ namespace Triton
 			m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
 			// Create the depth stencil view.
-			result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &s_defaultDepthStencilViewDesc, &m_depthStencilView);
+			result = m_device->CreateDepthStencilView(m_depthStencilBuffer, &s_defaultDepthStencilViewDesc, &m_defaultDepthStencilView);
 			if (FAILED(result))
 			{
 				TR_SYSTEM_ERROR("Failed to create depth stencil view");
@@ -550,7 +714,7 @@ namespace Triton
 			}
 
 			// Bind the render target view and depth stencil buffer to the output render pipeline.
-			m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+			m_deviceContext->OMSetRenderTargets(1, &m_defaultRenderTargetView, m_defaultDepthStencilView);
 
 			// Create the rasterizer state from the description we just filled out.
 			result = m_device->CreateRasterizerState(&s_defaultRasterDesc, &m_rasterState);
@@ -627,10 +791,10 @@ namespace Triton
 				m_disabledCullingState = 0;
 			}
 
-			if (m_depthStencilView)
+			if (m_defaultDepthStencilView)
 			{
-				m_depthStencilView->Release();
-				m_depthStencilView = 0;
+				m_defaultDepthStencilView->Release();
+				m_defaultDepthStencilView = 0;
 			}
 
 			if (m_depthStencilState)
@@ -645,10 +809,10 @@ namespace Triton
 				m_depthStencilBuffer = 0;
 			}
 
-			if (m_renderTargetView)
+			if (m_defaultRenderTargetView)
 			{
-				m_renderTargetView->Release();
-				m_renderTargetView = 0;
+				m_defaultRenderTargetView->Release();
+				m_defaultRenderTargetView = 0;
 			}
 
 			if (m_alphaEnableBlendingState)
@@ -663,5 +827,38 @@ namespace Triton
 				m_alphaDisableBlendingState = 0;
 			}
 		}
-	}
+
+		DXRenderer::Surface::~Surface()
+		{
+			if (RTV)
+			{
+				RTV->Release();
+				RTV = 0;
+			}
+
+			if (SRV)
+			{
+				SRV->Release();
+				SRV = 0;
+			}
+
+			if (RTVTexture)
+			{
+				RTVTexture->Release();
+				RTVTexture = 0;
+			}
+
+			if (DSV)
+			{
+				DSV->Release();
+				DSV = 0;
+			}
+
+			if (DSB)
+			{
+				DSB->Release();
+				DSB = 0;
+			}
+		}
+}
 }

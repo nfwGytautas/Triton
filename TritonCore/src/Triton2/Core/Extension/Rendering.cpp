@@ -123,5 +123,71 @@ namespace Triton
 				}
 			}
 		}
+
+		void renderTexture(const std::string& texture, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager)
+		{
+			if (assetManager->hasAsset("2DShader") && assetManager->hasAsset(texture))
+			{
+				auto shader = assetManager->getAsset("2DShader").as<ShaderAsset>();
+				auto mesh = assetManager->getAsset("2DQuad").as<MeshAsset>();
+				auto tex = assetManager->getAsset(texture).as<ImageAsset>();
+
+				if (shader->isCreated() && tex->isCreated() && mesh->isCreated())
+				{
+					shader->shader()->buffer_matrices().Projection = renderer->orthographic();
+
+					shader->shader()->enable();
+
+					renderer->depthBufferState(false);
+					renderer->alphaBlending(true);
+
+					auto[width, height] = renderer->size();
+					float x = 0 - (width / 2) + position.x;
+					float y = 0 - (height / 2) + position.y;
+
+					mesh->VAO()->enable();
+
+					tex->texture()->enable();
+
+					shader->shader()->update_matrices();
+					renderer->render(mesh->VAO()->getIndiceCount());
+
+					renderer->depthBufferState(true);
+					renderer->alphaBlending(false);
+				}
+			}
+		}
+
+		void renderSurface(unsigned int surface, Vector2 position, Graphics::Renderer* renderer, Core::AssetManager* assetManager)
+		{
+			if (assetManager->hasAsset("2DShader") && assetManager->hasAsset("2DQuad"))
+			{
+				auto shader = assetManager->getAsset("2DShader").as<ShaderAsset>();
+				auto mesh = assetManager->getAsset("2DQuad").as<MeshAsset>();
+
+				if (shader->isCreated() && mesh->isCreated())
+				{
+					auto[surfaceWidth, surfaceHeight] = renderer->surfaceSize(surface);
+
+
+					auto[width, height] = renderer->size();
+					float x = 0 - (width / 2) + position.x + surfaceWidth / 2;
+					float y = 0 - (height / 2) + position.y + surfaceHeight / 2;
+
+
+					shader->shader()->buffer_matrices().Projection = renderer->orthographic();
+					shader->shader()->buffer_matrices().Model = Core::CreateTransformationMatrix({ x, y, 0 }, { 0, 0, 0 }, { (float)surfaceWidth / 2, (float)surfaceHeight / 2, 1 });
+
+					shader->shader()->enable();
+
+					mesh->VAO()->enable();
+
+					renderer->bindSurface(surface, 0);
+
+					shader->shader()->update_matrices();
+					renderer->render(mesh->VAO()->getIndiceCount());
+				}
+			}
+		}
 	}
 }

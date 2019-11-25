@@ -136,6 +136,7 @@
     <ClInclude Include="src\TritonTypes\relay_ptr.h">
       <Filter>TritonTypes</Filter>
     </ClInclude>
+    <ClInclude Include="src\Triton2\Instance\EngineAssets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TRpch.cpp" />

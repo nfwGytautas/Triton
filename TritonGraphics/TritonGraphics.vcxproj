@@ -148,7 +148,6 @@
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Shader.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\Texture.h" />
     <ClInclude Include="src\TritonPlatform2\CrossTypes\VAO.h" />
-    <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.h" />
     <ClInclude Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.h" />
@@ -172,7 +171,6 @@
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\State\Mouse.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Core\Window.cpp" />
     <ClCompile Include="src\TritonPlatform2\CrossTypes\Shader.cpp" />
-    <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXFramebuffer.cpp" />
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXShader.cpp" />
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXTexture.cpp" />
     <ClCompile Include="src\TritonPlatform2\DirectX\BasicTypes\DXVAO.cpp" />

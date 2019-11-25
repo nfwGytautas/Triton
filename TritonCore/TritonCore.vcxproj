@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Triton2\Instance\EngineAssets.h" />
     <ClInclude Include="src\TRpch.h" />
     <ClInclude Include="src\Triton2\Assert.h" />
     <ClInclude Include="src\Triton2\Core\AssetManager.h" />

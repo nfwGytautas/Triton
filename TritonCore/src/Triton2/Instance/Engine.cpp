@@ -11,6 +11,8 @@
 
 #include "TritonTypes/Asset.h"
 
+#include "Triton2/Instance/EngineAssets.h"
+
 namespace Triton
 {
 	void Engine::init(EngineSettings& settings)
@@ -34,6 +36,9 @@ namespace Triton
 
 		// Create scene manager using asset manager
 		m_scenes = new Core::SceneManager(m_assets, m_dictionary);
+
+		// Setup default assets
+		setupDefaultAssets();
 	}
 
 	void Engine::shutdown()
@@ -91,6 +96,53 @@ namespace Triton
 	void Engine::addDictionary(const Core::AssetDictionary& dict)
 	{
 		m_dictionary->append(dict);
+	}
+
+	void Engine::setupDefaultAssets()
+	{
+		IO::MeshData* quadData = new IO::MeshData();
+
+		IO::Mesh quadMesh;
+		quadMesh.DynamicBuffer = 0;
+		quadMesh.Stride = 3 + 2;
+		quadMesh.vertices = 
+		{
+			// Bottom left.
+			-1.0f, -1.0f, 1.0f,
+			0.0f, 1.0f,
+		
+			// Top left
+			-1.0f, 1.0f, 1.0f,
+			0.0f, 0.0f,
+		
+			// Top right.
+			1.0f, 1.0f, 1.0f,
+			1.0f, 0.0f,
+		
+			// Bottom right.
+			1.0f, -1.0f, 1.0f,
+			1.0f, 1.0f,
+		};
+		
+		quadMesh.indices = {0, 1, 2, 0, 2, 3};
+
+		quadData->meshes.push_back(quadMesh);
+		reference<MeshAsset> _2dquad = new MeshAsset("2DQuad", quadData);
+		m_assets->addAsset(_2dquad.as<Asset>());
+
+
+		IO::ShaderData* shaderData = new IO::ShaderData();
+		shaderData->source = Predefined::_2dshaderSource;
+		shaderData->vertexEntry = "vertex_quad";
+		shaderData->pixelEntry = "pixel_quad";
+
+		for (int flag : {Flags::sFlag_Matrices, Flags::sFlag_NoNormals})
+		{
+			shaderData->flags.set(flag);
+		}
+
+		reference<ShaderAsset> _2dshader = new ShaderAsset("2DShader", shaderData);
+		m_assets->addAsset(_2dshader.as<Asset>());
 	}
 
 	void Engine::assetAdded(reference<Asset> asset)
