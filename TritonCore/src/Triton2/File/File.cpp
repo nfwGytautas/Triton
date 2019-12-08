@@ -160,12 +160,9 @@ namespace Triton
 			fileSize = file.tellg();
 			file.seekg(0, std::ios::beg);
 
-			objectToStoreIn->reserve(fileSize);
+			objectToStoreIn->resize(fileSize);
 
-			// read the data:
-			objectToStoreIn->insert(objectToStoreIn->begin(),
-				std::istream_iterator<unsigned char>(file),
-				std::istream_iterator<unsigned char>());
+			file.read((char*)objectToStoreIn->data(), fileSize);
 
 			return status;
 		}

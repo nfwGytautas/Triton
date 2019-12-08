@@ -543,7 +543,7 @@ namespace Triton
 					return status;
 				}
 				
-				IOStatus saveMaterialToArchive_00_00_00(cereal::BinaryOutputArchive & archive, MaterialData* rawData)
+				IOStatus saveMaterialToArchive_00_00_00(cereal::BinaryOutputArchive& archive, MaterialData* rawData)
 				{
 					// The function status
 					IOStatus status;

@@ -1,55 +1,7 @@
 #pragma pack_matrix(row_major)
 
-#define MAX_POINT_LIGHTS 16
-#define MAX_DIR_LIGHTS 1
-#define MAX_SPOT_LIGHTS 4
-
-#define SHINE 32
-#define AMBIENT_INTENSITY 0.15
-
-cbuffer Settings : register(b0)
-{
-    float pointLights;
-    float directionalLights;
-    float spotLights;
-
-    float padding;
-};
-
-cbuffer MatrixBuffer : register(b1)
-{
-    matrix projection;
-    matrix view;
-    matrix model;
-};
-
-cbuffer PointLights : register(b2)
-{
-    float4 pl_Position[MAX_POINT_LIGHTS];
-    float4 pl_Color[MAX_POINT_LIGHTS];
-    float4 pl_AtennuationAndRange[MAX_POINT_LIGHTS];
-};
-
-cbuffer SpotLights : register(b3)
-{
-    float4 sl_Position[MAX_SPOT_LIGHTS];
-    float4 sl_ColorAndAngle[MAX_SPOT_LIGHTS];
-    float4 sl_Direction[MAX_SPOT_LIGHTS];
-    float4 sl_AtennuationAndRange[MAX_SPOT_LIGHTS];
-};
-
-cbuffer DirectionalLights : register(b4)
-{
-    float4 dl_Position[MAX_DIR_LIGHTS];
-    float4 dl_Color[MAX_DIR_LIGHTS];
-    float4 dl_Direction[MAX_DIR_LIGHTS];
-};
-
-cbuffer CameraBuffer : register(b5)
-{
-    float4 cam_Position;
-    float4 cam_Dir;
-};
+#include "Buffers.hlsl"
+#include "Lighting.hlsl"
 
 struct VertexInputType
 {
@@ -112,10 +64,6 @@ PixelInputType vertex_bump(VertexInputType input)
     return output;
 }
 
-float4 pointLightCalc(PixelInputType input);
-float4 spotLightCalc(PixelInputType input);
-float4 dirLightCalc(PixelInputType input);
-
 float4 pixel_bump(PixelInputType input) : SV_TARGET
 {
     float4 textureColor;
@@ -137,10 +85,16 @@ float4 pixel_bump(PixelInputType input) : SV_TARGET
 
     //Convert normal from normal map to texture space and store in input.normal
     input.normal = normalize(mul(normalMap, texSpace));
+    
+    // Lighting
+    LightData ld;
+    ld.normal = input.normal;
+    ld.worldPos = input.worldPos;
+    ld.viewDirection = input.viewDirection;
 
-    float4 pointLightColor = pointLightCalc(input);
-    float4 spotLightColor = spotLightCalc(input);
-    float4 dirLightColor = dirLightCalc(input);
+    float4 pointLightColor = pointLightCalc(ld);
+    float4 spotLightColor = spotLightCalc(ld);
+    float4 dirLightColor = dirLightCalc(ld);
 
     // Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
     color = pointLightColor + spotLightColor + dirLightColor;
@@ -148,144 +102,5 @@ float4 pixel_bump(PixelInputType input) : SV_TARGET
     // Multiply the texture pixel and the final diffuse color to get the final pixel color result.
     color = color * textureColor;
 	
-    return color;
-}
-
-float4 pointLightCalc(PixelInputType input)
-{
-    float4 color = float4(0, 0, 0, 0);
-
-    for (int i = 0; i < pointLights; i++)
-    {
-        float3 lightPosition = pl_Position[i].xyz;
-        float3 lightColor = pl_Color[i].xyz;
-
-        float constant = pl_AtennuationAndRange[i].x;
-        float _linear = pl_AtennuationAndRange[i].y;
-        float quadratic = pl_AtennuationAndRange[i].z;
-        float range = pl_AtennuationAndRange[i].w;
-
-        float3 lightDir = lightPosition - input.worldPos;
-        float d = length(lightDir);
-
-        if (d > range)
-        {
-            break;
-        }
-
-        // Normalize light dir
-        lightDir /= d;
-
-        // diffuse shading
-        float lightIntensity = saturate(dot(input.normal, lightDir));
-
-        // specular shading
-        float3 R = reflect(normalize(lightDir), normalize(input.normal));
-
-        float3 ambient = lightColor * AMBIENT_INTENSITY;
-        float3 diffuse = lightColor * lightIntensity;
-        float3 specular = lightColor.xyz * pow(saturate(dot(R, input.viewDirection)), SHINE);
-
-        // attenuation
-        float distance = length(lightPosition - input.worldPos);
-        float attenuation = 1.0 / (constant + _linear * distance + quadratic * (distance * distance));
-
-        ambient *= attenuation;
-        diffuse *= attenuation;
-        specular *= attenuation;
-
-        color = float4(color.xyz + (ambient + diffuse + specular).xyz, color.w);
-    }
-
-    return color;
-}
-
-float4 spotLightCalc(PixelInputType input)
-{
-    float4 color = float4(0, 0, 0, 0);
-    
-    for (int i = 0; i < spotLights; i++)
-    {
-        float3 lightPosition = sl_Position[i].xyz;
-
-        float constant = sl_AtennuationAndRange[i].x;
-        float _linear = sl_AtennuationAndRange[i].y;
-        float quadratic = sl_AtennuationAndRange[i].z;
-        float range = sl_AtennuationAndRange[i].w;
-
-        float3 lightColor = sl_ColorAndAngle[i].xyz;
-        float angle = sl_ColorAndAngle[i].w;
-
-        float3 direction = normalize(sl_Direction[i].xyz);
-
-        float3 lightDir = lightPosition - input.worldPos;
-        float d = length(lightDir);
-
-        if (d > range)
-        {
-            break;
-        }
-
-        // Normalize light dir
-        lightDir /= d;
-
-        // diffuse shading
-        float lightIntensity = saturate(dot(input.normal, lightDir));
-
-        // specular shading
-        float3 R = reflect(normalize(lightDir), normalize(input.normal));
-
-        // combine results
-        float3 ambient = lightColor * AMBIENT_INTENSITY;
-        float3 diffuse = lightColor * lightIntensity;
-        float3 specular = lightColor.xyz * pow(saturate(dot(R, input.viewDirection)), SHINE);
-        
-        // spotlight intensity
-        float intensity = pow(max(dot(lightDir, normalize(direction)), 0.0f), angle);
-
-        // attenuation
-        float attenuation = 1.0 / (constant + _linear * d + quadratic * (d * d));
-
-        // combine results
-        ambient *= intensity;
-        diffuse *= intensity;
-        specular *= intensity;
-
-        ambient *= attenuation;
-        diffuse *= attenuation;
-        specular *= attenuation;
-
-        color = float4(color.xyz + (ambient + diffuse + specular).xyz, color.w);
-    }
-
-    return color;
-}
-
-float4 dirLightCalc(PixelInputType input)
-{
-    float4 color = float4(0, 0, 0, 0);
-
-    for (int i = 0; i < directionalLights; i++)
-    {
-        float3 lightPosition = dl_Position[i].xyz;
-        float4 lightColor = float4(dl_Color[i].xyz, 1.0f);
-        float3 direction = dl_Direction[i].xyz;
-
-        float3 lightDir = normalize(-direction);
-
-        // diffuse shading
-        float lightIntensity = saturate(dot(input.normal, lightDir));
-
-        // specular shading
-        float3 R = reflect(normalize(lightDir), normalize(input.normal));
-
-        // combine results
-        float3 ambient = lightColor * AMBIENT_INTENSITY;
-        float3 diffuse = lightColor * lightIntensity;
-        float3 specular = lightColor.xyz * pow(saturate(dot(R, input.viewDirection)), SHINE);
-
-        color = float4(color.xyz + (ambient + diffuse + specular), color.w);
-    }
-
     return color;
 }

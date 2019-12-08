@@ -134,73 +134,39 @@ void createAssets()
 
 	exportFont(dict, "../Assets/Fonts/arial.ttf", "../Assets/Fonts/arialFont.asset", "arialFont");
 
-	exportMesh(dict, "C:\\dev\\Triton\\Models\\shaderBall.obj", "../Assets/testMesh.asset", "testMesh");
-	exportMesh(dict, "D:\\Programming\\Test files\\nfw\\stall.obj", "../Assets/stall.asset", "stallMesh");
-	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/flatPlain.asset", "flatPlainMesh");
-	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/flatPlainNormal.asset", "flatPlainMeshNormal", true);
 
 	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Text.hlsl", "../Assets/textShader.asset", "vertex_text",
 		"pixel_text", { Flags::sFlag_Matrices, Flags::sFlag_NoNormals }, "textShader");
 
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Simple.hlsl", "../Assets/simpleShader.asset", "vertex_Simple",
-		"pixel_Simple", { Flags::sFlag_Matrices }, "simpleShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\MultiTexture.hlsl", "../Assets/multiShader.asset", "vertex_multi",
-		"pixel_multi", { Flags::sFlag_Matrices }, "multiTextureNoLightShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\Lighting.hlsl", "../Assets/lightingShader.asset", "vertex_lighting",
-		"pixel_lighting", { Flags::sFlag_Matrices, Flags::sFlag_Settings, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "lightingShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\LightMap.hlsl", "../Assets/lightMapShader.asset", "vertex_multi",
-		"pixel_multi", { Flags::sFlag_Matrices }, "lightMapShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\AlphaMap.hlsl", "../Assets/alphaMapShader.asset", "vertex_alpha",
-		"pixel_alpha", { Flags::sFlag_Matrices }, "alphaMapShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\BumpMap.hlsl", "../Assets/multiShader.asset", "vertex_bump",
-		"pixel_bump", { Flags::sFlag_Matrices, Flags::sFlag_TBN, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "bumpShader");
-
-	exportShader(dict, "C:\\dev\\Triton\\Shaders\\SpecMap.hlsl", "../Assets/dbsShader.asset", "vertex_dbs",
-		"pixel_dbs", { Flags::sFlag_Matrices, Flags::sFlag_TBN, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "dbsShader");
-
-
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stallTexture.png", "../Assets/texture.asset", "stallTexture");
-
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\dirt01.png", "../Assets/dirt01.asset", "dirt_1");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\stone01.png", "../Assets/stone01.asset", "stone_1");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\spot.png", "../Assets/spot.asset", "spot");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\alphaMap.png", "../Assets/alphaMap.asset", "alphaMap");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\bumpMap.png", "../Assets/bumpMap.asset", "normalMap");
-
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specDif.png", "../Assets/specDif.asset", "specMapDiffuse");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specNormal.png", "../Assets/specNormal.asset", "specMapNormal");
-	exportTexture(dict, "D:\\Programming\\Test files\\nfw\\specSpec.png", "../Assets/specSpec.asset", "specMapSpecular");
-
-	exportMaterial(dict, "../Assets/material.asset", "lightingShader", { "stallTexture" }, "stallMaterial");
-
-	exportMaterial(dict, "../Assets/plainMaterial.asset", "lightMapShader", { "stone_1", "dirt_1", "spot" }, "plainMaterial");
-	exportMaterial(dict, "../Assets/plainAlphaMaterial.asset", "alphaMapShader", { "stone_1", "dirt_1", "spot", "alphaMap" }, "plainAlphaMaterial");
-
-	exportMaterial(dict, "../Assets/plainBumpMaterial.asset", "bumpShader", { "stone_1", "normalMap"}, "plainBumpMaterial");
-
-	exportMaterial(dict, "../Assets/plainSpecMapMaterial.asset", "dbsShader", { "specMapDiffuse", "specMapNormal", "specMapSpecular"}, "plainSpecMapMaterial");
-
+	exportShader(dict, "C:\\dev\\Triton\\Shaders\\NormalShader.tcs", "../Assets/bumpShader.asset", "vertex_bump",
+		"pixel_bump", { Flags::sFlag_Settings, Flags::sFlag_Matrices, Flags::sFlag_TBN, Flags::sFlag_Lighting, Flags::sFlag_Camera }, "bumpShader");
 	
+	// Cerberus model
+	exportMesh(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Cerberus_LP.FBX", "../Assets/cerberusMesh.asset", "cerberus_mesh", true);
+	// Cerberus diffuse texture
+	exportTexture(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Textures\\Cerberus_A.tga", 
+		"../Assets/cerberusAlbedo.asset", "cerberus_albedo");
+	// Cerberus normal texture
+	exportTexture(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Textures\\Cerberus_N.tga",
+		"../Assets/cerberusNormal.asset", "cerberus_normal");
+
+	// Cerberus material
+	exportMaterial(dict, "../Assets/cerberusMaterial.asset", "bumpShader", { "cerberus_albedo", "cerberus_normal" }, "cerberusMaterial");
 
 
 	Scene scene("sample");
 
 	PointLight pl;
 	pl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	pl.Position = Vector3(5, 0, 20);
+	pl.Position = Vector3(-5, 0, 10);
 
 	PointLight pl2;
 	pl2.Color = Vector3(1.0f, 1.0f, 1.0f);
-	pl2.Position = Vector3(-5, 0, 20);
+	pl2.Position = Vector3(5, 0, 10);
 
 	DirectionalLight dl;
 	dl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	dl.Direction = Vector3(200.0f, 200.0f, 200.0f);
+	dl.Direction = Vector3(0.0f, 0.0f, 0.0f);
 
 	SpotLight sl;
 	sl.Color = Vector3(1.0f, 1.0f, 1.0f);
@@ -209,69 +175,34 @@ void createAssets()
 	sl.Range = 50;
 	sl.Linear = 0.045;
 	sl.Quadratic = 0.0075;
-	sl.Position = Vector3(0, 5, 25);
+	sl.Position = Vector3(0, 0, 25);
 
-	//scene.lights().PointLights.push_back(pl);
-	//scene.lights().PointLights.push_back(pl2);
+	scene.lights().PointLights.push_back(pl);
+	scene.lights().PointLights.push_back(pl2);
 	scene.lights().DirLights.push_back(dl);
 	scene.lights().SpotLights.push_back(sl);
 
 	auto& scene_assets = scene.assets();
 
-	scene_assets.push_back("lightingShader");
-	scene_assets.push_back("stallMesh");
-	scene_assets.push_back("stallTexture");
-	scene_assets.push_back("stallMaterial");
 	scene_assets.push_back("arialFont");
 	scene_assets.push_back("textShader");
-	scene_assets.push_back("simpleShader");
-	scene_assets.push_back("testMesh");
 	scene_assets.push_back("audioTest");
-	scene_assets.push_back("flatPlainMesh");
-	scene_assets.push_back("plainMaterial");
-	scene_assets.push_back("dirt_1");
-	scene_assets.push_back("stone_1");
-	scene_assets.push_back("multiTextureNoLightShader");
-	scene_assets.push_back("lightMapShader");
-	scene_assets.push_back("spot");
-	scene_assets.push_back("plainAlphaMaterial");
-	scene_assets.push_back("alphaMap");
-	scene_assets.push_back("alphaMapShader");
 	scene_assets.push_back("bumpShader");
-	scene_assets.push_back("flatPlainMeshNormal");
-	scene_assets.push_back("plainBumpMaterial");
-	scene_assets.push_back("normalMap");
-	scene_assets.push_back("dbsShader");
-	scene_assets.push_back("specMapDiffuse");
-	scene_assets.push_back("specMapNormal");
-	scene_assets.push_back("specMapSpecular");
-	scene_assets.push_back("plainSpecMapMaterial");
+
+	// Cerberus
+	scene_assets.push_back("cerberus_mesh");
+	scene_assets.push_back("cerberus_albedo");
+	scene_assets.push_back("cerberusMaterial");
+	scene_assets.push_back("cerberus_normal");
 
 	auto registry = scene.entities();
-	auto entity = registry->create();
-	registry->assign<Components::MetaComponent>(entity, "stall");
-	registry->assign<Components::Transform>(entity, Triton::Vector3(0, 5, -20), Triton::Vector3(0, 0, 0), Triton::Vector3(1, 1, 1));
-	registry->assign<Components::Visual>(entity, "stallMesh", "stallMaterial");
+	
+	auto cerberus = registry->create();
+	registry->assign<Components::MetaComponent>(cerberus, "cerberus");
+	registry->assign<Components::Transform>(cerberus, Triton::Vector3(20, 0, 0), Triton::Vector3(90, 90, 0), Triton::Vector3(0.3, 0.3, 0.3));
+	registry->assign<Components::Visual>(cerberus, "cerberus_mesh", "cerberusMaterial");
 
-	auto plainEntity = registry->create();
-	registry->assign<Components::MetaComponent>(plainEntity, "plain1");
-	registry->assign<Components::Transform>(plainEntity, Triton::Vector3(25, 0, 10), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
-	registry->assign<Components::Visual>(plainEntity, "flatPlainMesh", "plainMaterial");
 
-	auto plainEntity2 = registry->create();
-	registry->assign<Components::MetaComponent>(plainEntity2, "plain2");
-	registry->assign<Components::Transform>(plainEntity2, Triton::Vector3(13, 0, 10), Triton::Vector3(90, 0, 0), Triton::Vector3(1, 1, 1));
-	registry->assign<Components::Visual>(plainEntity2, "flatPlainMesh", "plainAlphaMaterial");
-
-	auto plainEntity3 = registry->create();
-	registry->assign<Components::MetaComponent>(plainEntity3, "plain3");
-	registry->assign<Components::Transform>(plainEntity3, Triton::Vector3(1, 0, 10), Triton::Vector3(70, 180, 0), Triton::Vector3(1, 1, 1));
-	registry->assign<Components::Visual>(plainEntity3, "flatPlainMesh", "plainBumpMaterial");
-
-	auto plainEntity4 = registry->create();
-	registry->assign<Components::MetaComponent>(plainEntity4, "plain4");
-	registry->assign<Components::Transform>(plainEntity4, Triton::Vector3(-11, 0, 10), Triton::Vector3(90, 180, 0), Triton::Vector3(1, 1, 1));
-	registry->assign<Components::Visual>(plainEntity4, "flatPlainMesh", "plainSpecMapMaterial");
 
 	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
 	scene.setActiveCamera("mainCamera");
@@ -325,9 +256,6 @@ int main()
 	{
 		reference<Scene> sampleScene = engine.scenes().currentScene();
 
-		ECS::Entity entity = sampleScene->getByMeta([](const Triton::Components::MetaComponent& comp) { return comp.Name == "stall"; })[0];
-		Components::Transform& transform = sampleScene->entities()->get<Components::Transform>(entity);
-
 		engine.assets().wait();
 
 		Utility::Timer timer(false);
@@ -366,12 +294,10 @@ int main()
 			// Temporary
 			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
 
-			Extension::renderSurface(fbo, { 900, 10 }, renderer, &engine.assets());
+			Extension::renderSurface(fbo, { 900, 400 }, renderer, &engine.assets());
 
 
-			testAudio->audio()->play();
-
-			transform.Rotation.y += 1 * 0.2;
+			//testAudio->audio()->play();
 
 			renderer->endFrame();
 

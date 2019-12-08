@@ -413,7 +413,7 @@ namespace Triton
 
 		Shader* DXContext::newShader(const IO::ShaderData& createParams)
 		{
-			TR_SYSTEM_TRACE("Creating direct x shader");
+			TR_SYSTEM_TRACE("Creating DirectX shader");
 
 			DXShader* shader = new DXShader(createParams.flags);
 
@@ -479,7 +479,7 @@ namespace Triton
 			vertexShaderBuffer = 0;
 			pixelShaderBuffer = 0;
 
-			TR_SYSTEM_TRACE("Compiling vertex shader");
+			TR_SYSTEM_TRACE("Compiling vertex shader '{0}'", createParams.vertexEntry);
 
 			// Vertex shader
 			result = D3DCompile(
@@ -511,7 +511,7 @@ namespace Triton
 				return nullptr;
 			}
 
-			TR_SYSTEM_TRACE("Compiling pixel shader");
+			TR_SYSTEM_TRACE("Compiling pixel shader '{0}'", createParams.pixelEntry);
 
 			// Pixel shader
 			result = D3DCompile(
