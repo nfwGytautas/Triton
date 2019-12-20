@@ -210,7 +210,8 @@ namespace Triton
 					archive(objectToStoreIn->width,
 						objectToStoreIn->height,
 						objectToStoreIn->BPP,
-						objectToStoreIn->rawData);
+						objectToStoreIn->rawData,
+						objectToStoreIn->sRGB);
 
 					// Check for errors in loading
 					if (objectToStoreIn->width <= 0 || objectToStoreIn->height <= 0 || objectToStoreIn->BPP <= 0)
@@ -493,7 +494,8 @@ namespace Triton
 					archive(rawData->width,
 						rawData->height,
 						rawData->BPP,
-						rawData->rawData);
+						rawData->rawData,
+						rawData->sRGB);
 
 					return status;
 				}

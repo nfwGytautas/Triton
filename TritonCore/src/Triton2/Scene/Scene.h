@@ -35,6 +35,11 @@ namespace Triton
 		Scene(std::string name);
 
 		/**
+		 * Updates all scene objects
+		 */
+		void onUpdate() const;
+
+		/**
 		 * Returns the name of the scene
 		 *
 		 * @return Name of the scene

@@ -20,6 +20,11 @@ namespace Triton
 		extern const char* c_type_Static_Camera;
 
 		/**
+		 * Free look camera string type name
+		 */
+		extern const char* c_type_FreeLook_Camera;
+
+		/**
 		 * Scene string type name
 		 */
 		extern const char* c_type_Scene;

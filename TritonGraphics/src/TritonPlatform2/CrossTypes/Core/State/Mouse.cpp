@@ -51,19 +51,51 @@ namespace Triton
 			m_y = newVal;
 		}
 
-		void Mouse::addXPosDelta(double delta)
+		void Mouse::addPosDelta(double xDelta, double yDelta)
 		{
-			m_xPosDelta = delta;
-		}
+			m_xPosDelta = xDelta;
+			m_yPosDelta = yDelta;
 
-		void Mouse::addYPosDelta(double delta)
-		{
-			m_yPosDelta = delta;
+			if (m_mouseMoveCallback)
+			{
+				m_mouseMoveCallback(xDelta, yDelta);
+			}
 		}
 
 		void Mouse::setKey(MouseKey key, bool state)
 		{
 			m_keys[(size_t)key] = state;
+
+			if (state)
+			{
+				if (m_mouseDownCallback)
+				{
+					m_mouseDownCallback(key);
+				}
+			}
+			else
+			{
+				if (m_mouseUpCallback)
+				{
+					m_mouseUpCallback(key);
+				}
+			}
+			
+		}
+
+		void Mouse::mouseDownCallback(std::function<void(MouseKey)> callback)
+		{
+			m_mouseDownCallback = callback;
+		}
+
+		void Mouse::mouseUpCallback(std::function<void(MouseKey)> callback)
+		{
+			m_mouseUpCallback = callback;
+		}
+
+		void Mouse::mouseMoveCallback(std::function<void(double, double)> callback)
+		{
+			m_mouseMoveCallback = callback;
 		}
 	}
 }

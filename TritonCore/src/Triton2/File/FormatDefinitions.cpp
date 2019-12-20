@@ -11,6 +11,8 @@ namespace Triton
 
 		const char* c_type_Static_Camera = "static_camera";
 
+		const char* c_type_FreeLook_Camera = "freelook_camera";
+
 		const char* c_type_Scene = "scene";
 	}
 }

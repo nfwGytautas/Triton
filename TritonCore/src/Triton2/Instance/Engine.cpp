@@ -61,6 +61,20 @@ namespace Triton
 		Log::flush();
 	}
 
+	void Engine::update()
+	{
+		m_scenes->currentScene()->onUpdate();
+	}
+
+	void Engine::defaultCallbacks(Graphics::Window* wnd)
+	{
+		// Key callback
+		wnd->keyboard().charInputCallback(std::bind(&Engine::wndCharInput, this, std::placeholders::_1));
+		wnd->mouse().mouseDownCallback(std::bind(&Engine::wndMouseDown, this, std::placeholders::_1));
+		wnd->mouse().mouseUpCallback(std::bind(&Engine::wndMouseUp, this, std::placeholders::_1));
+		wnd->mouse().mouseMoveCallback(std::bind(&Engine::wndMouseMove, this, std::placeholders::_1, std::placeholders::_2));
+	}
+
 	Graphics::Context& Engine::graphicsContext() const
 	{
 		return *m_context;
@@ -165,6 +179,39 @@ namespace Triton
 					asset->create(m_audioContext);
 				});
 			}
+		}
+	}
+
+	void Engine::wndCharInput(char c)
+	{
+		// Temporary
+		if (c == 'f')
+		{
+			m_scenes->currentScene()->setActiveCamera("freeCamera");
+		}
+		if (c == 's')
+		{
+			m_scenes->currentScene()->setActiveCamera("staticCamera");
+		}
+	}
+
+	void Engine::wndMouseDown(IO::MouseKey key)
+	{
+	}
+
+	void Engine::wndMouseUp(IO::MouseKey key)
+	{
+	}
+
+	void Engine::wndMouseMove(double x, double y)
+	{
+		// Temporary
+		auto camera = m_scenes->currentScene()->activeCamera().as<FreeLookCamera>();
+
+		if (camera.valid())
+		{
+			camera->setPitch(camera->getPitch() - y);
+			camera->setYaw(camera->getYaw() - x);
 		}
 	}
 

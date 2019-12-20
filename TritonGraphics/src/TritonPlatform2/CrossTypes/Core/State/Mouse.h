@@ -7,6 +7,7 @@
 #include "Triton2//Limits.h"
 
 #include <tuple>
+#include <functional>
 
 namespace Triton
 {
@@ -100,18 +101,12 @@ namespace Triton
 			void setPosY(double newVal);
 
 			/**
-			 * Add delta to position x value
+			 * Add delta to position x and y value
 			 *
-			 * @param delta The delta to add
+			 * @param deltaX The delta to add to X
+			 * @param deltaY The delta to add to Y
 			 */
-			void addXPosDelta(double delta);
-
-			/**
-			 * Add delta to position y value
-			 *
-			 * @param delta The delta to add
-			 */
-			void addYPosDelta(double delta);
+			void addPosDelta(double xDelta, double yDelta);
 
 			/**
 			 * Sets the state for a key
@@ -120,6 +115,27 @@ namespace Triton
 			 * @prama state The new state for the key
 			 */
 			void setKey(MouseKey key, bool state);
+
+			/**
+			 * Set the callback for mouse down
+			 *
+			 * @param callback The function to be called on mouse down
+			 */
+			void mouseDownCallback(std::function<void(MouseKey)> callback);
+
+			/**
+			 * Set the callback for mouse up
+			 *
+			 * @param callback The function to be called on mouse up
+			 */
+			void mouseUpCallback(std::function<void(MouseKey)> callback);
+
+			/**
+			 * Set the callback for mouse move
+			 *
+			 * @param callback The function to be called on mouse move
+			 */
+			void mouseMoveCallback(std::function<void(double, double)> callback);
 		private:
 			/// Current scroll wheel X coordinate
 			double m_scrollX;
@@ -144,6 +160,15 @@ namespace Triton
 			/// Mouse key array that specified if a key is either down or up
 			/// to check specific one use MouseKey enum in Triton namespace
 			bool m_keys[TR_MOUSE_KEY_COUNT];
+
+			/// Function to be called on mouse down input
+			std::function<void(MouseKey)> m_mouseDownCallback;
+
+			/// Function to be called on mouse up input
+			std::function<void(MouseKey)> m_mouseUpCallback;
+
+			/// Function to be called on mouse move input
+			std::function<void(double, double)> m_mouseMoveCallback;
 		};
 	}
 }

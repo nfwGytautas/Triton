@@ -32,7 +32,7 @@ float4 pointLightCalc(LightData input)
         float3 lightDir = lightPosition - input.worldPos;
         float d = length(lightDir);
 
-        float3 halfway = lightColor + input.viewDirection;
+        float3 halfway = lightDir + input.viewDirection;
 
         // Normalize light dir
         lightDir /= d;
@@ -82,7 +82,7 @@ float4 spotLightCalc(LightData input)
         float3 lightDir = lightPosition - input.worldPos;
         float d = length(lightDir);
         
-        float3 halfway = lightColor + input.viewDirection;
+        float3 halfway = lightDir + input.viewDirection;
 
         if (d > range)
         {
@@ -136,7 +136,7 @@ float4 dirLightCalc(LightData input)
 
         float3 lightDir = normalize(-direction);
 
-        float3 halfway = lightColor + input.viewDirection;
+        float3 halfway = lightDir + input.viewDirection;
         
         // diffuse shading
         float lightIntensity = saturate(dot(input.normal, lightDir));

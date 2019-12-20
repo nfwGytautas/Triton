@@ -787,6 +787,11 @@ namespace Triton
 			if (createParams.BPP == 4)
 			{
 				textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+				if (createParams.sRGB)
+				{
+					textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+				}
 			}
 			else if (createParams.BPP == 1)
 			{

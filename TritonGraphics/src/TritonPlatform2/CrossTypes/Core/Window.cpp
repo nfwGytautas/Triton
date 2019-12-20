@@ -29,7 +29,7 @@ namespace Triton
 			m_dragDropCallback = callback;
 		}
 
-		IO::Keyboard & Window::keyboard() const
+		IO::Keyboard& Window::keyboard() const
 		{
 			return *m_keyboardState;
 		}

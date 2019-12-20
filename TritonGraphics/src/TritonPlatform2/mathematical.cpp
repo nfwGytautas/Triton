@@ -2,98 +2,123 @@
 
 #ifdef TR_PLATFORM_WINDOWS
 
-Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aNearRenderPlane, float aFarRenderPlane)
+namespace Triton
 {
-	Matrix44 returnMatrix;
 
-	float screenAspect = (float)aWindowWidth / (float)aWindowHeight;
-	returnMatrix = DirectX::XMMatrixPerspectiveFovLH(aFoV, screenAspect, aNearRenderPlane, aFarRenderPlane);
+	Triton::Matrix44 Triton::Core::CreateProjectionMatrix(float aWindowWidth, float aWindowHeight, float aFoV, float aNearRenderPlane, float aFarRenderPlane)
+	{
+		Matrix44 returnMatrix;
 
-	return returnMatrix;
-}
+		float screenAspect = (float)aWindowWidth / (float)aWindowHeight;
+		returnMatrix = DirectX::XMMatrixPerspectiveFovLH(aFoV, screenAspect, aNearRenderPlane, aFarRenderPlane);
 
-Triton::Matrix44 Triton::Core::CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale)
-{
-	Matrix44 translationMatrix = Matrix44();
+		return returnMatrix;
+	}
 
-	DirectX::XMMATRIX matRotateX = DirectX::XMMatrixRotationX(Triton::to_radians(rotation.x));
-	DirectX::XMMATRIX matRotateY = DirectX::XMMatrixRotationY(Triton::to_radians(rotation.y));
-	DirectX::XMMATRIX matRotateZ = DirectX::XMMatrixRotationZ(Triton::to_radians(rotation.z));
-	DirectX::XMMATRIX matRotate = matRotateX * matRotateY*matRotateZ;
+	Triton::Matrix44 Triton::Core::CreateTransformationMatrix(Vector3 translation, Vector3 rotation, Vector3 scale)
+	{
+		Matrix44 translationMatrix = Matrix44();
 
-	translationMatrix = translationMatrix * matRotate;
+		DirectX::XMMATRIX matRotateX = DirectX::XMMatrixRotationX(Triton::to_radians(rotation.x));
+		DirectX::XMMATRIX matRotateY = DirectX::XMMatrixRotationY(Triton::to_radians(rotation.y));
+		DirectX::XMMATRIX matRotateZ = DirectX::XMMatrixRotationZ(Triton::to_radians(rotation.z));
+		DirectX::XMMATRIX matRotate = matRotateX * matRotateY * matRotateZ;
 
-	translationMatrix = translationMatrix * DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+		translationMatrix = translationMatrix * matRotate;
 
-	translationMatrix = translationMatrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
+		translationMatrix = translationMatrix * DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 
-
-	return translationMatrix;
-}
-
-Triton::Matrix44 Triton::Core::createViewMatrix(Vector3 position, float pitch, float yaw, float roll)
-{
-	using namespace DirectX;
-
-	XMFLOAT3 up, lookAt;
-	XMVECTOR upVector, positionVector, lookAtVector;
-	XMMATRIX rotationMatrix;
+		translationMatrix = translationMatrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
 
 
-	// Setup the vector that points upwards.
-	up.x = 0.0f;
-	up.y = 1.0f;
-	up.z = 0.0f;
+		return translationMatrix;
+	}
 
-	// Load it into a XMVECTOR structure.
-	upVector = XMLoadFloat3(&up);
+	Triton::Matrix44 Triton::Core::createViewMatrix(Vector3 position, float pitch, float yaw, float roll)
+	{
+		using namespace DirectX;
 
-	// Load it into a XMVECTOR structure.
-	positionVector = XMLoadFloat3(&position);
+		XMFLOAT3 up, lookAt;
+		XMVECTOR upVector, positionVector, lookAtVector;
+		XMMATRIX rotationMatrix;
 
-	// Setup where the camera is looking by default.
-	lookAt.x = 0.0f;
-	lookAt.y = 0.0f;
-	lookAt.z = 1.0f;
 
-	// Load it into a XMVECTOR structure.
-	lookAtVector = XMLoadFloat3(&lookAt);
+		// Setup the vector that points upwards.
+		up.x = 0.0f;
+		up.y = 1.0f;
+		up.z = 0.0f;
 
-	// Create the rotation matrix from the yaw, pitch, and roll values.
-	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+		// Load it into a XMVECTOR structure.
+		upVector = XMLoadFloat3(&up);
 
-	// Transform the lookAt and up vector by the rotation matrix so the view is correctly rotated at the origin.
-	lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
-	upVector = XMVector3TransformCoord(upVector, rotationMatrix);
+		// Load it into a XMVECTOR structure.
+		positionVector = XMLoadFloat3(&position);
 
-	// Translate the rotated camera position to the location of the viewer.
-	lookAtVector = XMVectorAdd(positionVector, lookAtVector);
+		// Setup where the camera is looking by default.
+		lookAt.x = 0.0f;
+		lookAt.y = 0.0f;
+		lookAt.z = 1.0f;
 
-	// Finally create the view matrix from the three updated vectors.
-	return XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
-}
+		// Load it into a XMVECTOR structure.
+		lookAtVector = XMLoadFloat3(&lookAt);
 
-Triton::Matrix44 Triton::Core::CreateOrthographicMatrix(float aWindowWidth, float aWindowHeight, float aNearRenderPlane, float aFarRenderPlane)
-{
-	Matrix44 returnMatrix;
+		// Create the rotation matrix from the yaw, pitch, and roll values.
+		rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
-	returnMatrix = DirectX::XMMatrixOrthographicLH(aWindowWidth, aWindowHeight, aNearRenderPlane, aFarRenderPlane);
+		// Transform the lookAt and up vector by the rotation matrix so the view is correctly rotated at the origin.
+		lookAtVector = XMVector3TransformCoord(lookAtVector, rotationMatrix);
+		upVector = XMVector3TransformCoord(upVector, rotationMatrix);
 
-	return returnMatrix;
-}
+		// Translate the rotated camera position to the location of the viewer.
+		lookAtVector = XMVectorAdd(positionVector, lookAtVector);
 
-Triton::Matrix44 Triton::Core::lookAt(Vector3 cameraPosition, Vector3 target)
-{
-	Vector3 up(0.0, 1.0, 0.0);
-	
-	Matrix44 mView = XMMatrixLookAtLH(cameraPosition, target, up);
+		// Finally create the view matrix from the three updated vectors.
+		return XMMatrixLookAtLH(positionVector, lookAtVector, upVector);
+	}
 
-	return mView;
-}
+	Triton::Matrix44 Triton::Core::CreateOrthographicMatrix(float aWindowWidth, float aWindowHeight, float aNearRenderPlane, float aFarRenderPlane)
+	{
+		Matrix44 returnMatrix;
 
-Triton::Matrix44 Triton::Core::transpose(Matrix44& mat)
-{
-	return DirectX::XMMatrixTranspose(mat);
+		returnMatrix = DirectX::XMMatrixOrthographicLH(aWindowWidth, aWindowHeight, aNearRenderPlane, aFarRenderPlane);
+
+		return returnMatrix;
+	}
+
+	Triton::Matrix44 Triton::Core::lookAt(Vector3 cameraPosition, Vector3 target)
+	{
+		Vector3 up(0.0, 1.0, 0.0);
+
+		Matrix44 mView = XMMatrixLookAtLH(cameraPosition, target, up);
+
+		return mView;
+	}
+
+	Triton::Matrix44 Triton::Core::transpose(Matrix44& mat)
+	{
+		return DirectX::XMMatrixTranspose(mat);
+	}
+
+	Vector2 Triton::Core::normalize(Vector2 vec)
+	{
+		Vector2 result;
+		vec.Normalize(result);
+		return result;
+	}
+
+	Vector3 Triton::Core::normalize(Vector3 vec)
+	{
+		Vector3 result;
+		vec.Normalize(result);
+		return result;
+	}
+
+	Vector4 Triton::Core::normalize(Vector4 vec)
+	{
+		Vector4 result;
+		vec.Normalize(result);
+		return result;
+	}
 }
 
 #else

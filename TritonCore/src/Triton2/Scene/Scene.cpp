@@ -19,6 +19,14 @@ namespace Triton
 	{
 	}
 
+	void Scene::onUpdate() const
+	{
+		for (reference<Camera> camera : m_cameras) 
+		{
+			camera->onUpdate();
+		}
+	}
+
 	std::string Scene::getName() const
 	{
 		return m_name;
@@ -155,6 +163,12 @@ namespace Triton
 				if (type == Serialization::c_type_Static_Camera)
 				{
 					reference<Camera> camera = new StaticCamera();
+					camera->deserialize(archive);
+					m_cameras.push_back(camera);
+				}
+				if (type == Serialization::c_type_FreeLook_Camera)
+				{
+					reference<Camera> camera = new FreeLookCamera();
 					camera->deserialize(archive);
 					m_cameras.push_back(camera);
 				}

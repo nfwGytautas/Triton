@@ -89,7 +89,7 @@ namespace Triton
 		/**
 		 * Updates the camera depending on it's type
 		 */
-		virtual void onUpdate() override {}
+		virtual void onUpdate() override;
 
 		// Inherited via Camera
 		virtual Vector3 getPosition() const override;
@@ -104,5 +104,68 @@ namespace Triton
 	private:
 		Vector3 m_Position;
 		Vector3 m_Target;
+	};
+
+	/**
+	 * A camera that can look around and move
+	 */
+	class FreeLookCamera : public Camera
+	{
+	public:
+		/**
+		 * Empty free camera instance constructor
+		 * Used in serialization
+		 */
+		FreeLookCamera();
+		/**
+		 * Free look camera instance constructor
+		 *
+		 * @param name The name of the static camera
+		 * @param position The position in the world
+		 * @param pitch The initial pitch of the camera
+		 * @param yaw The initial yaw of the camera
+		 */
+		FreeLookCamera(std::string name, Vector3 position, float pitch, float yaw);
+
+		/**
+		 * Updates the camera depending on it's type
+		 */
+		virtual void onUpdate() override;
+
+		// Inherited via Camera
+		virtual Vector3 getPosition() const override;
+		virtual Vector3 getViewDirection() const override;
+
+		// Inherited via Camera
+		virtual void serialize(BinaryOutputArchive& archive) override;
+		// Inherited via Camera
+		virtual void deserialize(BinaryInputArchive& archive) override;
+		// Inherited via Camera
+		virtual std::string type() override;
+
+		float getPitch() const;
+		float getYaw() const;
+		Vector3 getTarget() const;
+
+		void setPitch(float val);
+		void setYaw(float val);
+		void setTarget(Vector3 val);
+	private:
+		void calculateMatrix();
+	private:
+		/// Position of the camera
+		Vector3 m_position;
+
+		/// Target for the camera
+		Vector3 m_target;
+
+		/// The direction of the camera
+		Vector3 m_viewDirection;
+
+		/// Pitch of the camera
+		float m_pitch = 0.0f;
+
+		/// Yaw of the camera
+		float m_yaw = 0.0f;
 	};
 }

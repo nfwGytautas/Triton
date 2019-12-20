@@ -51,6 +51,10 @@ namespace Triton
 		Matrix44 lookAt(Vector3 cameraPosition, Vector3 target);
 
 		Matrix44 transpose(Matrix44& mat);
+
+		Vector2 normalize(Vector2 vec);
+		Vector3 normalize(Vector3 vec);
+		Vector4 normalize(Vector4 vec);
 	}
 }
 

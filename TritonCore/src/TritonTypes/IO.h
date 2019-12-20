@@ -74,6 +74,12 @@ namespace Triton
 			int BPP;
 
 			/**
+			 * Boolean to indicate if the texture is in sRGB space or not
+			 * Since 00_00_00
+			 */
+			bool sRGB;
+
+			/**
 			 * The buffer of the loaded image
 			 * [NOT SERIALIZED]
 			 * Since 00_00_00

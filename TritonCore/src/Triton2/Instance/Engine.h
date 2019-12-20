@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TritonTypes/Settings.h"
-
 #include "TritonTypes/AssetDictionary.h"
+#include "TritonPlatform2/CrossTypes/Core/Window.h"
 
 namespace Triton
 {
@@ -45,6 +45,20 @@ namespace Triton
 		 * Shutdown the Triton engine
 		 */
 		void shutdown();
+
+		/**
+		 * Update all engine components
+		 */
+		void update();
+
+		/**
+		 * Set default callbacks for the specified window
+		 * these callbacks can be overridden by setting them
+		 * after this call
+		 *
+		 * @param wnd Window to set callbacks for
+		 */
+		void defaultCallbacks(Graphics::Window* wnd);
 
 		/**
 		 * Returns engine's graphics context instance
@@ -92,7 +106,6 @@ namespace Triton
 		 * @param dict Dictionary to append
 		 */
 		void addDictionary(const Core::AssetDictionary& dict);
-
 	private:
 		/**
 		 * Creates default assets for the engine
@@ -110,6 +123,36 @@ namespace Triton
 		 * Else -> graphics context
 		 */
 		void assetAdded(reference<Asset> asset);
+
+	private: // Callbacks
+		/**
+		 * Default callback for char inputs
+		 *
+		 * @param c Pressed character
+		 */
+		void wndCharInput(char c);
+
+		/**
+		 * Default callback for mouse down
+		 *
+		 * @param key Mouse key that was pressed
+		 */
+		void wndMouseDown(IO::MouseKey key);
+
+		/**
+		 * Default callback for mouse up
+		 *
+		 * @param key Mouse key that was released
+		 */
+		void wndMouseUp(IO::MouseKey key);
+
+		/**
+		 * Default callback for mouse move
+		 *
+		 * @param x Delta of the x axis
+		 * @param y Delta of the y axis
+		 */
+		void wndMouseMove(double x, double y);
 	private:
 		/// Graphics context created by the engine
 		Graphics::Context* m_context;

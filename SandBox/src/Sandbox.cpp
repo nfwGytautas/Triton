@@ -23,7 +23,7 @@ void exportMesh(Triton::Core::AssetDictionary& dict, const std::string& from, co
 	dict.associate(testMesh.Name, { to, false, Core::AssetDictionary::EntryType::Asset });
 }
 
-void exportTexture(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name)
+void exportTexture(Triton::Core::AssetDictionary& dict, const std::string& from, const std::string& to, const std::string& name, bool srgb = false)
 {
 	using namespace Triton;
 
@@ -34,6 +34,7 @@ void exportTexture(Triton::Core::AssetDictionary& dict, const std::string& from,
 	textureAsset.Data = std::make_shared<IO::ImageData>();
 
 	auto tDatap = (IO::ImageData*)textureAsset.Data.get();
+	tDatap->sRGB = srgb;
 	// This is the shader for the asset could be anything
 	// This shader can be found in the Assets folder
 	IO::loadImageFromDisk(from, tDatap);
@@ -145,13 +146,22 @@ void createAssets()
 	exportMesh(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Cerberus_LP.FBX", "../Assets/cerberusMesh.asset", "cerberus_mesh", true);
 	// Cerberus diffuse texture
 	exportTexture(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Textures\\Cerberus_A.tga", 
-		"../Assets/cerberusAlbedo.asset", "cerberus_albedo");
+		"../Assets/cerberusAlbedo.asset", "cerberus_albedo", true);
 	// Cerberus normal texture
 	exportTexture(dict, "C:\\dev\\Triton\\Models\\Cerberus_by_Andrew_Maximov\\Textures\\Cerberus_N.tga",
 		"../Assets/cerberusNormal.asset", "cerberus_normal");
 
 	// Cerberus material
-	exportMaterial(dict, "../Assets/cerberusMaterial.asset", "bumpShader", { "cerberus_albedo", "cerberus_normal" }, "cerberusMaterial");
+	exportMaterial(dict, "../Assets/cerberusMaterial.asset", "bumpShader", { "cerberus_albedo", "cerberus_normal" }, "cerberus_material");
+
+	// Walls
+	exportMesh(dict, "C:\\dev\\Triton\\Models\\FlatPlain.obj", "../Assets/wall.asset", "wall_mesh", true);
+	exportTexture(dict, "C:\\dev\\Triton\\Models\\stone01.png",
+		"../Assets/wallAlbedo.asset", "wall_albedo", true);
+	exportTexture(dict, "C:\\dev\\Triton\\Models\\bumpMap.png",
+		"../Assets/wallNormal.asset", "wall_normal");
+
+	exportMaterial(dict, "../Assets/wallMaterial.asset", "bumpShader", { "wall_albedo", "wall_normal" }, "wall_material");
 
 
 	Scene scene("sample");
@@ -166,16 +176,16 @@ void createAssets()
 
 	DirectionalLight dl;
 	dl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	dl.Direction = Vector3(0.0f, 0.0f, 0.0f);
+	dl.Direction = Vector3(20.0f, 0.0f, 0.0f);
 
 	SpotLight sl;
 	sl.Color = Vector3(1.0f, 1.0f, 1.0f);
-	sl.Direction = Vector3(0, 0, 20);
+	sl.Direction = Vector3(20, 0, 0);
 	sl.Angle = 5;
 	sl.Range = 50;
 	sl.Linear = 0.045;
 	sl.Quadratic = 0.0075;
-	sl.Position = Vector3(0, 0, 25);
+	sl.Position = Vector3(20, 0, 25);
 
 	scene.lights().PointLights.push_back(pl);
 	scene.lights().PointLights.push_back(pl2);
@@ -192,20 +202,43 @@ void createAssets()
 	// Cerberus
 	scene_assets.push_back("cerberus_mesh");
 	scene_assets.push_back("cerberus_albedo");
-	scene_assets.push_back("cerberusMaterial");
+	scene_assets.push_back("cerberus_material");
 	scene_assets.push_back("cerberus_normal");
+
+	// Wall
+	scene_assets.push_back("wall_mesh");
+	scene_assets.push_back("wall_albedo");
+	scene_assets.push_back("wall_material");
+	scene_assets.push_back("wall_normal");
+
 
 	auto registry = scene.entities();
 	
 	auto cerberus = registry->create();
 	registry->assign<Components::MetaComponent>(cerberus, "cerberus");
 	registry->assign<Components::Transform>(cerberus, Triton::Vector3(20, 0, 0), Triton::Vector3(90, 90, 0), Triton::Vector3(0.3, 0.3, 0.3));
-	registry->assign<Components::Visual>(cerberus, "cerberus_mesh", "cerberusMaterial");
+	registry->assign<Components::Visual>(cerberus, "cerberus_mesh", "cerberus_material");
+
+	auto wall1 = registry->create();
+	registry->assign<Components::MetaComponent>(wall1, "wall1");
+	registry->assign<Components::Transform>(wall1, Triton::Vector3(0, 0, -20), Triton::Vector3(90, 0, 0), Triton::Vector3(10, 10, 1));
+	registry->assign<Components::Visual>(wall1, "wall_mesh", "wall_material");
+
+	auto wall2 = registry->create();
+	registry->assign<Components::MetaComponent>(wall2, "wall2");
+	registry->assign<Components::Transform>(wall2, Triton::Vector3(0, -20, 0), Triton::Vector3(0, 0, 0), Triton::Vector3(10, 1, 10));
+	registry->assign<Components::Visual>(wall2, "wall_mesh", "wall_material");
+
+	auto wall3 = registry->create();
+	registry->assign<Components::MetaComponent>(wall3, "wall3");
+	registry->assign<Components::Transform>(wall3, Triton::Vector3(-30, 0, 0), Triton::Vector3(0, 270, 270), Triton::Vector3(1, 10, 10));
+	registry->assign<Components::Visual>(wall3, "wall_mesh", "wall_material");
 
 
 
-	scene.cameras().push_back(new StaticCamera("mainCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
-	scene.setActiveCamera("mainCamera");
+	scene.cameras().push_back(new StaticCamera("staticCamera", Vector3(0, 5, 50), Triton::Vector3(0, 0, 20)));
+	scene.cameras().push_back(new FreeLookCamera("freeCamera", Vector3(0, 5, 50), 0, 180));
+	scene.setActiveCamera("freeCamera");
 
 	IO::saveSceneToDisk("../Assets/Scenes/sampleScene.scene", &scene);
 
@@ -240,8 +273,8 @@ int main()
 	window = engine.graphicsContext().newWindow();
 	window->initNew(1280, 720);
 
-	// Key callback
-	window->keyboard().charInputCallback([](char c) {TR_SYSTEM_TRACE("KEY: {0}", c); });
+	// Set callbacks
+	engine.defaultCallbacks(window);
 
 	// Create a new renderer for a window
 	renderer = engine.graphicsContext().newRenderer(window);
@@ -263,10 +296,9 @@ int main()
 		int frames = 0;
 		long double frameSum = 0;
 
-		engine.assets().waitFor("audioTest", 0);
-		reference<AudioAsset> testAudio = engine.assets().getAsset("audioTest").as<AudioAsset>();
+		reference<AudioAsset> testAudio = engine.assets().waitFor("audioTest", 0).as<AudioAsset>();
 
-		unsigned int fbo = renderer->newSurface(320, 320);
+		//unsigned int fbo = renderer->newSurface(320, 320);
 
 		while (!window->isClosed())
 		{
@@ -275,15 +307,16 @@ int main()
 			engine.graphicsContext().synchronizer().synchronize(0);
 			engine.audioContext().synchronizer().synchronize(0);
 
+			engine.update();
 			window->update();
 
-			renderer->setSurface(fbo);
-			renderer->newFrame(1.0f, 0.5f, 1.0f, 0.5f);
-
-			Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
-
-			// Temporary
-			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
+			//renderer->setSurface(fbo);
+			//renderer->newFrame(1.0f, 0.5f, 1.0f, 0.5f);
+			//
+			//Extension::renderScene(engine.scenes().currentScene(), renderer, &engine.assets());
+			//
+			//// Temporary
+			//Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
 
 
 			renderer->default();
@@ -294,7 +327,7 @@ int main()
 			// Temporary
 			Extension::renderText("Sample text", "arialFont", { 50, 50 }, renderer, &engine.assets());
 
-			Extension::renderSurface(fbo, { 900, 400 }, renderer, &engine.assets());
+			//Extension::renderSurface(fbo, { 900, 400 }, renderer, &engine.assets());
 
 
 			//testAudio->audio()->play();

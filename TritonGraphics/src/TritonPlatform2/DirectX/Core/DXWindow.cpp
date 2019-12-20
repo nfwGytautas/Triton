@@ -185,8 +185,7 @@ namespace Triton
 				{
 					double xPos = raw->data.mouse.lLastX;
 					double yPos = raw->data.mouse.lLastY;
-					m_mouseState->addXPosDelta(xPos);
-					m_mouseState->addYPosDelta(yPos);
+					m_mouseState->addPosDelta(xPos, yPos);
 				}
 
 				delete[] lpb;
